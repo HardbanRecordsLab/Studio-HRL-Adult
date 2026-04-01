@@ -575,15 +575,78 @@ export const STORAGE_KEYS = {
   SIDEBAR_OPEN: 'sidebar_open'
 };
 
-// Routes
-export const ROUTES = {
-  HOME: '/',
-  CASTING: '/casting',
-  ACADEMY: '/academy',
-  PORTFOLIO: '/portfolio',
-  ADMIN: '/admin',
-  LOGIN: '/login',
-  REGISTER: '/register',
-  PROFILE: '/profile',
-  SETTINGS: '/settings'
+// Audio file types and validation
+export const AUDIO_TYPES = {
+  SUPPORTED: [
+    'audio/mpeg',      // MP3
+    'audio/wav',       // WAV
+    'audio/ogg',       // OGG
+    'audio/aac',       // AAC
+    'audio/mp4',       // M4A
+    'audio/flac',      // FLAC
+    'audio/webm',     // WebM
+  ],
+  EXTENSIONS: {
+    'mp3': 'audio/mpeg',
+    'wav': 'audio/wav',
+    'ogg': 'audio/ogg',
+    'aac': 'audio/aac',
+    'm4a': 'audio/mp4',
+    'flac': 'audio/flac',
+    'webm': 'audio/webm',
+  },
+  MAX_SIZE: 25 * 1024 * 1024, // 25MB
+  MAX_DURATION: 3600, // 1 hour in seconds
+  QUALITY_LEVELS: {
+    LOW: { bitrate: 128, size: '1MB/min' },
+    MEDIUM: { bitrate: 192, size: '1.5MB/min' },
+    HIGH: { bitrate: 256, size: '2MB/min' },
+    PREMIUM: { bitrate: 320, size: '2.5MB/min' }
+  }
+};
+
+// Podcast categories
+export const PODCAST_CATEGORIES = [
+  'Education',
+  'Interview',
+  'Storytelling',
+  'News',
+  'Comedy',
+  'Technology',
+  'Business',
+  'Health',
+  'Entertainment',
+  'Lifestyle',
+  'Adult Content',
+  'Industry Insights'
+];
+
+// Audio validation messages
+export const AUDIO_VALIDATION_MESSAGES = {
+  INVALID_TYPE: 'Only MP3, WAV, AAC, OGG, M4A, FLAC, and WebM audio files are supported',
+  TOO_LARGE: 'Audio file size must be less than 25MB',
+  TOO_LONG: 'Audio duration must be less than 1 hour',
+  CORRUPTED: 'Audio file appears to be corrupted or invalid',
+  EMPTY: 'Audio file is empty'
+};
+
+// Audio player settings
+export const AUDIO_PLAYER_SETTINGS = {
+  VOLUME_STEPS: [0, 0.25, 0.5, 0.75, 1],
+  PLAYBACK_SPEEDS: [0.5, 0.75, 1, 1.25, 1.5, 2],
+  WAVEFORM_SAMPLES: 200,
+  AUTO_SAVE_INTERVAL: 5000, // 5 seconds
+  BUFFER_SIZE: 10, // seconds
+};
+
+// Audio processing utilities
+export const AUDIO_PROCESSING = {
+  SAMPLE_RATE: 44100,
+  CHANNELS: 2,
+  BIT_DEPTH: 16,
+  ENCODING_PRESETS: {
+    VOICE: { bitrate: 128, sampleRate: 22050, channels: 1 },
+    MUSIC: { bitrate: 256, sampleRate: 44100, channels: 2 },
+    PREMIUM: { bitrate: 320, sampleRate: 48000, channels: 2 }
+  }
 };
