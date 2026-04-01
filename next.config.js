@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'studio-adult.hardbanrecordslab.online'],
     formats: ['image/webp', 'image/avif'],
   },
   env: {
@@ -14,7 +11,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3001/api/:path*',
+        destination: 'https://studio-adult.hardbanrecordslab.online/api/:path*',
       },
     ];
   },
