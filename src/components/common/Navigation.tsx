@@ -17,9 +17,11 @@ const Navigation: React.FC = () => {
 
   const navLinks = [
     { name: 'Start', href: ROUTES.HOME },
-    { name: 'Filozofia', href: '/#philosophy' },
-    { name: 'Model', href: '/#model' },
-    { name: 'Studia', href: '/#studios' },
+    { name: 'O Studiu', href: '/#philosophy' },
+    { name: 'Dokumenty', href: '/docs' },
+    { name: 'Prywatność', href: '/privacy' },
+    { name: 'RODO', href: '/rodo' },
+    { name: 'Kontakt', href: '/contact' },
     { name: 'Casting', href: ROUTES.CASTING },
     { name: 'Akademia', href: ROUTES.ACADEMY },
     { name: 'Portfolio', href: ROUTES.PORTFOLIO },
@@ -46,17 +48,17 @@ const Navigation: React.FC = () => {
       </Link>
 
       {/* Main Nav */}
-      <ul className="hidden lg:flex items-center gap-1">
+      <ul className="hidden xl:flex items-center gap-1">
         {navLinks.map((link) => (
           <li key={link.name}>
             <Link 
               href={link.href}
-              className={`relative px-4 py-2 text-[10px] font-medium tracking-[0.2em] uppercase transition-colors group ${
+              className={`relative px-3 py-2 text-[9px] font-medium tracking-[0.2em] uppercase transition-colors group ${
                 router.pathname === link.href ? 'text-gold' : 'text-dim hover:text-gold'
               }`}
             >
               {link.name}
-              <span className={`absolute bottom-0 left-4 right-4 h-px bg-gold transition-transform duration-300 origin-center ${
+              <span className={`absolute bottom-0 left-3 right-3 h-px bg-gold transition-transform duration-300 origin-center ${
                 router.pathname === link.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
               }`} />
             </Link>
@@ -67,8 +69,14 @@ const Navigation: React.FC = () => {
       {/* Right CTA */}
       <div className="flex items-center gap-4">
         <Link 
+          href="/admin"
+          className="hidden lg:block px-4 py-2 border border-gold/20 text-gold/60 text-[8px] font-bold tracking-[0.2em] uppercase transition-all hover:bg-gold/5 hover:text-gold"
+        >
+          Admin
+        </Link>
+        <Link 
           href={ROUTES.CASTING}
-          className="px-6 py-2.5 border border-gold/40 text-gold text-[9px] font-bold tracking-[0.2em] uppercase transition-all hover:bg-gold hover:text-dark"
+          className="px-6 py-2.5 bg-crimson-gradient text-white text-[9px] font-bold tracking-[0.2em] uppercase transition-all hover:opacity-90 shadow-lg shadow-crimson/20"
         >
           Dołącz Teraz
         </Link>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio HRL Adult – Premium Platform 18+ | Kompleksowa Produkcja Treści</title>
+<meta name="description" content="Studio HRL Adult oferuje kompleksowe usługi produkcyjno-dystrybucyjne w branży treści dla dorosłych. Model 60/30/10, profesjonalne studio 4K, zarządzanie platformami.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#F0D98A;--gold-d:#7A5C10;--gold-g:linear-gradient(135deg,#F0D98A,#C9A84C,#7A5C10);
+  --crim:#9B1F35;--crim-l:#D4304A;--crim-d:#5A0F1E;
+  --dark:#07050A;--dark2:#0F0C14;--dark3:#16121E;--dark4:#1E1828;--dark5:#251F30;
+  --text:#EDE0D4;--dim:#9A8880;--dim2:#6A5A52;--white:#FBF6F0;
+  --green:#2ECC71;--blue:#3498DB;--orange:#E67E22;--purple:#9B59B6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:"Montserrat",sans-serif;font-weight:300;cursor:none;overflow-x:hidden;}
+.cur{width:6px;height:6px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;}
+.cur-r{width:26px;height:26px;border:1px solid rgba(201,168,76,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s,border-color .3s,opacity .3s;}
+body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:8000;opacity:.35;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;padding:0 4%;display:flex;align-items:center;justify-content:space-between;background:rgba(7,5,10,.95);border-bottom:1px solid rgba(201,168,76,.1);backdrop-filter:blur(14px);}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:none;text-decoration:none;}
+.nav-logo-w{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(201,168,76,.5);}
+.nav-logo-w img{width:100%;height:100%;object-fit:cover;}
+.nav-name{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:600;color:var(--gold);letter-spacing:.16em;}
+.nav-main{display:flex;gap:0;list-style:none;align-items:center;}
+.nav-main a{display:block;padding:7px 14px;font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .3s;cursor:none;position:relative;}
+.nav-main a::after{content:"";position:absolute;bottom:2px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
+.nav-main a:hover,.nav-main a.active{color:var(--gold);}
+.nav-main a:hover::after,.nav-main a.active::after{transform:scaleX(1);}
+.nav-btn-cast{background:linear-gradient(135deg,var(--crim),var(--crim-d))!important;color:var(--white)!important;padding:8px 20px!important;letter-spacing:.12em!important;border:none!important;}
+.nav-btn-cast::after{display:none!important;}
+.nav-btn-admin{background:transparent!important;border:1px solid rgba(201,168,76,.3)!important;color:var(--gold)!important;padding:7px 16px!important;}
+.nav-btn-admin::after{display:none!important;}
+.nav-btn-admin:hover{background:rgba(201,168,76,.08)!important;}
+.nav-right{display:flex;align-items:center;gap:6px;}
+
+/* ── SECTIONS ── */
+.sec{padding:80px 6%;}
+.sec-dk{background:var(--dark2);}
+.sec-dkr{background:var(--dark3);}
+.tag{font-size:8.5px;font-weight:600;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.tag::before{content:"";width:20px;height:1px;background:var(--gold);}
+.h1{font-family:"Cormorant Garamond",serif;font-size:clamp(36px,5vw,76px);font-weight:300;line-height:.95;color:var(--white);margin-bottom:16px;}
+.h1 em,.h2 em{font-style:italic;background:var(--gold-g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.h2{font-family:"Cormorant Garamond",serif;font-size:clamp(24px,3vw,44px);font-weight:300;color:var(--white);margin-bottom:12px;}
+.h3{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;color:var(--gold);margin-bottom:10px;}
+.body{font-size:12px;line-height:2;color:var(--dim);}
+.gline{display:flex;align-items:center;gap:12px;margin:22px 0;}
+.gline::before,.gline::after{content:"";flex:1;height:1px;}
+.gline::before{background:linear-gradient(to right,transparent,var(--gold));}
+.gline::after{background:linear-gradient(to left,transparent,var(--gold));}
+.gem{width:7px;height:7px;background:var(--crim-l);transform:rotate(45deg);box-shadow:0 0 12px rgba(212,48,74,.5);}
+.btn-r{display:inline-block;padding:13px 38px;background:linear-gradient(135deg,var(--crim),var(--crim-d));color:var(--white);font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;cursor:none;border:none;transition:opacity .3s,transform .2s;}
+.btn-r:hover{opacity:.85;transform:translateY(-1px);}
+.btn-g{display:inline-block;padding:13px 38px;background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;cursor:none;border:none;transition:opacity .3s;}
+.btn-g:hover{opacity:.88;}
+.btn-o{display:inline-block;padding:12px 38px;border:1px solid rgba(201,168,76,.4);color:var(--gold);font-size:9px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;cursor:none;background:transparent;transition:all .3s;}
+.btn-o:hover{background:rgba(201,168,76,.07);border-color:var(--gold);}
+.btn-sm{padding:8px 20px!important;font-size:8.5px!important;letter-spacing:.2em!important;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+.card{background:var(--dark3);border:1px solid rgba(201,168,76,.08);padding:32px;transition:border-color .35s,transform .25s;}
+.card:hover{border-color:rgba(201,168,76,.28);transform:translateY(-2px);}
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent);margin:50px 0;}
+
+/* MEDIA PH */
+.img-ph{background:linear-gradient(135deg,var(--dark3),var(--dark4));border:1px solid rgba(201,168,76,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;position:relative;overflow:hidden;transition:border-color .3s;}
+.img-ph:hover{border-color:rgba(201,168,76,.3);}
+.img-ph .phl{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,168,76,.35);}
+.img-ph .phico{font-size:18px;opacity:.2;}
+.img-ph .phtag{position:absolute;bottom:8px;right:10px;font-family:"Cormorant Garamond",serif;font-size:10px;color:rgba(201,168,76,.25);}
+.vid-ph{background:linear-gradient(135deg,var(--dark4),var(--dark3));border:1px solid rgba(155,31,53,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;transition:all .3s;cursor:none;}
+.vid-ph:hover{border-color:rgba(155,31,53,.45);}
+.playbtn{width:48px;height:48px;border:2px solid rgba(201,168,76,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:.35;transition:opacity .3s;}
+.vid-ph:hover .playbtn{opacity:.65;}
+.vid-ph .phl{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,168,76,.3);}
+.vid-ph .phtag{position:absolute;bottom:8px;right:10px;font-family:"Cormorant Garamond",serif;font-size:10px;color:rgba(212,48,74,.35);}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--dark2);border-top:1px solid rgba(201,168,76,.1);border-bottom:1px solid rgba(201,168,76,.1);}
+.stat{padding:30px 18px;text-align:center;border-right:1px solid rgba(201,168,76,.08);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:300;line-height:1;background:var(--gold-g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px;}
+.stat-l{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:90px 6% 70px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(155,31,53,.2),rgba(90,15,30,.08) 50%,transparent 70%),radial-gradient(ellipse 40% 40% at 15% 75%,rgba(201,168,76,.04),transparent);}
+.hero-vign{position:absolute;inset:0;background:radial-gradient(ellipse 110% 110% at 50% 50%,transparent 25%,rgba(7,5,10,.5) 70%,rgba(7,5,10,.95) 100%);}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbf 14s ease-in-out infinite;}
+.o1{width:450px;height:450px;background:rgba(155,31,53,.1);top:-15%;left:-8%;animation-delay:0s;}
+.o2{width:320px;height:320px;background:rgba(201,168,76,.06);top:25%;right:-8%;animation-delay:-5s;}
+.o3{width:380px;height:380px;background:rgba(90,15,30,.12);bottom:-15%;left:25%;animation-delay:-9s;}
+@keyframes orbf{0%,100%{transform:translate(0,0);}33%{transform:translate(25px,-18px);}66%{transform:translate(-18px,25px);}}
+.hero-c{position:relative;z-index:2;text-align:center;max-width:800px;}
+.hero-pre{font-size:8.5px;letter-spacing:.5em;text-transform:uppercase;color:rgba(201,168,76,.65);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:14px;}
+.hero-pre::before,.hero-pre::after{content:"";width:32px;height:1px;background:rgba(201,168,76,.4);}
+.hero-logo{width:110px;height:110px;border-radius:50%;overflow:hidden;margin:0 auto 28px;border:1px solid rgba(201,168,76,.22);box-shadow:0 0 50px rgba(155,31,53,.22),0 0 100px rgba(201,168,76,.07);animation:logopulse 4s ease-in-out infinite;}
+.hero-logo img{width:100%;height:100%;object-fit:cover;}
+@keyframes logopulse{0%,100%{box-shadow:0 0 50px rgba(155,31,53,.22),0 0 100px rgba(201,168,76,.07);}50%{box-shadow:0 0 70px rgba(155,31,53,.38),0 0 140px rgba(201,168,76,.11);}}
+.hero-h{font-family:"Cormorant Garamond",serif;font-size:clamp(48px,9vw,116px);font-weight:300;line-height:.88;letter-spacing:.05em;color:var(--white);margin-bottom:6px;}
+.hero-sub{font-family:"Cormorant Garamond",serif;font-size:clamp(13px,1.8vw,19px);font-style:italic;color:var(--dim);letter-spacing:.07em;margin:18px 0;}
+.hero-p{font-size:12.5px;line-height:2;color:var(--dim);max-width:500px;margin:0 auto 40px;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.scroll-ind{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.35;animation:scb 2.2s ease-in-out infinite;}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,var(--gold),transparent);}
+.scroll-t{font-size:7.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);}
+@keyframes scb{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
+
+/* REVENUE MODEL */
+.rev-g{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;margin-top:44px;}
+.pie-w{position:relative;width:210px;height:210px;margin:0 auto;}
+.pie-svg{width:100%;height:100%;transform:rotate(-90deg);}
+.pie-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.pie-n{font-family:"Cormorant Garamond",serif;font-size:44px;font-weight:300;background:var(--gold-g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pie-l{font-size:8.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;}
+.leg{display:flex;flex-direction:column;gap:14px;margin-top:22px;}
+.leg-i{display:flex;align-items:center;gap:11px;}
+.leg-d{width:9px;height:9px;transform:rotate(45deg);flex-shrink:0;}
+.leg-t{font-size:10.5px;color:var(--dim);flex:1;line-height:1.35;}
+.leg-p{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:300;color:var(--white);}
+
+/* STUDIOS */
+.stud-g{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:40px;}
+.stud{background:var(--dark3);border:1px solid rgba(201,168,76,.07);padding:32px 24px;text-align:center;transition:all .3s;position:relative;overflow:hidden;}
+.stud::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s;}
+.stud:hover{border-color:rgba(201,168,76,.28);}.stud:hover::after{opacity:1;}
+.stud-ico{font-size:32px;margin-bottom:16px;opacity:.8;}
+.stud-t{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:var(--gold);margin-bottom:8px;}
+.stud-x{font-size:10.5px;color:var(--dim);line-height:1.8;}
+
+/* PHILOSOPHY */
+.phil-g{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;margin-top:44px;}
+.phil-img{aspect-ratio:4/3;background:linear-gradient(135deg,var(--dark3),var(--dark4));border:1px solid rgba(201,168,76,.1);border-radius:4px;overflow:hidden;position:relative;}
+.phil-img::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,transparent 30%,rgba(7,5,10,.4) 100%);}
+.phil-quote{font-family:"Cormorant Garamond",serif;font-size:28px;font-style:italic;color:var(--gold);line-height:1.3;margin-bottom:20px;}
+.phil-text{font-size:12px;line-height:2;color:var(--dim);}
+
+/* SAFETY */
+.safe-g{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:40px;}
+.safe{background:var(--dark3);border:1px solid rgba(201,168,76,.07);padding:32px 28px;display:flex;gap:16px;transition:border-color .3s;}
+.safe:hover{border-color:rgba(155,31,53,.35);}
+.safe-ico{width:40px;height:40px;border:1px solid rgba(201,168,76,.22);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.safe-t{font-family:"Cormorant Garamond",serif;font-size:17px;color:var(--gold);margin-bottom:7px;}
+.safe-x{font-size:10.5px;line-height:1.85;color:var(--dim);}
+
+/* CTA */
+.cta-sec{background:linear-gradient(135deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,.12);padding:60px;text-align:center;margin-top:60px;}
+.cta-h{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:300;color:var(--white);margin-bottom:16px;}
+.cta-sub{font-size:12px;color:var(--dim);margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto;}
+
+/* FOOTER */
+footer{background:var(--dark2);border-top:1px solid rgba(201,168,76,.1);padding:50px 6% 28px;}
+.foot-g{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
+.foot-logo{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:600;color:var(--gold);letter-spacing:.15em;margin-bottom:10px;}
+.foot-tag{font-size:10px;color:var(--dim);line-height:1.85;font-style:italic;}
+.foot-col-t{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600;}
+.foot-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.foot-links a{font-size:10.5px;color:var(--dim);text-decoration:none;transition:color .3s;cursor:none;}
+.foot-links a:hover{color:var(--gold);}
+.foot-bottom{border-top:1px solid rgba(201,168,76,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px;}
+.foot-legal{font-size:9px;color:var(--dim);letter-spacing:.04em;}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fu{opacity:0;animation:fadeUp .75s ease forwards;}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}.d5{animation-delay:.5s}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--gold-d);}
+@media(max-width:960px){
+  .g2,.g3,.g4,.rev-g,.phil-g,.safe-g,.foot-g{grid-template-columns:1fr;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .stud-g{grid-template-columns:1fr 1fr;}
+  .nav-main li:not(:last-child):not(:nth-last-child(2)){display:none;}
+}
+</style>
+</head>
+<body>
+<div class="cur" id="c1"></div><div class="cur-r" id="c2"></div>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <div class="nav-logo-w"><img src="logo/studio hrl adultbezła logo.png" alt="Studio HRL Adult Logo"></div>
+    <span class="nav-name">STUDIO HRL ADULT</span>
+  </a>
+  <ul class="nav-main">
+    <li><a href="#home" id="n-home" class="active">Start</a></li>
+    <li><a href="#philosophy">Filozofia</a></li>
+    <li><a href="#model">Model 60/30/10</a></li>
+    <li><a href="#studios">Studia</a></li>
+    <li><a href="#safety">Bezpieczeństwo</a></li>
+    <li><a href="casting.html" class="nav-btn-cast">Casting</a></li>
+    <li><a href="admin.html" class="nav-btn-admin">Admin</a></li>
+  </ul>
+  <div class="nav-right"></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-vign"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="hero-c fu d1">
+    <div class="hero-pre">PREMIUM CONTENT STUDIO 18+</div>
+    <div class="hero-logo">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMDBAcFBAQEBAkGBwUHCgkLCwoJCgoMDREODAwQDAoKDhQPEBESExMTCw4UFhQSFhESExL/2wBDAQMDAwQEBAgFBQgSDAoMEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhL/wAARCAMAAgADASIAAhEBAxEB/8QAHQABAQACAwEBAQAAAAAAAAAAAAECCAYHCQUEA//EAF0QAAIBAwIEAgYDCAoOBwcFAAABAgMEBQYRBwgSITFBCRMiUWFxFIGRFSMyQlJiobMWM1WSoqSxsrTBFxgkJSY1OENWcnOCo9E0U2NldZTCKDZEVGSD8IWTlcPh/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAEGAgQFAwf/xAA9EQEAAQMCAwQHBwMDAwUAAAAAAQIDEQQFEiExE0FRcQYyYZGxwdEUIjM0gaHhIyRyFTXwJUJSFmKSwvH/2gAMAwEAAhEDEQA/APVJ+BE/eGQC9Q3IXYBuVPsTpL0gRv3DcdI2AdReonSXYBuTcuw6QJuNx0l6QG43Gw2AbjcbDYB1DqJ0l6QHUOonT7h0gXcbjYANybl2GwE6gn7y9KJ0gXqHUTpG2wFKTYoEbJuVrcdIDqHUOkbATcJjpKlsA3Jv3LsOkCbjqHSXpAdQ6ibF2AdQ3ROkuwDcbjYbAOox3ZlsTpAbjqHSOkBuE/eOkqWwFI2UmwE3G5ekdIE395dx0jYBuUmxQAAAm5Ni+YAiIVkAu5dzEAZbjcxLsBdwEtgBSbgPwAblMUjIACbFAAmwYFBCgRsbjYmwF3KYhgZAiKAAAAm5SbANwQAXcE8BuBWwGifMC7lIRvcA2VMm3vLsBQTYoE3KTbcICkKABAxt7wBSbFAAAATcpGgKCbFAAEABsNdiMC9QXcxKgMgABG9gPMoGMiFfiQAANgKihIAPAIACgAAAAAAAAAAAAAAAmw2KAIuxQAAAAAADFhIyAEaCWxQAIUAAABGEUgFAAGLZUNggKAAAAAAAAAAAAAAAAQoAjZGysxAFXiTYqXcDIAAAABiyGUkY+IFS3MgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATYoAnyKAAAAE37lJ5lAjCWwAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNykXiUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABExIkQMgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGEUi8AKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI3sYgZbk6iAC9RUzEAZgx3HUBkCdQ3AoIUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAInuUm3coAAAAAAAAAAAAAAAAAAAAAAAAAAAARvYx3Ay3HUYgAAAAABkTQGyA5o5wAAESAbAhJvsXciBIqZkYFTAyBE9ygAAA" alt="Studio HRL Adult">
+    </div>
+    <h1 class="hero-h">Studio HRL Adult</h1>
+    <p class="hero-sub">Sztuka i profesjonalizm w produkcji treści dla dorosłych</p>
+    <p class="hero-p">Kompleksowe usługi produkcyjno-dystrybucyjne. Od koncepcji po realizację i zarządzanie karierą. Partnerka przychodzi i tworzy — reszta leży po naszej stronie.</p>
+    <div class="hero-btns">
+      <a href="casting.html" class="btn-r">Dołącz do Nas</a>
+      <a href="#philosophy" class="btn-o">Poznaj Nas</a>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    <div class="scroll-t">Zjedź niżej</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-n">60%</div>
+    <div class="stat-l">Dla Partnerki</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n">30%</div>
+    <div class="stat-l">Dla Modela</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n">10%</div>
+    <div class="stat-l">Dla Studia</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n">4K</div>
+    <div class="stat-l">Jakość Produkcji</div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section class="sec sec-dk" id="philosophy">
+  <div class="tag fu d1">Nasza Filozofia</div>
+  <h2 class="h1 fu d2">Sztuka spotyka <em>profesjonalizm</em></h2>
+  <div class="gline fu d3"><div class="gem"></div></div>
+  <p class="body fu d4">Wierzymy, że tworzenie treści dla dorosłych to forma sztuki wymagająca zarówno artystycznej wizji, jak i biznesowego podejścia. Łączymy estetykę z efektywnością, zapewniając naszym partnerkom nie tylko narzędzia, ale także inspirację do rozwoju.</p>
+  
+  <div class="phil-g">
+    <div class="phil-img img-ph vid-ph fu d1">
+      <div class="playbtn">▶</div>
+      <div class="phl">Wideo</div>
+      <div class="phtag">Studio Tour</div>
+    </div>
+    <div class="fu d2">
+      <div class="phil-quote">"Każda sesja to opowieść, każda partnerka to artystka"</div>
+      <p class="phil-text">Nasze podejście opiera się na trzech filarach: szacunku dla twórcy, profesjonalizmie w realizacji i transparentności we współpracy. Tworzymy środowisko, w którym kreatywność spotyka się z bezpieczeństwem i sukcesem finansowym.</p>
+      <div class="gline"><div class="gem"></div></div>
+      <p class="phil-text">Dzięki naszemu doświadczeniu w branży rozumiemy, że sukces w świecie treści dla dorosłych wymaga nie tylko talentu, ale także strategicznego zarządzania karierą i odpowiedniego wsparcia technicznego.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE MODEL -->
+<section class="sec" id="model">
+  <div class="tag fu d1">Model Współpracy</div>
+  <h2 class="h1 fu d2">Transparentny podział <em>60/30/10</em></h2>
+  <div class="gline fu d3"><div class="gem"></div></div>
+  <p class="body fu d4">Nasz sprawiedliwy model podziału przychodów zapewnia maksymalne korzyści dla partnerki przy pełnym wsparciu operacyjnym ze strony studia.</p>
+  
+  <div class="rev-g">
+    <div class="fu d1">
+      <div class="pie-w">
+        <svg class="pie-svg" viewBox="0 0 42 42">
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--dark3)" stroke-width="3"></circle>
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--gold)" stroke-width="3" stroke-dasharray="60 40" stroke-dashoffset="25"></circle>
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--crim-l)" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="-35"></circle>
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--blue)" stroke-width="3" stroke-dasharray="10 90" stroke-dashoffset="-65"></circle>
+        </svg>
+        <div class="pie-ct">
+          <div class="pie-n">100%</div>
+          <div class="pie-l">Przychody</div>
+        </div>
+      </div>
+    </div>
+    <div class="fu d2">
+      <div class="leg">
+        <div class="leg-i">
+          <div class="leg-d" style="background:var(--gold);"></div>
+          <div class="leg-t">Dla Partnerki</div>
+          <div class="leg-p">60%</div>
+        </div>
+        <div class="leg-i">
+          <div class="leg-d" style="background:var(--crim-l);"></div>
+          <div class="leg-t">Dla Modela</div>
+          <div class="leg-p">30%</div>
+        </div>
+        <div class="leg-i">
+          <div class="leg-d" style="background:var(--blue);"></div>
+          <div class="leg-t">Dla Studia</div>
+          <div class="leg-p">10%</div>
+        </div>
+      </div>
+      <p class="body" style="margin-top:24px;">Partnerka nie ponosi żadnych kosztów własnych. Studio zapewnia sprzęt, lokal, modela, postprodukcję, dystrybucję i marketing. Transparentne raporty przy każdej wypłacie z pełnym wglądem online 24/7.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIOS -->
+<section class="sec sec-dk" id="studios">
+  <div class="tag fu d1">Premium Studios</div>
+  <h2 class="h1 fu d2">Profesjonalne <em>studia nagraniowe</em></h2>
+  <div class="gline fu d3"><div class="gem"></div></div>
+  <p class="body fu d4">Cztery w pełni wyposażone studia gotowe do realizacji treści w najwyższej jakości 4K z profesjonalnym oświetleniem i scenografią.</p>
+  
+  <div class="stud-g">
+    <div class="stud fu d1">
+      <div class="stud-ico">🎬</div>
+      <div class="stud-t">Studio Filmowe</div>
+      <div class="stud-x">Sprzęt 4K, oświetlenie profesjonalne, multiple scenografie</div>
+    </div>
+    <div class="stud fu d2">
+      <div class="stud-ico">📸</div>
+      <div class="stud-t">Studio Foto</div>
+      <div class="stud-x">Cyfrowe aparaty, system oświetleniowy, tła i rekwizyty</div>
+    </div>
+    <div class="stud fu d3">
+      <div class="stud-ico">🎥</div>
+      <div class="stud-t">Live Cam Studio</div>
+      <div class="stud-x">Streamowanie HD, interaktywne zabawki, prywatność</div>
+    </div>
+    <div class="stud fu d4">
+      <div class="stud-ico">🎭</div>
+      <div class="stud-t">Studio Kreatywne</div>
+      <div class="stud-x">Strefa relaksu, makijaż, garderoba, strefa kreatywna</div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section class="sec" id="safety">
+  <div class="tag fu d1">Bezpieczeństwo i Transparentność</div>
+  <h2 class="h1 fu d2">Ochrona i <em>zgodność prawna</em></h2>
+  <div class="gline fu d3"><div class="gem"></div></div>
+  <p class="body fu d4">Pełna zgodność z RODO i 18 U.S.C. § 2257, weryfikacja wieku, ochrona tożsamości i pełna dyskrecja.</p>
+  
+  <div class="safe-g">
+    <div class="safe fu d1">
+      <div class="safe-ico">🛡️</div>
+      <div>
+        <div class="safe-t">RODO Compliance</div>
+        <div class="safe-x">Pełna zgodność z europejskimi przepisami o ochronie danych osobowych</div>
+      </div>
+    </div>
+    <div class="safe fu d2">
+      <div class="safe-ico">🔒</div>
+      <div>
+        <div class="safe-t">18 U.S.C. § 2257</div>
+        <div class="safe-x">Amerykańskie standardy weryfikacji wieku i dokumentacji</div>
+      </div>
+    </div>
+    <div class="safe fu d3">
+      <div class="safe-ico">🎭</div>
+      <div>
+        <div class="safe-t">Anonimowość</div>
+        <div class="safe-x">Pełna ochrona tożsamości i danych osobowych partnerki</div>
+      </div>
+    </div>
+    <div class="safe fu d4">
+      <div class="safe-ico">📋</div>
+      <div>
+        <div class="safe-t">Transparentność</div>
+        <div class="safe-x">Raporty przy każdej wypłacie, wgląd online 24/7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-h">Dołącz do naszej ekskluzywnej społeczności</div>
+  <p class="cta-sub">Zacznij swoją karierę w branży treści dla dorosłych z profesjonalnym wsparciem na każdym etapie.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="casting.html" class="btn-r">Aplikuj na Casting</a>
+    <a href="academy.html" class="btn-o">Poznaj Akademię</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-g">
+    <div>
+      <div class="foot-logo">STUDIO HRL ADULT</div>
+      <p class="foot-tag">Premium content studio with professional approach to adult entertainment industry</p>
+    </div>
+    <div>
+      <div class="foot-col-t">Platformy</div>
+      <ul class="foot-links">
+        <li><a href="#">OnlyFans</a></li>
+        <li><a href="#">Chaturbate</a></li>
+        <li><a href="#">Fansly</a></li>
+        <li><a href="#">ManyVids</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">Zasoby</div>
+      <ul class="foot-links">
+        <li><a href="academy.html">Akademia</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">Kontakt</div>
+      <ul class="foot-links">
+        <li><a href="mailto:hrl-studio-adult@hardbanrecordslab.online">Email</a></li>
+        <li><a href="#">Formularz</a></li>
+        <li><a href="#">Support</a></li>
+        <li><a href="#">Admin</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="foot-legal">© 2024 Studio HRL Adult. Wszystkie prawa zastrzeżone. 18+ Only.</div>
+    <div class="foot-legal">Privacy Policy | Terms of Service | Compliance</div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const c1=document.getElementById('c1'),c2=document.getElementById('c2');
+document.addEventListener('mousemove',(e)=>{c1.style.left=e.clientX+'px';c1.style.top=e.clientY+'px';c2.style.left=e.clientX+'px';c2.style.top=e.clientY+'px';});
+document.addEventListener('mousedown',()=>c1.style.transform='scale(0.8)');
+document.addEventListener('mouseup',()=>c1.style.transform='scale(1)');
+
+// Smooth scroll for navigation
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener('click',function(e){e.preventDefault();const target=document.querySelector(this.getAttribute('href'));if(target){target.scrollIntoView({behavior:'smooth'});}});});
+
+// Active nav state
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-main a[id^="n-"]');
+window.addEventListener('scroll',()=>{let current='';sections.forEach(section=>{const sectionTop=section.offsetTop;const sectionHeight=section.clientHeight;if(scrollY>=sectionTop-100){current=section.getAttribute('id');}});navLinks.forEach(link=>{link.classList.remove('active');if(link.getAttribute('href').slice(1)===current){link.classList.add('active');}});});
+
+// Animation on scroll
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.style.animationPlayState='running';}});},{threshold:0.1});
+document.querySelectorAll('.fu').forEach(el=>{el.style.animationPlayState='paused';observer.observe(el);});
+</script>
+</body>
+</html>

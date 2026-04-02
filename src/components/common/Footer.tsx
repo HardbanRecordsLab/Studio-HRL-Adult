@@ -19,6 +19,14 @@ const Footer: React.FC = () => {
             Profesjonalna platforma produkcyjno-dystrybucyjna treści 18+. 
             Sztuka, jakość i bezpieczeństwo na każdym etapie Twojej kariery.
           </p>
+          <div className="flex gap-4">
+            <span className="text-[9px] text-crimson font-bold tracking-[0.2em] uppercase border border-crimson/30 px-3 py-1 bg-crimson/5">
+              18+ Only
+            </span>
+            <span className="text-[9px] text-gold font-bold tracking-[0.2em] uppercase border border-gold/30 px-3 py-1 bg-gold/5">
+              EST. MMXXVI
+            </span>
+          </div>
         </div>
 
         {/* Links Col 1 */}
@@ -26,9 +34,9 @@ const Footer: React.FC = () => {
           <h4 className="text-gold text-[9px] font-bold tracking-[0.3em] uppercase">Platforma</h4>
           <ul className="flex flex-col gap-3">
             <li><Link href={ROUTES.HOME} className="text-dim hover:text-gold text-xs transition-colors">Start</Link></li>
-            <li><Link href="/#philosophy" className="text-dim hover:text-gold text-xs transition-colors">Filozofia</Link></li>
-            <li><Link href="/#model" className="text-dim hover:text-gold text-xs transition-colors">Model 60/30/10</Link></li>
-            <li><Link href="/#studios" className="text-dim hover:text-gold text-xs transition-colors">Nasze Studia</Link></li>
+            <li><Link href="/#philosophy" className="text-dim hover:text-gold text-xs transition-colors">O Studiu</Link></li>
+            <li><Link href="/docs" className="text-dim hover:text-gold text-xs transition-colors">Dokumenty</Link></li>
+            <li><Link href="/contact" className="text-dim hover:text-gold text-xs transition-colors">Kontakt</Link></li>
           </ul>
         </div>
 
@@ -39,17 +47,18 @@ const Footer: React.FC = () => {
             <li><Link href={ROUTES.CASTING} className="text-dim hover:text-gold text-xs transition-colors">Casting</Link></li>
             <li><Link href={ROUTES.ACADEMY} className="text-dim hover:text-gold text-xs transition-colors">Akademia</Link></li>
             <li><Link href={ROUTES.PORTFOLIO} className="text-dim hover:text-gold text-xs transition-colors">Portfolio</Link></li>
-            <li><Link href="#" className="text-dim hover:text-gold text-xs transition-colors">FAQ</Link></li>
+            <li><Link href="/contact#faq" className="text-dim hover:text-gold text-xs transition-colors">FAQ</Link></li>
           </ul>
         </div>
 
         {/* Links Col 3 */}
         <div className="space-y-6">
-          <h4 className="text-gold text-[9px] font-bold tracking-[0.3em] uppercase">Kontakt</h4>
+          <h4 className="text-gold text-[9px] font-bold tracking-[0.3em] uppercase">Prawne</h4>
           <ul className="flex flex-col gap-3">
-            <li><a href="mailto:hrl-adult-studio@hardbanrecordslab.online" className="text-dim hover:text-gold text-xs transition-colors">Email</a></li>
+            <li><Link href="/privacy" className="text-dim hover:text-gold text-xs transition-colors">Polityka Prywatności</Link></li>
+            <li><Link href="/rodo" className="text-dim hover:text-gold text-xs transition-colors">RODO & § 2257</Link></li>
+            <li><a href="mailto:legal@hrl-adult.pl" className="text-dim hover:text-gold text-xs transition-colors">Legal Support</a></li>
             <li><a href="https://t.me/HRL_Adult" className="text-dim hover:text-gold text-xs transition-colors">Telegram</a></li>
-            <li><a href="#" className="text-dim hover:text-gold text-xs transition-colors">Lokalizacja</a></li>
           </ul>
         </div>
       </div>
@@ -57,12 +66,12 @@ const Footer: React.FC = () => {
       {/* Bottom Bar */}
       <div className="pt-8 border-t border-gold/10 flex flex-col md:flex-row justify-between items-center gap-6">
         <p className="text-[10px] text-dim/60 tracking-wider">
-          © {currentYear} Studio HRL Adult. Wszelkie prawa zastrzeżone.
+          © {currentYear} Studio HRL Adult. Wszelkie prawa zastrzeżone. | Designed for Excellence.
         </p>
         <div className="flex gap-8">
-          <Link href="#" className="text-[9px] text-dim/60 hover:text-gold tracking-[0.1em] uppercase transition-colors">Polityka Prywatności</Link>
-          <Link href="#" className="text-[9px] text-dim/60 hover:text-gold tracking-[0.1em] uppercase transition-colors">Regulamin</Link>
-          <span className="text-[9px] text-crimson font-bold tracking-[0.2em] uppercase border border-crimson/30 px-2 py-0.5">18+ Only</span>
+          <Link href="/privacy" className="text-[9px] text-dim/60 hover:text-gold tracking-[0.1em] uppercase transition-colors">Privacy</Link>
+          <Link href="/rodo" className="text-[9px] text-dim/60 hover:text-gold tracking-[0.1em] uppercase transition-colors">Compliance</Link>
+          <Link href="/contact" className="text-[9px] text-dim/60 hover:text-gold tracking-[0.1em] uppercase transition-colors">Support</Link>
         </div>
       </div>
     </footer>
