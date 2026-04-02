@@ -35,9 +35,10 @@ module.exports = {
         white: '#FBF6F0',
       },
       fontFamily: {
-        montserrat: ['Montserrat', 'sans-serif'],
-        cormorant: ['Cormorant Garamond', 'serif'],
-        bebas: ['Bebas Neue', 'cursive'],
+        montserrat: ['var(--font-montserrat)', 'Montserrat', 'sans-serif'],
+        cormorant: ['var(--font-cormorant)', 'Cormorant Garamond', 'serif'],
+        bebas: ['var(--font-bebas)', 'Bebas Neue', 'cursive'],
+        playfair: ['var(--font-playfair)', 'Playfair Display', 'serif'],
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #F0D98A, #C9A84C, #7A5C10)',
