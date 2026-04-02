@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://studio-adult.hardbanrecordslab.online/sitemap.xml
+
+# Block crawlers from admin areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow specific assets
+Allow: /static/css/
+Allow: /static/js/
+Allow: /images/
+Allow: /logo/
