@@ -78,7 +78,7 @@ const PortfolioPage: React.FC = () => {
                   {/* Corner Accents */}
                   <div className="absolute top-0 left-0 w-6 h-6 border-t border-l border-gold/20" />
                   <div className="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-gold/20" />
-                </div>
+                </Link>
               ))}
             </div>
           </section>
