@@ -79,7 +79,7 @@ const AdminDashboard: React.FC = () => {
                   <p className="text-dim text-xs font-light">Oto podsumowanie działań studia na dzień dzisiejszy.</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-gold tracking-widest uppercase font-bold">{new Date().toLocaleDateString('pl-PL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <span className="text-[10px] text-gold tracking-widest uppercase font-bold">Panel Administracyjny</span>
                 </div>
               </div>
 

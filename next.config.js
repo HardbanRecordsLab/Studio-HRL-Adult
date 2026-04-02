@@ -7,7 +7,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['localhost', 'studio-adult.hardbanrecordslab.online'],
+    domains: ['localhost', 'studio-adult.hardbanrecordslab.online', 'res.cloudinary.com'],
     formats: ['image/webp', 'image/avif'],
   },
   env: {
