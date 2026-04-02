@@ -1,3 +1,0 @@
-// Trigger file for deployment
-// Updated: 2026-04-01
-// Force new deployment
