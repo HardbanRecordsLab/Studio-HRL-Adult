@@ -166,61 +166,61 @@ const CastingPage: React.FC = () => {
                     <tbody className="text-sm font-light">
                       <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
                         <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">1.500 - 3.000 PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Początkujący</div>
+                          <div className="font-cormorant text-2xl text-gold font-bold">500 - 2.000 PLN</div>
+                          <div className="text-[11px] text-dim mt-1">Początkujący (Side Hustle)</div>
                         </td>
                         <td className="p-6">
-                          <div className="text-dim">2-3 sesje tygodniowo</div>
-                          <div className="text-dim italic">Podstawowe treści</div>
+                          <div className="text-dim">1-2 sesje tygodniowo</div>
+                          <div className="text-dim italic">Budowanie bazy fanów</div>
                         </td>
                         <td className="p-6">
                           <div className="text-dim">Wiek 18+</div>
-                          <div className="text-dim italic">Brak doświadczenia</div>
+                          <div className="text-dim italic">Brak bazy odbiorców</div>
                         </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-green/10 text-green border border-green/30 uppercase tracking-widest">NEW</span></td>
+                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-green/10 text-green border border-green/30 uppercase tracking-widest">START</span></td>
                       </tr>
                       <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
                         <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">3.000 - 7.000 PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Regularny twórca</div>
+                          <div className="font-cormorant text-2xl text-gold font-bold">2.000 - 8.000 PLN</div>
+                          <div className="text-[11px] text-dim mt-1">Regularny Twórca (Top 10%)</div>
                         </td>
                         <td className="p-6">
                           <div className="text-dim">3-4 sesje tygodniowo</div>
-                          <div className="text-dim italic">Różnorodne formaty</div>
+                          <div className="text-dim italic">Aktywny czat & PPV</div>
                         </td>
                         <td className="p-6">
-                          <div className="text-dim">Doświadczenie podstawowe</div>
-                          <div className="text-dim italic">Komunikacja z fanami</div>
+                          <div className="text-dim">Podstawowe doświadczenie</div>
+                          <div className="text-dim italic">Zaangażowana społeczność</div>
                         </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-crimson/10 text-crimson border border-crimson/30 uppercase tracking-widest">POPULAR</span></td>
+                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-gold/10 text-gold border border-gold/30 uppercase tracking-widest">STABLE</span></td>
                       </tr>
                       <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
                         <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">7.000 - 15.000 PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Zaawansowany</div>
+                          <div className="font-cormorant text-2xl text-gold font-bold">8.000 - 40.000 PLN</div>
+                          <div className="text-[11px] text-dim mt-1">Profesjonalista (Top 1%)</div>
                         </td>
                         <td className="p-6">
                           <div className="text-dim">4-5 sesji tygodniowo</div>
-                          <div className="text-dim italic">Premium treści</div>
+                          <div className="text-dim italic">Ekskluzywne treści & GFE</div>
                         </td>
                         <td className="p-6">
                           <div className="text-dim">Doświadczenie średnie</div>
-                          <div className="text-dim italic">Baza stałych fanów</div>
+                          <div className="text-dim italic">Marka osobista</div>
                         </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-crimson/10 text-crimson border border-crimson/30 uppercase tracking-widest">HOT</span></td>
+                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-crimson/10 text-crimson border border-crimson/30 uppercase tracking-widest">PRO</span></td>
                       </tr>
                       <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
                         <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">15.000 - 30.000+ PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Top Creator</div>
+                          <div className="font-cormorant text-2xl text-gold font-bold">40.000 - 150.000+ PLN</div>
+                          <div className="text-[11px] text-dim mt-1">Elite Creator (Top 0.1%)</div>
                         </td>
                         <td className="p-6">
-                          <div className="text-dim">5+ sesji tygodniowo</div>
-                          <div className="text-dim italic">Ekskluzywne treści</div>
+                          <div className="text-dim">Pełne zaangażowanie</div>
+                          <div className="text-dim italic">Customs & Whales focus</div>
                         </td>
                         <td className="p-6">
-                          <div className="text-dim">Doświadczenie zaawansowane</div>
-                          <div className="text-dim italic">Silna marka osobista</div>
+                          <div className="text-dim">Wysoka rozpoznawalność</div>
+                          <div className="text-dim italic">Profesjonalny management</div>
                         </td>
                         <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-crimson/10 text-crimson border border-crimson/30 uppercase tracking-widest">ELITE</span></td>
                       </tr>
