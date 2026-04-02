@@ -8,42 +8,64 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        dark: '#07050A',
-        'dark2': '#1A151F',
-        'dark3': '#2A2333',
-        'dark4': '#3A3047',
-        gold: '#C9A84C',
-        crimson: '#9B1F35',
+        gold: {
+          DEFAULT: '#C9A84C',
+          l: '#F0D98A',
+          d: '#7A5C10',
+          dark: '#8B6914',
+        },
+        crimson: {
+          DEFAULT: '#9B1F35',
+          l: '#D4304A',
+          d: '#5A0F1E',
+          dark: '#5A0F1E',
+        },
+        dark: {
+          DEFAULT: '#07050A',
+          2: '#0F0C14',
+          3: '#16121E',
+          4: '#1E1828',
+          5: '#251F30',
+        },
         text: '#EDE0D4',
-        dim: '#B8A898',
-        dim2: '#8B7969',
+        dim: {
+          DEFAULT: '#9A8880',
+          2: '#6A5A52',
+        },
+        white: '#FBF6F0',
       },
       fontFamily: {
-        cormorant: ['Cormorant Garamond', 'serif'],
         montserrat: ['Montserrat', 'sans-serif'],
-        playfair: ['Playfair Display', 'serif'],
+        cormorant: ['Cormorant Garamond', 'serif'],
         bebas: ['Bebas Neue', 'cursive'],
       },
       backgroundImage: {
-        'grain': "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\" opacity=\"0.05\"/%3E%3C/svg%3E')",
+        'gold-gradient': 'linear-gradient(135deg, #F0D98A, #C9A84C, #7A5C10)',
+        'crimson-gradient': 'linear-gradient(135deg, #9B1F35, #5A0F1E)',
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.6s ease-out',
-        'pulse-gold': 'pulseGold 2s infinite',
+        'orb-float': 'orbf 14s ease-in-out infinite',
+        'logo-pulse': 'logopulse 4s ease-in-out infinite',
+        'scroll-bounce': 'scb 2.2s ease-in-out infinite',
+        'fade-up': 'fadeUp 0.8s ease forwards',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        orbf: {
+          '0%, 100%': { transform: 'translate(0,0)' },
+          '33%': { transform: 'translate(25px, -18px)' },
+          '66%': { transform: 'translate(-18px, 25px)' },
         },
-        slideUp: {
-          '0%': { transform: 'translateY(30px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        logopulse: {
+          '0%, 100%': { boxShadow: '0 0 50px rgba(155,31,53,0.22), 0 0 100px rgba(201,168,76,0.07)' },
+          '50%': { boxShadow: '0 0 70px rgba(155,31,53,0.38), 0 0 140px rgba(201,168,76,0.11)' },
         },
-        pulseGold: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.7' },
+        scb: {
+          '0%, 100%': { transform: 'translateX(-50%) translateY(0)' },
+          '50%': { transform: 'translateX(-50%) translateY(5px)' },
+        },
+        fadeUp: {
+          from: { opacity: '0', transform: 'translateY(24px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
         },
       },
     },

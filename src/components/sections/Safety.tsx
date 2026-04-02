@@ -1,59 +1,75 @@
 import React from 'react';
 
 const Safety: React.FC = () => {
-  const points = [
+  const safetyPoints = [
     {
-      title: 'Prywatność i Anonimowość',
-      description: 'Zapewniamy pełną dyskrecję, ochronę wizerunku i anonimowość zgodnie z Twoimi preferencjami.'
+      title: 'Dyskrecja i Anonimowość',
+      desc: 'Zapewniamy pełną ochronę wizerunku poza wybranymi platformami. Stosujemy zaawansowane narzędzia do geoblokowania (np. blokada Twojego kraju).'
     },
     {
-      title: 'Legalność i Umowy',
-      description: 'Przejrzyste warunki współpracy, legalne umowy i zgodność z regulacjami 18 U.S.C. § 2257.'
+      title: 'Zgodność Prawna (2257)',
+      desc: 'Pełna legalność współpracy. Przejrzyste umowy, weryfikacja wieku zgodnie z 18 U.S.C. § 2257 i najwyższe standardy etyczne.'
     },
     {
       title: 'Bezpieczeństwo Fizyczne',
-      description: 'Chronione studio, wsparcie ochrony i bezpieczne środowisko pracy 24/7.'
+      desc: 'Studia znajdują się w chronionych, monitorowanych budynkach. Wsparcie ochrony i personelu medycznego na każde żądanie.'
     },
     {
-      title: 'Wsparcie Psychologiczne',
-      description: 'Profesjonalne wsparcie, coaching i opieka na każdym etapie kariery.'
+      title: 'Opieka Psychologiczna',
+      desc: 'Dostęp do profesjonalnego wsparcia, coachingu i opieki mentorskiej na każdym etapie Twojej kariery w branży adult.'
     }
   ];
 
   return (
-    <section className="py-24 px-[6%] bg-dark overflow-hidden" id="safety">
-      <div className="space-y-4 mb-16">
-        <div className="flex items-center gap-3 text-gold text-[8.5px] font-semibold tracking-[0.42em] uppercase">
-          <div className="w-5 h-px bg-gold" />
-          Bezpieczeństwo i Transparentność
-        </div>
-        <h2 className="text-white font-bebas text-5xl md:text-7xl tracking-tight leading-none uppercase">
-          Ochrona i <span className="text-gold italic">zgodność prawna</span>
-        </h2>
-        <div className="flex items-center gap-3 py-6">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent to-gold" />
-          <div className="w-2 h-2 bg-crimson rotate-45 shadow-[0_0_12px_rgba(155,31,53,0.5)]" />
-          <div className="flex-1 h-px bg-gradient-to-l from-transparent to-gold" />
-        </div>
-        <p className="text-dim font-montserrat text-sm md:text-base leading-loose max-w-3xl">
-          Twoje bezpieczeństwo i komfort są dla nas priorytetem. Dbamy o każdy aspekt Twojej pracy w branży adult.
-        </p>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {points.map((point, index) => (
-          <div 
-            key={index}
-            className="p-8 bg-dark3/50 border border-crimson/10 hover:border-crimson/30 transition-all group"
-          >
-            <h3 className="text-gold font-bebas text-2xl tracking-wide mb-4">
-              {point.title}
-            </h3>
-            <p className="text-dim font-montserrat text-sm leading-relaxed">
-              {point.description}
+    <section className="py-24 px-[7%] bg-dark overflow-hidden" id="safety">
+      <div className="max-w-7xl mx-auto">
+        <div className="section-tag">Bezpieczeństwo i Prawo</div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-8">
+            <h2 className="h2-premium">
+              Twoja Ochrona jest <br />
+              <span className="italic bg-gold-gradient bg-clip-text text-transparent">Naszym Priorytetem</span>
+            </h2>
+            
+            <p className="text-dim text-sm md:text-base leading-loose font-light">
+              Rozumiemy specyfikę branży adult i wyzwania, przed którymi stają twórcy. 
+              Naszym celem jest stworzenie środowiska, w którym możesz skupić się wyłącznie na swojej sztuce, 
+              mając pewność, że wszystkie aspekty techniczne, prawne i bezpieczeństwa są pod naszą kontrolą.
             </p>
+
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-4 p-5 bg-crimson/5 border-l-2 border-crimson/30">
+                <span className="text-crimson text-lg">🔒</span>
+                <p className="text-dim text-[11px] leading-relaxed">
+                  Systemy szyfrowania danych i najwyższe standardy cyberbezpieczeństwa.
+                </p>
+              </div>
+              <div className="flex items-center gap-4 p-5 bg-gold/5 border-l-2 border-gold/30">
+                <span className="text-gold text-lg">⚖️</span>
+                <p className="text-dim text-[11px] leading-relaxed">
+                  Jasne warunki finansowe i wypłaty realizowane zawsze terminowo.
+                </p>
+              </div>
+            </div>
           </div>
-        ))}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {safetyPoints.map((point) => (
+              <div 
+                key={point.title}
+                className="p-8 bg-dark-3/50 border border-gold/10 hover:border-crimson/20 transition-all duration-500"
+              >
+                <h3 className="font-cormorant text-xl text-gold font-semibold mb-4 tracking-wide">
+                  {point.title}
+                </h3>
+                <p className="text-dim text-[10px] leading-relaxed font-light">
+                  {point.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

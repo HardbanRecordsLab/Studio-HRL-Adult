@@ -1,77 +1,64 @@
 import React from 'react';
 
 const RevenueModel: React.FC = () => {
+  const modelItems = [
+    { label: 'Dla Partnerki', pct: '60%', color: 'bg-gold', desc: 'Pełne wsparcie operacyjne, techniczne i marketingowe' },
+    { label: 'Dla Modela', pct: '30%', color: 'bg-crimson', desc: 'Profesjonalne wsparcie na planie i współudział w produkcji' },
+    { label: 'Dla Studia', pct: '10%', color: 'bg-blue-500', desc: 'Utrzymanie sprzętu, lokalu i infrastruktury technologicznej' },
+  ];
+
   return (
-    <section className="py-24 px-[6%] bg-dark overflow-hidden" id="model">
-      <div className="space-y-4 mb-16">
-        <div className="flex items-center gap-3 text-gold text-[8.5px] font-semibold tracking-[0.42em] uppercase">
-          <div className="w-5 h-px bg-gold" />
-          Model Współpracy
-        </div>
-        <h2 className="text-white font-bebas text-5xl md:text-7xl tracking-tight leading-none uppercase">
-          Transparentny podział <span className="text-gold italic">60/30/10</span>
+    <section className="py-24 px-[7%] bg-dark overflow-hidden" id="model">
+      <div className="max-w-7xl mx-auto">
+        <div className="section-tag">Model Współpracy</div>
+        
+        <h2 className="h2-premium mb-16">
+          Transparentny podział <br />
+          <span className="italic bg-gold-gradient bg-clip-text text-transparent">60/30/10</span>
         </h2>
-        <div className="flex items-center gap-3 py-6">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent to-gold" />
-          <div className="w-2 h-2 bg-crimson rotate-45 shadow-[0_0_12px_rgba(155,31,53,0.5)]" />
-          <div className="flex-1 h-px bg-gradient-to-l from-transparent to-gold" />
-        </div>
-        <p className="text-dim font-montserrat text-sm md:text-base leading-loose max-w-3xl">
-          Nasz sprawiedliwy model podziału przychodów zapewnia maksymalne korzyści dla partnerki przy pełnym wsparciu operacyjnym ze strony studia.
-        </p>
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div className="flex justify-center">
-          <div className="relative w-64 h-64 md:w-80 md:h-80">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          {/* Chart Wrapper */}
+          <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 42 42">
-              {/* Background circle */}
               <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#16121E" strokeWidth="4"></circle>
               {/* Studio - 10% */}
               <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#3498DB" strokeWidth="4" strokeDasharray="10 90" strokeDashoffset="100"></circle>
               {/* Model - 30% */}
-              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#D4304A" strokeWidth="4" strokeDasharray="30 70" strokeDashoffset="90"></circle>
+              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#9B1F35" strokeWidth="4" strokeDasharray="30 70" strokeDashoffset="90"></circle>
               {/* Partnerka - 60% */}
               <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#C9A84C" strokeWidth="4" strokeDasharray="60 40" strokeDashoffset="60"></circle>
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span className="text-white font-bebas text-4xl md:text-5xl leading-none">100%</span>
-              <span className="text-dim text-[10px] tracking-widest uppercase mt-1">Przychody</span>
+              <span className="font-cormorant text-4xl md:text-5xl text-white">100%</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase text-dim/60">Przychody</span>
             </div>
           </div>
-        </div>
-        
-        <div className="space-y-12">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between p-4 bg-dark3/50 border-l-4 border-gold group hover:bg-dark3 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-3 h-3 bg-gold rounded-sm" />
-                <span className="text-white font-montserrat font-semibold text-sm">Dla Partnerki</span>
-              </div>
-              <span className="text-gold font-bebas text-2xl">60%</span>
+
+          {/* Legend and Details */}
+          <div className="space-y-12">
+            <div className="space-y-6">
+              {modelItems.map((item) => (
+                <div key={item.label} className="group flex items-center justify-between p-6 bg-dark-3/40 border-l-2 border-transparent hover:border-gold/40 transition-all duration-300">
+                  <div className="flex items-center gap-6">
+                    <div className={`w-3 h-3 rotate-45 ${item.color} shadow-[0_0_10px_rgba(201,168,76,0.2)]`} />
+                    <div className="space-y-1">
+                      <span className="text-white text-sm font-medium tracking-wide">{item.label}</span>
+                      <p className="text-dim text-[10px] leading-relaxed max-w-xs">{item.desc}</p>
+                    </div>
+                  </div>
+                  <span className="font-cormorant text-3xl text-gold">{item.pct}</span>
+                </div>
+              ))}
             </div>
-            
-            <div className="flex items-center justify-between p-4 bg-dark3/50 border-l-4 border-crimson group hover:bg-dark3 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-3 h-3 bg-crimson rounded-sm" />
-                <span className="text-white font-montserrat font-semibold text-sm">Dla Modela</span>
-              </div>
-              <span className="text-crimson font-bebas text-2xl">30%</span>
-            </div>
-            
-            <div className="flex items-center justify-between p-4 bg-dark3/50 border-l-4 border-blue-500 group hover:bg-dark3 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-3 h-3 bg-blue-500 rounded-sm" />
-                <span className="text-white font-montserrat font-semibold text-sm">Dla Studia</span>
-              </div>
-              <span className="text-blue-500 font-bebas text-2xl">10%</span>
+
+            <div className="bg-dark-3/30 border border-gold/10 p-8">
+              <p className="text-dim text-xs leading-loose font-light italic">
+                "Zero kosztów własnych. Studio zapewnia profesjonalny sprzęt 4K, oświetlenie, lokal, postprodukcję i dystrybucję. 
+                Transparentne raporty finansowe dostępne 24/7."
+              </p>
             </div>
           </div>
-          
-          <p className="text-dim font-montserrat text-sm leading-relaxed">
-            Partnerka nie ponosi żadnych kosztów własnych. Studio zapewnia sprzęt, lokal, modela, postprodukcję, dystrybucję i marketing. 
-            Transparentne raporty przy każdej wypłacie z pełnym wglądem online 24/7.
-          </p>
         </div>
       </div>
     </section>

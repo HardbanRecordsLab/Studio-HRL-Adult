@@ -657,6 +657,7 @@ export const ROUTES = {
   CASTING: '/casting',
   ACADEMY: '/academy',
   PORTFOLIO: '/portfolio',
+  PARA: '/landing-para',
   ADMIN: '/admin',
   LOGIN: '/login',
   REGISTER: '/register',

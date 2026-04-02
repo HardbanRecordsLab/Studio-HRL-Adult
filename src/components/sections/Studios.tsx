@@ -4,63 +4,87 @@ const Studios: React.FC = () => {
   const studios = [
     {
       icon: '🎬',
-      title: 'Studio Filmowe',
-      description: 'Sprzęt 4K, oświetlenie profesjonalne, multiple scenografie'
+      title: 'Main Studio Filmowe',
+      features: ['Kamery 4K HDR', 'Oświetlenie ARRI', 'Wielowariantowe scenografie'],
+      tag: 'Cinema Grade'
     },
     {
       icon: '📸',
-      title: 'Studio Foto',
-      description: 'Cyfrowe aparaty, system oświetleniowy, tła i rekwizyty'
+      title: 'Professional Photo',
+      features: ['Aparaty średnioformatowe', 'Systemy oświetleniowe Profoto', 'Pełna postprodukcja'],
+      tag: 'High-End Fashion'
     },
     {
       icon: '🎥',
-      title: 'Live Cam Studio',
-      description: 'Streamowanie HD, interaktywne zabawki, prywatność'
+      title: 'Live Streaming Hub',
+      features: ['Łącze światłowodowe 1Gbps', 'Interaktywne sterowanie światłem', 'Izolacja akustyczna'],
+      tag: 'Interactive Tech'
     },
     {
       icon: '🎭',
-      title: 'Studio Kreatywne',
-      description: 'Strefa relaksu, makijaż, garderoba, strefa kreatywna'
+      title: 'Creative Space',
+      features: ['Profesjonalny Makeup & Hair', 'Garderoba Premium', 'Strefa Relaksu & Contentu'],
+      tag: 'Total Comfort'
     }
   ];
 
   return (
-    <section className="py-24 px-[6%] bg-dark2 overflow-hidden" id="studios">
-      <div className="space-y-4 mb-16">
-        <div className="flex items-center gap-3 text-gold text-[8.5px] font-semibold tracking-[0.42em] uppercase">
-          <div className="w-5 h-px bg-gold" />
-          Premium Studios
-        </div>
-        <h2 className="text-white font-bebas text-5xl md:text-7xl tracking-tight leading-none uppercase">
-          Profesjonalne <span className="text-gold italic">studia nagraniowe</span>
+    <section className="py-24 px-[7%] bg-dark-2 overflow-hidden" id="studios">
+      <div className="max-w-7xl mx-auto">
+        <div className="section-tag">Premium Studios</div>
+        
+        <h2 className="h2-premium mb-16">
+          Przestrzeń stworzona dla <br />
+          <span className="italic bg-gold-gradient bg-clip-text text-transparent">Najwyższej Jakości</span>
         </h2>
-        <div className="flex items-center gap-3 py-6">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent to-gold" />
-          <div className="w-2 h-2 bg-crimson rotate-45 shadow-[0_0_12px_rgba(155,31,53,0.5)]" />
-          <div className="flex-1 h-px bg-gradient-to-l from-transparent to-gold" />
-        </div>
-        <p className="text-dim font-montserrat text-sm md:text-base leading-loose max-w-3xl">
-          Cztery w pełni wyposażone studia gotowe do realizacji treści w najwyższej jakości 4K z profesjonalnym oświetleniem i scenografią.
-        </p>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {studios.map((studio, index) => (
-          <div 
-            key={index}
-            className="p-8 bg-dark3/50 border border-gold/10 hover:border-gold/30 transition-all group"
-          >
-            <div className="text-4xl mb-6 group-hover:scale-110 transition-transform">
-              {studio.icon}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {studios.map((studio) => (
+            <div 
+              key={studio.title}
+              className="card-premium relative group h-full flex flex-col"
+            >
+              {/* Badge */}
+              <div className="absolute top-4 right-4 text-[7px] tracking-[0.2em] uppercase bg-gold/10 text-gold px-3 py-1 border border-gold/20">
+                {studio.tag}
+              </div>
+
+              {/* Icon */}
+              <div className="text-4xl mb-8 group-hover:scale-110 transition-transform duration-500">
+                {studio.icon}
+              </div>
+
+              {/* Title */}
+              <h3 className="font-cormorant text-2xl text-gold font-semibold mb-6">
+                {studio.title}
+              </h3>
+
+              {/* Features List */}
+              <ul className="space-y-3 flex-grow">
+                {studio.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-dim text-[10px] leading-relaxed font-light">
+                    <span className="w-1 h-1 bg-gold/40 mt-1.5 flex-shrink-0 rotate-45" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Hover Accent */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <h3 className="text-gold font-bebas text-2xl tracking-wide mb-3">
-              {studio.title}
-            </h3>
-            <p className="text-dim font-montserrat text-sm leading-relaxed">
-              {studio.description}
-            </p>
+          ))}
+        </div>
+
+        {/* Studio Tour Callout */}
+        <div className="mt-16 p-10 bg-dark-3/50 border border-gold/10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-2">
+            <h4 className="font-cormorant text-2xl text-white italic">Chcesz zobaczyć studia osobiście?</h4>
+            <p className="text-dim text-xs font-light">Umów się na niezobowiązujące spotkanie i prezentację naszych możliwości.</p>
           </div>
-        ))}
+          <button className="btn-outline whitespace-nowrap">
+            Umów Spotkanie
+          </button>
+        </div>
       </div>
     </section>
   );

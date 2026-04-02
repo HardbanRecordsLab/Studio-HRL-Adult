@@ -142,7 +142,12 @@ export interface CastingFormData {
   
   // Media
   photos: File[];
-  video: File;
+  video: File | null;
+  
+  // Additional
+  socialMedia: string;
+  referral: string;
+  expectedEarnings: string;
   
   // Consents
   consentAge: boolean;
