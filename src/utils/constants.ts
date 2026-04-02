@@ -650,3 +650,19 @@ export const AUDIO_PROCESSING = {
     PREMIUM: { bitrate: 320, sampleRate: 48000, channels: 2 }
   }
 };
+
+// Routes
+export const ROUTES = {
+  HOME: '/',
+  CASTING: '/casting',
+  ACADEMY: '/academy',
+  PORTFOLIO: '/portfolio',
+  ADMIN: '/admin',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  DASHBOARD: '/admin/dashboard',
+  PARTNERS: '/admin/partners',
+  CONTENT: '/admin/content',
+  FINANCE: '/admin/finance',
+  SETTINGS: '/admin/settings'
+};
