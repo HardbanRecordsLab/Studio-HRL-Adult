@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 
@@ -23,3 +24,6 @@ Thumbs.db
 # Local build files
 dist/
 build/
+=======
+node_modules
+>>>>>>> 5eaf87910d5f68a951c5a1f1d04063d3d8cc9603
