@@ -3,92 +3,85 @@ import { motion } from 'framer-motion';
 
 const Philosophy: React.FC = () => {
   return (
-    <section className="py-32 px-[7%] bg-dark-2 overflow-hidden relative" id="philosophy">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-      
+    <section className="py-32 px-[7%] bg-dark-2 overflow-hidden relative border-y border-gold/5" id="philosophy">
       <div className="max-w-7xl mx-auto">
-        {/* Tag */}
-        <div className="section-tag">O Studiu HRL Adult</div>
+        {/* Section Header */}
+        <div className="text-center mb-24 space-y-4">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="section-tag justify-center"
+          >
+            Our Philosophy
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="h2-premium uppercase"
+          >
+            The Art of Adult <br />
+            <span className="italic bg-gold-gradient bg-clip-text text-transparent">Entertainment</span>
+          </motion.h2>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-          <div className="space-y-12">
-            <h2 className="h1-premium">
-              Wizja spotyka <br />
-              <span className="italic bg-gold-gradient bg-clip-text text-transparent">profesjonalizm</span>
-            </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            <p className="text-dim text-base md:text-lg leading-loose font-light italic">
+              "We believe that adult content creation is a form of art that requires both artistic vision and business professionalism."
+            </p>
             
-            <div className="space-y-8">
-              <p className="text-dim text-sm md:text-base leading-loose font-light italic border-l-2 border-gold/30 pl-8">
-                Studio HRL Adult to nie tylko miejsce produkcji – to kompletny ekosystem wsparcia dla Twórczyń treści dla dorosłych. 
-                Nasza historia sięga 2026 roku, kiedy postanowiliśmy zdefiniować na nowo standardy profesjonalizmu w branży adult.
-              </p>
+            <div className="h-px w-24 bg-gold/30" />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
-                {[
-                  { title: 'Transparentność', desc: 'Pełny wgląd w statystyki, przychody i model 60/30/10.', ico: '💎' },
-                  { title: 'Bezpieczeństwo', desc: 'Ochrona tożsamości, geo-blocking i wsparcie prawne.', ico: '🛡️' },
-                  { title: 'Partnerstwo', desc: 'Indywidualne podejście i wspólny rozwój marki.', ico: '🤝' },
-                ].map((val) => (
-                  <div key={val.title} className="space-y-3">
-                    <div className="text-2xl">{val.ico}</div>
-                    <h4 className="text-[10px] text-gold font-bold tracking-widest uppercase">{val.title}</h4>
-                    <p className="text-[9px] text-dim/80 leading-relaxed font-light">{val.desc}</p>
-                  </div>
-                ))}
+            <p className="text-dim text-sm md:text-base leading-relaxed font-light">
+              At Studio HRL Adult, we combine high-end aesthetics with operational efficiency. 
+              Our approach is built on three core pillars: absolute respect, peak professionalism, and full transparency. 
+              We provide our partners not just with tools, but with the inspiration to grow as independent artists in a safe and lucrative environment.
+            </p>
+
+            <div className="grid grid-cols-2 gap-8 pt-8">
+              <div className="space-y-2">
+                <div className="text-gold font-cormorant text-3xl italic">01.</div>
+                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Excellence</h4>
+                <p className="text-[9px] text-dim font-light">Uncompromising quality in every frame.</p>
               </div>
-
-              <div className="bg-dark-3/50 border border-gold/10 p-10 space-y-6 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                <h3 className="font-cormorant text-2xl text-white italic">Zakres działań Studia</h3>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    'Produkcja wideo 4K i sesje foto',
-                    'Dystrybucja na 8+ platformach',
-                    'Marketing i budowa marki',
-                    'Zarządzanie czatami i fanami',
-                    'Pełna obsługa finansowa',
-                    'Szkolenia i rozwój (Akademia)'
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-[10px] text-dim italic">
-                      <span className="w-1 h-1 bg-gold rotate-45" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              <div className="space-y-2">
+                <div className="text-gold font-cormorant text-3xl italic">02.</div>
+                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Privacy</h4>
+                <p className="text-[9px] text-dim font-light">Your security is our operational priority.</p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="relative pt-12">
-            {/* Main Visual */}
-            <div className="aspect-[4/5] bg-dark-3 border border-gold/10 overflow-hidden relative shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent z-10" />
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative"
+          >
+            <div className="aspect-square bg-dark-3 border border-gold/10 overflow-hidden relative group">
+              <div className="absolute inset-0 bg-dark/20 z-10 group-hover:bg-dark/0 transition-colors duration-700" />
               <img 
-                src="/images/studio-interior.jpg" 
-                alt="Studio Interior" 
-                className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
+                src="/images/philosophy-visual.jpg" 
+                alt="The Art of Production" 
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100"
               />
-              <div className="absolute bottom-10 left-10 z-20 space-y-2">
-                <div className="text-gold text-[8px] tracking-[0.4em] uppercase font-bold">Infrastruktura</div>
-                <div className="font-cormorant text-3xl text-white italic">Studio Klasy Premium</div>
-              </div>
               
               {/* Decorative Frame */}
-              <div className="absolute inset-4 border border-gold/10 pointer-events-none" />
+              <div className="absolute inset-6 border border-gold/20 z-20 pointer-events-none" />
+              <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-gold z-30" />
+              <div className="absolute bottom-0 right-0 w-12 h-12 border-b border-r border-gold z-30" />
             </div>
             
-            {/* Experience Card */}
-            <motion.div 
-              initial={{ x: 50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              className="absolute -top-6 -right-6 bg-gold p-8 shadow-2xl hidden md:block"
-            >
-              <div className="text-dark space-y-1">
-                <div className="text-4xl font-cormorant italic font-bold">100%</div>
-                <div className="text-[8px] font-bold tracking-widest uppercase leading-tight">Gwarancja<br />Dyskrecji</div>
-              </div>
-            </motion.div>
-          </div>
+            {/* Floating Caption */}
+            <div className="absolute -bottom-8 -left-8 bg-dark-4 border border-gold/10 p-8 shadow-2xl hidden md:block z-40">
+              <p className="font-cormorant text-xl text-gold italic">Vision. Passion. Profit.</p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

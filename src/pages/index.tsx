@@ -7,6 +7,7 @@ import Philosophy from '@/components/sections/Philosophy';
 import RevenueModel from '@/components/sections/RevenueModel';
 import Platforms from '@/components/sections/Platforms';
 import Studios from '@/components/sections/Studios';
+import World from '@/components/sections/World';
 import Process from '@/components/sections/Process';
 import Safety from '@/components/sections/Safety';
 import CTA from '@/components/sections/CTA';
@@ -44,6 +45,9 @@ const HomePage: React.FC = () => {
 
           {/* Studios Section */}
           <Studios />
+
+          {/* World Section */}
+          <World />
 
           {/* Process Section */}
           <Process />

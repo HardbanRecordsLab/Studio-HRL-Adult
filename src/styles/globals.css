@@ -3,10 +3,26 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-dark text-text font-montserrat font-light overflow-x-hidden cursor-none;
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D98A;
+    --gold-dark: #7A5C10;
+    --dark: #07050A;
+    --dark-2: #0F0C14;
+    --dark-3: #16121E;
+    --dark-4: #1E1828;
+    --crimson: #9B1F35;
+    --text: #EDE0D4;
+    --dim: #9A8880;
+    --white: #FBF6F0;
   }
 
+  body {
+    @apply bg-dark text-text font-montserrat font-light overflow-x-hidden;
+    cursor: default;
+  }
+
+  /* Grain effect */
   body::after {
     content: "";
     @apply fixed inset-0 pointer-events-none opacity-[0.035] z-[8000];
@@ -19,37 +35,50 @@
 }
 
 @layer components {
-  .btn-crimson {
-    @apply inline-block px-10 py-3 bg-crimson-gradient text-white text-[9px] font-bold tracking-[0.28em] uppercase transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0;
+  .bg-gold-gradient {
+    background: linear-gradient(135deg, #F0D98A 0%, #C9A84C 50%, #7A5C10 100%);
   }
 
-  .btn-gold {
-    @apply inline-block px-10 py-3 bg-gold-gradient text-dark text-[9px] font-bold tracking-[0.28em] uppercase transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0;
+  .bg-crimson-gradient {
+    background: linear-gradient(135deg, #9B1F35 0%, #5A0F1E 100%);
   }
 
-  .btn-outline {
-    @apply inline-block px-10 py-[11px] border border-gold/40 text-gold text-[9px] font-medium tracking-[0.28em] uppercase transition-all duration-300 hover:bg-gold/5 hover:border-gold hover:-translate-y-0.5 active:translate-y-0;
+  .h1-premium {
+    @apply font-cormorant text-5xl md:text-8xl font-light tracking-tight leading-[0.9] text-white;
+  }
+
+  .h2-premium {
+    @apply font-cormorant text-4xl md:text-6xl font-light tracking-tight leading-tight text-white;
   }
 
   .section-tag {
-    @apply flex items-center gap-2 text-gold text-[8.5px] font-semibold tracking-[0.42em] uppercase mb-4;
+    @apply flex items-center gap-3 text-gold text-[8.5px] font-bold tracking-[0.4em] uppercase mb-6;
   }
 
   .section-tag::before {
     content: "";
-    @apply w-5 h-px bg-gold;
+    @apply w-6 h-px bg-gold/40;
   }
 
-  .h1-premium {
-    @apply text-white font-cormorant text-4xl md:text-7xl lg:text-8xl font-light leading-[0.95] mb-6;
+  .btn-gold {
+    @apply inline-block px-10 py-4 bg-gold-gradient text-dark font-bold text-[9px] tracking-[0.25em] uppercase transition-all duration-500 hover:opacity-90 active:scale-95;
   }
 
-  .h2-premium {
-    @apply text-white font-cormorant text-3xl md:text-5xl lg:text-6xl font-light leading-[0.95] mb-4;
+  .btn-crimson {
+    @apply inline-block px-10 py-4 bg-crimson-gradient text-white font-bold text-[9px] tracking-[0.25em] uppercase transition-all duration-500 hover:opacity-90 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply inline-block px-10 py-4 border border-gold/30 text-gold font-bold text-[9px] tracking-[0.25em] uppercase transition-all duration-500 hover:bg-gold/5 hover:border-gold active:scale-95;
   }
 
   .card-premium {
-    @apply bg-dark-3 border border-gold/10 p-8 transition-all duration-500 hover:border-gold/30 hover:-translate-y-1;
+    @apply bg-dark-3/40 border border-gold/10 p-10 transition-all duration-500 hover:border-gold/30 hover:-translate-y-1;
+  }
+
+  .grain-overlay {
+    @apply fixed inset-0 pointer-events-none opacity-[0.03] z-[1];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
   }
 }
 
@@ -63,14 +92,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gold/30 hover:bg-gold/50 transition-colors;
-}
-
-/* Custom Cursor */
-.custom-cursor {
-  @apply fixed w-1.5 h-1.5 bg-gold rounded-full pointer-events-none z-[9999] top-0 left-0;
-}
-
-.custom-cursor-ring {
-  @apply fixed w-7 h-7 border border-gold/50 rounded-full pointer-events-none z-[9998] top-0 left-0 transition-all duration-300;
+  @apply bg-gold/20 hover:bg-gold/40 transition-colors;
 }

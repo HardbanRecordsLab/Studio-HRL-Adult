@@ -1,88 +1,116 @@
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { ROUTES } from '@/utils/constants';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-6 bg-dark">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-hero-bg pointer-events-none" />
-      <div className="absolute inset-0 bg-hero-vign pointer-events-none" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-[7%] bg-dark">
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-dark/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-dark/20 via-transparent to-dark z-10" />
+        <img 
+          src="/images/hero-model.jpg" 
+          alt="Premium Experience" 
+          className="w-full h-full object-cover object-center opacity-40 grayscale"
+        />
+      </div>
       
-      {/* Floating Orbs */}
+      {/* Floating Orbs for depth */}
       <div className="orb o1 animate-orb-float" />
       <div className="orb o2 animate-orb-float" />
-      <div className="orb o3 animate-orb-float" />
 
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
-        {/* Supertag */}
-        <div className="flex items-center justify-center gap-4 mb-8">
-          <div className="w-8 h-px bg-gold/40" />
-          <span className="text-gold/65 text-[8.5px] font-semibold tracking-[0.5em] uppercase">
-            Premium Content Studio 18+
-          </span>
-          <div className="w-8 h-px bg-gold/40" />
-        </div>
-
-        {/* Floating Logo */}
-        <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-8 border border-gold/22 animate-logo-pulse">
-          <img 
-            src="/logo/studio hrl adult.jpeg" 
-            alt="Studio HRL Adult" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <div className="relative z-20 text-center max-w-5xl mx-auto space-y-10">
+        {/* Logo Accent */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-center mb-4"
+        >
+          <div className="w-16 h-16 rounded-full border border-gold/30 p-1 bg-dark/50 backdrop-blur-sm">
+            <img 
+              src="/logo/studio hrl adultbezła logo.png" 
+              alt="HRL" 
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </motion.div>
 
         {/* Main Heading */}
-        <h1 className="font-cormorant text-6xl md:text-9xl font-light leading-[0.88] tracking-wider text-white mb-2">
-          Studio HRL <br />
-          <span className="bg-gold-gradient bg-clip-text text-transparent italic">Adult</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="font-cormorant text-lg md:text-xl italic text-dim tracking-wide mb-10">
-          Sztuka spotyka profesjonalizm w produkcji treści premium
-        </p>
+        <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center justify-center gap-4 text-gold/60 text-[9px] tracking-[0.6em] uppercase"
+          >
+            <div className="w-12 h-px bg-gold/20" />
+            Studio HRL Adult
+            <div className="w-12 h-px bg-gold/20" />
+          </motion.div>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="font-cormorant text-6xl md:text-[110px] font-light leading-[0.85] tracking-tight text-white uppercase"
+          >
+            Elevate Your <br />
+            <span className="italic bg-gold-gradient bg-clip-text text-transparent">Experience</span>
+          </motion.h1>
+          
+          <motion.h2
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-gold text-[10px] md:text-xs tracking-[0.5em] uppercase font-bold"
+          >
+            Redefine Entertainment
+          </motion.h2>
+        </div>
 
         {/* Description */}
-        <p className="text-dim text-xs md:text-sm leading-relaxed max-w-lg mx-auto mb-12 font-light">
-          Kompleksowa produkcja i dystrybucja treści dla dorosłych. 
-          Ty tworzysz — my zajmujemy się technologią, marketingiem i Twoim sukcesem.
-        </p>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-dim text-sm md:text-base leading-loose max-w-2xl mx-auto font-light italic"
+        >
+          Discover Poland's foremost platform for independent adult production and distribution. 
+          Where artistry meets professional excellence.
+        </motion.p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href={ROUTES.CASTING} className="btn-crimson w-full sm:w-auto">
-            Dołącz do Nas
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6"
+        >
+          <Link href={ROUTES.CASTING} className="btn-gold min-w-[240px]">
+            Explore Memberships
           </Link>
-          <Link href="/#philosophy" className="btn-outline w-full sm:w-auto">
-            Poznaj Naszą Wizję
+          <Link href="/#philosophy" className="btn-outline min-w-[240px]">
+            The Art of Adult
           </Link>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-scroll-bounce opacity-40">
-        <div className="w-px h-11 bg-gradient-to-b from-gold to-transparent" />
-        <span className="text-gold text-[7.5px] tracking-[0.28em] uppercase">Zjedź niżej</span>
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+        <div className="w-px h-16 bg-gradient-to-b from-gold via-gold/50 to-transparent" />
       </div>
 
       <style jsx>{`
-        .bg-hero-bg {
-          background: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(155,31,53,0.2), rgba(90,15,30,0.08) 50%, transparent 70%),
-                      radial-gradient(ellipse 40% 40% at 15% 75%, rgba(201,168,76,0.04), transparent);
-        }
-        .bg-hero-vign {
-          background: radial-gradient(ellipse 110% 110% at 50% 50%, transparent 25%, rgba(7,5,10,0.5) 70%, rgba(7,5,10,0.95) 100%);
-        }
         .orb {
           position: absolute;
           border-radius: 50%;
-          filter: blur(90px);
+          filter: blur(120px);
+          z-index: 5;
         }
-        .o1 { width: 450px; height: 450px; background: rgba(155,31,53,0.1); top: -15%; left: -8%; }
-        .o2 { width: 320px; height: 320px; background: rgba(201,168,76,0.06); top: 25%; right: -8%; }
-        .o3 { width: 380px; height: 380px; background: rgba(90,15,30,0.12); bottom: -15%; left: 25%; }
+        .o1 { width: 600px; height: 600px; background: rgba(155,31,53,0.08); top: -10%; left: -10%; }
+        .o2 { width: 500px; height: 500px; background: rgba(201,168,76,0.05); bottom: -10%; right: -5%; }
       `}</style>
     </section>
   );
