@@ -16,6 +16,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     db.content.push(newItem);
     writeDB(db);
     return res.status(201).json(newItem);
+  } else if (req.method === 'DELETE') {
+    const { id } = req.query;
+    if (!id) {
+      return res.status(400).json({ error: 'Missing id' });
+    }
+    db.content = (db.content || []).filter((item: any) => item.id !== id);
+    writeDB(db);
+    return res.status(200).json({ success: true });
   } else {
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }

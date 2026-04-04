@@ -2,9 +2,9 @@ import React from 'react';
 
 const Stats: React.FC = () => {
   const stats = [
-    { value: '60%', label: 'Dla Partnerki', desc: 'Zysk netto' },
-    { value: '30%', label: 'Dla Modela', desc: 'Wsparcie planu' },
-    { value: '10%', label: 'Dla Studia', desc: 'Operacje' },
+    { value: '30%', label: 'Dla Partnerki', desc: 'Minimum dla nowej' },
+    { value: '50%', label: 'Dla Studia', desc: 'Wsparcie i operacje' },
+    { value: '20%', label: 'Dla Modela', desc: 'Współpraca plan' },
     { value: '4K', label: 'Jakość HDR', desc: 'Standard' }
   ];
 

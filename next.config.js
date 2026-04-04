@@ -15,10 +15,10 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      {
-        source: '/api/:path*',
-        destination: 'https://studio-adult.hardbanrecordslab.online/api/:path*',
-      },
+      // {
+      //   source: '/api/:path*',
+      //   destination: 'https://studio-adult.hardbanrecordslab.online/api/:path*',
+      // },
     ];
   },
 };

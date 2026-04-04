@@ -5,6 +5,7 @@ import Navigation from '@/components/common/Navigation';
 import { cn } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import MediaUpload from '@/components/media/MediaUpload';
 import AcademyMediaManager from '@/components/admin/AcademyMediaManager';
 
 const sidebarItems = [
@@ -364,19 +365,53 @@ const ContentSection = () => {
     queryFn: () => axios.get('/api/admin/content').then(res => res.data)
   });
 
-  const handleUpload = async (e: any, type: string) => {
+  const [mediaUrl, setMediaUrl] = useState('');
+  const [mediaPublicId, setMediaPublicId] = useState('');
+  const [uploadType, setUploadType] = useState<'video' | 'podcast' | 'document'>('video');
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleUploadComplete = (url: string, publicId: string) => {
+    setMediaUrl(url);
+    setMediaPublicId(publicId);
+    setUploadError(null);
+  };
+
+  const handleUploadError = (error: string) => {
+    setUploadError(error);
+    setMediaUrl('');
+    setMediaPublicId('');
+  };
+
+  const handleContentSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
     const newItem = {
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
       title: formData.get('title'),
       description: formData.get('description'),
-      type: type,
-      date: new Date().toISOString()
+      type: uploadType,
+      cloudinaryUrl: mediaUrl,
+      cloudinaryPublicId: mediaPublicId,
+      metadata: {
+        duration: formData.get('duration') || null,
+        episodeNumber: formData.get('episodeNumber') || null,
+        category: formData.get('category') || null,
+      },
     };
-    
+
     await axios.post('/api/admin/content', newItem);
     refetch();
     e.target.reset();
+    setMediaUrl('');
+    setMediaPublicId('');
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Na pewno usunąć ten element?')) return;
+    await axios.delete(`/api/admin/content?id=${id}`);
+    refetch();
   };
 
   return (
@@ -385,40 +420,85 @@ const ContentSection = () => {
         <h2 className="font-cormorant text-4xl text-white italic">Zarządzanie Treściami</h2>
         <p className="text-dim text-xs font-light">Dodawaj i zarządzaj materiałami wideo, podcastami i dokumentami</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-dark-2 border border-gold/10 p-8 space-y-6">
-          <h3 className="font-cormorant text-2xl text-gold italic">Dodaj Podcast</h3>
-          <form onSubmit={(e) => handleUpload(e, 'podcast')} className="space-y-4">
-            <input name="title" required type="text" placeholder="Tytuł podcastu" className="admin-input" />
-            <textarea name="description" placeholder="Opis..." className="admin-input min-h-[100px]" />
-            <button type="submit" className="btn-gold w-full">Opublikuj Podcast</button>
-          </form>
-        </div>
-        <div className="bg-dark-2 border border-gold/10 p-8 space-y-6">
-          <h3 className="font-cormorant text-2xl text-gold italic">Dodaj Wideo</h3>
-          <form onSubmit={(e) => handleUpload(e, 'video')} className="space-y-4">
-            <input name="title" required type="text" placeholder="Tytuł wideo" className="admin-input" />
-            <textarea name="description" placeholder="Opis..." className="admin-input min-h-[100px]" />
-            <button type="submit" className="btn-crimson w-full">Opublikuj Wideo</button>
-          </form>
-        </div>
-      </div>
-      
-      <div className="bg-dark-2 border border-gold/10 p-8">
-        <h3 className="font-cormorant text-2xl text-gold italic mb-6">Opublikowane Treści</h3>
-        <div className="space-y-4">
-          {data?.map((item: any) => (
-            <div key={item.id} className="flex justify-between items-center p-4 border border-gold/5 hover:border-gold/20 transition-all">
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">{item.type === 'video' ? '📹' : '🎙️'}</span>
-                <div>
-                  <div className="text-xs font-bold text-white">{item.title}</div>
-                  <div className="text-[9px] text-dim">{item.description?.substring(0, 50)}...</div>
-                </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 bg-dark-2 border border-gold/10 p-8 space-y-6">
+          <div className="flex flex-wrap gap-3 items-center">
+            <button
+              onClick={() => setUploadType('video')}
+              className={cn('px-4 py-2 uppercase text-[9px] tracking-[0.3em] border rounded-full transition-all',
+                uploadType === 'video' ? 'bg-gold text-dark border-gold' : 'border-gold/10 text-dim hover:bg-gold/10')}
+            >Wideo</button>
+            <button
+              onClick={() => setUploadType('podcast')}
+              className={cn('px-4 py-2 uppercase text-[9px] tracking-[0.3em] border rounded-full transition-all',
+                uploadType === 'podcast' ? 'bg-gold text-dark border-gold' : 'border-gold/10 text-dim hover:bg-gold/10')}
+            >Podcast</button>
+            <button
+              onClick={() => setUploadType('document')}
+              className={cn('px-4 py-2 uppercase text-[9px] tracking-[0.3em] border rounded-full transition-all',
+                uploadType === 'document' ? 'bg-gold text-dark border-gold' : 'border-gold/10 text-dim hover:bg-gold/10')}
+            >Dokument</button>
+          </div>
+
+          <div className="space-y-6">
+            <h3 className="font-cormorant text-2xl text-gold italic">Upload mediów</h3>
+            <MediaUpload
+              acceptedTypes={uploadType === 'document' ? '.pdf,.doc,.docx,.txt' : 'image/*,video/*,audio/*'}
+              onUploadComplete={handleUploadComplete}
+              onUploadError={handleUploadError}
+              folder={`studio-hrl-adult/${uploadType}`}
+            />
+            {mediaUrl && (
+              <div className="rounded-lg border border-gold/10 p-4 bg-dark-3">
+                <div className="text-[10px] uppercase text-dim tracking-[0.3em] mb-2">Media URL</div>
+                <a href={mediaUrl} target="_blank" rel="noreferrer" className="text-sm text-gold underline break-all">{mediaUrl}</a>
               </div>
-              <div className="text-[9px] text-dim uppercase">{new Date(item.createdAt).toLocaleDateString()}</div>
-            </div>
-          ))}
+            )}
+            {uploadError && <div className="text-crimson text-sm">Błąd uploadu: {uploadError}</div>}
+          </div>
+
+          <form onSubmit={handleContentSubmit} className="space-y-4">
+            <input name="title" required type="text" placeholder="Tytuł" className="admin-input" />
+            <textarea name="description" placeholder="Opis..." className="admin-input min-h-[120px]" />
+            {uploadType !== 'document' && (
+              <input name="duration" type="text" placeholder="Czas trwania (np. 12:30)" className="admin-input" />
+            )}
+            {uploadType === 'podcast' && (
+              <input name="episodeNumber" type="text" placeholder="Numer odcinka" className="admin-input" />
+            )}
+            <input name="category" type="text" placeholder="Kategoria" className="admin-input" />
+            <button type="submit" className="btn-gold w-full">Zapisz {uploadType}</button>
+          </form>
+        </div>
+
+        <div className="bg-dark-2 border border-gold/10 p-8 space-y-6">
+          <h3 className="font-cormorant text-2xl text-gold italic">Opublikowane Treści</h3>
+          <div className="space-y-4">
+            {data?.length === 0 ? (
+              <div className="text-xs text-dim italic">Brak dodanych treści</div>
+            ) : (
+              data.map((item: any) => (
+                <div key={item.id} className="flex flex-col gap-3 border border-gold/10 p-4 rounded-lg hover:border-gold/20 transition-all">
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.3em] text-dim">{item.type}</div>
+                      <div className="text-sm font-bold text-white">{item.title}</div>
+                      <div className="text-[9px] text-dim">{item.description?.substring(0, 80)}...</div>
+                    </div>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="text-[9px] uppercase tracking-[0.3em] text-crimson hover:text-white"
+                    >Usuń</button>
+                  </div>
+                  {item.cloudinaryUrl && (
+                    <a href={item.cloudinaryUrl} target="_blank" rel="noreferrer" className="text-[10px] text-gold underline break-all">Podgląd media</a>
+                  )}
+                  <div className="text-[8px] text-dim uppercase tracking-[0.3em]">{new Date(item.createdAt).toLocaleDateString()}</div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
