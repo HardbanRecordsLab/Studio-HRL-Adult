@@ -8,19 +8,22 @@ const CustomCursor: React.FC = () => {
     if (!cursor || !ring) return;
 
     const onMouseMove = (e: MouseEvent) => {
-      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      ring.style.transform = `translate(${e.clientX - 11}px, ${e.clientY - 11}px)`;
+      cursor.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+      ring.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
     };
 
     const onMouseDown = () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
       ring.style.width = '20px';
       ring.style.height = '20px';
-      ring.style.transform = `translate(${cursor.getBoundingClientRect().left - 7}px, ${cursor.getBoundingClientRect().top - 7}px)`;
     };
 
     const onMouseUp = () => {
-      ring.style.width = '28px';
-      ring.style.height = '28px';
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
     };
 
     window.addEventListener('mousemove', onMouseMove);
@@ -36,8 +39,8 @@ const CustomCursor: React.FC = () => {
 
   return (
     <>
-      <div id="c1" className="custom-cursor" />
-      <div id="c2" className="custom-cursor-ring" />
+      <div id="c1" className="cursor" />
+      <div id="c2" className="cursor-ring" />
     </>
   );
 };

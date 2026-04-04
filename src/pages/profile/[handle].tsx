@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Footer from '@/components/common/Footer';
+import CustomCursor from '@/components/common/CustomCursor';
+import Navigation from '@/components/common/Navigation';
 
 // ─── MOCK DATA – w produkcji zastąp fetch z bazy ─────────────────────────────
 const PROFILES: Record<string, ProfileData> = {
@@ -102,7 +104,7 @@ const ProfilePage: React.FC = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
         <p>Profile not found</p>
       </div>
     );
@@ -111,22 +113,161 @@ const ProfilePage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>{profile.name} - {profile.tagline}</title>
+        <title>{profile.name} — {profile.tagline}</title>
         <meta name="description" content={profile.bio} />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&display=swap" rel="stylesheet" />
       </Head>
-      <div className="min-h-screen bg-black text-white">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="container mx-auto px-4 py-8"
-        >
-          <h1 className="text-4xl font-bold mb-4">{profile.name}</h1>
-          <p className="text-xl mb-8">{profile.bio}</p>
-          {/* Add more profile content here */}
-        </motion.div>
-        <Footer />
-      </div>
+
+      <CustomCursor />
+
+      {/* Navigation */}
+      <nav className="profile-nav">
+        <a href="/" className="profile-nav-logo">
+          Studio <span>HRL</span>
+        </a>
+        <ul className="profile-nav-links">
+          <li><a href="#about">O nas</a></li>
+          <li><a href="#content">Treści</a></li>
+          <li><a href="#plans">Plany</a></li>
+          <li><a href="#testimonials">Opinie</a></li>
+        </ul>
+        <a href="#contact" className="profile-nav-cta">Kontakt</a>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="profile-hero">
+        <div className="profile-hero-left">
+          <div className="profile-hero-eyebrow">{profile.eyebrow}</div>
+          <h1 className="profile-hero-title">
+            {profile.name.split(' & ').map((part, i) => (
+              i === 0 ? part : <><span className="amp"> & </span>{part}</>
+            ))}
+            <em>{profile.tagline}</em>
+          </h1>
+          <p className="profile-hero-sub">{profile.bio}</p>
+          <div className="profile-hero-cta-group">
+            <a href="#plans" className="profile-btn-primary">
+              Zobacz plany 🔥
+            </a>
+            <a href="#content" className="profile-btn-secondary">
+              Zobacz treści →
+            </a>
+          </div>
+          <div className="profile-hero-stats">
+            {profile.stats.map((stat, i) => (
+              <div key={i} className="profile-stat-item">
+                <div className="profile-stat-num">{stat.val}</div>
+                <div className="profile-stat-label">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="profile-hero-right">
+          <div className="profile-hero-main-photo">
+            <div className="profile-photo-placeholder">
+              <div className="profile-photo-placeholder-icon">📸</div>
+              <div>Zdjęcie główne</div>
+            </div>
+          </div>
+          <div className="profile-hero-overlay-grad"></div>
+          <div className="profile-hero-mini-card">
+            <div className="profile-video-placeholder-mini">
+              <div className="profile-play-icon">▶</div>
+              <div>PREVIEW</div>
+            </div>
+            <div className="profile-hero-mini-card-label">Zobacz więcej</div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="profile-section" style={{ background: 'var(--deep)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '100px', alignItems: 'center' }}>
+          <div>
+            <div className="profile-section-eyebrow">O NAS</div>
+            <h2 className="profile-section-title">
+              Autentyczność <em>w każdym detalu</em>
+            </h2>
+            <p className="profile-section-body">
+              Tworzymy treści premium łączące prawdziwe emocje z profesjonalnym podejściem. 
+              Każda sesja to unikalne doświadczenie, gdzie liczy się chemia i zaufanie.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', marginTop: '48px' }}>
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ width: '48px', height: '48px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '20px', color: 'var(--rose)' }}>
+                  🎬
+                </div>
+                <div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', color: 'var(--white)', marginBottom: '6px', fontStyle: 'italic' }}>
+                    Jakość 4K
+                  </div>
+                  <div style={{ fontSize: '16px', color: 'var(--muted)', lineHeight: '1.6' }}>
+                    Wszystkie nasze treści nagrywane są w najwyższej jakości z profesjonalnym oświetleniem i dźwiękiem.
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ width: '48px', height: '48px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '20px', color: 'var(--rose)' }}>
+                  💕
+                </div>
+                <div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', color: 'var(--white)', marginBottom: '6px', fontStyle: 'italic' }}>
+                    Autentyczna chemia
+                  </div>
+                  <div style={{ fontSize: '16px', color: 'var(--muted)', lineHeight: '1.6' }}>
+                    Nie udajemy — nasze relacje i emocje są prawdziwe, co widać w każdej sekundzie naszych treści.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ position: 'relative', height: '600px' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '75%', height: '90%', overflow: 'hidden', border: '1px solid var(--border)' }}>
+              <div className="profile-photo-placeholder" style={{ minHeight: '100%' }}></div>
+            </div>
+            <div style={{ position: 'absolute', bottom: 0, right: 0, width: '55%', height: '55%', overflow: 'hidden', border: '1px solid var(--border)', boxShadow: '0 20px 60px rgba(0,0,0,0.7)' }}>
+              <div className="profile-photo-placeholder" style={{ minHeight: '100%' }}></div>
+            </div>
+            <div style={{ position: 'absolute', top: '50%', left: '55%', transform: 'translate(-50%, -50%)', width: '100px', height: '100px', background: 'var(--black)', border: '1px solid var(--gold)', borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 5, fontFamily: "'Bebas Neue', sans-serif", gap: '2px', boxShadow: '0 0 40px rgba(201,168,76,0.2)' }}>
+              <div style={{ fontSize: '28px', color: 'var(--gold)', lineHeight: 1 }}>
+                {profile.contentCount}
+              </div>
+              <div style={{ fontSize: '8px', letterSpacing: '2px', color: 'var(--muted)', textAlign: 'center', lineHeight: '1.4' }}>
+                TREŚCI
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Content Grid Section */}
+      <section id="content" className="profile-section" style={{ background: 'var(--black)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px' }}>
+          <div>
+            <div className="profile-section-eyebrow">NASZE TREŚCI</div>
+            <h2 className="profile-section-title">
+              Zobacz nasze <em>ostatnie prace</em>
+            </h2>
+          </div>
+          <a href="#plans" className="profile-btn-secondary">Zobacz wszystkie →</a>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'auto auto', gap: '16px' }}>
+          <div className="content-card large" style={{ gridColumn: 'span 2', aspectRatio: '16/9', position: 'relative', overflow: 'hidden', background: 'var(--card)', border: '1px solid var(--border)', transition: 'border-color 0.3s' }}>
+            <div className="profile-photo-placeholder" style={{ minHeight: '260px' }}></div>
+          </div>
+          <div className="content-card square" style={{ aspectRatio: 1, position: 'relative', overflow: 'hidden', background: 'var(--card)', border: '1px solid var(--border)', transition: 'border-color 0.3s' }}>
+            <div className="profile-photo-placeholder" style={{ minHeight: '260px' }}></div>
+          </div>
+          <div className="content-card tall" style={{ gridRow: 'span 2', position: 'relative', overflow: 'hidden', background: 'var(--card)', border: '1px solid var(--border)', transition: 'border-color 0.3s' }}>
+            <div className="profile-photo-placeholder" style={{ minHeight: '520px' }}></div>
+          </div>
+          <div className="content-card wide" style={{ gridColumn: 'span 2', aspectRatio: '16/7', position: 'relative', overflow: 'hidden', background: 'var(--card)', border: '1px solid var(--border)', transition: 'border-color 0.3s' }}>
+            <div className="profile-photo-placeholder" style={{ minHeight: '200px' }}></div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </>
   );
 };
