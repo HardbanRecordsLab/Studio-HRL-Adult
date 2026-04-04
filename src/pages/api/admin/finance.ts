@@ -16,22 +16,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         date: new Date(t.date).toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
         isPositive: t.amount > 0
       })) : [
-        { id: 1, user: 'Anna Rose', amt: 450, type: 'revenue', date: 'Dec 15 14:30', isPositive: true },
-        { id: 2, user: 'Marek Wolf', amt: -120, type: 'expense', date: 'Dec 15 12:15', isPositive: false },
-        { id: 3, user: 'Studio HRL', amt: 1200, type: 'revenue', date: 'Dec 14 16:45', isPositive: true },
-        { id: 4, user: 'Sofia', amt: 320, type: 'revenue', date: 'Dec 14 11:20', isPositive: true },
-        { id: 5, user: 'Equipment', amt: -850, type: 'expense', date: 'Dec 13 09:10', isPositive: false },
+        { id: 1, user: 'Anna Rose', amt: 45, type: 'revenue', date: 'Dec 15 14:30', isPositive: true },
+        { id: 2, user: 'Marek Wolf', amt: -12, type: 'expense', date: 'Dec 15 12:15', isPositive: false },
+        { id: 3, user: 'Studio HRL', amt: 120, type: 'revenue', date: 'Dec 14 16:45', isPositive: true },
+        { id: 4, user: 'Sofia', amt: 32, type: 'revenue', date: 'Dec 14 11:20', isPositive: true },
+        { id: 5, user: 'Equipment', amt: -85, type: 'expense', date: 'Dec 13 09:10', isPositive: false },
       ];
       
       return res.status(200).json(mockData);
     } catch (error: any) {
       // Fallback to mock data
       return res.status(200).json([
-        { id: 1, user: 'Anna Rose', amt: 450, type: 'revenue', date: 'Dec 15 14:30', isPositive: true },
-        { id: 2, user: 'Marek Wolf', amt: -120, type: 'expense', date: 'Dec 15 12:15', isPositive: false },
-        { id: 3, user: 'Studio HRL', amt: 1200, type: 'revenue', date: 'Dec 14 16:45', isPositive: true },
-        { id: 4, user: 'Sofia', amt: 320, type: 'revenue', date: 'Dec 14 11:20', isPositive: true },
-        { id: 5, user: 'Equipment', amt: -850, type: 'expense', date: 'Dec 13 09:10', isPositive: false },
+        { id: 1, user: 'Anna Rose', amt: 45, type: 'revenue', date: 'Dec 15 14:30', isPositive: true },
+        { id: 2, user: 'Marek Wolf', amt: -12, type: 'expense', date: 'Dec 15 12:15', isPositive: false },
+        { id: 3, user: 'Studio HRL', amt: 120, type: 'revenue', date: 'Dec 14 16:45', isPositive: true },
+        { id: 4, user: 'Sofia', amt: 32, type: 'revenue', date: 'Dec 14 11:20', isPositive: true },
+        { id: 5, user: 'Equipment', amt: -85, type: 'expense', date: 'Dec 13 09:10', isPositive: false },
       ]);
     }
   } else if (req.method === 'POST') {
