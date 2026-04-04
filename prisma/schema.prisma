@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model CastingApplication {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  firstName       String
+  lastName        String
+  email           String
+  phone           String
+  birthDate       DateTime
+  height          Int?
+  weight          Int?
+  hairColor       String?
+  eyeColor        String?
+  breastSize      String?
+  experience      String   @default("no")
+  experienceDesc  String?
+  platforms       String?  // Stored as JSON string
+  contentTypes    String?  // Stored as JSON string
+  limits          String?
+  sessionsPerWeek String?
+  workingTimes    String?  // Stored as JSON string
+  motivation      String
+  bodyModifications String?
+  skills          String?
+  consentAge      Boolean
+  consentTerms    Boolean
+  consentData     Boolean
+  consentMarketing Boolean
+  photo1          String?  // URL to file
+  photo2          String?  // URL to file
+  photo3          String?  // URL to file
+  video           String?  // URL to file
+  status          String   @default("pending") // pending, approved, rejected
+}
+
+model Partner {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  handle      String   @unique
+  email       String   @unique
+  status      String   @default("active") // active, inactive, pending
+  revenueTotal Float    @default(0)
+  followers   String?
+  rating      String?
+  sessions    Int      @default(0)
+  lastSync    DateTime?
+  financeRecords FinancialRecord[]
+}
+
+model FinancialRecord {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  partnerId String
+  partner   Partner  @relation(fields: [partnerId], references: [id])
+  amount    Float
+  type      String   // subscription, tip, ppv, referral
+  status    String   @default("processed") // pending, processed, failed
+  date      DateTime @default(now())
+}
+
+model Content {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String?
+  type        String   // video, podcast, guide
+  category    String   @default("general")
+  url         String
+  duration    String?
+  thumbnail   String?
+  level       String   @default("beginner") // beginner, intermediate, advanced
+  isPublic    Boolean  @default(false)
+}
+
+// Academy Media Management - Videos, Podcasts, Documents, Blog Articles
+model AcademyVideo {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  title         String
+  description   String?
+  duration      String   // e.g., "45:23"
+  level         String   @default("Początkujący") // Początkujący, Średni, Zaawansowany
+  cloudinaryId  String   // Cloudinary public_id
+  url           String   // Cloudinary secure_url
+  thumbnail     String?  // Thumbnail URL from Cloudinary
+  format        String?  // mp4, webm, etc.
+  bytes         Int?     // File size in bytes
+  width         Int?
+  height        Int?
+  isActive      Boolean  @default(true)
+  order         Int      @default(0) // For sorting
+}
+
+model AcademyPodcast {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  title         String
+  description   String?
+  duration      String   // e.g., "42:15"
+  episodeNumber String   // e.g., "EP 01"
+  cloudinaryId  String   // Cloudinary public_id
+  url           String   // Cloudinary secure_url
+  format        String?  // m4a, mp3, etc.
+  bytes         Int?     // File size in bytes
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+}
+
+model AcademyDocument {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  title         String
+  description   String?
+  type          String   // PDF, DOCX
+  category      String   // Prawny, Operacyjny, Biznesowy, Strategia, Compliance, Casting
+  size          String   // e.g., "2.3 MB"
+  cloudinaryId  String?  // Cloudinary public_id (if uploaded to cloudinary)
+  url           String   // URL to file (can be local or Cloudinary)
+  icon          String   @default("📄") // Emoji icon
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+}
+
+model AcademyBlogArticle {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  slug          String   @unique
+  title         String
+  category      String   // Psychologia, Platformy, Live Cam, Bezpieczeństwo, Monetyzacja, Marka, Marketing, Biznes, Technologia
+  tag           String   // MUST READ, ANALIZA, PORADNIK, BEZPIECZEŃSTWO, ZAAWANSOWANY, STRATEGIA, PODSTAWY, TECH
+  excerpt       String   // Short description for listing
+  content       String?  // Full article content (HTML/Markdown)
+  readTime      String   // e.g., "8 min"
+  thumbnail     String?  // Cloudinary URL for article thumbnail
+  isPublished   Boolean  @default(false)
+  publishedAt   DateTime?
+  order         Int      @default(0)
+}

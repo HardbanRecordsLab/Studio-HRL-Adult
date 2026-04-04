@@ -5,10 +5,10 @@ import Footer from '@/components/common/Footer';
 
 const ContactPage: React.FC = () => {
   const contacts = [
-    { title: 'E-mail ogólny', desc: 'Pytania ogólne, informacje o studio, współpraca biznesowa', email: 'kontakt@hrl-adult.pl', ico: '📧' },
-    { title: 'Casting', desc: 'Formularz castingowy, pytania o współpracę jako Partnerka', email: 'casting@hrl-adult.pl', ico: '🎬' },
-    { title: 'RODO / Prywatność', desc: 'Wnioski RODO, Inspektor Ochrony Danych, usuwanie danych', email: 'iod@hrl-adult.pl', ico: '🔒' },
-    { title: 'Prawne / § 2257', desc: 'Compliance, rejestry 2257, kwestie prawne i umowy', email: 'legal@hrl-adult.pl', ico: '⚖️' },
+    { title: 'E-mail ogólny', desc: 'Pytania ogólne, informacje o studio, współpraca biznesowa', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '📧' },
+    { title: 'Casting', desc: 'Formularz castingowy, pytania o współpracę jako Partnerka', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '🎬' },
+    { title: 'RODO / Prywatność', desc: 'Wnioski RODO, Inspektor Ochrony Danych, usuwanie danych', email: 'no-reply@hardbanrecordslab.online', ico: '🔒' },
+    { title: 'Prawne / § 2257', desc: 'Compliance, rejestry 2257, kwestie prawne i umowy', email: 'no-reply@hardbanrecordslab.online', ico: '⚖️' },
   ];
 
   return (

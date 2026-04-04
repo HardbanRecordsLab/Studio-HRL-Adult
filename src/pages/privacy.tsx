@@ -7,7 +7,7 @@ const PrivacyPage: React.FC = () => {
   const sections = [
     {
       title: '1. Administrator Danych',
-      content: 'Administratorem danych osobowych jest Studio HRL Adult z siedzibą w Polsce. We wszystkich sprawach dotyczących danych osobowych prosimy o kontakt na adres: privacy@hrl-adult.pl'
+      content: 'Administratorem danych osobowych jest Studio HRL Adult z siedzibą w Szwajcarii. We wszystkich sprawach dotyczących danych osobowych prosimy o kontakt na adres: no-reply@hardbanrecordslab.online'
     },
     {
       title: '2. Jakie dane zbieramy',

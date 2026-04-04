@@ -76,11 +76,25 @@ const CastingPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    try {
+      const response = await fetch('/api/casting/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      
+      if (response.ok) {
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert('Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie.');
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('Błąd połączenia z serwerem.');
+    }
   };
 
   return (

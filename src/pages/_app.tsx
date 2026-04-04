@@ -2,6 +2,9 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Montserrat, Cormorant_Garamond, Bebas_Neue, Playfair_Display } from 'next/font/google'
 import CustomCursor from '@/components/common/CustomCursor'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -31,9 +34,11 @@ const playfair = Playfair_Display({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${montserrat.variable} ${cormorant.variable} ${bebas.variable} ${playfair.variable} font-sans`}>
-      <CustomCursor />
-      <Component {...pageProps} />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className={`${montserrat.variable} ${cormorant.variable} ${bebas.variable} ${playfair.variable} font-sans`}>
+        <CustomCursor />
+        <Component {...pageProps} />
+      </div>
+    </QueryClientProvider>
   )
 }
