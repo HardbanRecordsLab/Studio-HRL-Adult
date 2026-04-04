@@ -23,6 +23,60 @@ const sidebarItems = [
 
 const AdminDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simple check - in production use proper auth
+    if (email === 'admin@studiohrl.com' && password === 'HRL2026!') {
+      setIsLoggedIn(true);
+      setLoginError('');
+    } else {
+      setLoginError('Invalid credentials');
+    }
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-dark text-text flex items-center justify-center">
+        <div className="bg-dark-2 p-8 rounded-lg border border-gold/20 max-w-md w-full">
+          <h1 className="text-2xl font-bold text-center mb-6">Admin Login</h1>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 bg-dark-3 border border-gold/20 rounded focus:border-gold focus:outline-none"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 bg-dark-3 border border-gold/20 rounded focus:border-gold focus:outline-none"
+                required
+              />
+            </div>
+            {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+            <button
+              type="submit"
+              className="w-full bg-gold text-dark font-bold py-2 px-4 rounded hover:bg-gold/80 transition-colors"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   const { data: dashboardData, isLoading: dashLoading, refetch: refetchDashboard } = useQuery({
     queryKey: ['admin-dashboard'],

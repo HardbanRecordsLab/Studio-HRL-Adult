@@ -14,45 +14,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const activePartners = partners?.filter((p: any) => p.status === 'active').length || 0;
       const pendingApps = applications?.filter((a: any) => a.status === 'pending').length || 0;
       
-      // If no real data, use mock data
-      const mockKpis = [
-        { label: 'Total Revenue (M-T-D)', val: totalRevenue > 0 ? `€${totalRevenue.toLocaleString()}` : '€12,450', trend: '+18.5%', color: 'text-gold', bg: 'bg-gold/5' },
-        { label: 'Active Partners', val: activePartners > 0 ? activePartners.toString() : '8', trend: 'Stable', color: 'text-green-500', bg: 'bg-green-500/5' },
-        { label: 'Pending Apps', val: pendingApps > 0 ? pendingApps.toString() : '3', trend: `New: ${pendingApps || 3}`, color: 'text-blue-500', bg: 'bg-blue-500/5' },
-        { label: 'Compliance Score', val: '100%', trend: 'Verified', color: 'text-crimson', bg: 'bg-crimson/5' },
-      ];
-
-      const mockAlerts = applications?.length > 0 ? applications?.slice(-4).map((app: any) => ({
-        text: `New Casting: ${app.firstName} ${app.lastName?.charAt(0)}.`,
-        type: 'info',
-        time: 'Just now'
-      })) : [
-        { text: 'New Casting: Anna K. applied', type: 'info', time: '2 min ago' },
-        { text: 'Revenue milestone reached', type: 'success', time: '1 hour ago' },
-        { text: 'Partner Sofia went live', type: 'info', time: '3 hours ago' },
-        { text: 'New platform integration ready', type: 'success', time: '5 hours ago' },
-      ];
-      
-      return res.status(200).json({
-        kpis: mockKpis,
-        recentAlerts: mockAlerts
-      });
-    } catch (error: any) {
-      // Fallback to mock data on error
       return res.status(200).json({
         kpis: [
-          { label: 'Total Revenue (M-T-D)', val: '€12,450', trend: '+18.5%', color: 'text-gold', bg: 'bg-gold/5' },
-          { label: 'Active Partners', val: '8', trend: 'Stable', color: 'text-green-500', bg: 'bg-green-500/5' },
-          { label: 'Pending Apps', val: '3', trend: 'New: 3', color: 'text-blue-500', bg: 'bg-blue-500/5' },
+          { label: 'Total Revenue (M-T-D)', val: `€${totalRevenue.toLocaleString()}`, trend: '+18.5%', color: 'text-gold', bg: 'bg-gold/5' },
+          { label: 'Active Partners', val: activePartners.toString(), trend: 'Stable', color: 'text-green-500', bg: 'bg-green-500/5' },
+          { label: 'Pending Apps', val: pendingApps.toString(), trend: `New: ${pendingApps}`, color: 'text-blue-500', bg: 'bg-blue-500/5' },
           { label: 'Compliance Score', val: '100%', trend: 'Verified', color: 'text-crimson', bg: 'bg-crimson/5' },
         ],
-        recentAlerts: [
-          { text: 'New Casting: Anna K. applied', type: 'info', time: '2 min ago' },
-          { text: 'Revenue milestone reached', type: 'success', time: '1 hour ago' },
-          { text: 'Partner Sofia went live', type: 'info', time: '3 hours ago' },
-          { text: 'New platform integration ready', type: 'success', time: '5 hours ago' },
-        ]
+        recentAlerts: applications?.slice(-4).map((app: any) => ({
+          text: `New Casting: ${app.firstName} ${app.lastName?.charAt(0)}.`,
+          type: 'info',
+          time: 'Just now'
+        })) || []
       });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
     }
   } else {
     res.status(405).end(`Method ${req.method} Not Allowed`);
