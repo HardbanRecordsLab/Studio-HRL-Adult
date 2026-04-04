@@ -93,3 +93,42 @@ interface ProfileData {
   contentCount: number;
   isLive: boolean;
 }
+
+const ProfilePage: React.FC = () => {
+  const router = useRouter();
+  const { handle } = router.query;
+
+  const profile = handle ? PROFILES[handle as string] : null;
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Profile not found</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{profile.name} - {profile.tagline}</title>
+        <meta name="description" content={profile.bio} />
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="container mx-auto px-4 py-8"
+        >
+          <h1 className="text-4xl font-bold mb-4">{profile.name}</h1>
+          <p className="text-xl mb-8">{profile.bio}</p>
+          {/* Add more profile content here */}
+        </motion.div>
+        <Footer />
+      </div>
+    </>
+  );
+};
+
+export default ProfilePage;
