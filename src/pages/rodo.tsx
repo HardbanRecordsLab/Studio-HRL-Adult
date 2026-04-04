@@ -53,7 +53,7 @@ const RodoPage: React.FC = () => {
                 <div>
                   <h3 className="font-cormorant text-2xl text-gold mb-4 italic">Inspektor Ochrony Danych (IOD)</h3>
                   <p className="text-xs text-dim leading-loose">
-                    Studio HRL Adult wyznaczyło Inspektora Ochrony Danych. Kontakt: <span className="text-white">no-reply@hardbanrecordslab.online</span>.
+                    Studio HRL Adult wyznaczyło Inspektora Ochrony Danych. Kontakt: <span className="text-white">hrl-adult-studio@hardbanrecordslab.online</span>.
                     IOD jest dostępny w dni robocze w godzinach 9:00–17:00.
                   </p>
                 </div>

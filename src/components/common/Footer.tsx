@@ -44,11 +44,18 @@ const Footer: React.FC = () => {
           <div className="space-y-8">
             <h4 className="text-white text-[10px] font-bold tracking-[0.3em] uppercase">Legal</h4>
             <ul className="flex flex-col gap-4">
-              {['Privacy Policy', 'Terms of Service', 'RODO / GDPR', '18 U.S.C. § 2257'].map((link) => (
-                <li key={link}>
-                  <Link href="#" className="text-dim hover:text-gold text-[11px] transition-colors font-light uppercase tracking-widest">{link}</Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/privacy" className="text-dim hover:text-gold text-[11px] transition-colors font-light uppercase tracking-widest">Privacy Policy</Link>
+              </li>
+              <li>
+                <Link href="/regulamin" className="text-dim hover:text-gold text-[11px] transition-colors font-light uppercase tracking-widest">Terms of Service</Link>
+              </li>
+              <li>
+                <Link href="/rodo" className="text-dim hover:text-gold text-[11px] transition-colors font-light uppercase tracking-widest">RODO / GDPR</Link>
+              </li>
+              <li>
+                <Link href="/umowa-tworca" className="text-dim hover:text-gold text-[11px] transition-colors font-light uppercase tracking-widest">Umowa z Twórcą</Link>
+              </li>
             </ul>
           </div>
 
