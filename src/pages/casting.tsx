@@ -166,7 +166,8 @@ const CastingPage: React.FC = () => {
             <div className="bg-dark-3/40 border border-gold/10 overflow-hidden relative">
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient" />
               <div className="p-8 md:p-12">
-                <h3 className="font-cormorant text-3xl text-gold mb-10 text-center italic">Potencjalne Zarobki Miesięczne</h3>
+                <h3 className="font-cormorant text-3xl text-gold mb-4 text-center italic">Potencjalne Zarobki Miesięczne</h3>
+                <p className="text-xs text-dim text-center max-w-2xl mx-auto mb-8">Hybrydowy model łączy gwarantowany próg startowy dla nowych partnerów z klasycznym podziałem 60/30/10 na przychody.</p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
@@ -270,7 +271,7 @@ const CastingPage: React.FC = () => {
                 <div className="relative z-10 text-center space-y-6">
                   <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">3</div>
                   <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Zarabiaj</h3>
-                  <p className="text-xs text-dim leading-relaxed">Rozpocznij tworzenie treści i zarabiaj z modelem 60/30/10</p>
+                  <p className="text-xs text-dim leading-relaxed">Rozpocznij tworzenie treści i zarabiaj w hybrydowym modelu 60/30/10 z gwarancją startową</p>
                 </div>
               </div>
             </div>
