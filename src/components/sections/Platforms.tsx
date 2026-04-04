@@ -29,7 +29,7 @@ const Platforms: React.FC = () => {
           name: 'StripChat', 
           badge: 'VR Leader', 
           desc: 'Fan Club, VR shows, do 80% prowizji',
-          fullDesc: 'StripChat to nowoczesna platforma z zaawansowanymi funkcjami jak Fan Club, VR shows i interaktywnym doświadczeniem. Oferuje prowizję do 80% z regularnym bonusami za osiągi. System Fan Club umożliwia exclusive content i bezpośrednią komunikację z fanami. Modelki mogą zarabiać przez live shows, tips, prywatne sesje i sprzedaż zawartości. StripChat's technologia VR stanowi unique selling point dla modelek chcących się wyróżnić.'
+          fullDesc: 'StripChat to nowoczesna platforma z zaawansowanymi funkcjami jak Fan Club, VR shows i interaktywnym doświadczeniem. Oferuje prowizję do 80% z regularnym bonusami za osiągi. System Fan Club umożliwia exclusive content i bezpośrednią komunikację z fanami. Modelki mogą zarabiać przez live shows, tips, prywatne sesje i sprzedaż zawartości. StripChat\'s technologia VR stanowi unique selling point dla modelek chcących się wyróżnić.'
         },
         { 
           name: 'CamSoda', 
@@ -141,6 +141,12 @@ const Platforms: React.FC = () => {
           badge: 'Organic', 
           desc: 'Najlepsza konwersja, subreddity',
           fullDesc: 'Reddit ma najlepsze conversion rates z highly engaged community na targeted subreddity. Modelki mogą zarabiać poprzez strategic content positioning, link promotion i community building. Reddit audience jest zaawansowany och zainteresowany premium offering. Platforma pozwala na self-promotion w designated subs i community engagement. Reddit jest doskonały dla modelek chcących wysokiej konwersji i dedicated fanbase.'
+        },
+        { 
+          name: 'Telegram', 
+          badge: 'VIP', 
+          desc: 'Ekosystem lojalnych fanów',
+          fullDesc: 'Telegram to private platform dla budowania ekosystemu VIP fans z loyalty program. Modelki mogą zarabiać poprzez subscriber channels, premium groups i custom content. Telegram jest niedostępny dla algorytmów trzecich stron, co pozwala na complete control nad audience. Fani są highly engaged i loyal. Telegram jest idealny dla modelek chcących premium fanbase z bezpośrednią komunikacją i subscription revenue.'
         },
         { 
           name: 'TikTok', 
