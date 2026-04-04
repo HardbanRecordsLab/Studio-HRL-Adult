@@ -138,8 +138,8 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
         <title>Portfolio - Studio HRL Adult</title>
         <meta name="description" content="Portfolio i szablony profili partnerek Studio HRL Adult. Zobacz nasze realizacje i styl Anna & Marek." />
       </Head>
-
-      <div className="min-h-screen bg-dark text-text relative">
+      <>
+        <div className="min-h-screen bg-dark text-text relative">
         <Navigation />
 
         <main className="pt-24 pb-24">
@@ -347,6 +347,7 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
         <Footer />
         <div className="grain-overlay" />
       </div>
+      </>
 
       <style jsx global>{`
         .font-playfair { font-family: 'Playfair Display', serif; }
