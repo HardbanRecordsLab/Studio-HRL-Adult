@@ -126,33 +126,20 @@ const BLOG_ARTICLES = [
 ];
 
 const PLATFORMS = [
-  { cat: 'live', name: 'Chaturbate', ico: '🔴', badge: 'CAM GIANT', desc: 'Największa platforma live cam. System tokenów, Tip Goals, Ticket Shows.', features: ['1 token = $0.05', 'Private Shows 30-450 zł/min', 'Globalny traffic #1', 'Apps & Bots automation'] },
-  { cat: 'live', name: 'Stripchat', ico: '🎭', badge: 'VR LEADER', desc: 'VR shows, Fan Club, do 80% prowizji. Rosnąca baza globalnych użytkowników.', features: ['VR & 360° shows', 'Fan Club (stały przychód)', 'Do 80% prowizji', 'Lovense integration'] },
-  { cat: 'live', name: 'LiveJasmin', ico: '💎', badge: 'ELITE', desc: 'Najbardziej prestiżowa platforma. Klienci VIP, najwyższe stawki za minutę.', features: ['Klienci Premium/VIP', 'Najwyższe stawki/min', 'Dedykowany manager', '4K wymagane'] },
-  { cat: 'live', name: 'BongaCams', ico: '🌟', badge: 'EU FOCUS', desc: 'Najsilniejszy ruch z Europy (PL/DE/CZ). Polska para = lokalna gwiazda.', features: ['Silna obecność EU', 'Szybkie płatności', 'Gold Shows & Tip Menu', 'Konkursy z nagrodami'] },
-  { cat: 'live', name: 'MyFreeCams', ico: '🎪', badge: 'CLASSIC', desc: 'Lojalna społeczność "Whales". Camscore, Miss MFC, stabilne zarobki.', features: ['Lojalna baza fanów', 'System Gold Show', 'MFC Share social', 'Stabilne długofalowo'] },
-  { cat: 'live', name: 'Cam4', ico: '🎨', badge: 'NEWBIE', desc: 'Przyjazna dla początkujących. Aplikacja mobilna, niskie wymagania techniczne.', features: ['Easy start', 'Mobile app iOS/Android', 'Weekly payouts', 'Global traffic'] },
-  { cat: 'live', name: 'Flirt4Free', ico: '🎯', badge: 'VIP CAM', desc: 'Premium live z klientami VIP. Feature Shows, Party Chat, Multi-User private.', features: ['VIP clients premium', 'HD/4K required', 'Feature Shows aukcyjne', 'Party Chat'] },
-  { cat: 'live', name: 'Streamate', ico: '🌙', badge: 'US MARKET', desc: 'Duża platforma USA/Kanada. Stabilna technologia, przewidywalne zarobki.', features: ['US/Canada traffic', 'Multiple categories', 'Stable technology', 'Gold shows'] },
-  { cat: 'live', name: 'Cams.com', ico: '🎬', badge: 'MODERN', desc: 'Nowoczesna platforma z zaawansowanymi funkcjami i interaktywnymi zabawkami.', features: ['Modern interface', 'Interactive toys', 'Growing user base', 'Mobile optimized'] },
-  { cat: 'live', name: 'ImLive', ico: '🎭', badge: 'ESTABLISHED', desc: 'Działająca od 2002. Lojalna społeczność, Candy Shows, Multi-Viewer.', features: ['Since 2002', 'Candy Show & Wish List', 'Multi-Viewer Show', 'Fan clubs'] },
-  { cat: 'live', name: 'Camsoda', ico: '🥤', badge: 'TECH', desc: 'VR shows, kryptopłatności (Bitcoin), silny ruch mobilny.', features: ['VR & 360° support', 'Kryptopłatności BTC', 'VOD z nagrań live', 'Mobile traffic'] },
-  { cat: 'live', name: 'xHamster Live', ico: '📹', badge: 'TUBE+LIVE', desc: 'Live cam w ramach xHamster. Dostęp do milionów użytkowników portalu.', features: ['Direct tube integration', 'Token system', 'Easy start', 'Global audience'] },
-  { cat: 'sub', name: 'OnlyFans', ico: '🔥', badge: 'PREMIUM #1', desc: 'Absolutny lider rynku. Subskrypcje, PPV, napiwki, live streaming.', features: ['Subskrypcje $5-$50', 'PPV wiadomości', 'Tips & Live', 'Geo-blocking'] },
-  { cat: 'sub', name: 'Fansly', ico: '💫', badge: 'GROWING', desc: 'Silny #2. Algorytm dający ruch organiczny, tier subscriptions.', features: ['Discovery algorithm', 'Tiered subscriptions', 'PPV & Media bundles', 'Crypto payouts'] },
-  { cat: 'sub', name: 'ManyVids', ico: '📹', badge: 'VOD PASSIVE', desc: 'Nagraj raz, zarabiaj latami. Custom requests, MV Crush, mocne SEO.', features: ['Video Store pasywny', 'Custom Video Requests', 'MV Crush subs', 'SEO w Google'] },
-  { cat: 'sub', name: 'Clips4Sale', ico: '📼', badge: 'NICHE', desc: 'Gigantyczna baza nisz fetyszowych. Lojalni fani konkretnych kategorii.', features: ['Clip store', 'Niche focus traffic', 'Studio management', 'Custom requests'] },
-  { cat: 'sub', name: 'AVN Stars', ico: '💰', badge: 'PRESTIGE', desc: 'Prestiż branży dzięki integracji z AVN. Sub + VOD + Live w jednym.', features: ['AVN integration', 'Awards & Promotion', 'Sub + VOD + Live', '65-80% revenue'] },
-  { cat: 'sub', name: 'Fanvue', ico: '🌐', badge: 'FUTURE', desc: 'Najniższa prowizja (15%) i narzędzia AI. Szybko rosnąca alternatywa.', features: ['15% prowizji tylko', 'AI content tools', 'Good SEO', 'Discovery features'] },
-  { cat: 'sub', name: 'AdmireMe', ico: '💎', badge: 'EU ALT', desc: 'Europejska alternatywa. Przyjazna polityka, bank transfer, PayPal.', features: ['EU focused', 'Bank + PayPal', 'Creator friendly', '$5-30/sub'] },
-  { cat: 'sub', name: 'JustForFans', ico: '👑', badge: 'BY CREATORS', desc: 'Platforma stworzona przez twórców dla twórców. 80% prowizji.', features: ['80% prowizji', 'Creator-first policy', 'Paxum + Wire', 'Community driven'] },
-  { cat: 'tube', name: 'Pornhub (ModelHub)', ico: '🖤', badge: 'FUNNEL #1', desc: 'Największy darmowy lejek ruchu. Darmowe video = ruch do OF/Fansly.', features: ['Ogromny ruch organiczny', 'Rev share z reklam', 'VOD Sales ModelHub', 'Fanclub integration'] },
-  { cat: 'tube', name: 'xHamster Creator', ico: '🐹', badge: 'SEO POWER', desc: 'Silny ruch organiczny i dobre SEO. Lejek do płatnych platform.', features: ['Creator Program', 'Rev share reklam', 'xHamster Live', 'Easy VOD upload'] },
-  { cat: 'tube', name: 'xVideos RED', ico: '❌', badge: 'PASSIVE', desc: 'Zarabiaj na premium oglądających Twoje wideo. Zero interakcji wymagane.', features: ['Subscription revenue', 'Massive global traffic', 'Passive income', 'Simple management'] },
-  { cat: 'marketing', name: 'Twitter / X', ico: '🐦', badge: 'ESSENTIAL', desc: 'Główna arteria ruchu. Bez Twittera jesteś niewidzialny w branży adult.', features: ['Hashtag networking', 'Pinned tweet funnel', 'Twitter Spaces', 'Industry community'] },
-  { cat: 'marketing', name: 'Reddit', ico: '🤖', badge: 'ORGANIC', desc: 'Najlepsze źródło darmowego ruchu dla par. Karma building, subreddity.', features: ['Niche subreddits', 'Karma building', 'Verified creator', 'Direct traffic funnel'] },
-  { cat: 'marketing', name: 'Telegram', ico: '✈️', badge: 'VIP COMMUNITY', desc: 'Ekosystem dla najlojalniejszych fanów. PPV via bots, TON blockchain.', features: ['VIP Channels', 'PPV via bots', 'TON blockchain', 'No censorship'] },
-  { cat: 'marketing', name: 'TikTok / Instagram', ico: '📱', badge: 'AWARENESS', desc: 'Budowanie marki osobistej (SFW). Przyciąganie ciekawskich do linku w bio.', features: ['Lifestyle content', 'Brand personality', 'Massive reach SFW', 'Linktree integration'] },
+  { cat: 'live', name: 'Chaturbate', ico: '🔴', badge: 'CAM GIANT', desc: 'Największa na świecie platforma live cam, będąca absolutnym fundamentem dla każdego twórcy. Działa w systemie tokenowym, gdzie 1 token to równowartość $0.05. Chaturbate oferuje niespotykany nigdzie indziej ruch organiczny, pozwalający na szybkie zbudowanie bazy lojalnych fanów bez nakładów na marketing zewnętrzny. System Tip Goals, Ticket Shows oraz zaawansowane boty automatyzujące interakcje sprawiają, że jest to maszyna do zarabiania pieniędzy. Średnie stawki w pokojach prywatnych oscylują w granicach 30-450 zł za minutę, a najlepsze modelki i pary regularnie osiągają pięciocyfrowe zarobki miesięczne.', features: ['1 token = $0.05', 'Private Shows 30-450 zł/min', 'Globalny traffic #1', 'Apps & Bots automation'] },
+  { cat: 'live', name: 'Stripchat', ico: '🎭', badge: 'VR LEADER', desc: 'Innowacyjna platforma, która zrewolucjonizowała rynek dzięki technologii VR i 360°. Stripchat stawia na wysoką jakość transmisji i nowoczesne narzędzia monetyzacji, takie jak Fan Club, który zapewnia twórcom stały, miesięczny przychód niezależnie od czasu spędzonego na transmisji live. Platforma oferuje jedne z najwyższych prowizji w branży (do 80%) i jest w pełni zintegrowana z interaktywnymi zabawkami Lovense. Dzięki silnemu systemowi promowania nowych kont, Stripchat jest idealnym miejscem na start dla par szukających technologicznej przewagi i nowoczesnego audytorium.', features: ['VR & 360° shows', 'Fan Club (stały przychód)', 'Do 80% prowizji', 'Lovense integration'] },
+  { cat: 'live', name: 'LiveJasmin', ico: '💎', badge: 'ELITE', desc: 'Najbardziej prestiżowa i ekskluzywna platforma cammingowa na świecie, dedykowana dla klientów typu High-End i VIP. Tutaj liczy się przede wszystkim jakość – wymagany jest profesjonalny sprzęt (4K), nienaganna estetyka i wysoka kultura osobista. LiveJasmin oferuje najwyższe stawki za minutę w prywatnych pokojach, przyciągając użytkowników gotowych płacić premium za luksusowe doświadczenie. Każda modelka i para otrzymuje wsparcie dedykowanego managera, który pomaga w optymalizacji profilu i strategii sprzedaży. To platforma dla tych, którzy chcą budować markę luksusową i zarabiać na najbardziej majętnych fanach.', features: ['Klienci Premium/VIP', 'Najwyższe stawki/min', 'Dedykowany manager', '4K wymagane'] },
+  { cat: 'live', name: 'BongaCams', ico: '🌟', badge: 'EU FOCUS', desc: 'Platforma o ogromnym zasięgu, szczególnie silna na rynkach europejskich, w tym w Polsce, Niemczech i Czechach. Dzięki lokalnemu trafficowi, polskie pary i modelki mają tu szansę stać się prawdziwymi gwiazdami. BongaCams słynie z prostoty obsługi, szybkich i regularnych płatności oraz licznych konkursów z wysokimi nagrodami pieniężnymi dla twórców. System Gold Shows i rozbudowane Tip Menu pozwalają na skuteczną monetyzację każdego streamu. Jest to doskonały wybór dla osób, które chcą budować popularność w swoim regionie i cenią sobie stabilność oraz przejrzyste zasady współpracy.', features: ['Silna obecność EU', 'Szybkie płatności', 'Gold Shows & Tip Menu', 'Konkursy z nagrodami'] },
+  { cat: 'live', name: 'MyFreeCams', ico: '🎪', badge: 'CLASSIC', desc: 'Jedna z najstarszych i najbardziej kultowych platform w branży, posiadająca niezwykle lojalną społeczność użytkowników, w tym tzw. "Whales" – fanów wydających ogromne sumy na swoje ulubione gwiazdy. MyFreeCams opiera się na unikalnym systemie rankingowym Camscore oraz konkursach takich jak Miss MFC. Platforma oferuje stabilne zarobki długofalowe dla twórców, którzy potrafią budować głębokie relacje z widzami. System MFC Share pozwala na łatwą integrację z mediami społecznościowymi, co wspiera budowanie marki osobistej. To miejsce dla cierpliwych i ambitnych twórców, którzy stawiają na jakość i lojalność.', features: ['Lojalna baza fanów', 'System Gold Show', 'MFC Share social', 'Stabilne długofalowo'] },
+  { cat: 'live', name: 'Cam4', ico: '🎨', badge: 'NEWBIE', desc: 'Niezwykle przyjazna platforma dla osób stawiających swoje pierwsze kroki w świecie live cam. Cam4 oferuje intuicyjny interfejs, niskie wymagania techniczne na starcie oraz doskonałą aplikację mobilną na iOS i Androida, co pozwala na prowadzenie transmisji z dowolnego miejsca. Mimo swojej prostoty, platforma generuje ogromny globalny ruch, szczególnie z USA i Europy Zachodniej. Cotygodniowe wypłaty już od $50 sprawiają, że jest to bezpieczny i motywujący wybór dla początkujących. Idealna przestrzeń do nauki interakcji z widzami i testowania różnych formatów show przed wejściem na bardziej wymagające rynki.', features: ['Easy start', 'Mobile app iOS/Android', 'Weekly payouts', 'Global traffic'] },
+  { cat: 'live', name: 'Flirt4Free', ico: '🎯', badge: 'VIP CAM', desc: 'Platforma typu Premium, która stawia na jakość i profesjonalizm. Flirt4Free przyciąga dojrzałe audytorium i klientów VIP, którzy szukają wysokiej klasy rozrywki. Unikalne funkcje, takie jak Feature Shows (aukcje na czas transmisji), Party Chat czy Multi-User private, dają niespotykane na innych portalach możliwości monetyzacji. Wymagana jest tu wysoka jakość obrazu (HD/4K) i zaangażowanie w budowanie profesjonalnego wizerunku. Zarobki w prywatnych pokojach należą do jednych z najwyższych w branży, co czyni tę platformę idealną dla par z konkretną niszą fetyszową lub wysokim standardem produkcji.', features: ['VIP clients premium', 'HD/4K required', 'Feature Shows aukcyjne', 'Party Chat'] },
+  { cat: 'live', name: 'Streamate', ico: '🌙', badge: 'US MARKET', desc: 'Potężny gracz na rynku amerykańskim i kanadyjskim, oferujący stabilną technologię i przewidywalne zarobki. Streamate różni się od platform tokenowych modelem płatności bezpośredniej za czas spędzony w private, co daje twórcom większą kontrolę nad godzinowymi stawkami. Platforma posiada dziesiątki niszowych kategorii, co pozwala na skuteczne dotarcie do specyficznych grup odbiorców. Dzięki silnemu marketingowi wewnętrznemu i lojalnej bazie użytkowników z Ameryki Północnej, jest to doskonałe miejsce dla par, które chcą zarabiać w dolarach i cenią sobie profesjonalizm oraz stabilność finansową.', features: ['US/Canada traffic', 'Multiple categories', 'Stable technology', 'Gold shows'] },
+  { cat: 'sub', name: 'OnlyFans', ico: '🔥', badge: 'PREMIUM #1', desc: 'Niekwestionowany lider rynku subskrypcyjnego, który zrewolucjonizował sposób monetyzacji treści dla dorosłych. OnlyFans to główna arteria przychodów dla większości topowych twórców, pozwalająca na budowanie stabilnego, miesięcznego dochodu z subskrypcji. Kluczem do sukcesu są tu wiadomości PPV (Pay-Per-View), które mogą generować nawet 70-80% całkowitych zarobków. Platforma oferuje pełną kontrolę nad treściami, system Geo-blocking do ochrony prywatności oraz zaawansowane statystyki. To tutaj buduje się najbardziej intymną relację z fanami, przekuwając popularność z innych portali na realny i wysoki kapitał.', features: ['Subskrypcje $5-$50', 'PPV wiadomości', 'Tips & Live', 'Geo-blocking'] },
+  { cat: 'sub', name: 'Fansly', ico: '💫', badge: 'GROWING', desc: 'Najgroźniejszy konkurent OnlyFans, który zdobył uznanie twórców dzięki bardziej elastycznym regulaminom i innowacyjnym funkcjom. Fansly posiada własny algorytm rekomendacji (FYP), który pomaga w organicznym odkrywaniu nowych twórców przez fanów – coś, czego brakuje na OnlyFans. System wielopoziomowych subskrypcji (Tiered Subscriptions) pozwala na różnicowanie cen i oferowanie unikalnych treści dla różnych grup fanów. Platforma wspiera również płatności kryptowalutami, co przyciąga nowoczesne audytorium. To idealne miejsce na dywersyfikację przychodów i budowanie bazy fanów w bardziej otwartym środowisku.', features: ['Discovery algorithm', 'Tiered subscriptions', 'PPV & Media bundles', 'Crypto payouts'] },
+  { cat: 'sub', name: 'ManyVids', ico: '📹', badge: 'VOD PASSIVE', desc: 'Najlepsza platforma do budowania pasywnego dochodu ze sprzedaży nagranych materiałów wideo. ManyVids łączy w sobie sklep z klipami, platformę subskrypcyjną (MV Crush) oraz sklep z przedmiotami fizycznymi. Raz nagrany i wrzucony film może zarabiać na siebie przez lata dzięki silnemu pozycjonowaniu w Google i wewnętrznemu ruchowi platformy. Możliwość przyjmowania zamówień na filmy customowe oraz system napiwków sprawiają, że jest to kompleksowe narzędzie dla każdego twórcy. ManyVids to fundament "emerytury" w tej branży – miejsce, gdzie Twoje archiwum treści staje się Twoim największym aktywem.', features: ['Video Store pasywny', 'Custom Video Requests', 'MV Crush subs', 'SEO w Google'] },
+  { cat: 'marketing', name: 'Twitter / X', ico: '🐦', badge: 'ESSENTIAL', desc: 'Główna arteria ruchu dla całej branży adult content. Twitter to miejsce, gdzie buduje się networking, nawiązuje relacje z innymi twórcami i przede wszystkim przyciąga fanów do płatnych platform jak OnlyFans czy Fansly. Bez aktywnego konta na Twitterze, twórca jest praktycznie niewidzialny w cyfrowym świecie. Wykorzystanie odpowiednich hashtagów, udział w Twitter Spaces oraz strategiczne przypinanie postów z linkami to absolutna podstawa marketingu. To tutaj bije serce społeczności twórców, gdzie można wymieniać się doświadczeniami i budować rozpoznawalność marki osobistej na skalę globalną.', features: ['Hashtag networking', 'Pinned tweet funnel', 'Twitter Spaces', 'Industry community'] },
+  { cat: 'marketing', name: 'Reddit', ico: '🤖', badge: 'ORGANIC', desc: 'Najlepsze źródło darmowego ruchu dla par. Reddit to potężne narzędzie, które przy odpowiednim podejściu potrafi generować tysiące wejść dziennie na Twoje płatne profile. Kluczem jest tu budowanie "karmy", weryfikacja na niszowych subredditach oraz publikowanie angażujących, autentycznych treści. Reddit ceni autentyczność bardziej niż profesjonalne sesje, dlatego jest to idealne miejsce na budowanie relacji z fanami, którzy szukają czegoś więcej niż tylko obrazu. Nasz zespół pomaga w procesie weryfikacji i doradza, gdzie i kiedy postować, aby zmaksymalizować konwersję.', features: ['Niche subreddits', 'Karma building', 'Verified creator', 'Direct traffic funnel'] },
+  { cat: 'marketing', name: 'TikTok / Instagram', ico: '📱', badge: 'AWARENESS', desc: 'Platformy służące do budowania świadomości marki i przyciągania masowego ruchu ze świata SFW (Safe For Work). Na TikTok i Instagramie stawiamy na lifestyle, estetykę i budowanie więzi emocjonalnej z widzem, kierując go strategicznie do "linku w bio". To tutaj tworzy się lejek sprzedażowy, który z przypadkowego widza robi lojalnego subskrybenta. Dzięki wykorzystaniu trendów, odpowiedniej muzyki i profesjonalnego montażu, Twoje profile mogą osiągać miliony wyświetleń, stając się potężnym silnikiem napędowym dla Twojego biznesu adult.', features: ['Lifestyle content', 'Brand personality', 'Massive reach SFW', 'Linktree integration'] },
 ];
 
 const CATS = [
@@ -251,6 +238,72 @@ const VideoCard: React.FC<{ v: typeof VIDEOS[0]; locked: boolean }> = ({ v, lock
         <h3 className="font-cormorant text-lg text-white italic leading-tight">{v.title}</h3>
         <p className="text-dim text-[9px] leading-relaxed font-light">{v.desc}</p>
       </div>
+    </div>
+  );
+};
+
+// ─── PLATFORM CARD ────────────────────────────────────────────────────────────
+const PlatformCard: React.FC<{ plat: typeof PLATFORMS[0] }> = ({ plat }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      className="relative h-[400px] w-full perspective-1000 group cursor-pointer"
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+    >
+      <motion.div
+        className="relative w-full h-full transition-all duration-500 preserve-3d"
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6, type: 'spring', stiffness: 260, damping: 20 }}
+      >
+        {/* Front Side */}
+        <div className="absolute inset-0 backface-hidden bg-dark-2 border border-gold/10 p-8 flex flex-col justify-between overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="flex justify-between items-start">
+            <div className="text-4xl">{plat.ico}</div>
+            <div className="text-[7px] tracking-[0.15em] uppercase bg-gold/10 text-gold px-2 py-1 border border-gold/20 font-bold">
+              {plat.badge}
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <h3 className="font-cormorant text-3xl text-white italic">{plat.name}</h3>
+            <div className="h-px w-12 bg-gold/30" />
+            <p className="text-dim text-[11px] leading-relaxed font-light line-clamp-4">
+              {plat.desc}
+            </p>
+          </div>
+
+          <div className="pt-6 flex items-center gap-2 text-[8px] text-gold uppercase tracking-[0.2em] font-bold">
+            Czytaj więcej <span className="text-lg">→</span>
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div 
+          className="absolute inset-0 backface-hidden bg-dark-3 border border-gold/30 p-8 flex flex-col justify-between rotate-y-180"
+          style={{ transform: 'rotateY(180deg)' }}
+        >
+          <div className="space-y-6">
+            <h4 className="font-cormorant text-xl text-gold italic border-b border-gold/10 pb-2">Kluczowe Funkcje</h4>
+            <ul className="space-y-3">
+              {plat.features.map(f => (
+                <li key={f} className="flex items-start gap-3 text-[10px] text-dim/90 font-light leading-snug">
+                  <span className="text-gold mt-1 text-xs">✓</span> {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-cormorant text-xl text-gold italic border-b border-gold/10 pb-2">O Platformie</h4>
+            <p className="text-dim text-[10px] leading-relaxed font-light italic">
+              {plat.desc}
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -372,39 +425,6 @@ const AcademyPage: React.FC = () => {
           {/* ── CONTENT ── */}
           <div className="px-[7%] space-y-28 max-w-7xl mx-auto">
 
-            {/* PLATFORMS */}
-            {['all', 'live', 'sub', 'tube', 'marketing'].includes(activeCat) && (
-              <>
-                {['live', 'sub', 'tube', 'marketing'].filter(c => activeCat === 'all' || activeCat === c).map(cat => {
-                  const labels: Record<string, string> = { live: '🎥 Platformy Live Cam', sub: '👑 Platformy Fansite / Subskrypcja', tube: '🖥️ Platformy Tube & Funnel', marketing: '📣 Kanały Marketingowe' };
-                  const filtered = PLATFORMS.filter(p => p.cat === cat);
-                  return (
-                    <section key={cat} className="space-y-10">
-                      <div className="section-tag">{labels[cat]}</div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                        {filtered.map(plat => (
-                          <div key={plat.name} className="bg-dark-2 border border-gold/10 p-6 relative group hover:border-gold/30 transition-all overflow-hidden">
-                            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute top-3 right-3 text-[6px] tracking-[0.15em] uppercase bg-gold/10 text-gold px-2 py-0.5 border border-gold/20">{plat.badge}</div>
-                            <div className="text-3xl mb-4">{plat.ico}</div>
-                            <h3 className="font-cormorant text-xl text-white mb-2 italic">{plat.name}</h3>
-                            <p className="text-dim text-[10px] leading-relaxed mb-4 font-light">{plat.desc}</p>
-                            <ul className="space-y-1.5">
-                              {plat.features.map(f => (
-                                <li key={f} className="flex items-start gap-2 text-[9px] text-dim/80 font-light">
-                                  <span className="text-gold mt-0.5">✓</span> {f}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                  );
-                })}
-              </>
-            )}
-
             {/* VIDEOS */}
             {(activeCat === 'all' || activeCat === 'videos') && (
               <section className="space-y-10">
@@ -443,6 +463,27 @@ const AcademyPage: React.FC = () => {
                   ))}
                 </div>
               </section>
+            )}
+
+            {/* PLATFORMS (MOVED HERE) */}
+            {['all', 'live', 'sub', 'tube', 'marketing'].includes(activeCat) && (
+              <>
+                {['live', 'sub', 'tube', 'marketing'].filter(c => activeCat === 'all' || activeCat === c).map(cat => {
+                  const labels: Record<string, string> = { live: '🎥 Platformy Live Cam', sub: '👑 Platformy Fansite / Subskrypcja', tube: '🖥️ Platformy Tube & Funnel', marketing: '📣 Kanały Marketingowe' };
+                  const filtered = PLATFORMS.filter(p => p.cat === cat);
+                  if (filtered.length === 0) return null;
+                  return (
+                    <section key={cat} className="space-y-10">
+                      <div className="section-tag">{labels[cat]}</div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                        {filtered.map(plat => (
+                          <PlatformCard key={plat.name} plat={plat} />
+                        ))}
+                      </div>
+                    </section>
+                  );
+                })}
+              </>
             )}
 
             {/* DOCUMENTS / LEGAL */}
@@ -542,6 +583,19 @@ const AcademyPage: React.FC = () => {
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        .preserve-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
       `}</style>
     </>
   );

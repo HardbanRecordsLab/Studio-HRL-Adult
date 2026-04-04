@@ -67,5 +67,4 @@ export const CardContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   </div>
 );
 
-export { CardHeader, CardTitle, CardContent };
 export default Card;

@@ -1,7 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '@/utils/supabase';
+import { verifyAdminRequest } from '@/utils/adminAuth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const authorized = await verifyAdminRequest(req, res);
+  if (!authorized) return;
+
   if (req.method === 'GET') {
     const { data, error } = await supabase.from('Partner').select('*');
     if (error) return res.status(500).json({ error: error.message });

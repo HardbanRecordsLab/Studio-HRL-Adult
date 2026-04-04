@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
+import { verifyAdminRequest } from '@/utils/adminAuth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const authorized = await verifyAdminRequest(req, res);
+  if (!authorized) return;
+
   if (req.method === 'GET') {
     try {
       const { type } = req.query;

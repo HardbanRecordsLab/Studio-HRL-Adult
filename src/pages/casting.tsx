@@ -100,223 +100,215 @@ const CastingPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Casting Studio HRL Adult +18 | Dołącz do Ekskluzywnej Społeczności</title>
-        <meta name="description" content="Dołącz do Studio HRL Adult. Realistyczne zarobki 1.5k-30k+ PLN, profesjonalne studio 4K, model 60/30/10. Aplikuj na casting i zacznij karierę w branży treści dla dorosłych." />
+        <title>Casting Premium +18 | Studio HRL Adult – Ekskluzywne Partnerstwo</title>
+        <meta name="description" content="Dołącz do elitarnego grona twórców Studio HRL Adult. Profesjonalny management, luksusowe studia 4K, zarobki do 150 000 PLN+. Aplikuj na casting do najlepszego studia w branży." />
       </Head>
 
-      <div className="min-h-screen bg-dark text-text relative">
+      <div className="min-h-screen bg-dark text-text relative overflow-x-hidden">
         <Navigation />
 
         <main className="pt-24">
-          {/* HERO CASTING */}
-          <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden px-[7%] py-20">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,rgba(155,31,53,0.15),rgba(90,15,30,0.08)_50%,transparent_70%)] z-0" />
-            <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                className="hero-casting-pre flex items-center justify-center gap-4 text-gold/60 text-[8.5px] tracking-[0.5em] uppercase"
-              >
-                <div className="w-8 h-px bg-gold/30" />
-                ELEVATE YOUR EXPERIENCE
-                <div className="w-8 h-px bg-gold/30" />
-              </motion.div>
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="h1-premium text-white"
-              >
-                Dołącz do <br /><span className="italic bg-gold-gradient bg-clip-text text-transparent">ekskluzywnej</span> społeczności
-              </motion.h1>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="font-cormorant text-xl italic text-dim"
-              >
-                Odkryj swój potencjał w branży treści dla dorosłych z profesjonalnym wsparciem
-              </motion.p>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-dim text-sm leading-loose font-light max-w-2xl mx-auto"
-              >
-                Studio HRL Adult to więcej niż miejsce pracy – to partnerstwo, w którym Twoja kreatywność spotyka się z profesjonalizmem i sukcesem finansowym. Oferujemy kompletne wsparcie na każdym etapie Twojej kariery.
-              </motion.p>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex flex-wrap justify-center gap-6"
-              >
-                <a href="#form" className="btn-crimson">Aplikuj na Casting</a>
-                <a href="#earnings" className="btn-outline">Zobacz Zarobki</a>
-              </motion.div>
-            </div>
-          </section>
-
-          {/* EARNINGS TABLE */}
-          <section id="earnings" className="py-24 px-[7%] max-w-7xl mx-auto">
-            <div className="section-tag">Realistyczne Zarobki</div>
-            <h2 className="h1-premium">Zarabiaj <span className="italic bg-gold-gradient bg-clip-text text-transparent">profesjonalnie</span></h2>
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
+          {/* HERO CASTING - LUXURY REDESIGN */}
+          <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-[7%] py-24">
+            {/* Animated background layers */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(155,31,53,0.2),transparent_50%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(201,168,76,0.12),transparent_50%)]" />
+            <div className="absolute inset-0 bg-dark/40 backdrop-blur-[2px]" />
             
-            <div className="bg-dark-3/40 border border-gold/10 overflow-hidden relative">
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient" />
-              <div className="p-8 md:p-12">
-                <h3 className="font-cormorant text-3xl text-gold mb-4 text-center italic">Potencjalne Zarobki Miesięczne</h3>
-                <p className="text-xs text-dim text-center max-w-2xl mx-auto mb-8">Hybrydowy model łączy gwarantowany próg startowy dla nowych partnerów z klasycznym podziałem 60/30/10 na przychody.</p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="bg-dark-4">
-                        <th className="p-6 text-[9px] uppercase tracking-[0.25em] text-gold font-bold border-b-2 border-gold/20">Poziom</th>
-                        <th className="p-6 text-[9px] uppercase tracking-[0.25em] text-gold font-bold border-b-2 border-gold/20">Zakładany Dochód</th>
-                        <th className="p-6 text-[9px] uppercase tracking-[0.25em] text-gold font-bold border-b-2 border-gold/20">Wymagania</th>
-                        <th className="p-6 text-[9px] uppercase tracking-[0.25em] text-gold font-bold border-b-2 border-gold/20">Popularność</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-sm font-light">
-                      <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
-                        <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">500 - 2.000 PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Początkujący (Side Hustle)</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">1-2 sesje tygodniowo</div>
-                          <div className="text-dim italic">Budowanie bazy fanów</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">Wiek 18+</div>
-                          <div className="text-dim italic">Brak bazy odbiorców</div>
-                        </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-green/10 text-green border border-green/30 uppercase tracking-widest">START</span></td>
-                      </tr>
-                      <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
-                        <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">2.000 - 8.000 PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Regularny Twórca (Top 10%)</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">3-4 sesje tygodniowo</div>
-                          <div className="text-dim italic">Aktywny czat & PPV</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">Podstawowe doświadczenie</div>
-                          <div className="text-dim italic">Zaangażowana społeczność</div>
-                        </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-gold/10 text-gold border border-gold/30 uppercase tracking-widest">STABLE</span></td>
-                      </tr>
-                      <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
-                        <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">8.000 - 40.000 PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Profesjonalista (Top 1%)</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">4-5 sesji tygodniowo</div>
-                          <div className="text-dim italic">Ekskluzywne treści & GFE</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">Doświadczenie średnie</div>
-                          <div className="text-dim italic">Marka osobista</div>
-                        </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-crimson/10 text-crimson border border-crimson/30 uppercase tracking-widest">PRO</span></td>
-                      </tr>
-                      <tr className="border-b border-gold/5 hover:bg-gold/5 transition-colors">
-                        <td className="p-6">
-                          <div className="font-cormorant text-2xl text-gold font-bold">40.000 - 150.000+ PLN</div>
-                          <div className="text-[11px] text-dim mt-1">Elite Creator (Top 0.1%)</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">Pełne zaangażowanie</div>
-                          <div className="text-dim italic">Customs & Whales focus</div>
-                        </td>
-                        <td className="p-6">
-                          <div className="text-dim">Wysoka rozpoznawalność</div>
-                          <div className="text-dim italic">Profesjonalny management</div>
-                        </td>
-                        <td className="p-6"><span className="text-[8px] font-bold px-3 py-1 bg-crimson/10 text-crimson border border-crimson/30 uppercase tracking-widest">ELITE</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            <div className="relative z-10 text-center max-w-5xl mx-auto space-y-12">
+              <motion.div 
+                initial={{ opacity: 0, letterSpacing: '0.2em' }}
+                whileInView={{ opacity: 1, letterSpacing: '0.6em' }}
+                transition={{ duration: 1 }}
+                className="flex items-center justify-center gap-6 text-gold/50 text-[9px] uppercase font-bold"
+              >
+                <div className="w-16 h-px bg-gold-gradient" />
+                Elite Partnership Program
+                <div className="w-16 h-px bg-gold-gradient" />
+              </motion.div>
+
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="h1-premium text-white leading-[1.1]"
+              >
+                Zmień Swoją <span className="italic">Wizję</span> <br />
+                <span className="bg-gold-gradient bg-clip-text text-transparent">W Luksusowy Sukces</span>
+              </motion.h1>
+
+              <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 1 }}
+                className="font-cormorant text-2xl italic text-dim max-w-2xl mx-auto"
+              >
+                Profesjonalny management i produkcja treści klasy Premium dla najbardziej wymagających twórców.
+              </motion.p>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-wrap justify-center gap-8 pt-6"
+              >
+                <a href="#form" className="btn-gold px-12 py-5 text-xs">Aplikuj Teraz</a>
+                <a href="#earnings" className="btn-outline px-12 py-5 text-xs">Kalkulator Zarobków</a>
+              </motion.div>
+
+              {/* Trust Indicators */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 0.6 }}
+                transition={{ delay: 1 }}
+                className="flex justify-center gap-12 pt-16 grayscale opacity-50"
+              >
+                {['ONLYFANS TOP 0.1%', '4K PRODUCTION', 'GLOBAL REACH', 'LEGAL COMPLIANCE'].map(t => (
+                  <span key={t} className="text-[7px] tracking-[0.4em] uppercase text-gold font-bold">{t}</span>
+                ))}
+              </motion.div>
             </div>
           </section>
 
-          {/* PROCESS SECTION */}
-          <section id="process" className="py-24 bg-dark-2 px-[7%]">
-            <div className="max-w-7xl mx-auto">
-              <div className="section-tag">Jak to działa</div>
-              <h2 className="h1-premium">Proste kroki do <span className="italic bg-gold-gradient bg-clip-text text-transparent">sukcesu</span></h2>
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
+          {/* LUXURY EARNINGS TABLE */}
+          <section id="earnings" className="py-32 px-[7%] max-w-7xl mx-auto relative">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-crimson/5 rounded-full blur-[120px] -z-10" />
+            <div className="section-tag">Zarobki i Skalowanie</div>
+            <h2 className="h1-premium">Twoja <span className="italic">Droga</span> do <br /><span className="bg-gold-gradient bg-clip-text text-transparent">Wolności Finansowej</span></h2>
+            
+            <div className="mt-20 grid grid-cols-1 lg:grid-cols-4 gap-px bg-gold/10 border border-gold/10">
+              {[
+                { 
+                  level: 'Starter', 
+                  amount: '1.5 - 4k', 
+                  desc: 'Budowanie fundamentów marki i pierwszej bazy lojalnych fanów.', 
+                  features: ['1-2 sesje / tydz.', 'Onboarding', 'Basic SEO'],
+                  color: 'text-dim'
+                },
+                { 
+                  level: 'Professional', 
+                  amount: '5 - 15k', 
+                  desc: 'Stabilny wzrost i optymalizacja sprzedaży poprzez PPV i Live.', 
+                  features: ['3 sesje / tydz.', 'Dedykowany czat', 'Social funnel'],
+                  color: 'text-gold'
+                },
+                { 
+                  level: 'Master', 
+                  amount: '15 - 45k', 
+                  desc: 'Zaawansowana monetyzacja i budowanie statusu Top 1% na OF.', 
+                  features: ['4 sesje / tydz.', 'Produkcja 4K', 'Global Promo'],
+                  color: 'text-crimson'
+                },
+                { 
+                  level: 'Elite', 
+                  amount: '50 - 150k+', 
+                  desc: 'Najwyższy poziom dochodów pasywnych i pełna dominacja rynkowa.', 
+                  features: ['Full support', 'Custom management', 'VIP Whales focus'],
+                  color: 'text-white'
+                }
+              ].map((tier, i) => (
+                <div key={tier.level} className="bg-dark-2 p-10 space-y-8 hover:bg-dark-3 transition-all group relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gold/10 group-hover:bg-gold transition-colors" />
+                  <div className="space-y-2">
+                    <span className="text-[8px] uppercase tracking-[0.4em] text-gold/60">{tier.level}</span>
+                    <div className={cn("font-cormorant text-3xl font-bold", tier.color)}>{tier.amount} <span className="text-sm font-light">PLN</span></div>
+                  </div>
+                  <p className="text-[10px] text-dim leading-loose font-light italic">{tier.desc}</p>
+                  <ul className="space-y-3 pt-4">
+                    {tier.features.map(f => (
+                      <li key={f} className="flex items-center gap-3 text-[9px] text-dim/80">
+                        <span className="w-1 h-1 bg-gold rotate-45" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 text-[8px] text-dim/40 text-center italic uppercase tracking-widest">Wszystkie kwoty są uśrednionymi wynikami netto naszych partnerów w modelu 60/30/10.</p>
+          </section>
+
+          {/* LUXURY PROCESS SECTION */}
+          <section id="process" className="py-32 bg-dark-2 px-[7%] relative overflow-hidden">
+            <div className="absolute inset-0 bg-grain opacity-[0.03] pointer-events-none" />
+            <div className="max-w-7xl mx-auto relative z-10">
+              <div className="section-tag">Metodologia Sukcesu</div>
+              <h2 className="h1-premium">Ewolucja <span className="italic">Twojej</span> <br /><span className="bg-gold-gradient bg-clip-text text-transparent">Marki Osobistej</span></h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
-                <div className="hidden md:block absolute top-10 left-[10%] right-[10%] h-px bg-gradient-to-r from-crimson via-gold/20 to-gold/5 z-0" />
-                
-                <div className="relative z-10 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">1</div>
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Aplikuj</h3>
-                  <p className="text-xs text-dim leading-relaxed">Wypełnij formularz castingowy i prześlij podstawowe informacje o sobie</p>
-                </div>
-                
-                <div className="relative z-10 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">2</div>
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Sesja</h3>
-                  <p className="text-xs text-dim leading-relaxed">Przyjdź na profesjonalną sesję testową w naszym studiu 4K</p>
-                </div>
-                
-                <div className="relative z-10 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">3</div>
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Zarabiaj</h3>
-                  <p className="text-xs text-dim leading-relaxed">Rozpocznij tworzenie treści i zarabiaj w hybrydowym modelu 60/30/10 z gwarancją startową</p>
-                </div>
+              <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-20">
+                {[
+                  { 
+                    num: '01', 
+                    title: 'Audyt i Strategia', 
+                    desc: 'Analizujemy Twój potencjał i tworzymy unikalny plan pozycjonowania na globalnym rynku adult.',
+                    ico: '🎯'
+                  },
+                  { 
+                    num: '02', 
+                    title: 'Produkcja 4K', 
+                    desc: 'Realizujemy profesjonalne sesje foto i wideo w luksusowych lokalizacjach z wykorzystaniem sprzętu kinowego.',
+                    ico: '📹'
+                  },
+                  { 
+                    num: '03', 
+                    title: 'Monetyzacja', 
+                    desc: 'Nasi managerowie przejmują obsługę techniczną i marketingową, pozwalając Ci skupić się na kreacji.',
+                    ico: '💎'
+                  }
+                ].map((step, i) => (
+                  <div key={step.num} className="space-y-8 group">
+                    <div className="flex items-baseline gap-4">
+                      <span className="font-playfair text-6xl text-gold/10 group-hover:text-gold/30 transition-colors duration-700">{step.num}</span>
+                      <div className="text-3xl">{step.ico}</div>
+                    </div>
+                    <h3 className="font-cormorant text-2xl text-white italic">{step.title}</h3>
+                    <p className="text-xs text-dim leading-loose font-light">{step.desc}</p>
+                    <div className="w-12 h-px bg-gold/20 group-hover:w-full transition-all duration-1000" />
+                  </div>
+                ))}
               </div>
             </div>
           </section>
 
-          {/* CASTING FORM SECTION */}
-          <section id="form" className="py-24 px-[7%] bg-dark-3">
+          {/* LUXURY CASTING FORM SECTION */}
+          <section id="form" className="py-32 px-[7%] bg-dark relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
             <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-16 space-y-4">
-                <div className="section-tag justify-center">Formularz Castingowy</div>
-                <h2 className="h1-premium">Zacznij swoją <span className="italic bg-gold-gradient bg-clip-text text-transparent">karierę</span></h2>
-                <p className="text-dim text-sm font-light italic">
-                  Wypełnij poniższy formularz, a my skontaktujemy się z Tobą w ciągu 24 godzin.
+              <div className="text-center mb-24 space-y-6">
+                <div className="section-tag justify-center">Aplikacja Premium</div>
+                <h2 className="h1-premium">Zostań <span className="italic bg-gold-gradient bg-clip-text text-transparent">Partnerką</span> Studio HRL</h2>
+                <p className="text-dim text-sm font-light italic max-w-xl mx-auto leading-loose">
+                  Nasz proces selekcji jest rygorystyczny, aby zapewnić najwyższą jakość współpracy. Gwarantujemy pełną dyskrecję i profesjonalne podejście od pierwszego kontaktu.
                 </p>
               </div>
 
               {isSubmitted ? (
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-gold/5 border border-gold/20 p-16 text-center space-y-6"
+                  className="bg-dark-2 border border-gold/20 p-20 text-center space-y-8 shadow-2xl relative"
                 >
-                  <div className="text-6xl">✨</div>
-                  <h3 className="font-cormorant text-4xl text-gold italic">Dziękujemy za aplikację!</h3>
-                  <p className="text-dim max-w-md mx-auto leading-loose">
-                    Twoje zgłoszenie zostało pomyślnie przesłane. Nasz zespół rekrutacyjny przeanalizuje Twoje dane i skontaktuje się z Tobą w ciągu 24 godzin.
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(201,168,76,0.1),transparent_70%)]" />
+                  <div className="text-7xl relative z-10">🌹</div>
+                  <h3 className="font-cormorant text-4xl text-gold italic relative z-10">Twoje Zgłoszenie Zostało Przyjęte</h3>
+                  <p className="text-dim max-w-md mx-auto leading-loose relative z-10 text-sm">
+                    Nasza dyrektor rekrutacji skontaktuje się z Tobą w ciągu 24 godzin, aby omówić szczegóły i zaprosić na poufną rozmowę wstępną.
                   </p>
-                  <button onClick={() => setIsSubmitted(false)} className="btn-outline">Wyślij kolejne zgłoszenie</button>
+                  <button onClick={() => setIsSubmitted(false)} className="btn-outline relative z-10 px-12">Wyślij Nowe Zapytanie</button>
                 </motion.div>
               ) : (
                 <>
-                  {/* Progress Steps */}
-                  <div className="flex justify-between mb-20 relative overflow-x-auto pb-4 px-4 scrollbar-hide">
-                    <div className="absolute top-5 left-0 right-0 h-px bg-gold/10 -translate-y-1/2 z-0" />
+                  {/* Luxury Progress Bar */}
+                  <div className="flex justify-between mb-24 relative px-4">
+                    <div className="absolute top-1/2 left-0 right-0 h-px bg-gold/5 -translate-y-1/2" />
                     {steps.map((step) => (
-                      <div key={step.id} className="relative z-10 flex flex-col items-center gap-3 min-w-[80px]">
-                        <div className={`w-10 h-10 rounded-full border flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                          currentStep >= step.id ? 'bg-gold border-gold text-dark' : 'bg-dark border-gold/20 text-gold/40'
+                      <div key={step.id} className="relative z-10 flex flex-col items-center gap-4">
+                        <div className={`w-3 h-3 rounded-full transition-all duration-700 ${
+                          currentStep >= step.id ? 'bg-gold shadow-[0_0_15px_rgba(201,168,76,0.5)] scale-125' : 'bg-dark-3 border border-gold/20'
+                        }`} />
+                        <span className={`text-[6px] tracking-[0.3em] uppercase transition-colors duration-700 font-bold ${
+                          currentStep >= step.id ? 'text-gold' : 'text-dim/30'
                         }`}>
                           {step.id}
-                        </div>
-                        <span className={`text-[7px] tracking-[0.15em] uppercase text-center transition-colors duration-500 ${
-                          currentStep >= step.id ? 'text-gold' : 'text-dim/40'
-                        }`}>
-                          {step.name}
                         </span>
                       </div>
                     ))}
@@ -327,157 +319,122 @@ const CastingPage: React.FC = () => {
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={currentStep}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.4 }}
-                        className="bg-dark-2/50 border border-gold/10 p-8 md:p-12 relative overflow-hidden"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-dark-2 border border-gold/10 p-10 md:p-16 relative shadow-2xl"
                       >
                         <div className="absolute inset-0 bg-grain opacity-[0.02] pointer-events-none" />
                         
-                        <div className="relative z-10 space-y-8">
-                          <div className="flex items-center gap-4 mb-8">
-                            <div className="w-10 h-10 rounded-full border border-crimson flex items-center justify-center text-crimson font-cormorant text-xl">{currentStep}</div>
-                            <h3 className="font-cormorant text-3xl text-gold italic">{steps[currentStep - 1].name}</h3>
+                        <div className="relative z-10 space-y-10">
+                          <div className="flex items-center gap-6 mb-12">
+                            <span className="font-playfair text-5xl text-gold/20 italic">{currentStep < 10 ? `0${currentStep}` : currentStep}</span>
+                            <h3 className="font-cormorant text-3xl text-white italic border-l border-gold/20 pl-6">{steps[currentStep - 1].name}</h3>
                           </div>
 
                           {currentStep === 1 && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Imię <span className="text-crimson">*</span></label>
-                                <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-input" placeholder="Wprowadź imię..." />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Imię lub Pseudonim <span className="text-crimson">*</span></label>
+                                <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-input-premium" placeholder="Jak mamy się do Ciebie zwracać?" />
                               </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Nazwisko <span className="text-crimson">*</span></label>
-                                <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="form-input" placeholder="Wprowadź nazwisko..." />
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Wiek <span className="text-crimson">*</span></label>
+                                <input required type="number" name="birthDate" value={formData.birthDate} onChange={handleChange} className="form-input-premium" placeholder="Musisz mieć ukończone 18 lat" />
                               </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Email <span className="text-crimson">*</span></label>
-                                <input required type="email" name="email" value={formData.email} onChange={handleChange} className="form-input" placeholder="Wprowadź email..." />
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Adres Email <span className="text-crimson">*</span></label>
+                                <input required type="email" name="email" value={formData.email} onChange={handleChange} className="form-input-premium" placeholder="Do poufnej korespondencji" />
                               </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Telefon <span className="text-crimson">*</span></label>
-                                <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-input" placeholder="Wprowadź numer telefonu..." />
-                              </div>
-                              <div className="space-y-2 md:col-span-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Data urodzenia <span className="text-crimson">*</span></label>
-                                <input required type="date" name="birthDate" value={formData.birthDate} onChange={handleChange} className="form-input" />
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Telefon / Telegram <span className="text-crimson">*</span></label>
+                                <input required type="text" name="phone" value={formData.phone} onChange={handleChange} className="form-input-premium" placeholder="Preferowana forma kontaktu" />
                               </div>
                             </div>
                           )}
 
                           {currentStep === 2 && (
-                            <div className="space-y-8">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Wzrost (cm) <span className="text-crimson">*</span></label>
-                                  <input required type="number" name="height" value={formData.height} onChange={handleChange} className="form-input" placeholder="Np. 170" />
+                            <div className="space-y-10">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <div className="space-y-3">
+                                  <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Wzrost (cm) <span className="text-crimson">*</span></label>
+                                  <input required type="number" name="height" value={formData.height} onChange={handleChange} className="form-input-premium" placeholder="Np. 172" />
                                 </div>
-                                <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Waga (kg) <span className="text-crimson">*</span></label>
-                                  <input required type="number" name="weight" value={formData.weight} onChange={handleChange} className="form-input" placeholder="Np. 55" />
+                                <div className="space-y-3">
+                                  <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Waga (kg) <span className="text-crimson">*</span></label>
+                                  <input required type="number" name="weight" value={formData.weight} onChange={handleChange} className="form-input-premium" placeholder="Np. 54" />
                                 </div>
-                                <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Kolor włosów</label>
-                                  <select name="hairColor" value={formData.hairColor} onChange={handleChange} className="form-input">
-                                    <option value="">Wybierz...</option>
-                                    <option value="blond">Blond</option>
-                                    <option value="brunetka">Brunetka</option>
-                                    <option value="szatynka">Szatynka</option>
-                                    <option value="rude">Rude</option>
-                                    <option value="inne">Inne</option>
-                                  </select>
+                                <div className="space-y-3">
+                                  <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Typ Urody</label>
+                                  <input type="text" name="hairColor" value={formData.hairColor} onChange={handleChange} className="form-input-premium" placeholder="Np. Blond / Niebieskie oczy" />
                                 </div>
-                                <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Kolor oczu</label>
-                                  <select name="eyeColor" value={formData.eyeColor} onChange={handleChange} className="form-input">
-                                    <option value="">Wybierz...</option>
-                                    <option value="niebieskie">Niebieskie</option>
-                                    <option value="zielone">Zielone</option>
-                                    <option value="piwne">Piwne</option>
-                                    <option value="szare">Szare</option>
-                                    <option value="inne">Inne</option>
-                                  </select>
+                                <div className="space-y-3">
+                                  <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Rozmiar Biustu / Sylwetka</label>
+                                  <input type="text" name="breastSize" value={formData.breastSize} onChange={handleChange} className="form-input-premium" placeholder="Np. 75C / Slim" />
                                 </div>
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Rozmiar biustu</label>
-                                <input type="text" name="breastSize" value={formData.breastSize} onChange={handleChange} className="form-input" placeholder="np. 75C" />
                               </div>
                             </div>
                           )}
 
                           {currentStep === 3 && (
-                            <div className="space-y-8">
-                              <div className="space-y-4">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Czy masz doświadczenie w branży?</label>
-                                <div className="flex flex-wrap gap-4">
-                                  <label className="flex items-center gap-3 p-4 bg-dark-4 border border-gold/10 cursor-pointer hover:border-gold/30 transition-colors">
-                                    <input type="radio" name="experience" value="no" checked={formData.experience === 'no'} onChange={handleChange} className="accent-crimson" />
-                                    <span className="text-xs text-dim">Nie</span>
-                                  </label>
-                                  <label className="flex items-center gap-3 p-4 bg-dark-4 border border-gold/10 cursor-pointer hover:border-gold/30 transition-colors">
-                                    <input type="radio" name="experience" value="yes" checked={formData.experience === 'yes'} onChange={handleChange} className="accent-crimson" />
-                                    <span className="text-xs text-dim">Tak</span>
-                                  </label>
-                                </div>
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Jeśli tak, opisz swoje doświadczenie</label>
-                                <textarea name="experienceDesc" value={formData.experienceDesc} onChange={handleChange} className="form-input min-h-[100px]" placeholder="Platformy, staż, typ treści..."></textarea>
-                              </div>
-                              <div className="space-y-4">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Na jakich platformach pracowałaś?</label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                  {['OnlyFans', 'Chaturbate', 'Fansly', 'ManyVids', 'Stripchat', 'BongaCams', 'Inne', 'Żadne'].map(p => (
-                                    <label key={p} className="flex items-center gap-3 p-3 bg-dark-4 border border-gold/5 cursor-pointer hover:border-gold/20 transition-colors">
-                                      <input type="checkbox" name="platforms" value={p.toLowerCase()} checked={formData.platforms.includes(p.toLowerCase())} onChange={handleChange} className="accent-gold" />
-                                      <span className="text-[10px] text-dim">{p}</span>
+                            <div className="space-y-10">
+                              <div className="space-y-6">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Czy posiadasz już portfolio lub historię w branży?</label>
+                                <div className="flex gap-6">
+                                  {['Nie', 'Tak'].map(opt => (
+                                    <label key={opt} className="flex-1 flex items-center justify-center gap-4 p-5 bg-dark border border-gold/10 cursor-pointer hover:border-gold/30 transition-all group">
+                                      <input type="radio" name="experience" value={opt.toLowerCase()} checked={formData.experience === opt.toLowerCase()} onChange={handleChange} className="accent-gold" />
+                                      <span className="text-xs text-dim group-hover:text-white transition-colors">{opt}</span>
                                     </label>
                                   ))}
                                 </div>
+                              </div>
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Dodatkowe informacje o doświadczeniu</label>
+                                <textarea name="experienceDesc" value={formData.experienceDesc} onChange={handleChange} className="form-input-premium min-h-[120px]" placeholder="Opisz krótko swoje dotychczasowe działania..."></textarea>
                               </div>
                             </div>
                           )}
 
                           {currentStep === 4 && (
-                            <div className="space-y-8">
-                              <div className="space-y-4">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Jakie treści chcesz tworzyć?</label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                  {['Zdjęcia', 'Wideo', 'Live cam', 'Custom requests', 'Premium content', 'Wszystkie'].map(t => (
-                                    <label key={t} className="flex items-center gap-3 p-3 bg-dark-4 border border-gold/5 cursor-pointer hover:border-gold/20 transition-colors">
+                            <div className="space-y-10">
+                              <div className="space-y-6">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Preferowane Formaty</label>
+                                <div className="grid grid-cols-2 gap-4">
+                                  {['Ekskluzywne Foto', 'Produkcja VOD', 'Live Cam Premium', 'Współpraca Solo', 'Współpraca w Parze', 'Custom Content'].map(t => (
+                                    <label key={t} className="flex items-center gap-4 p-4 bg-dark border border-gold/5 cursor-pointer hover:border-gold/20 transition-all group">
                                       <input type="checkbox" name="contentTypes" value={t.toLowerCase()} checked={formData.contentTypes.includes(t.toLowerCase())} onChange={handleChange} className="accent-gold" />
-                                      <span className="text-[10px] text-dim">{t}</span>
+                                      <span className="text-[10px] text-dim group-hover:text-white transition-colors">{t}</span>
                                     </label>
                                   ))}
                                 </div>
                               </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Limity i granice</label>
-                                <textarea name="limits" value={formData.limits} onChange={handleChange} className="form-input min-h-[100px]" placeholder="Opisz co absolutnie nie robisz i jakie masz granice..."></textarea>
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Twoje Granice i Hard Limits</label>
+                                <textarea name="limits" value={formData.limits} onChange={handleChange} className="form-input-premium min-h-[120px]" placeholder="To Ty ustalasz zasady. Opisz co jest dla Ciebie nieakceptowalne..."></textarea>
                               </div>
                             </div>
                           )}
 
                           {currentStep === 5 && (
-                            <div className="space-y-8">
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Ile sesji tygodniowo możesz odbyć?</label>
-                                <select name="sessionsPerWeek" value={formData.sessionsPerWeek} onChange={handleChange} className="form-input">
-                                  <option value="">Wybierz...</option>
-                                  <option value="1-2">1-2 sesje</option>
-                                  <option value="3-4">3-4 sesje</option>
-                                  <option value="5+">5+ sesji</option>
+                            <div className="space-y-10">
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Dyspozycyjność Tygodniowa</label>
+                                <select name="sessionsPerWeek" value={formData.sessionsPerWeek} onChange={handleChange} className="form-input-premium">
+                                  <option value="">Wybierz intensywność...</option>
+                                  <option value="1-2">Okazjonalnie (1-2 dni)</option>
+                                  <option value="3-4">Regularnie (3-4 dni)</option>
+                                  <option value="5+">Pełne Zaangażowanie (5+ dni)</option>
                                 </select>
                               </div>
-                              <div className="space-y-4">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Kiedy możesz pracować?</label>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                  {['Rano (6-12)', 'Popołudnie (12-18)', 'Wieczór (18-24)', 'Noc (24-6)', 'Weekendy', 'Elastycznie'].map(t => (
-                                    <label key={t} className="flex items-center gap-3 p-3 bg-dark-4 border border-gold/5 cursor-pointer hover:border-gold/20 transition-colors">
+                              <div className="space-y-6">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Preferowane Pory Dnia</label>
+                                <div className="grid grid-cols-2 gap-4">
+                                  {['Dzień', 'Wieczór', 'Noc', 'Weekendy'].map(t => (
+                                    <label key={t} className="flex items-center gap-4 p-4 bg-dark border border-gold/5 cursor-pointer hover:border-gold/20 transition-all group">
                                       <input type="checkbox" name="workingTimes" value={t.toLowerCase()} checked={formData.workingTimes.includes(t.toLowerCase())} onChange={handleChange} className="accent-gold" />
-                                      <span className="text-[10px] text-dim">{t}</span>
+                                      <span className="text-[10px] text-dim group-hover:text-white transition-colors">{t}</span>
                                     </label>
                                   ))}
                                 </div>
@@ -486,81 +443,65 @@ const CastingPage: React.FC = () => {
                           )}
 
                           {currentStep === 6 && (
-                            <div className="space-y-8">
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Dlaczego chcesz pracować w branży? <span className="text-crimson">*</span></label>
-                                <textarea required name="motivation" value={formData.motivation} onChange={handleChange} className="form-input min-h-[100px]" placeholder="Twoja motywacja..."></textarea>
+                            <div className="space-y-10">
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Twoja Motywacja i Cele <span className="text-crimson">*</span></label>
+                                <textarea required name="motivation" value={formData.motivation} onChange={handleChange} className="form-input-premium min-h-[120px]" placeholder="Co chcesz osiągnąć współpracując z nami?"></textarea>
                               </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Czy masz tatuaże lub piercing?</label>
-                                <textarea name="bodyModifications" value={formData.bodyModifications} onChange={handleChange} className="form-input min-h-[80px]" placeholder="Lokalizacja i rodzaj..."></textarea>
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Dodatkowe umiejętności</label>
-                                <textarea name="skills" value={formData.skills} onChange={handleChange} className="form-input min-h-[80px]" placeholder="Taniec, aktorstwo, języki, etc..."></textarea>
+                              <div className="space-y-3">
+                                <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Znaki Szczególne / Tatuaże / Piercing</label>
+                                <textarea name="bodyModifications" value={formData.bodyModifications} onChange={handleChange} className="form-input-premium min-h-[100px]" placeholder="Opisz ich lokalizację..."></textarea>
                               </div>
                             </div>
                           )}
 
                           {currentStep === 7 && (
-                            <div className="space-y-8">
-                              <div className="bg-dark-4/50 border border-crimson/20 p-8 space-y-6">
-                                <p className="text-[11px] text-dim leading-relaxed">Oświadczam, że:</p>
-                                <div className="space-y-4">
-                                  <label className="flex items-start gap-4 cursor-pointer group">
-                                    <input required type="checkbox" name="consentAge" checked={formData.consentAge} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Mam ukończone 18 lat i posiadam pełną zdolność do czynności prawnych <span className="text-crimson">*</span></span>
-                                  </label>
-                                  <label className="flex items-start gap-4 cursor-pointer group">
-                                    <input required type="checkbox" name="consentTerms" checked={formData.consentTerms} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Zapoznałem/am się i akceptuję regulamin oraz politykę prywatności <span className="text-crimson">*</span></span>
-                                  </label>
-                                  <label className="flex items-start gap-4 cursor-pointer group">
-                                    <input required type="checkbox" name="consentData" checked={formData.consentData} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Wyrażam zgodę na przetwarzanie moich danych osobowych w celach rekrutacyjnych <span className="text-crimson">*</span></span>
-                                  </label>
-                                  <label className="flex items-start gap-4 cursor-pointer group">
-                                    <input type="checkbox" name="consentMarketing" checked={formData.consentMarketing} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Wyrażam zgodę na otrzymywanie informacji marketingowych od Studio HRL Adult</span>
-                                  </label>
+                            <div className="space-y-10">
+                              <div className="bg-dark border border-gold/10 p-10 space-y-8 shadow-inner">
+                                <p className="font-cormorant text-xl text-gold italic border-b border-gold/10 pb-4">Oświadczenia Prawne</p>
+                                <div className="space-y-6">
+                                  {[
+                                    { name: 'consentAge', label: 'Potwierdzam ukończenie 18 roku życia.' },
+                                    { name: 'consentTerms', label: 'Akceptuję standardy profesjonalnej współpracy Studio HRL.' },
+                                    { name: 'consentData', label: 'Wyrażam zgodę na poufne przetwarzanie moich danych w celu rekrutacji.' },
+                                    { name: 'consentMarketing', label: 'Chcę otrzymywać zaproszenia na zamknięte sesje i castingi.' }
+                                  ].map(c => (
+                                    <label key={c.name} className="flex items-start gap-6 cursor-pointer group">
+                                      <input required={c.name !== 'consentMarketing'} type="checkbox" name={c.name} checked={formData[c.name as keyof typeof formData] as boolean} onChange={handleChange} className="mt-1 accent-gold w-4 h-4" />
+                                      <span className="text-xs text-dim group-hover:text-white transition-colors leading-relaxed">{c.label}</span>
+                                    </label>
+                                  ))}
                                 </div>
                               </div>
                             </div>
                           )}
 
                           {currentStep === 8 && (
-                            <div className="space-y-8">
-                              <div className="p-6 bg-gold/5 border border-gold/10">
-                                <p className="text-[11px] text-dim leading-relaxed mb-4">Wymagane minimum 3 zdjęcia (2 nagie, 1 normalne) oraz krótki filmik max 30 sekund</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie 1 - Nagie <span className="text-crimson">*</span></label>
+                            <div className="space-y-10">
+                              <div className="p-10 bg-dark border border-gold/10 space-y-10">
+                                <div className="text-center space-y-2">
+                                  <h4 className="font-cormorant text-2xl text-gold italic">Weryfikacja Wizualna</h4>
+                                  <p className="text-[10px] text-dim/60 uppercase tracking-widest">Wymagane: 3 fotografie (Full Body / Portrait) oraz krótkie wideo (30s).</p>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                  <div className="space-y-3">
+                                    <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Sylwetka (Nagie/Bielizna) <span className="text-crimson">*</span></label>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo1: files[0] }))} />
                                   </div>
-                                  <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie 2 - Nagie <span className="text-crimson">*</span></label>
+                                  <div className="space-y-3">
+                                    <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Portret (Naturalny) <span className="text-crimson">*</span></label>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo2: files[0] }))} />
                                   </div>
-                                  <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie 3 - Normalne <span className="text-crimson">*</span></label>
+                                  <div className="space-y-3">
+                                    <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Dowolne (Portfolio) <span className="text-crimson">*</span></label>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo3: files[0] }))} />
                                   </div>
-                                  <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Krótki filmik (max 30s) <span className="text-crimson">*</span></label>
-                                    <VideoUpload onUpload={(file) => setFormData(prev => ({ ...prev, video: file }))} maxSize={50} />
+                                  <div className="space-y-3">
+                                    <label className="text-[8px] uppercase tracking-[0.3em] text-gold/60 font-bold">Wideo Intro (max 30s) <span className="text-crimson">*</span></label>
+                                    <VideoUpload onUpload={(file) => setFormData(prev => ({ ...prev, video: file }))} maxSize={100} />
                                   </div>
                                 </div>
-                              </div>
-                              
-                              <div className="bg-dark-4 border border-gold/10 p-6 space-y-4">
-                                <h4 className="font-cormorant text-xl text-gold italic">Wytyczne dotyczące mediów:</h4>
-                                <ul className="text-[10px] text-dim space-y-2 list-disc pl-4 leading-relaxed">
-                                  <li>Zdjęcia powinny być wyraźne i w dobrej jakości</li>
-                                  <li>Twarz musi być widoczna na co najmniej jednym zdjęciu</li>
-                                  <li>Filmik powinien pokazywać Twoją osobę i osobowość</li>
-                                  <li>Brak filtrów lub nadmiernej edycji</li>
-                                  <li>Wszystkie materiały powinny być aktualne (maksymalnie 3 miesiące)</li>
-                                </ul>
+                                <div className="pt-6 text-center italic text-dim text-[10px]">Wszystkie materiały są przechowywane na zaszyfrowanych serwerach i służą wyłącznie do weryfikacji przez zespół rekrutacyjny.</div>
                               </div>
                             </div>
                           )}
@@ -569,24 +510,24 @@ const CastingPage: React.FC = () => {
                     </AnimatePresence>
 
                     {/* Navigation Buttons */}
-                    <div className="flex justify-between items-center pt-8 border-t border-gold/10">
+                    <div className="flex justify-between items-center pt-12 border-t border-gold/10">
                       <button 
                         type="button"
                         onClick={handleBack} 
                         className={cn(
-                          "text-[10px] uppercase tracking-widest font-bold transition-all",
+                          "text-[9px] uppercase tracking-[0.3em] font-bold transition-all",
                           currentStep === 1 ? 'opacity-0 pointer-events-none' : 'text-dim hover:text-gold'
                         )}
                       >
-                        ← Wstecz
+                        ← Wróć
                       </button>
                       
                       {currentStep < steps.length ? (
-                        <button type="button" onClick={handleNext} className="btn-gold">
-                          Dalej →
+                        <button type="button" onClick={handleNext} className="btn-gold px-12 py-4">
+                          Kontynuuj →
                         </button>
                       ) : (
-                        <button type="submit" className="btn-crimson">
+                        <button type="submit" className="btn-crimson px-16 py-4">
                           Wyślij Aplikację
                         </button>
                       )}
@@ -597,39 +538,58 @@ const CastingPage: React.FC = () => {
             </div>
           </section>
 
-          {/* FAQ SECTION */}
-          <section id="faq" className="py-24 px-[7%] max-w-5xl mx-auto">
-            <div className="section-tag">Najczęstsze Pytania</div>
-            <h2 className="h1-premium">Pytania i <span className="italic bg-gold-gradient bg-clip-text text-transparent">odpowiedzi</span></h2>
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
+          {/* LUXURY FAQ SECTION */}
+          <section id="faq" className="py-32 px-[7%] max-w-5xl mx-auto">
+            <div className="section-tag">Concierge Q&A</div>
+            <h2 className="h1-premium text-center">Wszystko co <span className="italic">powinnaś</span> wiedzieć</h2>
             
-            <div className="space-y-4">
+            <div className="mt-20 space-y-4">
               {[
-                { q: "Czy muszę mieć doświadczenie?", a: "Nie, nie wymagamy doświadczenia. Zapewniamy pełne szkolenie i wsparcie na każdym etapie. Wiele naszych najlepszych partnerek zaczynało bez żadnego doświadczenia w branży." },
-                { q: "Czy muszę mieć własny sprzęt?", a: "Nie, zapewniamy cały profesjonalny sprzęt 4K, oświetlenie, studia i wszystko, czego potrzebujesz do tworzenia treści w najwyższej jakości." },
-                { q: "Jak szybko mogę zacząć zarabiać?", a: "Po zatwierdzeniu aplikacji i odbyciu sesji testowej, możesz zacząć zarabiać już w pierwszym tygodniu. Wszystko zależy od Twojej dostępności i zaangażowania." },
-                { q: "Czy moje dane są bezpieczne?", a: "Tak, stosujemy najwyższe standardy bezpieczeństwa danych i pełną anonimowość. Twoje dane osobowe są chronione zgodnie z RODO i nigdy nie są udostępniane osobom trzecim." },
-                { q: "Czy mogę pracować anonimowo?", a: "Tak, oferujemy pełną anonimowość. Możesz używać pseudonimu, maskować twarz lub pracować w sposób, który zapewni Ci pełną prywatność." },
-                { q: "Jak wygląda proces wypłat?", a: "Wypłaty realizujemy co tydzień lub co dwa tygodnie, zgodnie z Twoimi preferencjami. Otrzymujesz szczegółowe raporty przy każdej wypłacie z pełnym wglądem w swoje zarobki." }
+                { q: "Jak wygląda pierwsza sesja w studiu?", a: "Każda nowa partnerka przechodzi przez profesjonalny onboarding. Pierwsza sesja to briefing, wybór stylizacji przez naszych stylistów oraz praca z doświadczonym fotografem, który pomoże Ci poczuć się pewnie przed obiektywem." },
+                { q: "Czy muszę pokazywać twarz?", a: "To zależy wyłącznie od Twojej strategii. Prowadzimy wiele topowych kont, które bazują na anonimowości. Wykorzystujemy geo-blocking, maski lub kadrowanie, aby chronić Twoją tożsamość, jeśli tego wymagasz." },
+                { q: "W jaki sposób rozliczane są zarobki?", a: "Stosujemy transparentny model 60/30/10. Otrzymujesz 60% przychodów netto, studio pobiera 30% na management i produkcję, a 10% przeznaczamy na fundusz marketingowy Twojej marki. Wypłaty są realizowane terminowo przelewem lub krypto." },
+                { q: "Jakie wsparcie techniczne oferujecie?", a: "Zapewniamy dostęp do najnowocześniejszego sprzętu 4K, profesjonalnego oświetlenia, szybkich łączy internetowych oraz dedykowanych stanowisk do cammingu i produkcji VOD w luksusowej oprawie." }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
               ))}
             </div>
           </section>
 
-          {/* PRIVACY ASSURANCE */}
-          <section className="py-24 px-[7%] max-w-7xl mx-auto">
-            <div className="bg-dark-3/40 border-l-4 border-gold p-12 space-y-6">
-              <h3 className="font-cormorant text-2xl text-gold italic">🔒 Twoja Prywatność Jest Naszym Priorytetem</h3>
-              <p className="text-dim text-sm leading-relaxed">W Studio HRL Adult rozumiemy, jak ważna jest prywatność w branży treści dla dorosłych. Dlatego gwarantujemy:</p>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-dim italic">
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Pełną zgodność z RODO i przepisami o ochronie danych</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Zgodność z amerykańską ustawą 18 U.S.C. § 2257</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Anonimowość i ochronę tożsamości</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Bezpieczne przechowywanie dokumentów</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Transparentność w zarządzaniu danymi</li>
-              </ul>
-              <p className="text-gold/60 text-[10px] font-bold tracking-widest uppercase">Twoje dane są bezpieczne u nas. Zawsze.</p>
+          {/* LUXURY PRIVACY ASSURANCE */}
+          <section className="py-32 px-[7%] max-w-7xl mx-auto">
+            <div className="bg-dark-2 border border-gold/20 p-16 md:p-24 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-grain opacity-[0.03]" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 blur-[80px] -z-10" />
+              
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div className="space-y-10">
+                  <div className="section-tag">Security & Privacy</div>
+                  <h3 className="font-cormorant text-4xl text-white italic">Twoje <span className="text-gold">Bezpieczeństwo</span> <br />jest naszą Religią</h3>
+                  <p className="text-dim text-sm leading-loose font-light">
+                    W branży adult content dyskrecja to nie tylko obietnica, to fundament biznesu. Studio HRL Adult wdraża wojskowe standardy ochrony danych i tożsamości naszych partnerów.
+                  </p>
+                  <div className="flex gap-4">
+                    <div className="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center text-gold text-2xl">🔒</div>
+                    <div className="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center text-gold text-2xl">🛡️</div>
+                    <div className="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center text-gold text-2xl">⚖️</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6">
+                  {[
+                    'Geo-blocking na poziomie IP i krajów',
+                    'Szyfrowane przechowywanie danych osobowych',
+                    'Pełna zgodność z ustawą 18 U.S.C. § 2257',
+                    'Profesjonalne wsparcie prawne i compliance',
+                    'Ochrona wizerunku przed wyciekami'
+                  ].map(f => (
+                    <div key={f} className="flex items-center gap-6 p-4 bg-dark border border-gold/5 hover:border-gold/20 transition-all">
+                      <div className="w-2 h-2 bg-gold-gradient rotate-45 flex-shrink-0" />
+                      <span className="text-[10px] text-dim uppercase tracking-widest font-bold">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
         </main>
@@ -639,20 +599,23 @@ const CastingPage: React.FC = () => {
       </div>
 
       <style jsx global>{`
-        .form-input {
+        .form-input-premium {
           width: 100%;
-          background: rgba(30, 24, 40, 0.5);
-          border: 1px solid rgba(201, 168, 76, 0.15);
+          background: rgba(15, 12, 20, 0.8);
+          border: 1px solid rgba(201, 168, 76, 0.1);
           color: #FBF6F0;
-          padding: 1rem;
+          padding: 1.25rem;
           font-family: 'Montserrat', sans-serif;
-          font-size: 0.85rem;
+          font-size: 0.75rem;
           font-weight: 300;
           outline: none;
-          transition: border-color 0.3s;
+          transition: all 0.5s;
+          border-radius: 0;
         }
-        .form-input:focus {
-          border-color: rgba(201, 168, 76, 0.45);
+        .form-input-premium:focus {
+          border-color: rgba(201, 168, 76, 0.5);
+          background: rgba(20, 16, 26, 0.9);
+          box-shadow: 0 0 20px rgba(201, 168, 76, 0.05);
         }
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

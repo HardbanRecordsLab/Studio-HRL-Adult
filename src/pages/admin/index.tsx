@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/common/Navigation';
@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import MediaUpload from '@/components/media/MediaUpload';
 import AcademyMediaManager from '@/components/admin/AcademyMediaManager';
+import { supabase } from '@/utils/supabase';
 
 const sidebarItems = [
   { id: 'dashboard', name: 'Dashboard', ico: '📊' },
@@ -23,23 +24,63 @@ const sidebarItems = [
 
 const AdminDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [session, setSession] = useState<any>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const {
+        data: { session }
+      } = await supabase.auth.getSession();
+      setSession(session);
+    };
+
+    initializeAuth();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => {
+      authListener?.subscription?.unsubscribe();
+    };
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple check - in production use proper auth
-    if (email === 'admin@studiohrl.com' && password === 'HRL2026!') {
-      setIsLoggedIn(true);
-      setLoginError('');
-    } else {
-      setLoginError('Invalid credentials');
+    setLoading(true);
+    setLoginError('');
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error || !data.session) {
+      setLoginError(error?.message || 'Błąd logowania');
+      setLoading(false);
+      return;
     }
+
+    setSession(data.session);
+    setLoading(false);
   };
 
-  if (!isLoggedIn) {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+  };
+
+  const authHeaders = session?.access_token
+    ? { headers: { Authorization: `Bearer ${session.access_token}` } }
+    : {};
+
+  const isAdminEmail = session?.user?.email === 'hardbanrecordslab.pl@gmail.com';
+
+  if (!session || !isAdminEmail) {
     return (
       <div className="min-h-screen bg-dark text-text flex items-center justify-center">
         <div className="bg-dark-2 p-8 rounded-lg border border-gold/20 max-w-md w-full">
@@ -68,11 +109,15 @@ const AdminDashboard: React.FC = () => {
             {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
             <button
               type="submit"
-              className="w-full bg-gold text-dark font-bold py-2 px-4 rounded hover:bg-gold/80 transition-colors"
+              disabled={loading}
+              className="w-full bg-gold text-dark font-bold py-2 px-4 rounded hover:bg-gold/80 transition-colors disabled:opacity-50"
             >
-              Login
+              {loading ? 'Logowanie...' : 'Login'}
             </button>
           </form>
+          {session && !isAdminEmail && (
+            <p className="text-red-400 text-sm mt-4">Brak uprawnień. Użyj konta admina.</p>
+          )}
         </div>
       </div>
     );
@@ -80,17 +125,17 @@ const AdminDashboard: React.FC = () => {
 
   const { data: dashboardData, isLoading: dashLoading, refetch: refetchDashboard } = useQuery({
     queryKey: ['admin-dashboard'],
-    queryFn: () => axios.get('/api/admin/dashboard').then(res => res.data)
+    queryFn: () => axios.get('/api/admin/dashboard', authHeaders).then(res => res.data)
   });
 
   const { data: partnersData, isLoading: partnersLoading, refetch: refetchPartners } = useQuery({
     queryKey: ['admin-partners'],
-    queryFn: () => axios.get('/api/admin/partners').then(res => res.data)
+    queryFn: () => axios.get('/api/admin/partners', authHeaders).then(res => res.data)
   });
 
   const { data: financeData, isLoading: financeLoading, refetch: refetchFinance } = useQuery({
     queryKey: ['admin-finance'],
-    queryFn: () => axios.get('/api/admin/finance').then(res => res.data)
+    queryFn: () => axios.get('/api/admin/finance', authHeaders).then(res => res.data)
   });
 
   return (
@@ -149,7 +194,7 @@ const AdminDashboard: React.FC = () => {
             </nav>
 
             <div className="p-8 border-t border-gold/5 text-center">
-              <button className="text-[8px] text-dim hover:text-crimson transition-colors uppercase tracking-widest">
+              <button onClick={handleLogout} className="text-[8px] text-dim hover:text-crimson transition-colors uppercase tracking-widest">
                 Wyloguj Bezpiecznie
               </button>
             </div>

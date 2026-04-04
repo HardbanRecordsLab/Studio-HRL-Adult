@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { api } from '@/utils/api';
+import api from '@/utils/api';
 
 interface UploadProgress {
   loaded: number;
@@ -59,7 +59,7 @@ export const useMediaUpload = (): MediaUploadHook => {
       }
 
       // Upload file
-      const response = await api.uploadFile('/api/upload', file, (progress) => {
+      const response = await api.uploadFile('/api/upload', file, (progress: number) => {
         const uploadProgress: UploadProgress = {
           loaded: progress,
           total: file.size,

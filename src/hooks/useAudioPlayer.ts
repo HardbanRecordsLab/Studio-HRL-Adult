@@ -150,9 +150,9 @@ export const useAudioPlayer = (options: UseAudioPlayerOptions = {}): UseAudioPla
     }
   }, []);
 
-  const setupAudioElement = useCallback(() => {
+  const setupAudioElement = useCallback((): (() => void) => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio) return () => {};
 
     audio.loop = loop;
     audio.preload = 'metadata';

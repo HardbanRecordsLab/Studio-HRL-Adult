@@ -11,10 +11,117 @@ const PortfolioPage: React.FC = () => {
   const [activeProfile, setActiveProfile] = useState('anna');
 
   const profiles = [
-    { id: 'anna', name: 'Anna Rose', handle: '@annarose_official', age: 25, bio: 'Tworzę treści od 2 lat • 1000+ unikalnych materiałów. Specjalizacja: Intymne rozmowy, Custom videos, Daily content. Top 5% OnlyFans.', stats: { followers: '50.2K', content: '1.2K', satisfaction: '98%', online: '24/7' }, tags: ['OnlyFans', 'Premium'], ico: '📸' },
-    { id: 'marek', name: 'Marek Wolf', handle: '@marek_wolf', age: 28, bio: 'Męski i odważny styl. Profesjonalne sesje, wysoka jakość 4K. Specjalizacja: Solo & Group content.', stats: { followers: '15.5K', content: '450', satisfaction: '95%', online: 'Daily' }, tags: ['Chaturbate', 'Top Tier'], ico: '📹' },
-    { id: 'couple', name: 'Anna & Marek', handle: '@anna_marek_duo', age: 'Duo', bio: 'Najlepsza para w branży. Chemia, emocje i luksusowa oprawa. Pełna synchronizacja na ManyVids i Fansly.', stats: { followers: '85K', content: '2.5K', satisfaction: '99%', online: '24/7' }, tags: ['ManyVids', 'Fansly'], ico: '👩‍❤️‍👨' },
+    { 
+      id: 'anna', 
+      name: 'Anna Rose', 
+      handle: '@annarose_official', 
+      age: 25, 
+      bio: 'Tworzę treści od 2 lat • 1000+ unikalnych materiałów. Specjalizacja: Intymne rozmowy, Custom videos, Daily content. Top 5% OnlyFans.', 
+      stats: { followers: '50.2K', content: '1.2K', satisfaction: '98%', online: '24/7' }, 
+      tags: ['OnlyFans', 'Premium'], 
+      ico: '📸',
+      measurements: { height: '172cm', weight: '54kg', bust: '90cm', waist: '60cm', hips: '90cm' },
+      characteristics: 'Elegancja, zmysłowość, profesjonalizm. Specjalistka od budowania głębokich relacji z fanami.'
+    },
+    { 
+      id: 'marek', 
+      name: 'Marek Wolf', 
+      handle: '@marek_wolf', 
+      age: 28, 
+      bio: 'Męski i odważny styl. Profesjonalne sesje, wysoka jakość 4K. Specjalizacja: Solo & Group content.', 
+      stats: { followers: '15.5K', content: '450', satisfaction: '95%', online: 'Daily' }, 
+      tags: ['Chaturbate', 'Top Tier'], 
+      ico: '📹',
+      measurements: { height: '185cm', weight: '82kg', bust: '110cm', waist: '82cm', hips: '95cm' },
+      characteristics: 'Charyzma, siła, autentyczność. Mistrz technicznych aspektów produkcji i dynamicznych show.'
+    },
+    { 
+      id: 'couple', 
+      name: 'Anna & Marek', 
+      handle: '@anna_marek_duo', 
+      age: 'Duo', 
+      bio: 'Najlepsza para w branży. Chemia, emocje i luksusowa oprawa. Pełna synchronizacja na ManyVids i Fansly.', 
+      stats: { followers: '85K', content: '2.5K', satisfaction: '99%', online: '24/7' }, 
+      tags: ['ManyVids', 'Fansly'], 
+      ico: '👩‍❤️‍👨',
+      measurements: { height: 'Mixed', weight: 'N/A', bust: 'N/A', waist: 'N/A', hips: 'N/A' },
+      characteristics: 'Perfekcyjna chemia, luksusowy styl życia, innowacyjne podejście do treści dla par.'
+    },
   ];
+
+// ─── PARTNER CARD ────────────────────────────────────────────────────────────
+const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      className="relative h-[450px] w-full perspective-1000 group cursor-pointer"
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+    >
+      <motion.div
+        className="relative w-full h-full transition-all duration-500 preserve-3d shadow-2xl"
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6, type: 'spring', stiffness: 260, damping: 20 }}
+      >
+        {/* Front Side: Photo & Pseudonym */}
+        <div className="absolute inset-0 backface-hidden bg-dark-2 border border-gold/10 overflow-hidden flex flex-col">
+          <div className="flex-1 bg-gradient-to-br from-dark-3 to-dark-4 relative overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(200,85,106,0.1),transparent_70%)]" />
+            <div className="text-8xl filter blur-[2px] opacity-20 group-hover:blur-none group-hover:opacity-40 transition-all duration-700">
+              {profile.ico}
+            </div>
+            <div className="absolute top-4 left-4 flex gap-2">
+              {profile.tags.map(tag => (
+                <span key={tag} className="text-[7px] tracking-[0.1em] uppercase px-2 py-0.5 bg-gold/10 text-gold border border-gold/20">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="p-8 bg-dark-2 border-t border-gold/10">
+            <h3 className="font-playfair text-3xl text-white font-bold mb-1">{profile.name}</h3>
+            <p className="text-gold text-[10px] tracking-[0.3em] uppercase">{profile.handle}</p>
+          </div>
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+        </div>
+
+        {/* Back Side: Measurements & Characteristics */}
+        <div 
+          className="absolute inset-0 backface-hidden bg-dark-3 border border-gold/30 p-8 flex flex-col justify-between rotate-y-180"
+          style={{ transform: 'rotateY(180deg)' }}
+        >
+          <div className="space-y-8">
+            <div>
+              <h4 className="font-playfair text-xl text-gold italic border-b border-gold/10 pb-2 mb-6">Wymiary</h4>
+              <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                {Object.entries(profile.measurements).map(([key, val]) => (
+                  <div key={key} className="flex justify-between items-center border-b border-gold/5 pb-1">
+                    <span className="text-[8px] text-dim uppercase tracking-widest">{key}</span>
+                    <span className="text-xs text-white font-medium">{val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-playfair text-xl text-gold italic border-b border-gold/10 pb-2 mb-4">Charakterystyka</h4>
+              <p className="text-dim text-[11px] leading-relaxed font-light italic">
+                {profile.characteristics}
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-gold/10 flex justify-center">
+             <Link href={`/profile/${profile.id}`} className="text-[9px] text-gold uppercase tracking-[0.3em] font-bold border border-gold/20 px-6 py-2 hover:bg-gold hover:text-dark transition-all">
+               Pełny Profil
+             </Link>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
   const contentItems = [
     { title: 'Intimate Morning Routine', type: 'Video • 12:45', price: '$29.99', ico: '📹' },
@@ -61,32 +168,41 @@ const PortfolioPage: React.FC = () => {
           <section id="showcase" className="py-24 px-[7%] max-w-7xl mx-auto space-y-16">
             <div className="text-center space-y-4">
               <div className="section-tag justify-center">Anna & Marek Style</div>
-              <h2 className="h2-premium">Przykłady <span className="italic">Profili</span></h2>
+              <h2 className="h2-premium">Modele & <span className="italic">Partnerzy</span></h2>
               <p className="text-dim text-xs font-light max-w-xl mx-auto">
-                Poznaj nasze flagowe profile stworzone w unikalnym stylu Studio HRL. Każdy profil jest zoptymalizowany pod kątem maksymalizacji zarobków.
+                Poznaj nasze flagowe profile stworzone w unikalnym stylu Studio HRL. Każdy partner jest profesjonalnie przeszkolony i gotowy do współpracy na najwyższym poziomie.
               </p>
             </div>
 
-            <div className="flex justify-center gap-4 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {profiles.map(p => (
-                <button 
-                  key={p.id}
-                  onClick={() => setActiveProfile(p.id)}
-                  className={`px-6 py-2 text-[10px] tracking-widest uppercase transition-all border ${
-                    activeProfile === p.id ? 'bg-gold text-dark border-gold' : 'bg-dark-3/40 text-dim border-gold/10 hover:border-gold/30'
-                  }`}
-                >
-                  {p.name}
-                </button>
+                <PartnerCard key={p.id} profile={p} />
               ))}
             </div>
 
-            <motion.div 
-              key={activeProfile}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-dark-2 border border-gold/10 overflow-hidden rounded-sm"
-            >
+            {/* Featured Profile Preview */}
+            <div className="pt-24 space-y-12">
+              <div className="section-tag justify-center">Preview: Aktywne Profile</div>
+              <div className="flex justify-center gap-4 mb-12">
+                {profiles.map(p => (
+                  <button 
+                    key={p.id}
+                    onClick={() => setActiveProfile(p.id)}
+                    className={`px-6 py-2 text-[10px] tracking-widest uppercase transition-all border ${
+                      activeProfile === p.id ? 'bg-gold text-dark border-gold' : 'bg-dark-3/40 text-dim border-gold/10 hover:border-gold/30'
+                    }`}
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+
+              <motion.div 
+                key={activeProfile}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-dark-2 border border-gold/10 overflow-hidden rounded-sm"
+              >
               {/* Profile Header Preview */}
               <div className="h-64 bg-gradient-to-br from-dark-3 to-dark-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(200,85,106,0.15),transparent_50%)]" />

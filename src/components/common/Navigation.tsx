@@ -18,9 +18,6 @@ const Navigation: React.FC = () => {
   const navLinks = [
     { name: 'Start', href: ROUTES.HOME },
     { name: 'O Studiu', href: '/#philosophy' },
-    { name: 'Dokumenty', href: '/docs' },
-    { name: 'Prywatność', href: '/privacy' },
-    { name: 'RODO', href: '/rodo' },
     { name: 'Kontakt', href: '/contact' },
     { name: 'Casting', href: ROUTES.CASTING },
     { name: 'Akademia', href: ROUTES.ACADEMY },

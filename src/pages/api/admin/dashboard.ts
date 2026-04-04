@@ -1,8 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '@/utils/supabase';
+import { verifyAdminRequest } from '@/utils/adminAuth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
+    const authorized = await verifyAdminRequest(req, res);
+    if (!authorized) return;
     try {
       // Fetch data from real tables
       const { data: partners, error: pError } = await supabase.from('Partner').select('*');
