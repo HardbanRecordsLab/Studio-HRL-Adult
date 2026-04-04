@@ -111,7 +111,10 @@
   transform: translate(-50%, -50%);
   transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
 }
-body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 20px; height: 20px; background: var(--gold); }
+body:has(a:hover) .cursor, body:has(button:hover) .cursor {
+  width: 20px;
+  height: 20px;
+  background: var(--gold);
 }
 
 ::-webkit-scrollbar-thumb {
