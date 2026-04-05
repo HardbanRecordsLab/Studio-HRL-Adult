@@ -361,6 +361,7 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
           animation: pulse-slow 6s ease-in-out infinite;
         }
       `}</style>
+    </>
     
   );
 };
