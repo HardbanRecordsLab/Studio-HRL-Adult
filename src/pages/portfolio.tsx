@@ -132,6 +132,27 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
 
   const currentProfile = profiles.find(p => p.id === activeProfile) || profiles[0];
 
+  const portfolioItems = [
+    {
+      image: '/images/portfolio/template-anna.jpg',
+      title: 'Szablon Profilu: Anna',
+      description: 'Elegancki i zmysłowy szablon profilu, idealny dla twórczyń ceniących sobie subtelność i klasę.',
+      link: '/profile/anna',
+    },
+    {
+      image: '/images/portfolio/template-marek.jpg',
+      title: 'Szablon Profilu: Marek',
+      description: 'Odważny i dynamiczny szablon, stworzony dla twórców, którzy chcą podkreślić swoją siłę i charyzmę.',
+      link: '/profile/marek',
+    },
+    {
+      image: '/images/portfolio/template-duo.jpg',
+      title: 'Szablon Profilu: Anna & Marek',
+      description: 'Luksusowy szablon dla par, prezentujący chemię i emocje w profesjonalnej oprawie.',
+      link: '/profile/couple',
+    },
+  ];
+
   return (
     <>
       <Head>
