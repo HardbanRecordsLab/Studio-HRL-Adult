@@ -563,17 +563,7 @@ const ContentSection = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        .admin-input {
-          width: 100%;
-          background: rgba(30, 24, 40, 0.5);
-          border: 1px solid rgba(201, 168, 76, 0.15);
-          color: #FBF6F0;
-          padding: 0.75rem;
-          font-size: 0.8rem;
-          outline: none;
-        }
-      `}</style>
+
     </div>
   );
 };
