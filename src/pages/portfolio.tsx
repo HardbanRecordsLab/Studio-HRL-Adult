@@ -197,60 +197,62 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
                 ))}
               </div>
 
-              <motion.div 
-                key={activeProfile}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-dark-2 border border-gold/10 overflow-hidden rounded-sm"
-              >
-              {/* Profile Header Preview */}
-              <div className="h-64 bg-gradient-to-br from-dark-3 to-dark-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(200,85,106,0.15),transparent_50%)]" />
-                <div className="absolute bottom-[-40px] left-12 w-32 h-32 rounded-full border-4 border-dark-2 bg-gradient-to-br from-rose-500 to-gold flex items-center justify-center text-4xl text-white font-bold shadow-2xl">
-                  {currentProfile.ico}
-                </div>
-              </div>
-
-              <div className="p-12 pt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="font-playfair text-4xl text-white font-bold">{currentProfile.name}</h3>
-                    <p className="text-gold text-sm tracking-widest mt-1">{currentProfile.handle}</p>
-                  </div>
-                  <p className="text-dim text-sm leading-loose font-light italic">
-                    {currentProfile.bio}
-                  </p>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-6 border-y border-gold/10">
-                    {Object.entries(currentProfile.stats).map(([label, val]) => (
-                      <div key={label}>
-                        <span className="block font-playfair text-2xl text-gold font-bold">{val}</span>
-                        <span className="text-[8px] text-dim uppercase tracking-widest">{label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex gap-4 pt-4">
-                    <button className="btn-gold px-10">Subskrybuj</button>
-                    <button className="btn-outline px-10">Wiadomość</button>
+              <motion.div
+              key={activeProfile}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-dark-2 border border-gold/10 overflow-hidden rounded-sm"
+            >
+              <div>
+                {/* Profile Header Preview */}
+                <div className="h-64 bg-gradient-to-br from-dark-3 to-dark-4 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(200,85,106,0.15),transparent_50%)]" />
+                  <div className="absolute bottom-[-40px] left-12 w-32 h-32 rounded-full border-4 border-dark-2 bg-gradient-to-br from-rose-500 to-gold flex items-center justify-center text-4xl text-white font-bold shadow-2xl">
+                    {currentProfile.ico}
                   </div>
                 </div>
 
-                <div className="space-y-8">
-                  <h4 className="font-playfair text-xl text-white italic border-b border-gold/10 pb-4">Najnowsze Treści</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {contentItems.map((item, i) => (
-                      <div key={i} className="bg-dark-3/40 border border-gold/5 p-4 flex gap-4 hover:border-gold/20 transition-all group">
-                        <div className="w-12 h-12 bg-dark-4 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                          {item.ico}
+                <div className="p-12 pt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="font-playfair text-4xl text-white font-bold">{currentProfile.name}</h3>
+                      <p className="text-gold text-sm tracking-widest mt-1">{currentProfile.handle}</p>
+                    </div>
+                    <p className="text-dim text-sm leading-loose font-light italic">
+                      {currentProfile.bio}
+                    </p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-6 border-y border-gold/10">
+                      {Object.entries(currentProfile.stats).map(([label, val]) => (
+                        <div key={label}>
+                          <span className="block font-playfair text-2xl text-gold font-bold">{val}</span>
+                          <span className="text-[8px] text-dim uppercase tracking-widest">{label}</span>
                         </div>
-                        <div>
-                          <h5 className="text-[11px] text-white font-medium">{item.title}</h5>
-                          <p className="text-[9px] text-dim">{item.type}</p>
-                          <p className="text-[10px] text-gold font-bold mt-1">{item.price}</p>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-4 pt-4">
+                      <button className="btn-gold px-10">Subskrybuj</button>
+                      <button className="btn-outline px-10">Wiadomość</button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-8">
+                    <h4 className="font-playfair text-xl text-white italic border-b border-gold/10 pb-4">Najnowsze Treści</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {contentItems.map((item, i) => (
+                        <div key={i} className="bg-dark-3/40 border border-gold/5 p-4 flex gap-4 hover:border-gold/20 transition-all group">
+                          <div className="w-12 h-12 bg-dark-4 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            {item.ico}
+                          </div>
+                          <div>
+                            <h5 className="text-[11px] text-white font-medium">{item.title}</h5>
+                            <p className="text-[9px] text-dim">{item.type}</p>
+                            <p className="text-[10px] text-gold font-bold mt-1">{item.price}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
