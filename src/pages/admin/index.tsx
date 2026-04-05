@@ -80,63 +80,25 @@ const AdminDashboard: React.FC = () => {
 
   const isAdminEmail = session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
-  if (!session || !isAdminEmail) {
-    return (
-      <div className="min-h-screen bg-dark text-text flex items-center justify-center">
-        <div className="bg-dark-2 p-8 rounded-lg border border-gold/20 max-w-md w-full">
-          <h1 className="text-2xl font-bold text-center mb-6">Admin Login</h1>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 bg-dark-3 border border-gold/20 rounded focus:border-gold focus:outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 bg-dark-3 border border-gold/20 rounded focus:border-gold focus:outline-none"
-                required
-              />
-            </div>
-            {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gold text-dark font-bold py-2 px-4 rounded hover:bg-gold/80 transition-colors disabled:opacity-50"
-            >
-              {loading ? 'Logowanie...' : 'Login'}
-            </button>
-          </form>
-          {session && !isAdminEmail && (
-            <p className="text-red-400 text-sm mt-4">Brak uprawnień. Użyj konta admina.</p>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   const { data: dashboardData, isLoading: dashLoading, refetch: refetchDashboard } = useQuery({
     queryKey: ['admin-dashboard'],
-    queryFn: () => axios.get('/api/admin/dashboard', authHeaders).then(res => res.data)
+    queryFn: () => axios.get('/api/admin/dashboard', authHeaders).then(res => res.data),
+    enabled: !!session && isAdminEmail, // Only fetch if session and admin
   });
 
   const { data: partnersData, isLoading: partnersLoading, refetch: refetchPartners } = useQuery({
     queryKey: ['admin-partners'],
-    queryFn: () => axios.get('/api/admin/partners', authHeaders).then(res => res.data)
+    queryFn: () => axios.get('/api/admin/partners', authHeaders).then(res => res.data),
+    enabled: !!session && isAdminEmail, // Only fetch if session and admin
   });
 
   const { data: financeData, isLoading: financeLoading, refetch: refetchFinance } = useQuery({
     queryKey: ['admin-finance'],
-    queryFn: () => axios.get('/api/admin/finance', authHeaders).then(res => res.data)
+    queryFn: () => axios.get('/api/admin/finance', authHeaders).then(res => res.data),
+    enabled: !!session && isAdminEmail, // Only fetch if session and admin
   });
+
+  if (!session || !isAdminEmail) {
 
   return (
     <>
