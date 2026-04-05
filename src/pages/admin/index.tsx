@@ -78,7 +78,7 @@ const AdminDashboard: React.FC = () => {
     ? { headers: { Authorization: `Bearer ${session.access_token}` } }
     : {};
 
-  const isAdminEmail = session?.user?.email === 'hardbanrecordslab.pl@gmail.com';
+  const isAdminEmail = session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
   if (!session || !isAdminEmail) {
     return (
