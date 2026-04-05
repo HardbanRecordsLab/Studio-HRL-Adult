@@ -138,7 +138,6 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
         <title>Portfolio - Studio HRL Adult</title>
         <meta name="description" content="Portfolio i szablony profili partnerek Studio HRL Adult. Zobacz nasze realizacje i styl Anna & Marek." />
       </Head>
-
         <div className="min-h-screen bg-dark text-text relative">
         <Navigation />
 
