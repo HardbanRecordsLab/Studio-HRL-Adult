@@ -7,11 +7,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!authorized) return;
   const db = readDB();
   
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const authorized = await verifyAdminRequest(req, res);
-  if (!authorized) return;
-  const db = readDB();
-  
   if (req.method === 'GET') {
     const content = db.content || [];
     
@@ -73,5 +68,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else {
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-}
 }
