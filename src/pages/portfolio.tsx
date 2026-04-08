@@ -60,14 +60,17 @@ const PortfolioPage: React.FC = () => {
       characteristics: 'Charyzma, siła, autentyczność. Mistrz technicznych aspektów produkcji i dynamicznych show.'
     },
     { 
-      id: 'couple', 
+      id: 'anna-marek', 
       name: 'Anna & Marek', 
       handle: '@anna_marek_duo', 
       age: 'Duo', 
-      bio: 'Najlepsza para w branży. Chemia, emocje i luksusowa oprawa. Pełna synchronizacja na ManyVids i Fansly.', 
-      stats: { followers: '85K', content: '2.5K', satisfaction: '99%', online: '24/7' }, 
-      tags: ['ManyVids', 'Fansly'], 
+      bio: 'Prawdziwa para z naturalną chemią. Zmysłowe, autentyczne i profesjonalne materiały. Specjalizacja: Couple dynamics, live sessions, custom scenarios.', 
+      stats: { followers: '4.2K', content: '240+', satisfaction: '99%', online: 'Daily' }, 
+      tags: ['OnlyFans', 'Fansly', 'Couple'], 
       ico: '👩‍❤️‍👨',
+      measurements: { height: 'Mixed', weight: 'Mixed', bust: 'N/A', waist: 'N/A', hips: 'N/A' },
+      characteristics: 'Autentyczna chemia, wspólna pasja, profesjonalizm. Para która zmienia branżę - bez udawania, tylko rzeczywista intymność.'
+    },
       measurements: { height: 'Mixed', weight: 'N/A', bust: 'N/A', waist: 'N/A', hips: 'N/A' },
       characteristics: 'Perfekcyjna chemia, luksusowy styl życia, innowacyjne podejście do treści dla par.'
     },
@@ -183,8 +186,8 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
     },
     {
       image: '/images/portfolio/template-duo.jpg',
-      title: 'Szablon Duo: Luksus',
-      description: 'Luksusowy szablon dla par, prezentujący autentyczną chemię, emocje i profesjonalną oprawę. Perfekcyjnie do synchronizacji.',
+      title: 'Profil: Anna & Marek',
+      description: 'Prawdziwa para z autentyczną chemią. Zmysłowe, intymne i profesjonalne materiały. Specjalizacja: Couple dynamics, live performance, real connection.',
       link: '/profile/anna-marek',
     },
   ];
