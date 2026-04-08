@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '@/utils/supabase';
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
 export async function verifyAdminRequest(req: NextApiRequest, res: NextApiResponse) {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
@@ -19,7 +17,7 @@ export async function verifyAdminRequest(req: NextApiRequest, res: NextApiRespon
     return false;
   }
 
-  if (data.user.email !== ADMIN_EMAIL) {
+  if (data.user.email !== 'hardbanrecordslab.pl@gmail.com') {
     res.status(403).json({ error: 'Forbidden' });
     return false;
   }

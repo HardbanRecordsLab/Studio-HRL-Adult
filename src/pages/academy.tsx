@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/common/Navigation';
@@ -311,8 +311,41 @@ const PlatformCard: React.FC<{ plat: typeof PLATFORMS[0] }> = ({ plat }) => {
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 const AcademyPage: React.FC = () => {
   const [activeCat, setActiveCat] = useState('all');
-  const [docFilter, setDocFilter] = useState('all');
+  const [docFilter, setDocFilter] = useState('all');  const [blogArticles, setBlogArticles] = useState<any[]>([]);
+  const [articlesLoading, setArticlesLoading] = useState(true);
 
+  useEffect(() => {
+    // Fetch blog articles from database
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch('/api/academy/content?type=articles');
+        if (response.ok) {
+          const data = await response.json();
+          // Transform database articles to match display format
+          const transformed = data.map((article: any) => ({
+            slug: article.slug,
+            cat: article.category,
+            tag: article.tag,
+            title: article.title,
+            excerpt: article.excerpt,
+            readTime: article.readTime,
+            date: article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('pl-PL', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A',
+            tags: article.tag.toLowerCase().split(' '),
+            content: article.content,
+          }));
+          setBlogArticles(transformed);
+        }
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+        // Fallback to empty array
+        setBlogArticles([]);
+      } finally {
+        setArticlesLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
   return (
     <>
       <Head>
@@ -533,36 +566,42 @@ const AcademyPage: React.FC = () => {
               <section className="space-y-10">
                 <div className="flex items-center justify-between">
                   <div className="section-tag">✍️ Blog & Artykuły</div>
-                  <span className="text-[8px] text-dim uppercase tracking-widest">{BLOG_ARTICLES.length} artykułów</span>
+                  <span className="text-[8px] text-dim uppercase tracking-widest">{blogArticles.length} artykułów</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {BLOG_ARTICLES.map(article => (
-                    <motion.div key={article.slug} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
-                      className="bg-dark-2 border border-gold/10 hover:border-gold/30 transition-all group overflow-hidden flex flex-col">
-                      {/* Placeholder image */}
-                      <div className="aspect-video bg-gradient-to-br from-dark-4 to-dark-3 relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-[8px] text-dim/30 uppercase tracking-widest">Zdjęcie artykułu</div>
+                {articlesLoading ? (
+                  <div className="text-center text-dim">Ładowanie artykułów...</div>
+                ) : blogArticles.length === 0 ? (
+                  <div className="text-center text-dim">Brak artykułów. Zanim 30 sekund...</div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {blogArticles.map(article => (
+                      <motion.div key={article.slug} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                        className="bg-dark-2 border border-gold/10 hover:border-gold/30 transition-all group overflow-hidden flex flex-col">
+                        {/* Placeholder image */}
+                        <div className="aspect-video bg-gradient-to-br from-dark-4 to-dark-3 relative overflow-hidden">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="text-[8px] text-dim/30 uppercase tracking-widest">Zdjęcie artykułu</div>
+                          </div>
+                          <div className="absolute top-3 left-3 text-[7px] tracking-[0.15em] uppercase bg-crimson/80 text-white px-2 py-0.5">{article.cat}</div>
+                          <div className="absolute top-3 right-3 text-[7px] tracking-[0.15em] uppercase bg-gold/80 text-dark px-2 py-0.5 font-bold">{article.tag}</div>
                         </div>
-                        <div className="absolute top-3 left-3 text-[7px] tracking-[0.15em] uppercase bg-crimson/80 text-white px-2 py-0.5">{article.cat}</div>
-                        <div className="absolute top-3 right-3 text-[7px] tracking-[0.15em] uppercase bg-gold/80 text-dark px-2 py-0.5 font-bold">{article.tag}</div>
-                      </div>
-                      <div className="p-6 flex flex-col flex-1 space-y-3">
-                        <h3 className="font-cormorant text-xl text-white italic leading-tight group-hover:text-gold transition-colors">{article.title}</h3>
-                        <p className="text-dim text-[10px] leading-relaxed font-light flex-1">{article.excerpt}</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {article.tags.map(tag => (
-                            <span key={tag} className="text-[7px] text-dim/50 border border-gold/10 px-2 py-0.5 uppercase tracking-widest">#{tag}</span>
-                          ))}
+                        <div className="p-6 flex flex-col flex-1 space-y-3">
+                          <h3 className="font-cormorant text-xl text-white italic leading-tight group-hover:text-gold transition-colors">{article.title}</h3>
+                          <p className="text-dim text-[10px] leading-relaxed font-light flex-1">{article.excerpt}</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {article.tags.slice(0, 3).map((tag: string) => (
+                              <span key={tag} className="text-[7px] text-dim/50 border border-gold/10 px-2 py-0.5 uppercase tracking-widest">#{tag}</span>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-between pt-3 border-t border-gold/10">
+                            <div className="text-[8px] text-dim/50">{article.date} · {article.readTime}</div>
+                            <button className="text-[8px] text-gold uppercase tracking-widest border-b border-gold/20 hover:border-gold transition-all">Czytaj →</button>
+                          </div>
                         </div>
-                        <div className="flex items-center justify-between pt-3 border-t border-gold/10">
-                          <div className="text-[8px] text-dim/50">{article.date} · {article.readTime}</div>
-                          <button className="text-[8px] text-gold uppercase tracking-widest border-b border-gold/20 hover:border-gold transition-all">Czytaj →</button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </section>
             )}
 
