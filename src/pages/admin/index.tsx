@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/common/Navigation';
 import UnifiedPlatformManager from '@/components/admin/UnifiedPlatformManager';
+import { cn } from '@/utils/utils';
 
 const AdminPanel: React.FC = () => {
   const [activeTab, setActiveTab] = useState('profiles');
