@@ -68,11 +68,7 @@ const PortfolioPage: React.FC = () => {
       stats: { followers: '4.2K', content: '240+', satisfaction: '99%', online: 'Daily' }, 
       tags: ['OnlyFans', 'Fansly', 'Couple'], 
       ico: '👩‍❤️‍👨',
-      measurements: { height: 'Mixed', weight: 'Mixed', bust: 'N/A', waist: 'N/A', hips: 'N/A' },
-      characteristics: 'Autentyczna chemia, wspólna pasja, profesjonalizm. Para która zmienia branżę - bez udawania, tylko rzeczywista intymność.'
-    },
-      measurements: { height: 'Mixed', weight: 'N/A', bust: 'N/A', waist: 'N/A', hips: 'N/A' },
-      characteristics: 'Perfekcyjna chemia, luksusowy styl życia, innowacyjne podejście do treści dla par.'
+
     },
   ];
 
