@@ -8,9 +8,21 @@ import Footer from '@/components/common/Footer';
 import CTA from '@/components/sections/CTA';
 
 const PortfolioPage: React.FC = () => {
-  const [activeProfile, setActiveProfile] = useState('anna');
+  const [activeProfile, setActiveProfile] = useState('alexia');
 
   const profiles = [
+    { 
+      id: 'alexia', 
+      name: 'Alexia', 
+      handle: '@alexia_premium', 
+      age: 23, 
+      bio: 'Premium Glamour Creator • 10+ lat doświadczenia w modelingu • Specjalizacja: Artistic nudes, Fashion, Lingerie. Top 3% OnlyFans & Fansly.', 
+      stats: { followers: '42.8K', content: '850+', satisfaction: '99%', online: '12-20' }, 
+      tags: ['OnlyFans', 'Fansly', 'Luxury'], 
+      ico: '✨',
+      measurements: { height: '174cm', weight: '56kg', bust: '92cm', waist: '62cm', hips: '92cm' },
+      characteristics: 'Artystka, elegancja, zmysłowość ze smakiem. Specjalistka od luxury content, artystycznych nudów i fotografii high-end. Absolutna profesjonalistka.'
+    },
     { 
       id: 'anna', 
       name: 'Anna Rose', 
@@ -134,22 +146,28 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
 
   const portfolioItems = [
     {
+      image: '/images/portfolio/template-alexia.jpg',
+      title: 'Szablon Premium: Alexia',
+      description: 'Luksusowy szablon dla artystek i modelek, łączący elegancję ze zmysłowością. Idealny dla twórców high-end content i fotografii artystycznej.',
+      link: '/profile/alexia',
+    },
+    {
       image: '/images/portfolio/template-anna.jpg',
-      title: 'Szablon Profilu: Anna',
-      description: 'Elegancki i zmysłowy szablon profilu, idealny dla twórczyń ceniących sobie subtelność i klasę.',
+      title: 'Szablon Solo: Elegancja',
+      description: 'Elegancki i zmysłowy szablon profilu, idealny dla twórczyń ceniących sobie subtelność, klasę i głębokie relacje z fanami.',
       link: '/profile/anna',
     },
     {
       image: '/images/portfolio/template-marek.jpg',
-      title: 'Szablon Profilu: Marek',
-      description: 'Odważny i dynamiczny szablon, stworzony dla twórców, którzy chcą podkreślić swoją siłę i charyzmę.',
+      title: 'Szablon Solo: Siła',
+      description: 'Odważny i dynamiczny szablon, stworzony dla twórców, którzy chcą podkreślić swoją siłę, charyzę i maskulinność.',
       link: '/profile/marek',
     },
     {
       image: '/images/portfolio/template-duo.jpg',
-      title: 'Szablon Profilu: Anna & Marek',
-      description: 'Luksusowy szablon dla par, prezentujący chemię i emocje w profesjonalnej oprawie.',
-      link: '/profile/couple',
+      title: 'Szablon Duo: Luksus',
+      description: 'Luksusowy szablon dla par, prezentujący autentyczną chemię, emocje i profesjonalną oprawę. Perfekcyjnie do synchronizacji.',
+      link: '/profile/anna-marek',
     },
   ];
 

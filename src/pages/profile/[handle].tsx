@@ -8,6 +8,43 @@ import Navigation from '@/components/common/Navigation';
 
 // ─── MOCK DATA – w produkcji zastąp fetch z bazy ─────────────────────────────
 const PROFILES: Record<string, ProfileData> = {
+  'alexia': {
+    handle: 'alexia',
+    type: 'solo',
+    name: 'Alexia',
+    tagline: 'Premium Glamour & Luxury Art',
+    eyebrow: 'Profesjonalna Artystka — Modelka — 10+ lat w industrii — Studio HRL Adult',
+    bio: 'Jestem artystką, modelką i twórczynią treści premium. Specjalizuję się w luxury content, fotografii artystycznej i edukacji w branży. Każda sesja to dzieło sztuki łączące elegancję z autentycznością.',
+    stats: [
+      { val: '42.8k+', label: 'Obserwujących' },
+      { val: '850+', label: 'Treści premium' },
+      { val: '99%', label: 'Zadowolonych' },
+    ],
+    platforms: [
+      { name: 'OnlyFans', url: '#', color: '#00AFF0', icon: '🔥' },
+      { name: 'Fansly', url: '#', color: '#9B59B6', icon: '💫' },
+      { name: 'ManyVids', url: '#', color: '#FF6B35', icon: '🎬' },
+    ],
+    plans: [
+      { name: 'Gallery Pass', price: '$5.99', period: '/mies.', desc: 'Dostęp do galerii artystycznych', perks: ['150+ artystycznych zdjęć', 'Tygodniowe release', 'Wiadomości'], featured: false },
+      { name: 'Premium Subscriber', price: '$14.99', period: '/mies.', desc: 'Pełny dostęp do wszystkich treści', perks: ['Wszystkie wideo 4K/8K', 'Custom content requests', 'Live stream dostęp 2x/mies.', 'BTS ekskluzywne'], featured: true },
+      { name: 'VIP Patron', price: '$49.99', period: '/mies.', desc: 'Ekskluzywny dostęp i osobisty kontakt', perks: ['Prywatne 1-on-1 sessions', 'Custom video producction', 'Priority messaging', 'Personalized photo shoots planning'], featured: false },
+    ],
+    schedule: [
+      { day: 'Wt', time: '19:00', active: true },
+      { day: 'Cz', time: '20:30', active: false },
+      { day: 'Pt', time: '21:00', active: true },
+      { day: 'So', time: '22:00', active: false },
+      { day: 'Nd', time: '19:30', active: false },
+    ],
+    testimonials: [
+      { text: 'Alexia to artystka na najwyższym poziomie. Treści są piękne, artystyczne i profesjonalne. To nie jest zwykły porn — to prawdziwe dzieła sztuki.', name: 'ArtCollector_EU', since: 'Fan od 2 lat' },
+      { text: 'Najlepsze custom video jakie kiedykolwiek kupiłem. Profesjonalne podejście, wysoka jakość, perfekcyjna komunikacja. Polecam 100%!', name: 'VerifiedFan', since: 'Fan od 18 miesięcy' },
+      { text: 'Alexia jest niesamowita. Nie tylko piękna, ale również inteligentna, dowcipna i świadoma tego co robi. Jej treści inspirują mnie każdego dnia.', name: 'Premium_Supporter', since: 'Fan od 1 roku' },
+    ],
+    contentCount: 18,
+    isLive: false,
+  },
   'anna-marek': {
     handle: 'anna-marek',
     type: 'couple',

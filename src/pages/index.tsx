@@ -118,6 +118,234 @@ const HomePage: React.FC = () => {
                   </motion.div>
                 ))}
               </div>
+
+              {/* ─── CONTENT 1: NASZE CELE ─── */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pt-20 border-t border-gold/10">
+                <div className="space-y-8">
+                  <div className="section-tag">Nasze Cele</div>
+                  <h3 className="h2-premium">Gdzie <span className="italic">Zmierzamy</span></h3>
+                  <div className="space-y-4 text-dim text-sm leading-relaxed font-light">
+                    <p>
+                      Studio HRL Adult nie jest zwykłą produkcownią. Jesteśmy misją transformowania branży adult content z amatorskiego chaosu w profesjonalny ekosystem, który traktuje twórce jako artystów i przedsiębiorców.
+                    </p>
+                    <p>
+                      Naszym celem na rok 2026 jest osiągnięcie:</p>
+                    <div className="space-y-3 pt-4">
+                      {[
+                        { goal: '$5M+ Rocznych Przychodów Portfelu', desc: 'Wygenerowanie tej kwoty dla wszystkich naszych partnerów łącznie' },
+                        { goal: '50+ Twórczych Partnerów', desc: 'Budowa stabilnego ekosystemu talentów z całej Europy' },
+                        { goal: '100M+ Miesięcznych Wyświetleń', desc: 'Organiczny ruch na wszystkie platformy i kanały' },
+                        { goal: 'Globalnej Rozpoznawalności', desc: 'Bycie referencją dla jakości w branży na świecie' },
+                      ].map((item, i) => (
+                        <div key={i} className="flex gap-4 bg-dark-3 border border-gold/10 p-4 hover:border-gold/20 transition-all">
+                          <div className="text-gold text-lg font-bold flex-shrink-0">🎯</div>
+                          <div>
+                            <p className="text-white font-bold text-xs uppercase tracking-widest">{item.goal}</p>
+                            <p className="text-[10px] text-dim/80 mt-1">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="relative space-y-6">
+                  <div className="bg-dark-3 border border-gold/10 p-8 space-y-4">
+                    <p className="text-[10px] text-gold uppercase tracking-[0.2em] font-bold">Studio Info</p>
+                    <div className="space-y-4 text-sm">
+                      <div>
+                        <p className="text-dim text-[9px] uppercase tracking-widest mb-1">📅 Założona</p>
+                        <p className="text-white font-bold">2026</p>
+                      </div>
+                      <div className="border-t border-gold/10 pt-4">
+                        <p className="text-dim text-[9px] uppercase tracking-widest mb-1">📍 Siedziba</p>
+                        <p className="text-white font-bold">Cypr (Cyprus)</p>
+                      </div>
+                      <div className="border-t border-gold/10 pt-4">
+                        <p className="text-dim text-[9px] uppercase tracking-widest mb-1">🌍 Status</p>
+                        <p className="text-white font-bold">48 Godzin od Startu</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-crimson/10 border border-crimson/20 p-6 space-y-3">
+                    <p className="text-crimson font-bold text-xs uppercase tracking-widest">Wizja 2026+</p>
+                    <p className="text-white text-[11px] leading-relaxed">
+                      Chcemy być studio, które zmienia życia poprzez wolność finansową. Każdy twórca z nami osiąga więcej niż zarabia - osiąga bezpieczeństwo, wsparcie i szacunek.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* ─── CONTENT 2: NASZE PRIORYTETY ─── */}
+              <div className="space-y-12 pt-20 border-t border-gold/10">
+                <div className="text-center space-y-4">
+                  <div className="section-tag justify-center">Priorytety</div>
+                  <h3 className="h2-premium">To Nas <span className="italic">Definiuje</span></h3>
+                  <p className="text-dim text-xs font-light max-w-2xl mx-auto leading-loose">
+                    W Studio HRL Adult mamy jasne priorytety. Wszystko, co robimy, wynika z tych pięciu filarów strategicznych.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                  {[
+                    { 
+                      rank: '#1', 
+                      priority: 'Dyskrecja', 
+                      desc: 'Prywatność twórcy to numer jeden. Zero kompromisów w kwestii bezpieczeństwa danych i anonimowości',
+                      icon: '🔐'
+                    },
+                    { 
+                      rank: '#2', 
+                      priority: 'Transparentność', 
+                      desc: 'Model 60/30/10 nie zmienia się. Co zarabiasz, to widzisz. Dokumentacja na każdym etapie',
+                      icon: '📊'
+                    },
+                    { 
+                      rank: '#3', 
+                      priority: 'Jakość', 
+                      desc: 'Każdy projekt musi być doskonały. 4K minimum, profesjonalna obsługa, perfekcja w każdym szczególe',
+                      icon: '💎'
+                    },
+                    { 
+                      rank: '#4', 
+                      priority: 'Edukacja', 
+                      desc: 'Uczymy twórców business modelom, marketingu, regulacjach prawnych - nie tylko produkcji',
+                      icon: '📚'
+                    },
+                    { 
+                      rank: '#5', 
+                      priority: 'Innowacja', 
+                      desc: 'VR, AI, blockchain, nowe platformy - zawsze na przedzie technologicznych trendów branży',
+                      icon: '🚀'
+                    }
+                  ].map((priority, i) => (
+                    <div key={i} className="bg-dark-3 border border-gold/10 p-6 space-y-4 hover:border-gold/30 hover:bg-dark-3/80 transition-all group">
+                      <div className="flex items-center justify-between">
+                        <p className="text-gold font-bold text-lg">{priority.rank}</p>
+                        <p className="text-3xl">{priority.icon}</p>
+                      </div>
+                      <h4 className="text-white font-bold text-xs uppercase tracking-widest group-hover:text-gold transition-colors">{priority.priority}</h4>
+                      <p className="text-[9px] text-dim leading-relaxed font-light">{priority.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── CONTENT 3: DLACZEGO Z NAMI ─── */}
+              <div className="space-y-12 pt-20 border-t border-gold/10">
+                <div className="text-center space-y-4">
+                  <div className="section-tag justify-center">Twoja Decyzja</div>
+                  <h3 className="h2-premium">Dlaczego Wybrać <span className="italic">Studio HRL Adult</span></h3>
+                  <p className="text-dim text-xs font-light max-w-2xl mx-auto leading-loose">
+                    To nie jest pytanie „dlaczego my?" ale raczej „co ci możemy dać co inni nie mogą?"
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[
+                    { 
+                      title: 'Finansowe Wsparcie', 
+                      items: [
+                        'Model 60/30/10 gwarantuje maksymalny zwrot',
+                        'Advance payments dostępne dla commitment partnerów',
+                        'Bonus za performance (5M+ roczne = premium split)',
+                        'Bonus za referrals (+2% za każdego nowego twórcę)',
+                        'Gwarantowany income floor przez pierwsze 90 dni'
+                      ],
+                      icon: '💰'
+                    },
+                    { 
+                      title: 'Wsparcie Techniczne', 
+                      items: [
+                        'Dostęp do naszych 4 profesjonalnych studiów 24/7',
+                        'Dedykowany production director dla każdego projektu',
+                        'Unlimited post-production hours (color, sound, edit)',
+                        'Multi-platform export i optimization (28 platform)',
+                        'Technical support 24/7 - zawsze dostępny mentor'
+                      ],
+                      icon: '⚙️'
+                    },
+                    { 
+                      title: 'Wsparcie Biznesowe', 
+                      items: [
+                        'Strategia dystrybucji na wszystkie platformy',
+                        'Marketing manager do promocji twoich treści',
+                        'Negocjacje z partnerami i sponsorami',
+                        'Legal support w kwestii compliance i kontraktów',
+                        'Quarterly business reviews i strategy sessions'
+                      ],
+                      icon: '📈'
+                    },
+                    { 
+                      title: 'Bezpieczeństwo & Dyskrecja', 
+                      items: [
+                        'Full NDA z polityką zero-disclosure',
+                        'Encrypted storage i geo-locked archives',
+                        'Anonimowy branding option (jeśli chcesz)',
+                        'Usuwanie treści w każdej chwili bez konsekwencji',
+                        'EU GDPR compliant - twoje dane to twoja, a nie nasze'
+                      ],
+                      icon: '🛡️'
+                    },
+                    { 
+                      title: 'Edukacja & Mentorstwo', 
+                      items: [
+                        'Akademia HRL - kursy online (prywatne dla partnerów)',
+                        'Monthly masterclasses z top earnerami',
+                        'Networking events z innymi twórcami',
+                        '1-on-1 coaching sessions (10 godzin/miesiąc)',
+                        'Access do exclusive industry reports i data'
+                      ],
+                      icon: '👨‍🏫'
+                    },
+                    { 
+                      title: 'Community & Status', 
+                      items: [
+                        'VIP lounge access w naszych przestrzeniach',
+                        'Studio HRL badge na profilach (prestiż)',
+                        'Featured status na naszej stronie (top earners)',
+                        'Networking z najlepszymi twórcami Europy',
+                        'Invitation-only events i partie premium'
+                      ],
+                      icon: '🌟'
+                    }
+                  ].map((category, i) => (
+                    <div key={i} className="bg-dark-3 border border-gold/10 p-8 space-y-6 hover:border-gold/20 transition-all group">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-2xl mb-2">{category.icon}</p>
+                          <h4 className="text-white font-bold text-sm uppercase tracking-widest">{category.title}</h4>
+                        </div>
+                      </div>
+                      <ul className="space-y-3">
+                        {category.items.map((item, j) => (
+                          <li key={j} className="text-[9px] text-dim flex gap-3 leading-relaxed">
+                            <span className="text-gold flex-shrink-0 font-bold">✓</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Section */}
+                <div className="bg-gradient-to-r from-crimson/20 to-gold/20 border border-gold/20 p-12 text-center space-y-6 rounded-lg">
+                  <h3 className="font-cormorant text-3xl italic text-white">
+                    Gotowy na zmianę?
+                  </h3>
+                  <p className="text-dim text-sm max-w-2xl mx-auto leading-relaxed">
+                    Studio HRL Adult to nie tylko produkownia. To partnerstwo, które zmieni twoją karierę. Dołącz do nas i zostań częścią rewolucji w branży adult content.
+                  </p>
+                  <div className="flex gap-4 justify-center pt-6">
+                    <button className="bg-gold text-dark font-bold py-3 px-8 hover:bg-gold/80 transition-colors uppercase tracking-widest text-sm">
+                      💬 Konsultacja
+                    </button>
+                    <button className="border border-gold text-gold font-bold py-3 px-8 hover:bg-gold/10 transition-colors uppercase tracking-widest text-sm">
+                      📧 Aplikacja
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
