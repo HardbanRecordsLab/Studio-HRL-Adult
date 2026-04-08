@@ -1,7 +1,4 @@
-import React from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ROUTES } from '@/utils/constants';
+import { getCloudinaryUrl } from '@/utils/cloudinary';
 
 const Hero: React.FC = () => {
   return (
@@ -11,7 +8,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-dark/60 z-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-dark/20 via-transparent to-dark z-10" />
         <img 
-          src="/images/hero-model.jpg" 
+          src={getCloudinaryUrl('hero-model.jpg', { quality: 'auto', format: 'auto' })} 
           alt="Premium Experience" 
           className="w-full h-full object-cover object-center opacity-40 grayscale"
         />
@@ -81,20 +78,7 @@ const Hero: React.FC = () => {
           Where artistry meets professional excellence.
         </motion.p>
 
-        {/* CTAs */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6"
-        >
-          <Link href={ROUTES.CASTING} className="btn-gold min-w-[240px]">
-            Explore Memberships
-          </Link>
-          <Link href="/#philosophy" className="btn-outline min-w-[240px]">
-            The Art of Adult
-          </Link>
-        </motion.div>
+        {/* CTAs removed */}
       </div>
 
       {/* Scroll Indicator */}

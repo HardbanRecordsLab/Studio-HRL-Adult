@@ -7,35 +7,7 @@ const CTA: React.FC = () => {
   return (
     <section className="py-32 px-[7%] bg-dark overflow-hidden relative" id="cta">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Join Community Card */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            className="bg-dark-2 border border-gold/15 p-12 md:p-16 relative overflow-hidden group"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
-            
-            <div className="relative z-10 space-y-8">
-              <h2 className="font-cormorant text-3xl md:text-5xl text-white font-light leading-tight uppercase">
-                Join Our Exclusive <br />
-                <span className="italic bg-gold-gradient bg-clip-text text-transparent">Community</span>
-              </h2>
-              <p className="text-dim text-xs md:text-sm leading-relaxed font-light max-w-md italic">
-                Elevate your career with Poland's foremost production house. 
-                Professional management, high-end content, and unparalleled support.
-              </p>
-              <Link href={ROUTES.CASTING} className="btn-outline border-gold/40 text-gold hover:bg-gold hover:text-dark">
-                View Membership Plans
-              </Link>
-            </div>
-            
-            {/* Background Icon Accent */}
-            <div className="absolute bottom-8 right-8 text-8xl opacity-5 grayscale group-hover:grayscale-0 group-hover:opacity-10 transition-all duration-700">
-              💎
-            </div>
-          </motion.div>
-
+        <div className="grid grid-cols-1 gap-8">
           {/* Partner With Us Card */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
