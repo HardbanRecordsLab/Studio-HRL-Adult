@@ -6,7 +6,7 @@ const Philosophy: React.FC = () => {
     {
       title: 'Studio Noir Elegance',
       image: 'https://picsum.photos/400/400?random=1',
-      type: 'Sesja Foto',
+      type: 'Photo Session',
       alt: 'Studio Noir Elegance - Profesjonalna sesja zdjęciowa w eleganckim studiu z czarnym tłem, oferująca wysokiej klasy zawartość visual dla platformy adult',
       description: 'Sesja zdjęciowa w eleganckim studiu'
     },
@@ -20,50 +20,50 @@ const Philosophy: React.FC = () => {
     {
       title: 'Golden Hour',
       image: 'https://picsum.photos/400/400?random=3',
-      type: 'Styl Komercyjny',
+      type: 'Commercial Style',
       alt: 'Golden Hour - Komercyjna sesja w złotej godzinie z naturalnym oświetleniem, tworząca wysokiej klasy zawartość marketingową',
       description: 'Zdjęcia w złotej godzinie z naturalnym światłem'
     },
     {
       title: 'Artistic Expression',
       image: 'https://picsum.photos/400/400?random=4',
-      type: 'Kierunek Kreatywny',
+      type: 'Creative Direction',
       alt: 'Artistic Expression - Artystyczna interpretacja zawartości adult z kreatywnym kierunkiem i profesjonalną realizacją',
       description: 'Artystyczna interpretacja zawartości'
     },
     {
       title: 'Luxury Aesthetics',
       image: 'https://picsum.photos/400/400?random=5',
-      type: 'Produkcja High-End',
+      type: 'High-End Production',
       alt: 'Luxury Aesthetics - Ekskluzywna produkcja high-end z luksusową estetyką i premium zarabiającą zawartością',
       description: 'Luksusowa estetyka premium'
     },
     {
       title: 'Natural Beauty',
       image: 'https://picsum.photos/400/400?random=6',
-      type: 'Organiczny Content',
-      alt: 'Natural Beauty - Organiczna zawartość celebrująca naturalną piękność bez nadmiernej edycji, autentyczna i czysta',
+      type: 'Organic Content',
+      alt: 'Natural Beauty - Organiczna zawartość celebrująca naturalną piękność bez nadmiernej edycji, autentyczna i czyszczysz',
       description: 'Zawartość organiczna z naturalnym pięknem'
     },
     {
       title: 'Urban Glamour',
       image: 'https://picsum.photos/400/400?random=7',
-      type: 'Sesja Miejska',
+      type: 'City Shoot',
       alt: 'Urban Glamour - Sesja miejska z glamuracyjnym stylem, łącząca zagraniczną architekturę z profesjonalnym performing',
       description: 'Glamuracyjna sesja w mieście'
     },
     {
       title: 'Sensual Shadows',
       image: 'https://picsum.photos/400/400?random=8',
-      type: 'Oświetlenie Studio',
+      type: 'Studio Lighting',
       alt: 'Sensual Shadows - Czuła gra światła i cienia w studiu, tworząca mistyczną i zmysłową atmosferę premium',
       description: 'Gra światła i cienia w studiu'
     },
     {
       title: 'Intimate Moments',
       image: 'https://picsum.photos/400/400?random=9',
-      type: 'Content Osobisty',
-      alt: 'Intimate Moments - Osobista zawartość intymnych chwil, autentyczna i czuła, idealna do budowania fanbase',
+      type: 'Personal Content',
+      alt: 'Intimate Moments - Osobista zawartość intymnych chwil, autentyczna i czuła, idealna do zabudowy fanbase',
       description: 'Intymne momenty z osobistą nutą'
     }
   ];
@@ -78,15 +78,15 @@ const Philosophy: React.FC = () => {
             whileInView={{ opacity: 1 }}
             className="section-tag justify-center"
           >
-            Nasza Filozofia
+            Our Philosophy
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="h2-premium uppercase"
           >
-            Sztuka Rozrywki <br />
-            <span className="italic bg-gold-gradient bg-clip-text text-transparent">Dla Dorosłych</span>
+            The Art of Adult <br />
+            <span className="italic bg-gold-gradient bg-clip-text text-transparent">Entertainment</span>
           </motion.h2>
         </div>
 
@@ -98,27 +98,39 @@ const Philosophy: React.FC = () => {
             className="space-y-8"
           >
             <p className="text-dim text-base md:text-lg leading-loose font-light italic">
-              "Wierzymy, że tworzenie treści dla dorosłych to forma sztuki, która wymaga zarówno wizji artystycznej, jak i biznesowego profesjonalizmu."
+              "We believe that adult content creation is a form of art that requires both artistic vision and business professionalism. Great content is neither purely commercial nor purely artistic – it's a perfect synthesis."
             </p>
 
             <div className="h-px w-24 bg-gold/30" />
 
             <p className="text-dim text-sm md:text-base leading-relaxed font-light">
-              W Studio HRL Adult łączymy estetykę high-end z efektywnością operacyjną.
-              Nasze podejście opiera się na trzech filarach: absolutnym szacunku, szczytowym profesjonalizmie i pełnej transparentności.
-              Zapewniamy naszym partnerkom nie tylko narzędzia, ale i inspirację do rozwoju jako niezależne artystki w bezpiecznym i lukratywnym środowisku.
+              At Studio HRL Adult, we combine high-end aesthetics with operational efficiency. Our approach is built on four core pillars: absolute respect, peak professionalism, full transparency, and sustainable growth. We provide our partners not just with tools and equipment, but with the inspiration to grow as independent artists in a safe, lucrative, and creatively fulfilling environment.
+            </p>
+
+            <p className="text-dim text-sm md:text-base leading-relaxed font-light">
+              We invest in cutting-edge 4K/8K production technology, professional cinematography teams, and marketing expertise built from years of platform mastery. Whether you're starting from zero or you're an established creator, we position you for success through strategic content planning, algorithmic optimization, and direct audience engagement strategies.
             </p>
 
             <div className="grid grid-cols-2 gap-8 pt-8">
               <div className="space-y-2">
                 <div className="text-gold font-cormorant text-3xl italic">01.</div>
-                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Doskonałość</h4>
-                <p className="text-[9px] text-dim font-light">Bezkompromisowa jakość w każdym kadrze.</p>
+                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Excellence</h4>
+                <p className="text-[9px] text-dim font-light">Uncompromising quality in every frame, from 4K cinematography to pixel-perfect editing.</p>
               </div>
               <div className="space-y-2">
                 <div className="text-gold font-cormorant text-3xl italic">02.</div>
-                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Prywatność</h4>
-                <p className="text-[9px] text-dim font-light">Twoje bezpieczeństwo to nasz priorytet operacyjny.</p>
+                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Privacy</h4>
+                <p className="text-[9px] text-dim font-light">Your security, anonymity, and data protection are non-negotiable operational priorities.</p>
+              </div>
+              <div className="space-y-2">
+                <div className="text-gold font-cormorant text-3xl italic">03.</div>
+                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Earnings</h4>
+                <p className="text-[9px] text-dim font-light">Transparent 60/30/10 model ensures you keep what you earn with guaranteed startup support.</p>
+              </div>
+              <div className="space-y-2">
+                <div className="text-gold font-cormorant text-3xl italic">04.</div>
+                <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Support</h4>
+                <p className="text-[9px] text-dim font-light">24/7 professional team dedicated to your growth, marketing, and platform optimization.</p>
               </div>
             </div>
           </motion.div>
@@ -130,7 +142,7 @@ const Philosophy: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <h3 className="font-cormorant text-2xl text-gold italic mb-8">Showcase Produkcji</h3>
+            <h3 className="font-cormorant text-2xl text-gold italic mb-8">Production Showcase</h3>
             <div className="grid grid-cols-3 gap-4">
               {productionShowcase.map((item, i) => (
                 <motion.div
