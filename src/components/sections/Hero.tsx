@@ -1,4 +1,8 @@
+import React from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { getCloudinaryUrl } from '@/utils/cloudinary';
+import { ROUTES } from '@/utils/constants';
 
 const Hero: React.FC = () => {
   return (
