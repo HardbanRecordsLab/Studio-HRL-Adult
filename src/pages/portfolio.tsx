@@ -8,9 +8,21 @@ import Footer from '@/components/common/Footer';
 import CTA from '@/components/sections/CTA';
 
 const PortfolioPage: React.FC = () => {
-  const [activeProfile, setActiveProfile] = useState('alexia');
+  const [activeProfile, setActiveProfile] = useState('jane');
 
   const profiles = [
+    { 
+      id: 'jane', 
+      name: 'Jane', 
+      handle: '@jane_premium', 
+      age: 24, 
+      bio: 'Sensualna zmysłowa artystka • Premium content creator • Specjalizacja: Lingerie, artystyczne nudy, zmysłowe sesje. Top 5% OnlyFans.', 
+      stats: { followers: '28.5K', content: '620+', satisfaction: '97%', online: '18-22' }, 
+      tags: ['OnlyFans', 'Fansly', 'Sensual'], 
+      ico: '💋',
+      measurements: { height: '172cm', weight: '58kg', bust: '100cm', waist: '65cm', hips: '95cm' },
+      characteristics: 'Zmysłowa, artystka, naturalny seks-appeal. Specjalistka od tworzenia pięknych lingerie content i artystycznych nudów z tatuażem na biodrze.'
+    },
     { 
       id: 'alexia', 
       name: 'Alexia', 
@@ -145,6 +157,12 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
   const currentProfile = profiles.find(p => p.id === activeProfile) || profiles[0];
 
   const portfolioItems = [
+    {
+      image: '/images/portfolio/template-jane.jpg',
+      title: 'Profil: Jane',
+      description: 'Zmysłowa i artystyczna twórczyni premium content. Specjalizuje się w lingerie, artystycznych aktach i zmysłowych sesjach z tatuażem. Premium glamour x intimacy.',
+      link: '/profile/jane',
+    },
     {
       image: '/images/portfolio/template-alexia.jpg',
       title: 'Szablon Premium: Alexia',

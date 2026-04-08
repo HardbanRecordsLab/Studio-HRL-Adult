@@ -8,6 +8,43 @@ import Navigation from '@/components/common/Navigation';
 
 // ─── MOCK DATA – w produkcji zastąp fetch z bazy ─────────────────────────────
 const PROFILES: Record<string, ProfileData> = {
+  'jane': {
+    handle: 'jane',
+    type: 'solo',
+    name: 'Jane',
+    tagline: 'Sensualna Zmysłowość & Premium Glamour',
+    eyebrow: 'Premium Content Creator — Modelka — Studio HRL Adult',
+    bio: 'Jestem zmysłową artystką specjalizującą się w premium content, artystycznej fotografii lingerie i luxury productions. Moja pasja to tworzenie pięknych, zmysłowych treści które zachwycają wzrok i wyobraźnię. Każda sesja to perfekcja detalu, elegancji i autentyczności.',
+    stats: [
+      { val: '28.5k+', label: 'Obserwujących' },
+      { val: '620+', label: 'Treści' },
+      { val: '97%', label: 'Zadowolonych' },
+    ],
+    platforms: [
+      { name: 'OnlyFans', url: '#', color: '#00AFF0', icon: '🔥' },
+      { name: 'Fansly', url: '#', color: '#9B59B6', icon: '💫' },
+      { name: 'ManyVids', url: '#', color: '#FF6B35', icon: '🎬' },
+    ],
+    plans: [
+      { name: 'Fan Supporter', price: '$4.99', period: '/mies.', desc: 'Podstawowy dostęp do moich treści', perks: ['100+ zdjęć miesięcznie', 'Exclusive teasery', 'Wiadomości prywatne'], featured: false },
+      { name: 'Premium Subscriber', price: '$11.99', period: '/mies.', desc: 'Pełny dostęp do wszystkich materiałów', perks: ['Wszystkie wideo HD/4K', 'Custom requests', 'Live session dostęp 2x/mies.', 'Weekly exclusive content'], featured: true },
+      { name: 'VIP Intimate', price: '$34.99', period: '/mies.', desc: 'Osobisty dostęp i spersonalizowana atencja', perks: ['Prywatne 1-on-1 video calls', 'Custom video production', 'Priority messaging 24/7', 'Personalized photo sessions booking'], featured: false },
+    ],
+    schedule: [
+      { day: 'Wt', time: '20:00', active: true },
+      { day: 'Cz', time: '19:30', active: false },
+      { day: 'Pt', time: '21:30', active: true },
+      { day: 'So', time: '20:30', active: true },
+      { day: 'Nd', time: '19:00', active: false },
+    ],
+    testimonials: [
+      { text: 'Jane to nie jest zwykła twórczyni - to prawdziwa artystka zmysłowości. Jej treści są sexy ale artystyczne, zmysłowe ale eleganckie. To inny level całkowicie.', name: 'SensualiArt_Fan', since: 'Fan od 10 miesięcy' },
+      { text: 'Najbardziej zmysłowe treści jakie widziałem. Jane wie dokładnie co robi, ma niesamowity sex appeal i naturalne piękno. Custom video? Perfekcja.', name: 'HotContentFan', since: 'Fan od 7 miesięcy' },
+      { text: 'Kto by pomyślał że zwykła bieliźna może być tak artystyczna i piękna! Jane to geniusz - polecam każdemu komu chodzi o quality i zmysłowość.', name: 'ArtisticEye', since: 'Fan od 1 roku' },
+    ],
+    contentCount: 16,
+    isLive: false,
+  },
   'alexia': {
     handle: 'alexia',
     type: 'solo',
