@@ -1,11 +1,98 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/router';
 import Navigation from '@/components/common/Navigation';
 import UnifiedPlatformManager from '@/components/admin/UnifiedPlatformManager';
 import { cn } from '@/utils/utils';
+import { useAuth } from '@/hooks/useAuth';
+
+interface PlatformInfo {
+  username: string;
+  url: string;
+  followers: number;
+  posts: number;
+  features: string[];
+  apiKey?: string;
+  lastSync?: string;
+  [key: string]: any;
+}
+
+interface PlatformDataType {
+  [key: string]: PlatformInfo;
+}
 
 const AdminPanel: React.FC = () => {
+  const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/admin/verify', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) {
+          localStorage.removeItem('adminToken');
+          setLoading(false);
+          return;
+        }
+        setLoading(false);
+      } catch (error) {
+        localStorage.removeItem('adminToken');
+        setLoading(false);
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
+  // Handle admin login
+  const handleAdminLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: loginEmail, password: loginPassword })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setLoginError(data.error || 'Login failed');
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem('adminToken', data.token);
+      setLoginEmail('');
+      setLoginPassword('');
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setLoginError('An error occurred. Please try again.');
+    }
+  };
+
+  // Handle logout
+  const handleAdminLogout = () => {
+    localStorage.removeItem('adminToken');
+    window.location.reload();
+  };
+
   const [activeTab, setActiveTab] = useState('profiles');
   const [profiles, setProfiles] = useState([
     {
@@ -39,7 +126,7 @@ const AdminPanel: React.FC = () => {
 
   // Unified Profile Management State
   const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
-  const [platformData, setPlatformData] = useState({
+  const [platformData, setPlatformData] = useState<PlatformDataType>({
     // Live Cam Platforms
     chaturbate: { username: '', url: '', followers: 12500, posts: 45, features: ['Tip Menu', 'Private Show', 'Interactive Toys', 'Fanclub'] },
     myfreecams: { username: '', url: '', followers: 8200, posts: 128, features: ['Premium', 'MFCCoins', 'Club Members'] },
@@ -166,23 +253,23 @@ const AdminPanel: React.FC = () => {
   };
 
   // Unified Profile Handlers
-  const handlePlatformUpdate = (platform: string, data: any) => {
-    setPlatformData(prev => ({
+  const handlePlatformUpdate = (platform: string, data: any): void => {
+    setPlatformData((prev: PlatformDataType) => ({
       ...prev,
       [platform]: { ...prev[platform], ...data, lastSync: new Date().toISOString() }
     }));
     alert(`${platform} settings updated successfully!`);
   };
 
-  const handlePlatformSync = (platform: string) => {
+  const handlePlatformSync = (platform: string): void => {
     // Simulate API call to sync platform data
     setTimeout(() => {
-      setPlatformData(prev => ({
+      setPlatformData((prev: PlatformDataType) => ({
         ...prev,
         [platform]: {
-          ...prev[platform],
-          followers: prev[platform].followers + Math.floor(Math.random() * 100),
-          posts: prev[platform].posts + Math.floor(Math.random() * 5),
+          ...(prev[platform] || {}),
+          followers: (prev[platform]?.followers || 0) + Math.floor(Math.random() * 100),
+          posts: (prev[platform]?.posts || 0) + Math.floor(Math.random() * 5),
           lastSync: new Date().toISOString()
         }
       }));
@@ -237,15 +324,95 @@ const AdminPanel: React.FC = () => {
         <title>Admin Panel | Studio HRL Adult</title>
       </Head>
 
-      <div className="min-h-screen bg-dark text-text flex flex-col">
+      {loading ? (
+        <div className="min-h-screen bg-dark text-text flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="text-4xl">⏳</div>
+            <p className="text-white text-lg">Loading...</p>
+          </div>
+        </div>
+      ) : !localStorage.getItem('adminToken') ? (
+        // LOGIN SCREEN
+        <div className="min-h-screen bg-dark text-text flex flex-col">
+          <Navigation />
+          <main className="flex-1 flex items-center justify-center pt-24 pb-24">
+            <div className="w-full max-w-md">
+              <div className="bg-dark-2 border border-gold/10 p-12 rounded-lg space-y-8">
+                <div className="text-center space-y-2">
+                  <h1 className="font-cormorant text-4xl text-gold italic">Admin Access</h1>
+                  <p className="text-dim text-sm">Only authorized personnel</p>
+                </div>
+
+                <form onSubmit={handleAdminLogin} className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm text-gold font-bold uppercase tracking-widest">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      placeholder="admin@hrlstudio.com"
+                      className="w-full bg-dark-3 border border-gold/10 px-4 py-3 text-white outline-none focus:border-gold/40 transition-colors"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm text-gold font-bold uppercase tracking-widest">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full bg-dark-3 border border-gold/10 px-4 py-3 text-white outline-none focus:border-gold/40 transition-colors"
+                      required
+                    />
+                  </div>
+
+                  {loginError && (
+                    <div className="bg-crimson/10 border border-crimson/30 p-3 rounded text-crimson text-sm">
+                      {loginError}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="w-full bg-gold text-dark font-bold py-3 px-6 hover:bg-gold/80 transition-colors uppercase tracking-widest text-sm"
+                  >
+                    Login
+                  </button>
+                </form>
+
+                <div className="text-center text-[10px] text-dim">
+                  <p>🔒 Admin panel secured</p>
+                  <p>Unauthorized access attempts are logged</p>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      ) : (
+        // ADMIN PANEL
+        <div className="min-h-screen bg-dark text-text flex flex-col">
         <Navigation />
 
         <main className="flex-1 pt-24">
           <div className="max-w-7xl mx-auto px-8 pb-24">
             {/* Header */}
-            <div className="mb-12 space-y-4">
-              <h1 className="font-cormorant text-5xl text-white italic">Admin Control Panel</h1>
-              <p className="text-dim text-lg">Manage profiles, media, and casting applications</p>
+            <div className="mb-12 space-y-4 flex justify-between items-start">
+              <div className="space-y-4">
+                <h1 className="font-cormorant text-5xl text-white italic">Admin Control Panel</h1>
+                <p className="text-dim text-lg">Manage profiles, media, and casting applications</p>
+              </div>
+              <button
+                onClick={handleAdminLogout}
+                className="bg-crimson/10 text-crimson hover:bg-crimson hover:text-white py-2 px-6 text-sm font-bold uppercase tracking-widest transition-all rounded border border-crimson/20"
+              >
+                🚪 Logout
+              </button>
             </div>
 
             {/* Navigation Tabs */}
@@ -346,6 +513,7 @@ const AdminPanel: React.FC = () => {
                 )}
 
                 {/* PROFILES TAB */}
+                {activeTab === 'profiles' && (
                   <div className="space-y-12">
                     {/* Create Profile Form */}
                     <div className="bg-dark-2 border border-gold/10 p-12 rounded-lg space-y-8">
@@ -506,22 +674,24 @@ const AdminPanel: React.FC = () => {
                               { key: 'bongacams', name: 'BongaCams', icon: '🇪🇺', color: 'text-green-500' },
                               { key: 'flirt4free', name: 'Flirt4Free', icon: '💬', color: 'text-orange-500' },
                               { key: 'imlive', name: 'ImLive', icon: '📺', color: 'text-cyan-500' },
-                            ].map((platform) => (
+                            ].map((platform) => {
+                              const platformInfo = platformData[platform.key] as PlatformInfo;
+                              return (
                               <div key={platform.key} className="bg-dark-3 border border-gold/10 p-6 rounded-lg text-center space-y-3">
                                 <div className="text-3xl">{platform.icon}</div>
                                 <h4 className="font-bold text-white">{platform.name}</h4>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Followers/Subscribers</p>
-                                  <p className={`text-lg font-bold ${platform.color}`}>{platformData[platform.key].followers || 0}</p>
+                                  <p className={`text-lg font-bold ${platform.color}`}>{platformInfo.followers || 0}</p>
                                 </div>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Content Items</p>
-                                  <p className="text-lg font-bold text-gold">{platformData[platform.key].posts || 0}</p>
+                                  <p className="text-lg font-bold text-gold">{platformInfo.posts || 0}</p>
                                 </div>
                                 <div className="text-xs text-dim space-y-1">
                                   <p>Features:</p>
                                   <div className="flex flex-wrap gap-1 justify-center">
-                                    {platformData[platform.key].features.map((feature, i) => (
+                                    {platformInfo.features.map((feature: string, i: number) => (
                                       <span key={i} className="bg-gold/10 text-gold px-2 py-1 rounded text-[10px]">{feature}</span>
                                     ))}
                                   </div>
@@ -530,7 +700,8 @@ const AdminPanel: React.FC = () => {
                                   Manage {platform.name}
                                 </button>
                               </div>
-                            ))}
+                            );
+                            })}
                           </div>
                         </div>
 
@@ -545,22 +716,24 @@ const AdminPanel: React.FC = () => {
                               { key: 'clips4sale', name: 'Clips4Sale', icon: '📦', color: 'text-orange-500' },
                               { key: 'avnstars', name: 'AVN Stars', icon: '🏆', color: 'text-gold' },
                               { key: 'fanvue', name: 'Fanvue', icon: '🤖', color: 'text-cyan-500' },
-                            ].map((platform) => (
+                            ].map((platform) => {
+                              const platformInfo = platformData[platform.key] as PlatformInfo;
+                              return (
                               <div key={platform.key} className="bg-dark-3 border border-gold/10 p-6 rounded-lg text-center space-y-3">
                                 <div className="text-3xl">{platform.icon}</div>
                                 <h4 className="font-bold text-white">{platform.name}</h4>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Subscribers</p>
-                                  <p className={`text-lg font-bold ${platform.color}`}>{platformData[platform.key].followers || 0}</p>
+                                  <p className={`text-lg font-bold ${platform.color}`}>{platformInfo.followers || 0}</p>
                                 </div>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Content Items</p>
-                                  <p className="text-lg font-bold text-gold">{platformData[platform.key].posts || 0}</p>
+                                  <p className="text-lg font-bold text-gold">{platformInfo.posts || 0}</p>
                                 </div>
                                 <div className="text-xs text-dim space-y-1">
                                   <p>Features:</p>
                                   <div className="flex flex-wrap gap-1 justify-center">
-                                    {platformData[platform.key].features.map((feature, i) => (
+                                    {platformInfo.features.map((feature: string, i: number) => (
                                       <span key={i} className="bg-gold/10 text-gold px-2 py-1 rounded text-[10px]">{feature}</span>
                                     ))}
                                   </div>
@@ -569,7 +742,8 @@ const AdminPanel: React.FC = () => {
                                   Manage {platform.name}
                                 </button>
                               </div>
-                            ))}
+                            );
+                            })}
                           </div>
                         </div>
 
@@ -582,22 +756,24 @@ const AdminPanel: React.FC = () => {
                               { key: 'xhamster', name: 'xHamster Creator', icon: '🐹', color: 'text-orange-500' },
                               { key: 'xvideos', name: 'xVideos RED', icon: '🎥', color: 'text-blue-500' },
                               { key: 'xhamsterlive', name: 'xHamster Live', icon: '📡', color: 'text-green-500' },
-                            ].map((platform) => (
+                            ].map((platform) => {
+                              const platformInfo = platformData[platform.key] as PlatformInfo;
+                              return (
                               <div key={platform.key} className="bg-dark-3 border border-gold/10 p-6 rounded-lg text-center space-y-3">
                                 <div className="text-3xl">{platform.icon}</div>
                                 <h4 className="font-bold text-white">{platform.name}</h4>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Views/Subscribers</p>
-                                  <p className={`text-lg font-bold ${platform.color}`}>{platformData[platform.key].followers || 0}</p>
+                                  <p className={`text-lg font-bold ${platform.color}`}>{platformInfo.followers || 0}</p>
                                 </div>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Videos</p>
-                                  <p className="text-lg font-bold text-gold">{platformData[platform.key].posts || 0}</p>
+                                  <p className="text-lg font-bold text-gold">{platformInfo.posts || 0}</p>
                                 </div>
                                 <div className="text-xs text-dim space-y-1">
                                   <p>Features:</p>
                                   <div className="flex flex-wrap gap-1 justify-center">
-                                    {platformData[platform.key].features.map((feature, i) => (
+                                    {platformInfo.features.map((feature: string, i: number) => (
                                       <span key={i} className="bg-gold/10 text-gold px-2 py-1 rounded text-[10px]">{feature}</span>
                                     ))}
                                   </div>
@@ -606,7 +782,8 @@ const AdminPanel: React.FC = () => {
                                   Manage {platform.name}
                                 </button>
                               </div>
-                            ))}
+                            );
+                            })}
                           </div>
                         </div>
 
@@ -620,22 +797,24 @@ const AdminPanel: React.FC = () => {
                               { key: 'telegram', name: 'Telegram', icon: '✈️', color: 'text-cyan-500' },
                               { key: 'tiktok', name: 'TikTok', icon: '🎵', color: 'text-red-500' },
                               { key: 'instagram', name: 'Instagram', icon: '📸', color: 'text-purple-500' },
-                            ].map((platform) => (
+                            ].map((platform) => {
+                              const platformInfo = platformData[platform.key] as PlatformInfo;
+                              return (
                               <div key={platform.key} className="bg-dark-3 border border-gold/10 p-6 rounded-lg text-center space-y-3">
                                 <div className="text-3xl">{platform.icon}</div>
                                 <h4 className="font-bold text-white">{platform.name}</h4>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Followers</p>
-                                  <p className={`text-lg font-bold ${platform.color}`}>{platformData[platform.key].followers || 0}</p>
+                                  <p className={`text-lg font-bold ${platform.color}`}>{platformInfo.followers || 0}</p>
                                 </div>
                                 <div className="space-y-1">
                                   <p className="text-sm text-dim">Posts</p>
-                                  <p className="text-lg font-bold text-gold">{platformData[platform.key].posts || 0}</p>
+                                  <p className="text-lg font-bold text-gold">{platformInfo.posts || 0}</p>
                                 </div>
                                 <div className="text-xs text-dim space-y-1">
                                   <p>Features:</p>
                                   <div className="flex flex-wrap gap-1 justify-center">
-                                    {platformData[platform.key].features.map((feature, i) => (
+                                    {platformInfo.features.map((feature: string, i: number) => (
                                       <span key={i} className="bg-gold/10 text-gold px-2 py-1 rounded text-[10px]">{feature}</span>
                                     ))}
                                   </div>
@@ -644,7 +823,8 @@ const AdminPanel: React.FC = () => {
                                   Manage {platform.name}
                                 </button>
                               </div>
-                            ))}
+                            );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -1415,7 +1595,8 @@ const AdminPanel: React.FC = () => {
             </AnimatePresence>
           </div>
         </main>
-      </div>
+        </div>
+      )}
     </>
   );
 };
