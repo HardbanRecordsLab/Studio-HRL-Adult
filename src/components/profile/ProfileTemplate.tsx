@@ -20,6 +20,7 @@ interface ProfileData {
   heroImage: string;
   aboutImage1: string;
   aboutImage2: string;
+  galleryImages?: string[];
   yearsTogether: number;
   description: string;
   type: 'couple' | 'solo';
@@ -267,6 +268,36 @@ const ProfileTemplate: React.FC<ProfileTemplateProps> = ({ data, isPreview = fal
             </div>
           </motion.div>
         </section>
+
+        {/* Gallery Section */}
+        {data.galleryImages && data.galleryImages.length > 0 && (
+          <section id="gallery" className="px-20 py-32 bg-black border-b border-gold/10">
+            <h2 className="font-playfair text-4xl font-bold text-white mb-16 text-center">
+              Galeria <em className="italic text-rose-light">zdjęć</em>
+            </h2>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {data.galleryImages.map((image, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="relative overflow-hidden border border-gold/10 aspect-square group cursor-pointer"
+                >
+                  <img
+                    src={image}
+                    alt={`${data.name} - ${i + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <p className="text-white font-semibold text-sm">{data.name} - Zdjęcie {i + 1}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Platforms Section */}
         <section className="px-20 py-32 bg-deep border-b border-gold/10">

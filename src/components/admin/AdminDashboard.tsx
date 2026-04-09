@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import ProfileManager from './ProfileManager';
+import ContentManager from './ContentManager';
 
 interface AdminDashboardProps {
   token: string;
@@ -132,71 +134,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
           >
-            {/* Search Bar */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search profiles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white placeholder-gray-500 transition-colors"
-              />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">🔍</span>
-            </div>
-
-            {/* Profiles Grid */}
-            {loading ? (
-              <div className="text-center py-12">
-                <p className="text-gray-400">Loading profiles...</p>
-              </div>
-            ) : filteredProfiles.length === 0 ? (
-              <div className="text-center py-12 bg-gray-800/50 rounded-lg border border-gray-700">
-                <p className="text-gray-400">No profiles found</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProfiles.map((profile, i) => (
-                  <motion.div
-                    key={profile.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 hover:border-rose-500/50 transition-colors group"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-lg font-bold group-hover:text-rose-400 transition-colors">
-                          {profile.name}
-                        </h3>
-                        <p className="text-sm text-gray-400">@{profile.handle}</p>
-                      </div>
-                      <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                        profile.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                        profile.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
-                        {profile.status}
-                      </span>
-                    </div>
-                    
-                    <div className="space-y-2 mb-4">
-                      <p className="text-sm text-gray-400">
-                        <span className="text-gray-500">Type:</span> {profile.type}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        <span className="text-gray-500">Email:</span> {profile.email}
-                      </p>
-                    </div>
-
-                    <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 rounded-lg font-medium text-sm transition-all transform hover:-translate-y-0.5">
-                      Edit Profile →
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+            <ProfileManager token={token} onProfilesUpdate={fetchProfiles} />
           </motion.div>
         )}
 
@@ -205,9 +144,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg p-12 text-center"
           >
-            <p className="text-gray-400">Content Management Coming Soon</p>
+            <ContentManager token={token} />
           </motion.div>
         )}
 
@@ -216,9 +154,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg p-12 text-center"
+            className="space-y-6"
           >
-            <p className="text-gray-400">Analytics Coming Soon</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { label: 'Total Views', value: '142.5K', change: '+12.3%', color: 'blue' },
+                { label: 'Total Revenue', value: '$24,852', change: '+8.7%', color: 'green' },
+                { label: 'Active Subscribers', value: '6,241', change: '+5.2%', color: 'purple' },
+                { label: 'Engagement Rate', value: '8.4%', change: '+2.1%', color: 'orange' },
+                { label: 'Avg Session', value: '12m 34s', change: '+3.5%', color: 'pink' },
+                { label: 'New Followers', value: '1,243', change: '+6.8%', color: 'cyan' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6"
+                >
+                  <p className="text-gray-400 text-sm font-medium mb-2">{stat.label}</p>
+                  <p className="text-3xl font-bold text-white mb-2">{stat.value}</p>
+                  <p className="text-green-400 text-sm font-semibold">{stat.change} vs last month</p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
 
@@ -227,9 +186,66 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg p-12 text-center"
+            className="space-y-6 max-w-3xl"
           >
-            <p className="text-gray-400">Settings Coming Soon</p>
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-8 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-4">General Settings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Studio Name</label>
+                    <input
+                      type="text"
+                      defaultValue="Studio HRL Adult"
+                      className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Admin Email</label>
+                    <input
+                      type="email"
+                      defaultValue="hardbanrecordslab.pl@gmail.com"
+                      className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Default Commission %</label>
+                    <input
+                      type="number"
+                      defaultValue="30"
+                      className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-700 pt-6">
+                <h3 className="text-xl font-bold text-white mb-4">Security</h3>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" defaultChecked className="w-5 h-5 rounded" />
+                    <span className="text-white">Require 2FA for admin login</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" defaultChecked className="w-5 h-5 rounded" />
+                    <span className="text-white">Email notifications for withdrawals</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" className="w-5 h-5 rounded" />
+                    <span className="text-white">Allow external integrations</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-6 border-t border-gray-700">
+                <button className="px-6 py-3 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-white transition-all">
+                  Save Changes
+                </button>
+                <button className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-white transition-all">
+                  Reset
+                </button>
+              </div>
+            </div>
           </motion.div>
         )}
       </main>
