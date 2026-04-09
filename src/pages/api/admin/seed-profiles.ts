@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
-import { verifyAdminToken } from '@/utils/adminAuth';
+import { verifyAdminRequest } from '@/utils/adminAuth';
 
 const PROFILE_SEEDS = [
   {
@@ -267,9 +267,8 @@ export default async function handler(
   }
 
   // Verify admin authentication
-  const adminToken = req.headers.authorization?.split(' ')[1];
-  if (!adminToken || !verifyAdminToken(adminToken)) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  if (!(await verifyAdminRequest(req, res))) {
+    return;
   }
 
   try {

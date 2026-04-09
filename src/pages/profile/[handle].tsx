@@ -71,4 +71,6 @@ const ProfilePage: React.FC = () => {
       <ProfileTemplate data={profileData} />
     </>
   );
+};
+
 export default ProfilePage;

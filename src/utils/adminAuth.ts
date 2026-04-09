@@ -24,3 +24,9 @@ export async function verifyAdminRequest(req: NextApiRequest, res: NextApiRespon
 
   return true;
 }
+
+// Simple token verification (for client-side or basic checks)
+export function verifyAdminToken(token: string): boolean {
+  // This is a simplified check - in production, validate against a real token source
+  return token === process.env.NEXT_PUBLIC_ADMIN_TOKEN || token === 'admin-token';
+}
