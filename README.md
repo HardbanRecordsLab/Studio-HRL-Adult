@@ -172,12 +172,7 @@ npm run test:coverage     # Coverage report
 
 ## 🎯 Business Logic
 
-### 60/30/10 Model
-- 60% Partnerka
-- 30% Model  
-- 10% Studio
-
-### Platform Integration
+#### Platform Integration
 - 18 total platforms (10 Live Cam + 8 Fansite)
 - API connections
 - Real-time sync

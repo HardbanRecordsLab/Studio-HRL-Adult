@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '@/utils/supabase';
+import { logAdminAction, ADMIN_ACTIONS, ADMIN_RESOURCES } from '@/lib/adminLog';
 
 interface LoginRequest {
   email: string;
@@ -32,10 +33,26 @@ export default async function handler(
 
   // Check credentials
   if (email !== ADMIN_EMAIL) {
+    // Log failed login attempt
+    await logAdminAction({
+      adminEmail: email,
+      action: ADMIN_ACTIONS.LOGIN_FAILED,
+      resource: ADMIN_RESOURCES.AUTH,
+      details: JSON.stringify({ reason: 'Invalid email' }),
+      ip: req.headers['x-forwarded-for'] as string || 'unknown'
+    });
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
   if (password !== ADMIN_PASSWORD) {
+    // Log failed login attempt
+    await logAdminAction({
+      adminEmail: email,
+      action: ADMIN_ACTIONS.LOGIN_FAILED,
+      resource: ADMIN_RESOURCES.AUTH,
+      details: JSON.stringify({ reason: 'Invalid password' }),
+      ip: req.headers['x-forwarded-for'] as string || 'unknown'
+    });
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
@@ -45,6 +62,15 @@ export default async function handler(
     timestamp: Date.now(),
     role: 'admin'
   }));
+
+  // Log successful login
+  await logAdminAction({
+    adminEmail: ADMIN_EMAIL,
+    action: ADMIN_ACTIONS.LOGIN,
+    resource: ADMIN_RESOURCES.AUTH,
+    details: JSON.stringify({ timestamp: Date.now() }),
+    ip: req.headers['x-forwarded-for'] as string || 'unknown'
+  });
 
   return res.status(200).json({ token });
 }

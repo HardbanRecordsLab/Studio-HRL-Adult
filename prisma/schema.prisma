@@ -7,6 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model CastingApplication {
@@ -77,6 +79,7 @@ model Partner {
   testimonials String?  // JSON: array of { username, text, since, rating, avatar }
   
   financeRecords FinancialRecord[]
+  documents      PartnerDocument[]
 }
 
 model FinancialRecord {
@@ -172,4 +175,45 @@ model AcademyBlogArticle {
   isPublished   Boolean  @default(false)
   publishedAt   DateTime?
   order         Int      @default(0)
+}
+
+model PartnerDocument {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  partnerId    String
+  partner      Partner    @relation(fields: [partnerId], references: [id])
+  type         String    // id_card | passport | driving_license
+  frontUrl     String    // Cloudinary URL - przód dokumentu
+  backUrl      String?   // Cloudinary URL - ty (opcjonalny)
+  selfieUrl    String?   // Cloudinary URL - selfie z dokumentem
+  status       String    @default("pending") // pending | verified | rejected | expired
+  expiryDate   DateTime? // data ważności dokumentu
+  verifiedAt   DateTime?
+  verifiedBy   String?   // kto zweryfikował (email admina)
+  notes        String?   // notatki admina
+}
+
+model AdminLog {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  adminEmail  String
+  action      String   // CREATE_PARTNER, UPDATE_STATUS, DELETE_DOCUMENT, LOGIN, etc.
+  resource    String   // partners, casting, finance, documents, academy
+  resourceId  String?  // id obiektu którego dotyczy akcja
+  details     String?  // JSON z dodatkowymi info
+  ip          String?
+}
+
+model StudioSettings {
+  id                     String   @id @default("singleton")
+  updatedAt              DateTime @updatedAt
+  studioName             String   @default("Studio HRL Adult")
+  contactEmail           String   @default("")
+  notificationEmail      String   @default("")
+  revenueModelShare      Int      @default(60)
+  revenuePartnerShare    Int      @default(30)
+  revenueStudioShare     Int      @default(10)
+  castingEmailTemplate   String?  // szablon emaila dla approved
+  castingRejectTemplate  String?  // szablon emaila dla rejected
 }

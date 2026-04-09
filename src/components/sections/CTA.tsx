@@ -48,8 +48,8 @@ const CTA: React.FC = () => {
             <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Production</span>
           </div>
           <div className="text-center">
-            <span className="block font-cormorant text-3xl text-gold italic">60/30/10</span>
-            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Revenue Model</span>
+            <span className="block font-cormorant text-3xl text-gold italic">Premium</span>
+            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Partnership</span>
           </div>
           <div className="text-center">
             <span className="block font-cormorant text-3xl text-gold italic">24/7</span>

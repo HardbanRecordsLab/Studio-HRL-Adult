@@ -5,7 +5,6 @@ import Navigation from '@/components/common/Navigation';
 import Hero from '@/components/sections/Hero';
 import Stats from '@/components/sections/Stats';
 import Philosophy from '@/components/sections/Philosophy';
-import RevenueModel from '@/components/sections/RevenueModel';
 import Platforms from '@/components/sections/Platforms';
 import Studios from '@/components/sections/Studios';
 import World from '@/components/sections/World';
@@ -19,7 +18,7 @@ const HomePage: React.FC = () => {
     <>
       <Head>
         <title>Studio HRL Adult – Premium Adult Content Production</title>
-        <meta name="description" content="Studio HRL Adult - profesjonalna produkcja i dystrybucja treści dla dorosłych. Model 60/30/10, studia 4K, pełne wsparcie i dyskrecja." />
+        <meta name="description" content="Studio HRL Adult - profesjonalna produkcja i dystrybucja treści dla dorosłych. Studia 4K, pełne wsparcie i dyskrecja." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
@@ -64,7 +63,7 @@ const HomePage: React.FC = () => {
               {[
                 { title: 'Nasza Misja', desc: 'Demokratyzacja luksusu i profesjonalizmu w branży adult. Chcemy, aby każda twórczyni miała dostęp do narzędzi klasy kinowej i globalnego marketingu, który pozwoli jej osiągnąć szczyt bez kompromisów w kwestii bezpieczeństwa.', ico: '🎯' },
                 { title: 'Nasza Wizja', desc: 'Stać się globalnym punktem odniesienia dla jakości w produkcji treści dla dorosłych. Budujemy przyszłość, w której twórca jest artystą i biznesmenem, a studio jego najpotężniejszym sojusznikiem w drodze do wolności finansowej.', ico: '👁️' },
-                { title: 'Nasze Wartości', desc: 'Dyskrecja, Transparentność, Innowacja. Wierzymy, że tylko jasne zasady współpracy (model 60/30/10) i ciągłe wdrażanie nowych technologii (VR, AI, 4K) pozwalają na budowanie trwałych sukcesów rynkowych.', ico: '💎' }
+                { title: 'Nasze Wartości', desc: 'Dyskrecja, Transparentność, Innowacja. Wierzymy, że tylko jasne zasady współpracy i ciągłe wdrażanie nowych technologii (VR, AI, 4K) pozwalają na budowanie trwałych sukcesów rynkowych.', ico: '💎' }
               ].map(v => (
                 <div key={v.title} className="bg-dark-2 border border-gold/5 p-10 space-y-6 hover:border-gold/20 transition-all group">
                   <div className="text-4xl group-hover:scale-110 transition-transform">{v.ico}</div>
@@ -196,8 +195,8 @@ const HomePage: React.FC = () => {
                     { 
                       rank: '#2', 
                       priority: 'Transparentność', 
-                      desc: 'Model 60/30/10 nie zmienia się. Co zarabiasz, to widzisz. Dokumentacja na każdym etapie',
-                      icon: '📊'
+                      desc: 'Jasne zasady współpracy nie zmieniają się. Co zarabiasz, to widzisz. Dokumentacja na każdym etapie',
+                      icon: ''
                     },
                     { 
                       rank: '#3', 
@@ -245,7 +244,7 @@ const HomePage: React.FC = () => {
                     { 
                       title: 'Finansowe Wsparcie', 
                       items: [
-                        'Model 60/30/10 gwarantuje maksymalny zwrot',
+                        'Nasz model gwarantuje maksymalny zwrot',
                         'Advance payments dostępne dla commitment partnerów',
                         'Bonus za performance (5M+ roczne = premium split)',
                         'Bonus za referrals (+2% za każdego nowego twórcę)',
@@ -349,7 +348,6 @@ const HomePage: React.FC = () => {
             </div>
           </section>
 
-          <RevenueModel />
           <Platforms />
           <Studios />
           <World />
