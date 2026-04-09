@@ -57,11 +57,25 @@ model Partner {
   rating      String?
   sessions    Int      @default(0)
   lastSync    DateTime?
+  
   // Unified Profile Management
   bio         String?
   avatar      String?
   platforms   String?  // JSON: { onlyfans: { username, url, followers, apiKey? }, instagram: {...}, twitter: {...}, tiktok: {...}, youtube: {...}, patreon: {...}, fancentro: {...}, justforfans: {...} }
   contentSchedule String? // JSON: weekly posting schedule per platform
+  
+  // Profile Display Fields
+  type        String?  // couple, solo
+  heroImage   String?
+  aboutImage1 String?
+  aboutImage2 String?
+  description String?
+  yearsTogether Int?
+  profileStats String?  // JSON: { subscribers, content, satisfaction }
+  liveSchedule String?  // JSON: array of { day, time, active }
+  subscriptionPlans String?  // JSON: array of subscription plans
+  testimonials String?  // JSON: array of { username, text, since, rating, avatar }
+  
   financeRecords FinancialRecord[]
 }
 
