@@ -29,24 +29,49 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     if (req.method === 'GET') {
-      const data = await db.getPartners();
+      const data = await db.getCastingApplications();
       return res.status(200).json(data);
-    } else if (req.method === 'POST') {
-      const data = await db.createPartner(req.body);
-      return res.status(201).json(data);
     } else if (req.method === 'PUT') {
       const { id } = req.query;
-      const data = await db.updatePartner(id as string, req.body);
+      const data = await db.updateCastingApplication(id as string, req.body);
+      
+      // Log admin action
+      await supabaseAdmin
+        .from('AdminLog')
+        .insert({
+          adminEmail: 'hardbanrecordslab.pl@gmail.com',
+          action: 'UPDATE',
+          resource: 'CASTING',
+          resourceId: id as string,
+          details: `Updated casting application status to ${req.body.status}`,
+          ip: req.headers['x-forwarded-for'] as string || req.connection.remoteAddress,
+          userAgent: req.headers['user-agent']
+        });
+      
       return res.status(200).json(data);
     } else if (req.method === 'DELETE') {
       const { id } = req.query;
-      await supabaseAdmin.from('Partner').delete().eq('id', id);
-      return res.status(200).json({ message: 'Partner removed' });
+      await supabaseAdmin.from('CastingApplication').delete().eq('id', id);
+      
+      // Log admin action
+      await supabaseAdmin
+        .from('AdminLog')
+        .insert({
+          adminEmail: 'hardbanrecordslab.pl@gmail.com',
+          action: 'DELETE',
+          resource: 'CASTING',
+          resourceId: id as string,
+          details: 'Deleted casting application',
+          ip: req.headers['x-forwarded-for'] as string || req.connection.remoteAddress,
+          userAgent: req.headers['user-agent']
+        });
+      
+      return res.status(200).json({ message: 'Casting application removed' });
     } else {
       res.status(405).end(`Method ${req.method} Not Allowed`);
     }
   } catch (error) {
-    console.error('Partners API error:', error);
+    console.error('Casting API error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 }

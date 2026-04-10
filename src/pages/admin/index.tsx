@@ -154,9 +154,6 @@ const AdminPanel: React.FC = () => {
     // Marketing Platforms
     twitter: { username: '', url: '', followers: 15700, posts: 234, features: ['Threads', 'Spaces', 'Polls'] },
     reddit: { username: '', url: '', followers: 22100, posts: 67, features: ['Subreddits', 'Upvotes'] },
-    telegram: { username: '', url: '', followers: 5300, posts: 23, features: ['VIP Channel', 'TON Blockchain'] },
-    tiktok: { username: '', url: '', followers: 3100, posts: 12, features: ['Duets', 'Stitches', 'Live'] },
-    instagram: { username: '', url: '', followers: 8900, posts: 78, features: ['Stories', 'Reels', 'SFW Only'] },
   });
 
   // Settings State

@@ -1,6 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma';
-import { verifyAdminRequest } from '@/utils/adminAuth';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { supabase, db } from '@/lib/supabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const authorized = await verifyAdminRequest(req, res);

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { supabase } from '@/utils/supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 
 interface LoginRequest {
   email: string;
@@ -39,12 +39,29 @@ export default async function handler(
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
-  // Generate a simple JWT-like token (in production, use proper JWT library)
-  const token = btoa(JSON.stringify({ 
-    email: ADMIN_EMAIL, 
-    timestamp: Date.now(),
-    role: 'admin'
-  }));
+  try {
+    // Log admin action
+    await supabaseAdmin
+      .from('AdminLog')
+      .insert({
+        adminEmail: email,
+        action: 'LOGIN',
+        resource: 'AUTH',
+        details: 'Successful admin login',
+        ip: req.headers['x-forwarded-for'] as string || req.connection.remoteAddress,
+        userAgent: req.headers['user-agent']
+      });
 
-  return res.status(200).json({ token });
+    // Generate a simple JWT-like token (in production, use proper JWT library)
+    const token = btoa(JSON.stringify({ 
+      email: ADMIN_EMAIL, 
+      timestamp: Date.now(),
+      role: 'admin'
+    }));
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 }

@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { supabaseAdmin } from '@/lib/supabase';
 
 interface VerifyResponse {
   valid?: boolean;
@@ -23,7 +24,7 @@ export default async function handler(
   }
 
   try {
-    // Decode the token
+    // Decode token
     const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
     
     // Verify email matches
@@ -31,16 +32,26 @@ export default async function handler(
       return res.status(401).json({ error: 'Invalid token' });
     }
 
-    // Optionally check token age (e.g., expires after 24 hours)
+    // Check token age (24 hours)
     const tokenAge = Date.now() - decoded.timestamp;
-    const ONE_DAY = 24 * 60 * 60 * 1000;
-    
-    if (tokenAge > ONE_DAY) {
+    if (tokenAge > 24 * 60 * 60 * 1000) {
       return res.status(401).json({ error: 'Token expired' });
     }
 
+    // Log admin action
+    await supabaseAdmin
+      .from('AdminLog')
+      .insert({
+        adminEmail: ADMIN_EMAIL,
+        action: 'VERIFY',
+        resource: 'AUTH',
+        details: 'Admin token verification',
+        ip: req.headers['x-forwarded-for'] as string || req.connection.remoteAddress,
+        userAgent: req.headers['user-agent']
+      });
+
     return res.status(200).json({ valid: true });
   } catch (error) {
-    return res.status(401).json({ error: 'Invalid token format' });
+    return res.status(401).json({ error: 'Invalid token' });
   }
 }
