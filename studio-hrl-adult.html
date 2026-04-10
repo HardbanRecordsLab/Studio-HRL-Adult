@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio HRL Adult</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-italic: #d4a847;
+    --dark-bg: #0a0a0a;
+    --dark-card: #111111;
+    --dark-card2: #161616;
+    --dark-card3: #1a1a1a;
+    --crimson: #8b1a2e;
+    --crimson-btn: #9b1f35;
+    --text-muted: #888;
+    --text-light: #ccc;
+    --border-dark: #2a2a2a;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark-bg); color: #fff; font-family: 'Georgia', serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,10,10,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid #1a1a1a;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 64px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo-icon {
+    width: 40px; height: 40px; border: 1px solid var(--gold);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--gold); letter-spacing: 0.5px;
+  }
+  .nav-logo-text { font-size: 13px; letter-spacing: 3px; color: #fff; font-family: 'Arial', sans-serif; font-weight: 400; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { text-decoration: none; color: #ccc; font-size: 12px; letter-spacing: 2px; font-family: 'Arial', sans-serif; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .btn-admin { background: transparent; border: 1px solid #444; color: #ccc; padding: 8px 20px; font-size: 11px; letter-spacing: 2px; font-family: 'Arial', sans-serif; cursor: pointer; transition: all 0.2s; }
+  .btn-admin:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-join { background: var(--crimson-btn); border: none; color: #fff; padding: 10px 24px; font-size: 11px; letter-spacing: 2px; font-family: 'Arial', sans-serif; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+  .btn-join:hover { background: #b0243c; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 40px 0;
+    background: radial-gradient(ellipse at center top, #1a0a0f 0%, #0a0a0a 60%);
+  }
+  .hero-logo-circle {
+    width: 80px; height: 80px; border: 1px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 32px;
+    font-size: 13px; color: var(--gold); letter-spacing: 1px;
+  }
+  .hero-subtitle-line { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; color: var(--gold); font-size: 11px; letter-spacing: 4px; font-family: 'Arial', sans-serif; justify-content: center; }
+  .hero-subtitle-line::before, .hero-subtitle-line::after { content: ''; flex: 1; max-width: 80px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .hero h1 { font-size: clamp(52px, 8vw, 96px); font-weight: 400; letter-spacing: 4px; line-height: 1; margin-bottom: 8px; color: #fff; font-family: 'Georgia', serif; }
+  .hero h1 em { font-style: italic; color: var(--gold); display: block; font-size: clamp(52px, 8vw, 96px); }
+  .hero-tagline { font-size: 11px; letter-spacing: 5px; color: #aaa; margin: 24px 0 32px; font-family: 'Arial', sans-serif; }
+  .hero-desc { max-width: 480px; font-size: 14px; color: #888; line-height: 1.8; font-style: italic; }
+  .hero-scroll { margin-top: 60px; display: flex; justify-content: center; }
+  .scroll-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--crimson); }
+
+  /* STATS BAR */
+  .stats-bar { background: #0d0d0d; padding: 60px 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid #1a1a1a; }
+  .stat-item { text-align: center; border-right: 1px solid #1a1a1a; padding: 20px; }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 52px; color: var(--gold); font-family: 'Georgia', serif; font-weight: 400; line-height: 1; }
+  .stat-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); margin-top: 8px; font-family: 'Arial', sans-serif; }
+
+  /* SECTION BASE */
+  section { padding: 100px 40px; }
+  .section-tag { display: flex; align-items: center; gap: 16px; color: var(--gold); font-size: 10px; letter-spacing: 4px; font-family: 'Arial', sans-serif; margin-bottom: 40px; }
+  .section-tag::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-h2 { font-size: clamp(36px, 5vw, 64px); font-weight: 400; line-height: 1.1; color: #fff; }
+  .section-h2 em { font-style: italic; color: var(--gold); }
+  .section-h2-center { text-align: center; }
+  .section-h2-caps { font-size: clamp(28px, 4vw, 52px); letter-spacing: 4px; text-transform: uppercase; font-style: normal; color: #fff; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; max-width: 1200px; margin: 0 auto; }
+  .about-text p { font-size: 14px; color: #999; line-height: 1.9; margin-bottom: 20px; }
+  .about-visual {
+    background: #111; border: 1px solid #222; border-radius: 4px; min-height: 400px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+  }
+  .about-icon { font-size: 48px; }
+  .about-quote { font-size: 20px; color: var(--gold); font-style: italic; text-align: center; padding: 0 30px; line-height: 1.5; }
+  .mission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 60px; background: #1a1a1a; }
+  .mission-card { background: #111; padding: 40px 30px; }
+  .mission-icon { font-size: 24px; margin-bottom: 16px; }
+  .mission-title { font-size: 18px; font-style: italic; color: var(--gold); margin-bottom: 12px; }
+  .mission-text { font-size: 13px; color: #888; line-height: 1.7; }
+
+  /* PHILOSOPHY */
+  .philosophy { background: #080808; }
+  .phil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; max-width: 1200px; margin: 0 auto; }
+  .phil-quote { font-size: 16px; font-style: italic; color: #ccc; line-height: 1.8; border-left: 2px solid var(--gold); padding-left: 24px; margin: 40px 0; }
+  .phil-text p { font-size: 14px; color: #888; line-height: 1.9; margin-bottom: 20px; }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; }
+  .pillar-num { font-size: 13px; color: var(--gold); letter-spacing: 2px; font-family: 'Arial', sans-serif; margin-bottom: 6px; }
+  .pillar-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #fff; font-family: 'Arial', sans-serif; font-weight: 600; margin-bottom: 8px; }
+  .pillar-desc { font-size: 12px; color: #666; line-height: 1.6; }
+  .showcase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .showcase-img { aspect-ratio: 1; background: #1a1a1a; overflow: hidden; position: relative; }
+  .showcase-img-inner { width: 100%; height: 100%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: #333; font-size: 12px; font-family: 'Arial', sans-serif; }
+  .showcase-title { position: absolute; bottom: 10px; left: 10px; color: var(--gold); font-size: 13px; font-style: italic; }
+
+  /* GOALS */
+  .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; }
+  .goals-list { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
+  .goal-item { background: #111; border: 1px solid #222; padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; }
+  .goal-icon { font-size: 16px; margin-top: 2px; }
+  .goal-title { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fff; font-family: 'Arial', sans-serif; font-weight: 600; }
+  .goal-desc { font-size: 12px; color: #666; margin-top: 4px; }
+  .studio-info-card { background: #111; border: 1px solid #222; padding: 30px; margin-bottom: 20px; }
+  .info-row { border-bottom: 1px solid #1a1a1a; padding: 16px 0; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #555; font-family: 'Arial', sans-serif; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .info-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+  .info-label.red::before { background: #8b1a2e; }
+  .info-label.orange::before { background: #b8680a; }
+  .info-label.green::before { background: #1a6b2e; }
+  .info-value { font-size: 18px; color: #fff; font-family: 'Arial', sans-serif; }
+  .vision-card { background: #1a0810; border: 1px solid #3a1020; padding: 30px; }
+  .vision-label { font-size: 10px; letter-spacing: 3px; color: var(--crimson); font-family: 'Arial', sans-serif; margin-bottom: 12px; }
+  .vision-text { font-size: 13px; color: #ccc; line-height: 1.7; }
+
+  /* PRIORITIES */
+  .priorities-intro { text-align: center; font-size: 14px; color: #777; max-width: 600px; margin: 0 auto 60px; }
+  .priorities-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .priority-card { background: #111; border: 1px solid #222; padding: 28px 20px; text-align: center; }
+  .priority-num { font-size: 11px; color: var(--gold); letter-spacing: 2px; font-family: 'Arial', sans-serif; margin-bottom: 12px; }
+  .priority-icon { font-size: 20px; margin-bottom: 12px; }
+  .priority-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #fff; font-family: 'Arial', sans-serif; font-weight: 600; margin-bottom: 10px; }
+  .priority-desc { font-size: 11px; color: #666; line-height: 1.6; }
+
+  /* WHY US */
+  .why-tagline { text-align: center; font-size: 13px; color: #777; font-style: italic; margin-bottom: 60px; }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1100px; margin: 0 auto; }
+  .why-card { background: #111; border: 1px solid #1e1e1e; padding: 36px; }
+  .why-card-icon { font-size: 20px; margin-bottom: 16px; }
+  .why-card-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #fff; font-family: 'Arial', sans-serif; font-weight: 600; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #1e1e1e; }
+  .why-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .why-list li { font-size: 12px; color: #888; line-height: 1.5; display: flex; gap: 10px; align-items: flex-start; }
+  .why-list li::before { content: '✓'; color: var(--gold); font-size: 11px; margin-top: 1px; flex-shrink: 0; }
+
+  /* PLATFORMS */
+  .platforms { background: #080808; }
+  .platforms-intro { font-size: 14px; color: #888; max-width: 480px; line-height: 1.7; margin-bottom: 60px; }
+
+  /* STUDIO GALLERY */
+  .studio-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .gallery-item {
+    position: relative; cursor: pointer; overflow: hidden; background: #111;
+    border-radius: 2px;
+  }
+  .gallery-item.photo { aspect-ratio: 1; }
+  .gallery-item.video { aspect-ratio: 16/10; grid-column: span 2; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .gallery-item:hover img { transform: scale(1.05); }
+  .gallery-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-label {
+    position: absolute; bottom: 10px; left: 12px;
+    font-size: 11px; color: #ccc; font-family: 'Arial', sans-serif; font-style: italic;
+    background: rgba(0,0,0,0.6); padding: 3px 8px;
+  }
+  .play-btn {
+    width: 52px; height: 52px; background: var(--crimson); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    box-shadow: 0 0 20px rgba(139,26,46,0.6);
+  }
+  .gallery-type-badge {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 9px; letter-spacing: 2px; font-family: 'Arial', sans-serif;
+    background: rgba(139,26,46,0.85); color: #fff; padding: 3px 8px;
+  }
+
+  /* FLIP CARDS */
+  .flip-section-title { font-size: 15px; font-style: italic; color: var(--gold); margin: 40px 0 16px; }
+  .flip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+  .flip-grid-3 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+  .flip-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 32px; }
+  .flip-card { height: 180px; perspective: 1000px; cursor: pointer; }
+  .flip-inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+  }
+  .flip-card:hover .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border: 1px solid #222; padding: 20px 16px;
+    display: flex; flex-direction: column;
+  }
+  .flip-front { background: #0d0d0d; justify-content: center; align-items: center; text-align: center; }
+  .flip-back { background: #140a10; border-color: #3a1520; transform: rotateY(180deg); justify-content: flex-start; }
+  .flip-name { font-size: 15px; color: #fff; margin-bottom: 6px; font-family: 'Georgia', serif; }
+  .flip-tag { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-family: 'Arial', sans-serif; margin-bottom: 10px; }
+  .flip-short { font-size: 11px; color: #666; line-height: 1.5; }
+  .flip-hover-hint { font-size: 9px; color: #444; letter-spacing: 1px; font-family: 'Arial', sans-serif; margin-top: auto; font-style: italic; }
+  .flip-back-title { font-size: 12px; color: var(--gold); letter-spacing: 1px; font-family: 'Arial', sans-serif; font-weight: 600; margin-bottom: 10px; border-bottom: 1px solid #2a1020; padding-bottom: 8px; }
+  .flip-detail { font-size: 11px; color: #aaa; line-height: 1.65; }
+  .flip-detail li { margin-bottom: 5px; list-style: none; padding-left: 12px; position: relative; }
+  .flip-detail li::before { content: '›'; position: absolute; left: 0; color: var(--gold); }
+
+  /* PROCESS */
+  .process-steps { display: flex; justify-content: space-between; gap: 20px; margin: 60px 0; }
+  .step { text-align: center; flex: 1; }
+  .step-circle { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #333; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 13px; color: #666; font-family: 'Georgia', serif; }
+  .step-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #fff; font-family: 'Arial', sans-serif; font-weight: 600; margin-bottom: 8px; }
+  .step-desc { font-size: 11px; color: #666; line-height: 1.5; }
+
+  /* SECURITY */
+  .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; max-width: 1200px; margin: 80px auto 0; }
+  .security-text p { font-size: 14px; color: #888; line-height: 1.9; margin-bottom: 20px; max-width: 500px; }
+  .security-items { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .security-item { background: #111; border: 1px solid #1e1e1e; padding: 16px 20px; display: flex; gap: 12px; align-items: center; font-size: 12px; color: #888; }
+  .security-item-icon { font-size: 14px; }
+  .security-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sec-card { background: #111; border: 1px solid #1e1e1e; padding: 24px; }
+  .sec-card-title { font-size: 14px; color: var(--gold); margin-bottom: 10px; font-family: 'Georgia', serif; }
+  .sec-card-text { font-size: 12px; color: #777; line-height: 1.6; }
+
+  /* PARTNER BANNER */
+  .partner-banner {
+    margin: 0 40px; background: linear-gradient(135deg, #111 0%, #1a0c12 100%);
+    border: 1px solid #2a1520; padding: 60px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .partner-content h2 { font-size: 36px; text-transform: uppercase; letter-spacing: 4px; font-weight: 400; margin-bottom: 6px; }
+  .partner-content em { font-style: italic; color: var(--crimson); font-size: 36px; display: block; }
+  .partner-desc { font-size: 13px; color: #888; max-width: 400px; margin-top: 16px; line-height: 1.7; }
+  .btn-explore { background: var(--crimson-btn); border: none; color: #fff; padding: 14px 32px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-family: 'Arial', sans-serif; cursor: pointer; margin-top: 24px; font-weight: 600; transition: background 0.2s; }
+  .btn-explore:hover { background: #b0243c; }
+
+  /* COUNTER SECTION */
+  .counters { background: #0a0a0a; padding: 80px 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; text-align: center; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+  .counter-item { border-right: 1px solid #1a1a1a; }
+  .counter-item:last-child { border-right: none; }
+  .counter-num { font-size: 40px; color: var(--gold); font-family: 'Georgia', serif; }
+  .counter-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #555; font-family: 'Arial', sans-serif; margin-top: 8px; }
+
+  /* FOOTER */
+  footer { background: #080808; padding: 60px 40px 30px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr 2fr; gap: 60px; margin-bottom: 60px; }
+  .footer-brand { }
+  .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .footer-logo-icon { width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--gold); }
+  .footer-logo-text { font-size: 12px; letter-spacing: 2px; color: #fff; font-family: 'Arial', sans-serif; }
+  .footer-tagline { font-size: 12px; color: #555; line-height: 1.6; max-width: 220px; margin-bottom: 20px; font-style: italic; }
+  .social-links { display: flex; gap: 8px; }
+  .social-btn { width: 32px; height: 32px; border: 1px solid #333; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #777; font-family: 'Arial', sans-serif; cursor: pointer; transition: all 0.2s; }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); font-family: 'Arial', sans-serif; margin-bottom: 20px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { text-decoration: none; color: #666; font-size: 12px; font-family: 'Arial', sans-serif; letter-spacing: 1px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-email-form { display: flex; margin-top: 12px; }
+  .footer-email-input { flex: 1; background: #111; border: 1px solid #222; border-right: none; padding: 10px 14px; font-size: 11px; color: #ccc; font-family: 'Arial', sans-serif; outline: none; }
+  .footer-email-input::placeholder { color: #444; }
+  .btn-send { background: transparent; border: 1px solid #222; padding: 10px 16px; font-size: 10px; letter-spacing: 2px; color: var(--gold); font-family: 'Arial', sans-serif; cursor: pointer; }
+  .footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 11px; color: #444; font-family: 'Arial', sans-serif; }
+  .footer-badges { display: flex; gap: 20px; }
+  .footer-badge { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #444; font-family: 'Arial', sans-serif; }
+  .footer-badge.red { color: var(--crimson); border: 1px solid var(--crimson); padding: 4px 10px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 20px; }
+    .about-grid, .phil-grid, .goals-grid, .security-grid { grid-template-columns: 1fr; gap: 40px; }
+    .priorities-grid { grid-template-columns: repeat(2, 1fr); }
+    .platform-grid, .platform-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .process-steps { flex-wrap: wrap; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .partner-banner { flex-direction: column; gap: 30px; margin: 0 20px; }
+    .stats-bar, .counters { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">HRL</div>
+    <span class="nav-logo-text">STUDIO HRL ADULT</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hero" class="active">START</a></li>
+    <li><a href="#about">O STUDIU</a></li>
+    <li><a href="#contact">KONTAKT</a></li>
+    <li><a href="#casting">CASTING</a></li>
+    <li><a href="#akademia">AKADEMIA</a></li>
+    <li><a href="#portfolio">PORTFOLIO</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-admin">ADMIN</button>
+    <button class="btn-join">DOŁĄCZ TERAZ</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-logo-circle">HRL</div>
+  <div class="hero-subtitle-line">STUDIO HRL ADULT</div>
+  <h1>ELEVATE YOUR<em>EXPERIENCE</em></h1>
+  <p class="hero-tagline">REDEFINE ENTERTAINMENT</p>
+  <p class="hero-desc">Discover Poland's foremost platform for independent adult production and distribution. Where artistry meets professional excellence.</p>
+  <div class="hero-scroll"><div class="scroll-dot"></div></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">60%</div><div class="stat-label">DLA PARTNERKI</div></div>
+  <div class="stat-item"><div class="stat-num">30%</div><div class="stat-label">DLA MODELA</div></div>
+  <div class="stat-item"><div class="stat-num">10%</div><div class="stat-label">DLA STUDIA</div></div>
+  <div class="stat-item"><div class="stat-num">4K</div><div class="stat-label">JAKOŚĆ HDR</div></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">NASZA HISTORIA</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-h2">Od Wizji do<br><em>Lidera Branży</em></h2>
+        <br><br>
+        <p>Studio HRL Adult powstało z potrzeby wprowadzenia nowej jakości do świata cyfrowej intymności. Zaczynaliśmy jako niewielka grupa pasjonatów technologii i marketingu, która dostrzegła ogromną lukę między amatorską twórczością a profesjonalną produkcją filmową.</p>
+        <p>Przez lata ewolucji, stworzyliśmy ekosystem, który nie tylko produkuje treści, ale buduje trwałe i luksusowe marki osobiste. Nasza historia to ciągłe dążenie do perfekcji, inwestycje w najnowocześniejszy sprzęt 4K/8K oraz budowanie zespołu ekspertów, którzy rozumieją psychologię widza tak dobrze, jak algorytmy OnlyFans czy Chaturbate.</p>
+        <p>Dziś jesteśmy dumni, że możemy nazywać się domem dla najbardziej utalentowanych twórców w Europie, oferując im bezpieczeństwo, wsparcie i zarobki, które zmieniają życie.</p>
+      </div>
+      <div class="about-visual">
+        <div class="about-icon">🏛️</div>
+        <div style="width:12px;height:12px;background:var(--crimson);border-radius:50%;"></div>
+        <div class="about-quote">"Luksus to nasza waluta, profesjonalizm to nasz język."</div>
+      </div>
+    </div>
+    <div class="mission-grid">
+      <div class="mission-card">
+        <div class="mission-icon">🎯</div>
+        <div class="mission-title">Nasza Misja</div>
+        <div class="mission-text">Demokratyzacja luksusu i profesjonalizmu w branży adult. Chcemy, aby każda twórczyni miała dostęp do narzędzi klasy kinowej i globalnego marketingu, który pozwoli jej osiągać szczyt bez kompromisów w kwestii bezpieczeństwa.</div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">👁️</div>
+        <div class="mission-title">Nasza Wizja</div>
+        <div class="mission-text">Stać się globalnym punktem odniesienia dla jakości w produkcji treści dla dorosłych. Budujemy przyszłość, w której twórca jest artystą i biznesmenem, a studio jego najpotężniejszym sojusznikiem w drodze do wolności finansowej.</div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">💎</div>
+        <div class="mission-title">Nasze Wartości</div>
+        <div class="mission-text">Dyskrecja. Transparentność. Innowacja. Wierzymy, że tylko jasne zasady współpracy i ciągłe wdrażanie nowych technologii (VR, AI, 4K) pozwalają na budowanie trwałych sukcesów rynkowych.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="philosophy">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">OUR PHILOSOPHY</div>
+    <h2 class="section-h2 section-h2-center" style="text-align:center;margin-bottom:60px;">
+      <span class="section-h2-caps">THE ART OF ADULT</span><br><em>ENTERTAINMENT</em>
+    </h2>
+    <div class="phil-grid">
+      <div>
+        <blockquote class="phil-quote">"We believe that adult content creation is a form of art that requires both artistic vision and business professionalism. Great content is neither purely commercial nor purely artistic – it's a perfect synthesis."</blockquote>
+        <div class="phil-text">
+          <p>At Studio HRL Adult, we combine high-end aesthetics with operational efficiency. Our approach is built on four core pillars: absolute respect, peak professionalism, full transparency, and sustainable growth.</p>
+          <p>We invest in cutting-edge 4K/8K production technology, professional cinematography teams, and marketing expertise built from years of platform mastery.</p>
+        </div>
+        <div class="pillars">
+          <div><div class="pillar-num">01.</div><div class="pillar-title">EXCELLENCE</div><div class="pillar-desc">Uncompromising quality in every frame, from 4K cinematography to pixel-perfect editing.</div></div>
+          <div><div class="pillar-num">02.</div><div class="pillar-title">PRIVACY</div><div class="pillar-desc">Your security, anonymity, and data protection are non-negotiable operational priorities.</div></div>
+          <div><div class="pillar-num">03.</div><div class="pillar-title">EARNINGS</div><div class="pillar-desc">Transparent partnership model ensures you keep what you earn with guaranteed startup support.</div></div>
+          <div><div class="pillar-num">04.</div><div class="pillar-title">SUPPORT</div><div class="pillar-desc">24/7 professional team dedicated to your growth, marketing, and platform optimization.</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="platform-section-title">Production Showcase</div>
+        <div class="showcase-grid">
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#1a1a1a;"></div></div>
+          <div class="showcase-img" style="position:relative;">
+            <div class="showcase-img-inner" style="background:#1e1814;"></div>
+            <div class="showcase-title">Velvet Intimacy</div>
+          </div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#161616;"></div></div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#181818;"></div></div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#141414;"></div></div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#1c1c1c;"></div></div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#161616;"></div></div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#1a1510;"></div></div>
+          <div class="showcase-img"><div class="showcase-img-inner" style="background:#0e0e0e;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section id="goals">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">NASZE CELE</div>
+    <div class="goals-grid">
+      <div>
+        <h2 class="section-h2">Gdzie <em>Zmierzamy</em></h2>
+        <br>
+        <p style="font-size:14px;color:#888;line-height:1.8;">Studio HRL Adult nie jest zwykłą produkcownią. Jesteśmy misją transformowania branży adult content z amatorskiego chaosu w profesjonalny ekosystem, który traktuje twórce jako artystów i przedsiębiorców.</p>
+        <br>
+        <p style="font-size:14px;color:#888;line-height:1.8;">Naszym celem na rok 2026 jest osiągnięcie:</p>
+        <div class="goals-list">
+          <div class="goal-item"><span class="goal-icon">🎯</span><div><div class="goal-title">$5M+ ROCZNYCH PRZYCHODÓW PORTFELU</div><div class="goal-desc">Wygenerowanie tej kwoty dla wszystkich naszych partnerów łącznie.</div></div></div>
+          <div class="goal-item"><span class="goal-icon">🎯</span><div><div class="goal-title">50+ TWÓRCZYCH PARTNERÓW</div><div class="goal-desc">Budowa stabilnego ekosystemu talentów z całej Europy.</div></div></div>
+          <div class="goal-item"><span class="goal-icon">🎯</span><div><div class="goal-title">100M+ MIESIĘCZNYCH WYŚWIETLEŃ</div><div class="goal-desc">Organiczny ruch na wszystkie platformy i kanały.</div></div></div>
+          <div class="goal-item"><span class="goal-icon">🎯</span><div><div class="goal-title">GLOBALNEJ ROZPOZNAWALNOŚCI</div><div class="goal-desc">Być referencją dla jakości w branży na świecie.</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="studio-info-card">
+          <div style="font-size:9px;letter-spacing:3px;color:#555;font-family:'Arial',sans-serif;margin-bottom:20px;">STUDIO INFO</div>
+          <div class="info-row">
+            <div class="info-label red">ZAŁOŻONA</div>
+            <div class="info-value">2026</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label orange">SIEDZIBA</div>
+            <div class="info-value">Cypr (Cyprus)</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label green">STATUS</div>
+            <div class="info-value">48 Godzin od Startu</div>
+          </div>
+        </div>
+        <div class="vision-card">
+          <div class="vision-label">WIZJA 2026+</div>
+          <div class="vision-text">Chcemy być studio, które zmienia życia poprzez wolność finansową. Każdy twórca z nami osiąga więcej niż zarabia – osiąga bezpieczeństwo, wsparcie i szacunek.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIORITIES -->
+<section style="background:#080808;" id="priorities">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag" style="justify-content:center;">PRIORYTETY</div>
+    <h2 class="section-h2" style="text-align:center;font-size:clamp(32px,5vw,60px);">To Nas <em>Definiuje</em></h2>
+    <br>
+    <p class="priorities-intro">W Studio HRL Adult mamy jasne priorytety. Wszystko, co robimy, wynika z tych pięciu filarów strategicznych.</p>
+    <div class="priorities-grid">
+      <div class="priority-card"><div class="priority-num">#1</div><div class="priority-icon">🔒</div><div class="priority-title">DYSKRECJA</div><div class="priority-desc">Prywatność twoja to numer jeden. Zero kompromisów w kwestii bezpieczeństwa danych i anonimowości.</div></div>
+      <div class="priority-card"><div class="priority-num">#2</div><div class="priority-icon">📋</div><div class="priority-title">TRANSPARENTNOŚĆ</div><div class="priority-desc">Jasne zasady współpracy nie zmieniają się. Co zarabiasz, to widzisz. Dokumentacja na każdym etapie.</div></div>
+      <div class="priority-card"><div class="priority-num">#3</div><div class="priority-icon">💎</div><div class="priority-title">JAKOŚĆ</div><div class="priority-desc">Każdy projekt musi być doskonały: 4K minimum, profesjonalna obsługa, perfekcja w każdym stopniu.</div></div>
+      <div class="priority-card"><div class="priority-num">#4</div><div class="priority-icon">📚</div><div class="priority-title">EDUKACJA</div><div class="priority-desc">Uczymy twórców business modelu, marketingu, regulacji prawnych – nie tylko produkcji.</div></div>
+      <div class="priority-card"><div class="priority-num">#5</div><div class="priority-icon">🚀</div><div class="priority-title">INNOWACJA</div><div class="priority-desc">VR, AI, blockchain, nowe platformy – zawsze na przeszkolu technologicznym branży.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag" style="justify-content:center;">TWOJA DECYZJA</div>
+    <h2 class="section-h2" style="text-align:center;">Dlaczego Wybrać <em>Studio HRL Adult</em></h2>
+    <br>
+    <p class="why-tagline">To nie jest pytanie „dlaczego my?" ale raczej „co ci możemy dać co inni nie mogą?"</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-card-icon">💰</div>
+        <div class="why-card-title">FINANSOWE WSPARCIE</div>
+        <ul class="why-list">
+          <li>Nasz model gwarantuje maksymalny zwrot</li>
+          <li>Advance payments dostępne dla commitment partnerów</li>
+          <li>Bonus na performance (1M+ rocznie = premium split)</li>
+          <li>Bonus na referrale (+7% za każdego nowego twórcę)</li>
+          <li>Gwarantowany income floor przez pierwsze 90 dni</li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">⚙️</div>
+        <div class="why-card-title">WSPARCIE TECHNICZNE</div>
+        <ul class="why-list">
+          <li>Dostęp do naszych 4 profesjonalnych studiów 24/7</li>
+          <li>Dedykowany production director dla każdego projektu</li>
+          <li>Unlimited post-production hours (color, sound, edit)</li>
+          <li>Multi-platform export i optimization (28 platform)</li>
+          <li>Technical support 24/7 – zawsze dostępny monitor</li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">📊</div>
+        <div class="why-card-title">WSPARCIE BIZNESOWE</div>
+        <ul class="why-list">
+          <li>Strategia dystrybucji na wszystkie platformy</li>
+          <li>Marketing manager do promocji Twoich treści</li>
+          <li>Negocjacje z partnerami i sponsorami</li>
+          <li>Legal support w kwestii compliance i kontraktów</li>
+          <li>Quarterly business reviews i strategy sessions</li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">🛡️</div>
+        <div class="why-card-title">BEZPIECZEŃSTWO & DYSKRECJA</div>
+        <ul class="why-list">
+          <li>Full NDA + polityka zero dzielenia</li>
+          <li>Encrypted storage i geo-locked archive</li>
+          <li>Anonimowy branding option (jesli chcesz)</li>
+          <li>Usuwanie treści w każdej chwili bez konsekwencji</li>
+          <li>EU-GDPR compliant – Twoje dane to twoja, nie nasze</li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">👩‍🏫</div>
+        <div class="why-card-title">EDUKACJA & MENTORSTWO</div>
+        <ul class="why-list">
+          <li>Akademia HRL – kursy online (prywatne dla partnerów)</li>
+          <li>Monthly masterclasss z top cammerami</li>
+          <li>Networking events z innymi twórcami</li>
+          <li>1-on-1 coaching sessions (8 godzin/Miesiac)</li>
+          <li>Access do exclusive industry reports i data</li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">⭐</div>
+        <div class="why-card-title">COMMUNITY & STATUS</div>
+        <ul class="why-list">
+          <li>VIP lounge access w każdych promotionach</li>
+          <li>Studio HRL badge na profilach (prestige)</li>
+          <li>Featured status na naszej stronie (top kamery)</li>
+          <li>Networking z najlepszymi twórcami Europy</li>
+          <li>Invitation-only events i partie premium</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="platforms" id="platforms">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">ZASIĘG DYSTRYBUCJI</div>
+    <h2 class="section-h2">Twoje treści na<br><em>Najlepszych Platformach</em></h2>
+    <br>
+    <p class="platforms-intro">Zajmujemy się pełną konfiguracją, zarządzaniem i promocją Twoich profili na wiodących platformach adult na świecie. Najedź kursorem na kartę, aby zobaczyć szczegóły platformy.</p>
+
+    <div class="flip-section-title">Live Cam</div>
+    <div class="flip-grid">
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Chaturbate</div><div class="flip-tag">#1 ŚWIAT</div><div class="flip-short">Największa platforma live cam na świecie.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">CHATURBATE</div><ul class="flip-detail"><li>Ponad 6 mln unikalnych widzów dziennie</li><li>Prowizja do 80% dla modeli z token tips</li><li>Automatyczne linki afiliacyjne i fanclub</li><li>Funkcja Spy Shows i Private Shows</li><li>Płatności co tydzień lub dwa razy w miesiącu</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">MyFreeCams</div><div class="flip-tag">#2 ŚWIAT</div><div class="flip-short">Lojalna społeczność, wysoki payout.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">MYFREECAMS</div><ul class="flip-detail"><li>Stała baza lojalnych widzów premium</li><li>System Miss MFC – ranking i bonusy</li><li>Wysoki payout: do 60% netto</li><li>Własny player i strona profilu</li><li>Platforma tylko dla kobiet</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">LiveJasmin</div><div class="flip-tag">PREMIUM</div><div class="flip-short">Najwyższe stawki w private shows.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">LIVEJASMIN</div><ul class="flip-detail"><li>Najbardziej premium platforma live cam</li><li>Private show od $2.99/min – wyższe stawki</li><li>Wyselekcjonowani, płacący widzowie</li><li>Profesjonalne wsparcie i dedykowany manager</li><li>Certyfikat jakości studia HRL</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">StripChat</div><div class="flip-tag">VR LEADER</div><div class="flip-short">Fan Club, VR shows, do 80% prowizji.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">STRIPCHAT</div><ul class="flip-detail"><li>Lider technologii VR w live cam</li><li>Fan Club z miesięczną subskrypcją</li><li>Ultra HD i VR stream 180°</li><li>Do 80% prowizji dla top modeli</li><li>Silny algorytm organiczny dla nowych modeli</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">CamSoda</div><div class="flip-tag">INNOWACJE</div><div class="flip-short">VR, krypto płatności, mobile-first.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">CAMSODA</div><ul class="flip-detail"><li>Płatności kryptowalutami (Bitcoin, ETH)</li><li>VR i interaktywne zabawki (Lovense)</li><li>Najlepsza aplikacja mobilna w branży</li><li>Niska bariera wejścia dla nowych modeli</li><li>Voyeur House i premium VOD</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">BongaCams</div><div class="flip-tag">EUROPA</div><div class="flip-short">Silny ruch w PL/DE/CZ/RU.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">BONGACAMS</div><ul class="flip-detail"><li>Dominujący ruch z Polski, Niemiec, Czech, Rosji</li><li>Tokeny, tips i private show</li><li>Prosty onboarding – gotowy w 24h</li><li>Wsparcie w języku polskim</li><li>Aktywny program polecania modeli</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Flirt4Free</div><div class="flip-tag">TOP CAM</div><div class="flip-short">Private shows, Feature Shows.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">FLIRT4FREE</div><ul class="flip-detail"><li>Prestiżowe Feature Shows z ogromną widownią</li><li>Party Chat i Multi-User Private</li><li>Wysoka wartość koszykowa per viewer</li><li>Program nagród dla top performerów</li><li>Dedykowane wsparcie modelu 24/7</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">ImLive</div><div class="flip-tag">STABILNY</div><div class="flip-short">Multi Viewer, Candy Show, od 1987.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">IMLIVE</div><ul class="flip-detail"><li>Jedna z najstarszych i najstabilniejszych platform</li><li>Candy Show – model zarabia niezależnie od liczby widzów</li><li>Multi-Viewer: jeden prywatny show dla wielu</li><li>Kredyty zamiast tokenów – wyższa wartość</li><li>Wierny segment widzów 35–55 lat</li></ul></div>
+      </div></div>
+    </div>
+
+    <div class="flip-section-title">Subskrypcja / Fansite</div>
+    <div class="flip-grid">
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">OnlyFans</div><div class="flip-tag">MUST HAVE</div><div class="flip-short">Lider rynku subskrypcji 18+.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">ONLYFANS</div><ul class="flip-detail"><li>230 mln zarejestrowanych użytkowników</li><li>80% przychodów dla modela (20% platforma)</li><li>Pay-per-view, tips, subskrypcje miesięczne</li><li>Bezpośrednia komunikacja z fanami (DM)</li><li>Integracja z Twitter/X i Reddit dla ruchu</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Fansly</div><div class="flip-tag">ALTERNUM</div><div class="flip-short">Ruch organiczny z algorytmu.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">FANSLY</div><ul class="flip-detail"><li>Algorytm polecania nowych twórców – bezpłatny ruch</li><li>Tiers subskrypcji (darmowy, płatny, VIP)</li><li>80% prowizji dla twórcy</li><li>Live streaming wbudowany w platformę</li><li>Rosnąca alternatywa dla OF – bez cenzury</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">ManyVids</div><div class="flip-tag">VOD STORE</div><div class="flip-short">Sprzedaż klipów, MV Clubs.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">MANYVIDS</div><ul class="flip-detail"><li>Sklep z klipami VOD – pasywne dochody</li><li>MV Club – własna platforma subskrypcji</li><li>Konkursy MV Stars z nagrodami pieniężnymi</li><li>Własna strona modela z branding</li><li>Podwójny model zarobków: VOD + live</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Clips4Sale</div><div class="flip-tag">NICHE</div><div class="flip-short">Baza klientów niszowych, lojalny fan.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">CLIPS4SALE</div><ul class="flip-detail"><li>Specjalistyczne kategorie niszowe (fetish, BDSM)</li><li>Lojalny segment klientów z wysokim spend</li><li>Sklep własny bez algorytmu – organiczne SEO</li><li>Brak limitu na długość klipów</li><li>Świetne do monetyzacji unikalnych treści</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">AVN Stars</div><div class="flip-tag">MARKA</div><div class="flip-short">Integracja AVN, prestiż branży.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">AVN STARS</div><ul class="flip-detail"><li>Platforma prestiżowego wydawcy AVN Media</li><li>Nominacje i nagrody AVN Awards dla partnerów</li><li>Wiarygodność i rozpoznawalność w branży</li><li>Subskrypcje + VOD + tips</li><li>Wyselekcjonowani, płacący widzowie premium</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Fanvue</div><div class="flip-tag">FOR 18+</div><div class="flip-short">Najlepsza prowizja, AI tools.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">FANVUE</div><ul class="flip-detail"><li>85% prowizji dla twórcy – najwyższa na rynku</li><li>Wbudowane narzędzia AI do chatu z fanami</li><li>Algorytm discovery dla nowych twórców</li><li>Brak blokady geolokalizacyjnej</li><li>Szybkie wypłaty: 2–5 dni roboczych</li></ul></div>
+      </div></div>
+    </div>
+
+    <div class="flip-section-title">Tube / Lejek Ruchu</div>
+    <div class="flip-grid">
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Pornhub ModelHub</div><div class="flip-tag">FUNNEL #1</div><div class="flip-short">Największy lejek organiczny na świecie.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">PORNHUB MODELHUB</div><ul class="flip-detail"><li>130 mln odwiedzin dziennie – największy lejek</li><li>Darmowe klipy = przekierowanie na OF/Fansly</li><li>Model Page z linkami do platform subskrypcji</li><li>Monetyzacja premium klipów i VOD</li><li>SEO i algorytm wyszukiwania – pasywny ruch</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">xHamster</div><div class="flip-tag">SEO POWER</div><div class="flip-short">Silny ruch organiczny, dobre SEO.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">XHAMSTER</div><ul class="flip-detail"><li>Potężne SEO – wysoka pozycja w Google</li><li>Kanał twórcy z subskrypcją widzów</li><li>Monetyzacja: reklamy + premium klips</li><li>Aktywna baza fanów europejskich</li><li>Umożliwia linkowanie do zewnętrznych platform</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">xVideos RED</div><div class="flip-tag">PASYWNY</div><div class="flip-short">Zarabiaj na premium widzach.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">XVIDEOS RED</div><ul class="flip-detail"><li>Program monetyzacji dla twórców</li><li>Widzowie premium RED płacą za ekskluzywne treści</li><li>Pasywne dochody bez live streamu</li><li>Ogromna baza 800 mln odwiedzin/mies.</li><li>Doskonały lejek do subskrypcji na OF</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">xHamster Live</div><div class="flip-tag">BONUS</div><div class="flip-short">Live cam + baza xHamster.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">XHAMSTER LIVE</div><ul class="flip-detail"><li>Połączenie live cam z tubą xHamster</li><li>Automatyczne cross-promocje między stronami</li><li>Szybki dostęp do bazy fanów xHamster</li><li>Bonusy za pierwsze streamy na nowym koncie</li><li>Prosty i szybki onboarding (24–48h)</li></ul></div>
+      </div></div>
+    </div>
+
+    <div class="flip-section-title">Marketing</div>
+    <div class="flip-grid-5" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Twitter / X</div><div class="flip-tag">ESSENTIAL</div><div class="flip-short">Główna arteria ruchu #1.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">TWITTER / X</div><ul class="flip-detail"><li>Najlepszy kanał ruchu dla twórców adult</li><li>Brak cenzury treści NSFW dla 18+</li><li>Hashtagi i algorithmic reach</li><li>Bezpośredni link do OF/Fansly w bio</li><li>Budujesz własną bazę followersów</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Reddit</div><div class="flip-tag">ORGANIC</div><div class="flip-short">Najlepsza konwersja, subreddity.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">REDDIT</div><ul class="flip-detail"><li>Najwyższa konwersja ze wszystkich kanałów</li><li>Tysiące subredditów niszowych (r/OnlyFans101 etc.)</li><li>Bezpłatny ruch organiczny – zero kosztów reklam</li><li>Doskonały do promocji klipów i profilu</li><li>Werified Account = większy zasięg</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Telegram</div><div class="flip-tag">VIP</div><div class="flip-short">Ekosystem lojalnych fanów VIP.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">TELEGRAM</div><ul class="flip-detail"><li>Własny kanał VIP z płatnym dostępem</li><li>Bezpośredni kontakt z najbardziej lojalnymi fanami</li><li>Brak algorytmu – 100% reach do subskrybentów</li><li>Integracja z botami do płatności</li><li>Grupy, kanały i prywatne wiadomości</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">TikTok</div><div class="flip-tag">BRAND</div><div class="flip-short">Budowanie świadomości marki SFW.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">TIKTOK</div><ul class="flip-detail"><li>Viralowy zasięg przy minimalnym wysiłku</li><li>Treści SFW przyciągają nowych widzów</li><li>Strategia: lifestyle → link w bio → OF</li><li>Algorithm faworyzuje nowe konta</li><li>Buduj osobowość i markę poza treściami adult</li></ul></div>
+      </div></div>
+      <div class="flip-card"><div class="flip-inner">
+        <div class="flip-front"><div class="flip-name">Instagram</div><div class="flip-tag">LIFESTYLE</div><div class="flip-short">SFW content, przyciąganie fanów.</div><div class="flip-hover-hint">najedź aby zobaczyć więcej</div></div>
+        <div class="flip-back"><div class="flip-back-title">INSTAGRAM</div><ul class="flip-detail"><li>Estetyczny lifestyle content buduje markę osobistą</li><li>Stories i Reels – codzienne zaangażowanie</li><li>Link w bio prowadzi do Linktree/OF</li><li>Collab z innymi twórcami – cross-promocja</li><li>Dotarcie do szerokiej grupy docelowej 18–35</li></ul></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO GALLERY / CONTENT PORTFOLIO -->
+<section id="portfolio" style="padding-top:60px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag" style="justify-content:center;">NASZE PRODUKCJE</div>
+    <h2 class="section-h2 section-h2-center" style="text-align:center;margin-bottom:20px;">
+      <span class="section-h2-caps">SPACES CRAFTED FOR</span><br><em>EXCELLENCE</em>
+    </h2>
+    <p style="text-align:center;color:#555;font-size:12px;font-style:italic;margin-bottom:50px;letter-spacing:1px;">
+      ← Podmień <code style="color:var(--gold);background:#111;padding:2px 6px;font-style:normal;">src="TWOJE_ZDJECIE.jpg"</code> oraz <code style="color:var(--gold);background:#111;padding:2px 6px;font-style:normal;">src="TWOJE_WIDEO.mp4"</code> na własne pliki →
+    </p>
+
+    <div class="studio-gallery">
+
+      <!-- ═══ WIDEO 1 (szerokie 2 kolumny) — zmień src na ścieżkę do swojego mp4 ═══ -->
+      <div class="gallery-item video" id="vid1" onclick="playVideo('vid1')">
+        <video id="vid1-src" src="TWOJE_WIDEO_1.mp4" preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+        <div class="gallery-ph" id="vid1-ph">
+          <div class="ph-icon">▶</div>
+          <div class="ph-label">WIDEO 1</div>
+          <div class="ph-hint">podmień src="TWOJE_WIDEO_1.mp4"</div>
+        </div>
+        <div class="gallery-overlay"><div class="play-btn">▶</div></div>
+        <div class="gallery-type-badge">VIDEO</div>
+        <span class="gallery-label">Seria Premium — Vol.1</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 1 — zmień src ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_1.jpg" alt="content 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 1</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_1.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 1</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 2 ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_2.jpg" alt="content 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 2</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_2.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 2</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 3 ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_3.jpg" alt="content 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 3</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_3.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 3</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 4 ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_4.jpg" alt="content 4" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 4</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_4.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 4</span>
+      </div>
+
+      <!-- ═══ WIDEO 2 (szerokie 2 kolumny) ═══ -->
+      <div class="gallery-item video" id="vid2" onclick="playVideo('vid2')">
+        <video id="vid2-src" src="TWOJE_WIDEO_2.mp4" preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+        <div class="gallery-ph" id="vid2-ph">
+          <div class="ph-icon">▶</div>
+          <div class="ph-label">WIDEO 2</div>
+          <div class="ph-hint">podmień src="TWOJE_WIDEO_2.mp4"</div>
+        </div>
+        <div class="gallery-overlay"><div class="play-btn">▶</div></div>
+        <div class="gallery-type-badge">VIDEO</div>
+        <span class="gallery-label">Seria Premium — Vol.2</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 5 ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_5.jpg" alt="content 5" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 5</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_5.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 5</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 6 ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_6.jpg" alt="content 6" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 6</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_6.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 6</span>
+      </div>
+
+      <!-- ═══ ZDJĘCIE 7 ═══ -->
+      <div class="gallery-item photo">
+        <img src="TWOJE_ZDJECIE_7.jpg" alt="content 7" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gallery-ph" style="display:none;">
+          <div class="ph-icon">📷</div>
+          <div class="ph-label">ZDJĘCIE 7</div>
+          <div class="ph-hint">podmień src="TWOJE_ZDJECIE_7.jpg"</div>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-type-badge">PHOTO</div>
+        <span class="gallery-label">Sesja — Zdjęcie 7</span>
+      </div>
+
+      <!-- ═══ WIDEO 3 (szerokie 2 kolumny) ═══ -->
+      <div class="gallery-item video" id="vid3" onclick="playVideo('vid3')">
+        <video id="vid3-src" src="TWOJE_WIDEO_3.mp4" preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+        <div class="gallery-ph" id="vid3-ph">
+          <div class="ph-icon">▶</div>
+          <div class="ph-label">WIDEO 3</div>
+          <div class="ph-hint">podmień src="TWOJE_WIDEO_3.mp4"</div>
+        </div>
+        <div class="gallery-overlay"><div class="play-btn">▶</div></div>
+        <div class="gallery-type-badge">VIDEO</div>
+        <span class="gallery-label">Seria Premium — Vol.3</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-ph {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:8px;
+    background: repeating-linear-gradient(45deg,#0d0d0d 0px,#0d0d0d 10px,#111 10px,#111 20px);
+    border: 2px dashed #2a2a2a; z-index:2;
+  }
+  .ph-icon { font-size:28px; opacity:0.5; }
+  .ph-label { font-size:11px; letter-spacing:3px; color:var(--gold); font-family:'Arial',sans-serif; opacity:0.7; }
+  .ph-hint { font-size:10px; color:#444; font-family:'Arial',sans-serif; font-style:italic; }
+</style>
+
+<script>
+function playVideo(id) {
+  var item = document.getElementById(id);
+  var vid = document.getElementById(id + '-src');
+  var ph = document.getElementById(id + '-ph');
+  if (!vid) return;
+  if (ph) ph.style.display = 'none';
+  item.querySelector('.gallery-overlay').style.display = 'none';
+  vid.controls = true;
+  vid.play();
+}
+</script>
+
+<!-- PROCESS -->
+<section id="casting" style="background:#080808;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">JAK TO DZIAŁA</div>
+    <h2 class="section-h2">Prosta droga do<br><em>Profesjonalizmu</em></h2>
+    <div class="process-steps">
+      <div class="step"><div class="step-circle">01</div><div class="step-title">CASTING</div><div class="step-desc">Wypełniasz formularz i przechodzisz weryfikację wstępną.</div></div>
+      <div class="step"><div class="step-circle">02</div><div class="step-title">ONBOARDING</div><div class="step-desc">Podpisujemy umowę i ustalamy strategię Twoim nawozu.</div></div>
+      <div class="step"><div class="step-circle">03</div><div class="step-title">PRODUKCJA</div><div class="step-desc">Realizujemy pierwsze sesje fotograficzo w naszych studiach.</div></div>
+      <div class="step"><div class="step-circle">04</div><div class="step-title">DYSTRYBUCJA</div><div class="step-desc">Uruchamiamy i konfigurujemy Twoje profile na platformach.</div></div>
+      <div class="step"><div class="step-circle">05</div><div class="step-title">SKALOWANIE</div><div class="step-desc">Zarządzamy systemem, marketingiem i optymalizujemy zyski.</div></div>
+    </div>
+
+    <div class="section-tag">BEZPIECZEŃSTWO I PRAWO</div>
+    <div class="security-grid">
+      <div>
+        <h2 class="section-h2">Twoja Ochrona jest<br><em>Naszym Priorytetem</em></h2>
+        <br>
+        <div class="security-text">
+          <p>Rozumiemy specyfikę branży adult i wyzwania, przed którymi stają twórcy. Naszym celem jest stworzenie środowiska, w którym możesz skupić się wyłącznie na swojej sztuce, mając pewność, że wszystkie aspekty techniczne, prawne i bezpieczeństwa są pod naszą kontrolą.</p>
+        </div>
+        <div class="security-items">
+          <div class="security-item"><span class="security-item-icon">🔒</span> Systemy szyfrowania danych i najwyższe standardy cyberbezpieczeństwa.</div>
+          <div class="security-item"><span class="security-item-icon">⚖️</span> Jasne warunki finansowe i wypłaty realizowane zawsze terminowo.</div>
+        </div>
+      </div>
+      <div class="security-cards">
+        <div class="sec-card">
+          <div class="sec-card-title">Dyskrecja i Anonimowość</div>
+          <div class="sec-card-text">Zapewniamy pełną ochronę wizerunku przez zaawansowane narzędzia do geoblokowania (np. blokada Twojego kraju).</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-title">Zgodność Prawna (2257)</div>
+          <div class="sec-card-text">Pełna legalność współpracy. Przejrzyste umowy, weryfikacja wieku zgodnie z 18 U.S.C. § 2257 i najwyższe standardy etyczne.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-title">Bezpieczeństwo Fizyczne</div>
+          <div class="sec-card-text">Studia znajdują się w chronionych, monitorowanych budynkach. Własne systemy i personel medyczny na każde żądanie.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-title">Opieka Psychologiczna</div>
+          <div class="sec-card-text">Dostęp do profesjonalnego wsparcia, coachingu i części mentorskiej na każdym etapie Twojej kariery w branży adult.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER BANNER -->
+<section style="padding: 60px 0;">
+  <div class="partner-banner">
+    <div class="partner-content">
+      <h2>PARTNER WITH US<em>DISTRIBUTION PLATFORM</em></h2>
+      <p class="partner-desc">Our advanced infrastructure ensures your content reaches the right audience across 10+ premium platforms simultaneously.</p>
+      <button class="btn-explore">EXPLORE PARTNERSHIPS</button>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTERS -->
+<div class="counters">
+  <div class="counter-item"><div class="counter-num">18+</div><div class="counter-label">ADULT VERIFY</div></div>
+  <div class="counter-item"><div class="counter-num">4K</div><div class="counter-label">PRODUCTION</div></div>
+  <div class="counter-item"><div class="counter-num" style="font-style:italic;">Premium</div><div class="counter-label">PARTNERSHIP</div></div>
+  <div class="counter-item"><div class="counter-num">24/7</div><div class="counter-label">SUPPORT</div></div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-icon">HRL</div>
+        <span class="footer-logo-text">HRL ADULT</span>
+      </div>
+      <p class="footer-tagline">Poland's foremost platform for independent adult production and distribution. Defined by quality, driven by success.</p>
+      <div class="social-links">
+        <div class="social-btn">X</div>
+        <div class="social-btn">IG</div>
+        <div class="social-btn">TG</div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">QUICK LINKS</div>
+      <ul class="footer-links">
+        <li><a href="#">HOME</a></li>
+        <li><a href="#about">ABOUT US</a></li>
+        <li><a href="#portfolio">STUDIOS</a></li>
+        <li><a href="#akademia">ACADEMY</a></li>
+        <li><a href="#casting">CASTING</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">LEGAL</div>
+      <ul class="footer-links">
+        <li><a href="#">PRIVACY POLICY</a></li>
+        <li><a href="#">TERMS OF SERVICE</a></li>
+        <li><a href="#">RODO / GDPR</a></li>
+        <li><a href="#">UMOWA Z TWÓRCĄ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">PARTNER WITH US</div>
+      <p style="font-size:12px;color:#555;line-height:1.6;margin-bottom:12px;">Stay updated with our latest membership plans and production news.</p>
+      <div class="footer-email-form">
+        <input class="footer-email-input" type="email" placeholder="YOUR EMAIL">
+        <button class="btn-send">SEND</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 STUDIO HRL ADULT. ALL RIGHTS RESERVED.</span>
+    <div class="footer-badges">
+      <span class="footer-badge red">18+ ONLY</span>
+      <span class="footer-badge">——— DESIGNED FOR EXCELLENCE</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
