@@ -16,80 +16,95 @@ const HomePage: React.FC = () => {
         <Navigation />
 
         <main>
-          {/* Start Section */}
-          <section id="start" className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative">
-            {/* Left Content */}
-            <div className="flex flex-col justify-center px-[10%] py-24 z-10 space-y-8 bg-dark relative">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="space-y-6"
-              >
-                <span className="font-bebas text-crimson-l text-sm tracking-[0.4em] uppercase block">Studio HRL Adult</span>
-                <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl text-white font-black leading-[0.9] tracking-tighter">
-                  <span className="italic text-crimson-l">Start</span> <br />
-                  <span className="text-gold">Twojej</span> <br />
-                  <span className="text-white">Kariery</span>
-                </h1>
-                <p className="text-dim text-xl md:text-2xl font-light italic leading-relaxed max-w-md">
-                  Profesjonalny management dla twórców tre adult. Zosta gwiazd branzy z naszym wsparciem i eksperck wiedz.
-                </p>
-              </motion.div>
+          {/* START Section - Combined Home Page and O Studio */}
+          <section id="start" className="min-h-screen">
+            {/* Hero Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 relative">
+              {/* Left Content */}
+              <div className="flex flex-col justify-center px-[10%] py-24 z-10 space-y-8 bg-dark relative">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="space-y-6"
+                >
+                  <span className="font-bebas text-crimson-l text-sm tracking-[0.4em] uppercase block">Studio HRL Adult</span>
+                  <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl text-white font-black leading-[0.9] tracking-tighter">
+                    <span className="italic text-crimson-l">START</span>
+                  </h1>
+                  <p className="text-dim text-xl md:text-2xl font-light italic leading-relaxed max-w-md">
+                    Profesjonalny management dla twórców tre adult. Zosta gwiazd branzy z naszym wsparciem i eksperck wiedz.
+                  </p>
+                </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex flex-wrap items-center gap-8 pt-8"
-              >
-                <button className="px-12 py-5 bg-crimson-l text-white font-bebas text-lg tracking-widest hover:bg-crimson transition-all shadow-[0_0_40px_rgba(212,48,74,0.2)]">
-                  Rozpocznij
-                </button>
-                <button className="text-gold italic text-xl border-b border-gold/30 hover:text-gold-l hover:border-gold transition-all">
-                  Dowiedz si wicej
-                </button>
-              </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="flex flex-wrap items-center gap-8 pt-8"
+                >
+                  <button className="px-12 py-5 bg-crimson-l text-white font-bebas text-lg tracking-widest hover:bg-crimson transition-all shadow-[0_0_40px_rgba(212,48,74,0.2)]">
+                    Rozpocznij
+                  </button>
+                  <button className="text-gold italic text-xl border-b border-gold/30 hover:text-gold-l hover:border-gold transition-all">
+                    Dowiedz si wicej
+                  </button>
+                </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex gap-12 pt-16 border-t border-gold/10"
-              >
-                <div>
-                  <span className="block font-playfair text-4xl text-white font-bold">50+</span>
-                  <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Aktywnych Twórców</span>
-                </div>
-                <div>
-                  <span className="block font-playfair text-4xl text-white font-bold">100+</span>
-                  <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Platform</span>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Right Media */}
-            <div className="relative overflow-hidden min-h-[50vh] lg:min-h-screen">
-              <div className="absolute inset-0 bg-gradient-to-r from-dark via-transparent to-transparent z-10 hidden lg:block" />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent z-10 lg:hidden" />
-              
-              <div className="absolute inset-0 bg-dark-4 flex items-center justify-center overflow-hidden">
-                {/* Image Placeholder */}
-                <div className="w-full h-full flex flex-col items-center justify-center gap-6 border-l border-gold/10">
-                  <div className="w-20 h-20 rounded-full border border-gold/20 flex items-center justify-center text-4xl opacity-20">??</div>
-                  <span className="font-bebas text-xs tracking-[0.5em] text-gold/20 uppercase">Premium Content</span>
-                </div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="flex gap-12 pt-16 border-t border-gold/10"
+                >
+                  <div>
+                    <span className="block font-playfair text-4xl text-white font-bold">50+</span>
+                    <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Aktywnych Twórców</span>
+                  </div>
+                  <div>
+                    <span className="block font-playfair text-4xl text-white font-bold">100+</span>
+                    <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Platform</span>
+                  </div>
+                </motion.div>
               </div>
 
-              {/* Floating Badge */}
-              <div className="absolute bottom-12 right-12 bg-dark-2/80 backdrop-blur-xl border border-gold/20 p-8 z-20 max-w-[240px] hidden md:block">
-                <span className="text-[9px] text-gold uppercase tracking-widest block mb-4">Nowy Projekt</span>
-                <p className="text-white italic text-lg leading-snug">"Do naszego zespou doczay nowi topowi twórcy."</p>
+              {/* Right Media - Screenshots */}
+              <div className="relative overflow-hidden min-h-[50vh] lg:min-h-screen">
+                <div className="absolute inset-0 bg-gradient-to-r from-dark via-transparent to-transparent z-10 hidden lg:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent z-10 lg:hidden" />
+                
+                <div className="absolute inset-0 bg-dark-4 flex items-center justify-center overflow-hidden">
+                  {/* Screenshots Grid */}
+                  <div className="grid grid-cols-2 gap-4 p-8 w-full max-w-2xl">
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                      <motion.div
+                        key={num}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: num * 0.1 }}
+                        className="relative overflow-hidden rounded-lg border border-gold/10 hover:border-gold/30 transition-all group cursor-pointer"
+                      >
+                        <img
+                          src={`/strona  Start i O studio/${num}.png`}
+                          alt={`Studio HRL Adult ${num}`}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Floating Badge */}
+                <div className="absolute bottom-12 right-12 bg-dark-2/80 backdrop-blur-xl border border-gold/20 p-8 z-20 max-w-[240px] hidden md:block">
+                  <span className="text-[9px] text-gold uppercase tracking-widest block mb-4">Nowy Projekt</span>
+                  <p className="text-white italic text-lg leading-snug">"Do naszego zespou doczay nowi topowi twórcy."</p>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* O Studio Section */}
+          {/* O Studio Section - Integrated */}
           <section id="studio" className="py-32 px-[10%] bg-dark-2 relative">
             <div className="max-w-6xl mx-auto space-y-24">
               <motion.div 
