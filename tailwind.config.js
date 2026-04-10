@@ -8,30 +8,60 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gold: {
+        // Unified color system
+        primary: {
           DEFAULT: '#C9A84C',
-          l: '#F0D98A',
-          d: '#7A5C10',
-          dark: '#8B6914',
+          50: '#F0D98A',
+          100: '#E5CC7A',
+          200: '#D4B86A',
+          300: '#C9A84C',
+          400: '#B8953A',
+          500: '#9B7F2A',
+          600: '#7A5C10',
+          700: '#5A4408',
+          800: '#3A2C05',
+          900: '#1A1402',
         },
-        crimson: {
+        accent: {
           DEFAULT: '#9B1F35',
-          l: '#D4304A',
-          d: '#5A0F1E',
-          dark: '#5A0F1E',
+          50: '#D4304A',
+          100: '#C02040',
+          200: '#A81835',
+          300: '#9B1F35',
+          400: '#8A1A30',
+          500: '#6B1525',
+          600: '#5A0F1E',
+          700: '#3A0A14',
+          800: '#1A050A',
+          900: '#0A0205',
+        },
+        gray: {
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          950: '#020617',
         },
         dark: {
           DEFAULT: '#07050A',
-          2: '#0F0C14',
-          3: '#16121E',
-          4: '#1E1828',
-          5: '#251F30',
+          50: '#0F0C14',
+          100: '#16121E',
+          200: '#1E1828',
+          300: '#251F30',
+          400: '#2D2538',
+          500: '#352B40',
         },
+        // Legacy color aliases for backward compatibility
+        gold: '#C9A84C',
+        crimson: '#9B1F35',
         text: '#EDE0D4',
-        dim: {
-          DEFAULT: '#9A8880',
-          2: '#6A5A52',
-        },
+        dim: '#9A8880',
         white: '#FBF6F0',
       },
       fontFamily: {
@@ -41,6 +71,10 @@ module.exports = {
         playfair: ['var(--font-playfair)', 'Playfair Display', 'serif'],
       },
       backgroundImage: {
+        'primary-gradient': 'linear-gradient(135deg, #F0D98A, #C9A84C, #7A5C10)',
+        'accent-gradient': 'linear-gradient(135deg, #D4304A, #9B1F35, #5A0F1E)',
+        'dark-gradient': 'linear-gradient(135deg, #0F172A, #07050A, #020617)',
+        // Legacy aliases
         'gold-gradient': 'linear-gradient(135deg, #F0D98A, #C9A84C, #7A5C10)',
         'crimson-gradient': 'linear-gradient(135deg, #9B1F35, #5A0F1E)',
       },

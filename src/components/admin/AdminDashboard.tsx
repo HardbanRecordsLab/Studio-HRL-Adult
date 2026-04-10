@@ -1,58 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { 
+  LayoutDashboard, 
+  Users, 
+  UserCheck, 
+  Video, 
+  DollarSign, 
+  Wifi, 
+  BookOpen, 
+  Settings, 
+  FileText,
+  TrendingUp,
+  Search,
+  Filter,
+  Shield,
+  FileCheck,
+  History
+} from 'lucide-react';
+import PartnersManager from './PartnersManager';
+import CastingManager from './CastingManager';
+import PlatformsManager from './PlatformsManager';
+import FinanceManager from './FinanceManager';
+import ContentManagementSystem from './ContentManagementSystem';
+import AcademyManager from './AcademyManager';
+import SystemSettings from './SystemSettings';
 
 interface AdminDashboardProps {
   token: string;
 }
 
-interface Profile {
-  id: string;
-  handle: string;
-  name: string;
-  email: string;
-  type: 'couple' | 'solo';
-  status: string;
-}
-
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
-  const [activeTab, setActiveTab] = useState('profiles');
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    if (activeTab === 'profiles') {
-      fetchProfiles();
-    }
-  }, [activeTab]);
-
-  const fetchProfiles = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/admin/profile', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setProfiles(data.data || []);
-      }
-    } catch (error) {
-      console.error('Error fetching profiles:', error);
-    }
-    setLoading(false);
-  };
-
-  const filteredProfiles = profiles.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.handle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const tabs = [
-    { id: 'dashboard', label: '📊 Dashboard', icon: '📊' },
-    { id: 'profiles', label: '👥 Profiles', icon: '👥' },
-    { id: 'content', label: '🎬 Content', icon: '🎬' },
-    { id: 'analytics', label: '📈 Analytics', icon: '📈' },
-    { id: 'settings', label: '⚙️ Settings', icon: '⚙️' },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, description: 'Overview and statistics' },
+    { id: 'partners', label: 'Partners', icon: Users, description: 'Manage models and partners' },
+    { id: 'casting', label: 'Casting', icon: UserCheck, description: 'Review applications' },
+    { id: 'platforms', label: 'Platforms', icon: Wifi, description: '18 platform connections' },
+    { id: 'finance', label: 'Finance', icon: DollarSign, description: 'Revenue and payouts' },
+    { id: 'content', label: 'Content', icon: Video, description: 'Media management' },
+    { id: 'academy', label: 'Academy', icon: BookOpen, description: 'Courses and progress' },
+    { id: 'verify', label: 'Documents', icon: Shield, description: 'Identity verification' },
+    { id: 'logs', label: 'Logs', icon: History, description: 'System activity logs' },
+    { id: 'settings', label: 'Settings', icon: Settings, description: 'System configuration' },
   ];
 
   return (
@@ -105,98 +95,111 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 md:grid-cols-4 gap-6"
+            className="space-y-6"
           >
-            {[
-              { label: 'Profiles', value: profiles.length, color: 'from-blue-500 to-blue-600' },
-              { label: 'Active Partners', value: profiles.filter(p => p.status === 'active').length, color: 'from-green-500 to-green-600' },
-              { label: 'Pending', value: profiles.filter(p => p.status === 'pending').length, color: 'from-yellow-500 to-yellow-600' },
-              { label: 'Inactive', value: profiles.filter(p => p.status === 'inactive').length, color: 'from-red-500 to-red-600' },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className={`bg-gradient-to-br ${stat.color} p-6 rounded-xl shadow-lg`}
-              >
-                <p className="text-white/80 text-sm font-medium mb-2">{stat.label}</p>
-                <p className="text-4xl font-bold">{stat.value}</p>
-              </motion.div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {[
+                { label: 'Total Partners', value: '24', color: 'from-blue-500 to-blue-600', icon: Users },
+                { label: 'Active Platforms', value: '18', color: 'from-green-500 to-green-600', icon: Wifi },
+                { label: 'Monthly Revenue', value: 'EUR 89.5K', color: 'from-purple-500 to-purple-600', icon: DollarSign },
+                { label: 'Academy Courses', value: '12', color: 'from-yellow-500 to-yellow-600', icon: BookOpen },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`bg-gradient-to-br ${stat.color} p-6 rounded-xl shadow-lg`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-white/80 text-sm font-medium">{stat.label}</p>
+                    <stat.icon className="w-5 h-5 text-white/50" />
+                  </div>
+                  <p className="text-3xl font-bold text-white">{stat.value}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {tabs.slice(1).map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className="flex items-center gap-3 p-3 bg-gray-900 hover:bg-gray-800 rounded-lg text-left transition-colors"
+                    >
+                      <tab.icon className="w-5 h-5 text-rose-400" />
+                      <div>
+                        <p className="text-white font-medium">{tab.label}</p>
+                        <p className="text-gray-400 text-xs">{tab.description}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
+                <div className="space-y-3">
+                  {[
+                    { action: 'New partner application', time: '2 hours ago', type: 'casting' },
+                    { action: 'Revenue sync completed', time: '4 hours ago', type: 'finance' },
+                    { action: 'New course published', time: '6 hours ago', type: 'academy' },
+                    { action: 'Platform connection issue', time: '8 hours ago', type: 'platforms' },
+                  ].map((activity, i) => (
+                    <div key={i} className="flex items-center justify-between p-3 bg-gray-900 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-rose-500 rounded-full"></div>
+                        <span className="text-white text-sm">{activity.action}</span>
+                      </div>
+                      <span className="text-gray-400 text-xs">{activity.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
 
-        {/* Profiles Tab */}
-        {activeTab === 'profiles' && (
+        {/* Partners Tab */}
+        {activeTab === 'partners' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
           >
-            {/* Search Bar */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search profiles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white placeholder-gray-500 transition-colors"
-              />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">🔍</span>
-            </div>
+            <PartnersManager token={token} />
+          </motion.div>
+        )}
 
-            {/* Profiles Grid */}
-            {loading ? (
-              <div className="text-center py-12">
-                <p className="text-gray-400">Loading profiles...</p>
-              </div>
-            ) : filteredProfiles.length === 0 ? (
-              <div className="text-center py-12 bg-gray-800/50 rounded-lg border border-gray-700">
-                <p className="text-gray-400">No profiles found</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProfiles.map((profile, i) => (
-                  <motion.div
-                    key={profile.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 hover:border-rose-500/50 transition-colors group"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-lg font-bold group-hover:text-rose-400 transition-colors">
-                          {profile.name}
-                        </h3>
-                        <p className="text-sm text-gray-400">@{profile.handle}</p>
-                      </div>
-                      <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                        profile.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                        profile.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
-                        {profile.status}
-                      </span>
-                    </div>
-                    
-                    <div className="space-y-2 mb-4">
-                      <p className="text-sm text-gray-400">
-                        <span className="text-gray-500">Type:</span> {profile.type}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        <span className="text-gray-500">Email:</span> {profile.email}
-                      </p>
-                    </div>
+        {/* Casting Tab */}
+        {activeTab === 'casting' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <CastingManager token={token} />
+          </motion.div>
+        )}
 
-                    <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 rounded-lg font-medium text-sm transition-all transform hover:-translate-y-0.5">
-                      Edit Profile →
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+        {/* Platforms Tab */}
+        {activeTab === 'platforms' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <PlatformsManager token={token} />
+          </motion.div>
+        )}
+
+        {/* Finance Tab */}
+        {activeTab === 'finance' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <FinanceManager token={token} />
           </motion.div>
         )}
 
@@ -205,20 +208,50 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg p-12 text-center"
           >
-            <p className="text-gray-400">Content Management Coming Soon</p>
+            <ContentManagementSystem token={token} />
           </motion.div>
         )}
 
-        {/* Analytics Tab */}
-        {activeTab === 'analytics' && (
+        {/* Academy Tab */}
+        {activeTab === 'academy' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg p-12 text-center"
           >
-            <p className="text-gray-400">Analytics Coming Soon</p>
+            <AcademyManager token={token} />
+          </motion.div>
+        )}
+
+        {/* Documents/Verify Tab */}
+        {activeTab === 'verify' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="w-full h-full">
+              <iframe 
+                src="/admin/verify" 
+                className="w-full h-[calc(100vh-200px)] border-0 bg-transparent"
+                title="Document Verification"
+              />
+            </div>
+          </motion.div>
+        )}
+
+        {/* Logs Tab */}
+        {activeTab === 'logs' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="w-full h-full">
+              <iframe 
+                src="/admin/logs" 
+                className="w-full h-[calc(100vh-200px)] border-0 bg-transparent"
+                title="System Logs"
+              />
+            </div>
           </motion.div>
         )}
 
@@ -227,9 +260,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg p-12 text-center"
           >
-            <p className="text-gray-400">Settings Coming Soon</p>
+            <div className="w-full h-full">
+              <iframe 
+                src="/admin/settings" 
+                className="w-full h-[calc(100vh-200px)] border-0 bg-transparent"
+                title="Settings"
+              />
+            </div>
           </motion.div>
         )}
       </main>

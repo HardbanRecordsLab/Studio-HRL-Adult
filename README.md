@@ -1,35 +1,37 @@
-# Studio HRL Adult - React Version
+# Studio HRL Adult - Professional Adult Content Management Platform
 
-## 🚀 Setup Instructions
+## Overview
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+Studio HRL Adult is a comprehensive Next.js 14 application for managing adult content creators, platforms, and business operations. Built with modern React, TypeScript, and Prisma, it provides a complete ecosystem for content creation, distribution, and monetization.
 
-### Installation
+## Features
 
-1. **Install dependencies:**
-```bash
-cd react-app
-npm install
-```
+### Admin Panel
+- **Dashboard** - Analytics and KPIs overview
+- **Partners Management** - Complete CRUD for creator profiles
+- **Casting Applications** - Review and approve applications
+- **Document Verification** - Identity verification with privacy protection
+- **Academy Management** - Videos, podcasts, articles, and guides
+- **Financial Records** - Revenue tracking and payouts
+- **Platform Management** - 18 platform connections
+- **Content Management** - Media upload and organization
+- **System Settings** - Studio configuration and revenue sharing
+- **System Logs** - Complete audit trail and activity monitoring
 
-2. **Run development server:**
-```bash
-npm run dev
-```
+### Public Features
+- **Homepage** - Professional landing with consistent branding
+- **Portfolio** - Creator profiles and showcases
+- **Casting** - Application forms and process
+- **Academy** - Educational content with real articles
+- **Platform Integration** - 25+ adult platforms
 
-3. **Build for production:**
-```bash
-npm run build
-npm run start
-```
+## Tech Stack
 
-## 📁 Project Structure
-
-```
-react-app/
-├── src/
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Styling**: TailwindCSS with unified design system
+- **State**: Zustand for client state
 │   ├── components/
 │   │   ├── common/          # Reusable components
 │   │   ├── sections/        # Page sections
@@ -172,12 +174,7 @@ npm run test:coverage     # Coverage report
 
 ## 🎯 Business Logic
 
-### 60/30/10 Model
-- 60% Partnerka
-- 30% Model  
-- 10% Studio
-
-### Platform Integration
+#### Platform Integration
 - 18 total platforms (10 Live Cam + 8 Fansite)
 - API connections
 - Real-time sync

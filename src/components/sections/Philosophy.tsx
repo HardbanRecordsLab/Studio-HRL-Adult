@@ -125,7 +125,7 @@ const Philosophy: React.FC = () => {
               <div className="space-y-2">
                 <div className="text-gold font-cormorant text-3xl italic">03.</div>
                 <h4 className="text-[10px] text-white font-bold tracking-widest uppercase">Earnings</h4>
-                <p className="text-[9px] text-dim font-light">Transparent 60/30/10 model ensures you keep what you earn with guaranteed startup support.</p>
+                <p className="text-[9px] text-dim font-light">Transparent partnership model ensures you keep what you earn with guaranteed startup support.</p>
               </div>
               <div className="space-y-2">
                 <div className="text-gold font-cormorant text-3xl italic">04.</div>

@@ -651,7 +651,7 @@ export const AUDIO_PROCESSING = {
   }
 };
 
-// Routes
+// Routes - Updated for unified app router structure
 export const ROUTES = {
   HOME: '/',
   CASTING: '/casting',
@@ -659,11 +659,44 @@ export const ROUTES = {
   PORTFOLIO: '/portfolio',
   PARA: '/landing-para',
   ADMIN: '/admin',
-  LOGIN: '/login',
+  LOGIN: '/admin/login',
   REGISTER: '/register',
-  DASHBOARD: '/admin/dashboard',
+  DASHBOARD: '/admin',
   PARTNERS: '/admin/partners',
   CONTENT: '/admin/content',
   FINANCE: '/admin/finance',
-  SETTINGS: '/admin/settings'
+  SETTINGS: '/admin/settings',
+  LOGS: '/admin/logs',
+  VERIFY: '/admin/verify',
+  PLATFORMS: '/admin/platforms',
+  DOCUMENTS: '/admin/documents'
+};
+
+// Unified color system constants
+export const COLORS = {
+  PRIMARY: '#C9A84C',
+  ACCENT: '#9B1F35',
+  DARK: '#07050A',
+  WHITE: '#FBF6F0',
+  GRAY: {
+    50: '#F8FAFC',
+    100: '#F1F5F9',
+    200: '#E2E8F0',
+    300: '#CBD5E1',
+    400: '#94A3B8',
+    500: '#64748B',
+    600: '#475569',
+    700: '#334155',
+    800: '#1E293B',
+    900: '#0F172A',
+    950: '#020617'
+  }
+};
+
+// Legacy color aliases for backward compatibility
+export const LEGACY_COLORS = {
+  GOLD: '#C9A84C',
+  CRIMSON: '#9B1F35',
+  TEXT: '#EDE0D4',
+  DIM: '#9A8880'
 };

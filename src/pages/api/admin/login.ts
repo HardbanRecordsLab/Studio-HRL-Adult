@@ -1,5 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+<<<<<<< HEAD
 import { supabaseAdmin } from '@/lib/supabase';
+=======
+import { supabase } from '@/utils/supabase';
+import { logAdminAction, ADMIN_ACTIONS, ADMIN_RESOURCES } from '@/lib/adminLog';
+>>>>>>> 3f057d9578d3a6cadf60e1a2fbe25213260bbb92
 
 interface LoginRequest {
   email: string;
@@ -32,10 +37,26 @@ export default async function handler(
 
   // Check credentials
   if (email !== ADMIN_EMAIL) {
+    // Log failed login attempt
+    await logAdminAction({
+      adminEmail: email,
+      action: ADMIN_ACTIONS.LOGIN_FAILED,
+      resource: ADMIN_RESOURCES.AUTH,
+      details: JSON.stringify({ reason: 'Invalid email' }),
+      ip: req.headers['x-forwarded-for'] as string || 'unknown'
+    });
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
   if (password !== ADMIN_PASSWORD) {
+    // Log failed login attempt
+    await logAdminAction({
+      adminEmail: email,
+      action: ADMIN_ACTIONS.LOGIN_FAILED,
+      resource: ADMIN_RESOURCES.AUTH,
+      details: JSON.stringify({ reason: 'Invalid password' }),
+      ip: req.headers['x-forwarded-for'] as string || 'unknown'
+    });
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
@@ -52,6 +73,7 @@ export default async function handler(
         userAgent: req.headers['user-agent']
       });
 
+<<<<<<< HEAD
     // Generate a simple JWT-like token (in production, use proper JWT library)
     const token = btoa(JSON.stringify({ 
       email: ADMIN_EMAIL, 
@@ -64,4 +86,16 @@ export default async function handler(
     console.error('Login error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
+=======
+  // Log successful login
+  await logAdminAction({
+    adminEmail: ADMIN_EMAIL,
+    action: ADMIN_ACTIONS.LOGIN,
+    resource: ADMIN_RESOURCES.AUTH,
+    details: JSON.stringify({ timestamp: Date.now() }),
+    ip: req.headers['x-forwarded-for'] as string || 'unknown'
+  });
+
+  return res.status(200).json({ token });
+>>>>>>> 3f057d9578d3a6cadf60e1a2fbe25213260bbb92
 }
