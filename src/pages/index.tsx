@@ -1,227 +1,121 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, Users, Video, Shield, Star, CheckCircle } from 'lucide-react';
 import Navigation from '@/components/common/Navigation';
 import Footer from '@/components/common/Footer';
 
-export default function HomePage() {
+const HomePage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Studio HRL Adult - Profesjonalny Management dla Twórców Tre Adults</title>
-        <meta name="description" content="Kompleksowy management dla modeli, twórców i performerów. Zosta profesjonalistom w branzy adult entertainment." />
-        <meta name="keywords" content="studio adult, management dla twórców, modelki, onlyfans, fansly" />
-        <meta property="og:title" content="Studio HRL Adult - Profesjonalny Management" />
-        <meta property="og:description" content="Zosta profesjonalistom w branzy adult entertainment" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="/images/studio-noir.jpg" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Anna & Marek — Premium Content Duo</title>
+        <meta name="description" content="Poznaj Annę i Marka - naszą topową parę twórców. Zobacz ich profil i dołącz do świata premium." />
       </Head>
 
-      <Navigation />
+      <div className="min-h-screen bg-dark text-text relative font-cormorant overflow-x-hidden">
+        <Navigation />
 
-      {/* Hero Section */}
-      <section className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/studio-noir.jpg')] bg-cover bg-center opacity-10"></div>
-        
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">
-                Studio HRL Adult
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              Profesjonalny management dla twórców tre adult. Zosta gwiazd branzy z naszym wsparciem.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/casting" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all transform hover:scale-105">
-                Do nasz teamu
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link href="/portfolio" className="inline-flex items-center px-8 py-4 border border-gray-600 text-white rounded-lg hover:bg-gray-800 transition-all">
-                Zobacz portfolio
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-black">
-        <div className="max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Dlaczego <span className="bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">Studio HRL</span>?
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Oferujemy kompleksowe wsparcie na kadym etapie Twojej kariery
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Users,
-                title: "Personalny Management",
-                description: "Dedykowany manager 24/7 i indywidualna strategia rozwoju"
-              },
-              {
-                icon: Video,
-                title: "Produkcja Tre",
-                description: "Profesjonalne zdjcia, wideo i edycja materiaów"
-              },
-              {
-                icon: Shield,
-                title: "Bezpieczestwo",
-                description: "Ochrona prywatnoci i anonimowo na najwyszym poziomie"
-              },
-              {
-                icon: Star,
-                title: "Marketing",
-                description: "Promocja na wszystkich platformach i budowanie marki"
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
+        <main>
+          {/* Hero Section */}
+          <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative">
+            {/* Left Content */}
+            <div className="flex flex-col justify-center px-[10%] py-24 z-10 space-y-8 bg-dark relative">
+              <motion.div 
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gray-900 rounded-xl p-6 border border-gray-800 hover:border-rose-500/50 transition-all"
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-6"
               >
-                <feature.icon className="h-12 w-12 text-rose-500 mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <span className="font-bebas text-crimson-l text-sm tracking-[0.4em] uppercase block">Exclusive Partnership</span>
+                <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl text-white font-black leading-[0.9] tracking-tighter">
+                  Anna <span className="font-cormorant italic font-light text-gold text-5xl md:text-7xl">&</span> <br />
+                  <span className="italic text-crimson-l">Marek</span>
+                </h1>
+                <p className="text-dim text-xl md:text-2xl font-light italic leading-relaxed max-w-md">
+                  Sztuka intymności uchwycona w najwyższej jakości 4K. Poznaj parę, która redefiniuje standardy branży premium.
+                </p>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Services Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 to-black">
-        <div className="max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Nasze <span className="bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">Usugi</span>
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Kompleksowe rozwizania dla profesjonalnych twórców
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Management Platform",
-                items: ["OnlyFans", "Fansly", "ManyVids", "Clips4Sale", "AVN Stars"],
-                description: "Pena obsuga kont na platformach subskrypcyjnych"
-              },
-              {
-                title: "Live Cam",
-                items: ["Chaturbate", "MyFreeCams", "LiveJasmin", "Stripchat"],
-                description: "Profesjonalne wsparcie na platformach live cam"
-              },
-              {
-                title: "Content Creation",
-                items: ["Zdjcia profesjonalne", "Wideo production", "Edycja", "Marketing"],
-                description: "Tworzenie i promocja wysokiej jakoci tre"
-              },
-              {
-                title: "Social Media",
-                items: ["Twitter/X", "Reddit", "Instagram", "TikTok"],
-                description: "Budowanie marki na platformach spoecznociowych"
-              },
-              {
-                title: "Legal & Biznes",
-                items: ["Umowy", "Prawo autorskie", "Podatki", "Ochrona"],
-                description: "Pene wsparcie prawne i biznesowe"
-              },
-              {
-                title: "Technologia",
-                items: ["Strony WWW", "SEO", "Analytics", "Automation"],
-                description: "Nowoczesne rozwizania technologiczne"
-              }
-            ].map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-black/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800"
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="flex flex-wrap items-center gap-8 pt-8"
               >
-                <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
-                <p className="text-gray-400 mb-4">{service.description}</p>
-                <div className="space-y-2">
-                  {service.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="flex items-center text-gray-300">
-                      <CheckCircle className="h-4 w-4 text-rose-500 mr-2 flex-shrink-0" />
-                      <span className="text-sm">{item}</span>
-                    </div>
-                  ))}
+                <button className="px-12 py-5 bg-crimson-l text-white font-bebas text-lg tracking-widest hover:bg-crimson transition-all shadow-[0_0_40px_rgba(212,48,74,0.2)]">
+                  Zobacz Profil
+                </button>
+                <button className="text-gold italic text-xl border-b border-gold/30 hover:text-gold-l hover:border-gold transition-all">
+                  Umów Wspólną Sesję
+                </button>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="flex gap-12 pt-16 border-t border-gold/10"
+              >
+                <div>
+                  <span className="block font-playfair text-4xl text-white font-bold">150+</span>
+                  <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Zrealizowanych Sesji</span>
+                </div>
+                <div>
+                  <span className="block font-playfair text-4xl text-white font-bold">10k+</span>
+                  <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Zadowolonych Fanów</span>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-rose-500 to-pink-500">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Zaczynamy Twoj Karier?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Docz do elitarnego grona twórców z naszym profesjonalnym wsparciem
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/casting" className="inline-flex items-center px-8 py-4 bg-white text-rose-600 rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105 font-semibold">
-                Zgloszenie casting
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link href="/contact" className="inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all">
-                Skontaktuj si z nami
-              </Link>
             </div>
-          </motion.div>
-        </div>
-      </section>
 
-      <Footer />
+            {/* Right Media */}
+            <div className="relative overflow-hidden min-h-[50vh] lg:min-h-screen">
+              <div className="absolute inset-0 bg-gradient-to-r from-dark via-transparent to-transparent z-10 hidden lg:block" />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent z-10 lg:hidden" />
+              
+              <div className="absolute inset-0 bg-dark-4 flex items-center justify-center overflow-hidden">
+                {/* Image Placeholder */}
+                <div className="w-full h-full flex flex-col items-center justify-center gap-6 border-l border-gold/10">
+                  <div className="w-20 h-20 rounded-full border border-gold/20 flex items-center justify-center text-4xl opacity-20">📸</div>
+                  <span className="font-bebas text-xs tracking-[0.5em] text-gold/20 uppercase">Featured Visual Content</span>
+                </div>
+              </div>
+
+              {/* Floating Badge */}
+              <div className="absolute bottom-12 right-12 bg-dark-2/80 backdrop-blur-xl border border-gold/20 p-8 z-20 max-w-[240px] hidden md:block">
+                <span className="text-[9px] text-gold uppercase tracking-widest block mb-4">Latest Update</span>
+                <p className="text-white italic text-lg leading-snug">"Nowa sesja w stylu Parisian Night już dostępna na profilu."</p>
+              </div>
+            </div>
+          </section>
+
+          {/* About Section */}
+          <section className="py-32 px-[10%] bg-dark-2 relative">
+            <div className="max-w-4xl mx-auto space-y-16 text-center">
+              <div className="space-y-4">
+                <span className="text-gold text-[10px] tracking-[0.5em] uppercase">O Nas</span>
+                <h2 className="font-playfair text-5xl md:text-7xl text-white">Pasja i Profesjonalizm</h2>
+              </div>
+              <p className="text-dim text-xl md:text-2xl font-light leading-relaxed italic">
+                Jako para w życiu i na planie, Anna i Marek tworzą autentyczne, pełne emocji treści, 
+                które wyróżniają się na tle masowej produkcji. Ich misją jest pokazanie, że branża adult 
+                może być elegancka, artystyczna i pełna szacunku.
+              </p>
+              <div className="flex justify-center pt-8">
+                <div className="w-2 h-2 bg-crimson rotate-45 shadow-[0_0_15px_rgba(212,48,74,0.5)]" />
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <Footer />
+        <div className="grain-overlay" />
+      </div>
+
+      <style jsx global>{`
+        .font-playfair { font-family: 'Playfair Display', serif; }
+      `}</style>
     </>
   );
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {},
-    revalidate: 60 // Revalidate every minute
-  };
 };
+
+export default HomePage;
