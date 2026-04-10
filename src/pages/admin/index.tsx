@@ -2,13 +2,15 @@
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import AdminDashboard from '@/components/admin/AdminDashboard';
-
-interface LoginFormState {
-  email: string;
-  password: string;
-  error: string;
-  loading: boolean;
-}
+import { cn } from '@/utils/utils';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  PlatformDataType,
+  LoginFormState,
+  Profile,
+  CastingApplication,
+  SettingsState
+} from '@/types';
 
 const AdminPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -65,8 +67,7 @@ const AdminPage: React.FC = () => {
         loading: false,
       });
     } catch (error) {
-<<<<<<< HEAD
-      setLoginError('An error occurred. Please try again.');
+      setLoginForm(prev => ({ ...prev, error: 'An error occurred. Please try again.', loading: false }));
     }
   };
 
@@ -245,14 +246,15 @@ const AdminPage: React.FC = () => {
     // Simulate API call to sync platform data
     setTimeout(() => {
       setPlatformData((prev: PlatformDataType) => ({
-=======
-      setLoginForm(prev => ({
->>>>>>> 3f057d9578d3a6cadf60e1a2fbe25213260bbb92
         ...prev,
-        error: 'An error occurred. Please try again.',
-        loading: false,
+        [platform]: { 
+          ...prev[platform], 
+          lastSync: new Date().toISOString(),
+          error: 'An error occurred. Please try again.',
+          loading: false
+        }
       }));
-    }
+    }, 1000);
   };
 
   const handleLogout = () => {

@@ -9,6 +9,71 @@ export interface User {
   lastLogin?: string;
 }
 
+export interface PlatformInfo {
+  username: string;
+  url: string;
+  followers: number;
+  posts: number;
+  features: string[];
+  apiKey?: string;
+  lastSync?: string;
+  error?: string;
+  loading?: boolean;
+  [key: string]: any;
+}
+
+export interface PlatformDataType {
+  [key: string]: PlatformInfo;
+}
+
+export interface LoginFormState {
+  email: string;
+  password: string;
+  error: string;
+  loading: boolean;
+}
+
+export interface Profile {
+  id: number;
+  handle: string;
+  name: string;
+  template: string;
+  bio: string;
+  image: string;
+  status: string;
+}
+
+export interface CastingApplication {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  status: string;
+  submittedAt: string;
+}
+
+export interface SettingsState {
+  general: {
+    siteName: string;
+    adminEmail: string;
+    currency: string;
+    timezone: string;
+  };
+  integrations: {
+    cloudinary: { status: string };
+    supabase: { status: string };
+    stripe: { status: string };
+    sendgrid: { status: string };
+    twitter: { status: string };
+    meta: { status: string };
+  };
+  maintenance: {
+    lastBackup: string;
+    systemUptime: string;
+    version: string;
+  };
+}
+
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
