@@ -8,16 +8,16 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Anna & Marek — Premium Content Duo</title>
-        <meta name="description" content="Poznaj Annę i Marka - naszą topową parę twórców. Zobacz ich profil i dołącz do świata premium." />
+        <title>Studio HRL Adult - Profesjonalny Management dla Twórców</title>
+        <meta name="description" content="Studio HRL Adult oferuje profesjonalny management dla twórców tre adult. Zosta gwiazd branzy z naszym wsparciem." />
       </Head>
 
       <div className="min-h-screen bg-dark text-text relative font-cormorant overflow-x-hidden">
         <Navigation />
 
         <main>
-          {/* Hero Section */}
-          <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative">
+          {/* Start Section */}
+          <section id="start" className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative">
             {/* Left Content */}
             <div className="flex flex-col justify-center px-[10%] py-24 z-10 space-y-8 bg-dark relative">
               <motion.div 
@@ -26,13 +26,14 @@ const HomePage: React.FC = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="space-y-6"
               >
-                <span className="font-bebas text-crimson-l text-sm tracking-[0.4em] uppercase block">Exclusive Partnership</span>
+                <span className="font-bebas text-crimson-l text-sm tracking-[0.4em] uppercase block">Studio HRL Adult</span>
                 <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl text-white font-black leading-[0.9] tracking-tighter">
-                  Anna <span className="font-cormorant italic font-light text-gold text-5xl md:text-7xl">&</span> <br />
-                  <span className="italic text-crimson-l">Marek</span>
+                  <span className="italic text-crimson-l">Start</span> <br />
+                  <span className="text-gold">Twojej</span> <br />
+                  <span className="text-white">Kariery</span>
                 </h1>
                 <p className="text-dim text-xl md:text-2xl font-light italic leading-relaxed max-w-md">
-                  Sztuka intymności uchwycona w najwyższej jakości 4K. Poznaj parę, która redefiniuje standardy branży premium.
+                  Profesjonalny management dla twórców tre adult. Zosta gwiazd branzy z naszym wsparciem i eksperck wiedz.
                 </p>
               </motion.div>
 
@@ -103,6 +104,83 @@ const HomePage: React.FC = () => {
               <div className="flex justify-center pt-8">
                 <div className="w-2 h-2 bg-crimson rotate-45 shadow-[0_0_15px_rgba(212,48,74,0.5)]" />
               </div>
+            </div>
+          </section>
+
+          {/* O Studio Section */}
+          <section id="studio" className="py-32 px-[10%] bg-dark-2 relative">
+            <div className="max-w-6xl mx-auto space-y-24">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="text-center space-y-8"
+              >
+                <span className="text-gold text-[10px] tracking-[0.5em] uppercase">O Studio</span>
+                <h2 className="font-playfair text-5xl md:text-7xl text-white">Studio HRL Adult</h2>
+                <p className="text-dim text-xl md:text-2xl font-light leading-relaxed italic max-w-4xl mx-auto">
+                  Profesjonalny management dla twórców tre adult. Oferujemy kompleksowe wsparcie, 
+                  od produkcji po promocj, pomagajc Ci osign sukces w branzy premium.
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-3 gap-12">
+                {[
+                  {
+                    title: "Management",
+                    description: "Personalny manager 24/7 i indywidualna strategia rozwoju",
+                    icon: "??"
+                  },
+                  {
+                    title: "Produkcja",
+                    description: "Profesjonalne zdjcia, wideo i edycja materiaów",
+                    icon: "??"
+                  },
+                  {
+                    title: "Marketing",
+                    description: "Promocja na platformach i budowanie marki",
+                    icon: "??"
+                  }
+                ].map((service, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="text-center space-y-6"
+                  >
+                    <div className="text-4xl">{service.icon}</div>
+                    <h3 className="font-playfair text-2xl text-white">{service.title}</h3>
+                    <p className="text-dim font-light">{service.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="text-center pt-16 border-t border-gold/10"
+              >
+                <div className="grid md:grid-cols-4 gap-8">
+                  <div>
+                    <span className="block font-playfair text-4xl text-white font-bold">50+</span>
+                    <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Aktywnych Twórców</span>
+                  </div>
+                  <div>
+                    <span className="block font-playfair text-4xl text-white font-bold">100+</span>
+                    <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Platform</span>
+                  </div>
+                  <div>
+                    <span className="block font-playfair text-4xl text-white font-bold">24/7</span>
+                    <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Wsparcie</span>
+                  </div>
+                  <div>
+                    <span className="block font-playfair text-4xl text-white font-bold">98%</span>
+                    <span className="text-[10px] text-dim uppercase tracking-widest font-bebas">Zadowolenie</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </section>
         </main>
