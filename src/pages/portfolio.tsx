@@ -72,7 +72,7 @@ const PortfolioPage: React.FC = () => {
     },
   ];
 
-// ─── PARTNER CARD ────────────────────────────────────────────────────────────
+// ─── PARTNER CARD ────────────────────────────────────────────────────
 const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -93,6 +93,9 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(200,85,106,0.1),transparent_70%)]" />
             <div className="text-8xl filter blur-[2px] opacity-20 group-hover:blur-none group-hover:opacity-40 transition-all duration-700">
               {profile.ico}
+            </div>
+            <div className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-50 transition-all duration-700"
+                 style={{ backgroundImage: `url('/images/${profile.id}-profile.jpg')` }}>
             </div>
             <div className="absolute top-4 left-4 flex gap-2">
               {profile.tags.map(tag => (
@@ -118,7 +121,7 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
             <div>
               <h4 className="font-playfair text-xl text-gold italic border-b border-gold/10 pb-2 mb-6">Wymiary</h4>
               <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                {Object.entries(profile.measurements).map(([key, val]) => (
+                {profile.measurements && Object.entries(profile.measurements).map(([key, val]) => (
                   <div key={key} className="flex justify-between items-center border-b border-gold/5 pb-1">
                     <span className="text-[8px] text-dim uppercase tracking-widest">{key}</span>
                     <span className="text-xs text-white font-medium">{val}</span>
@@ -147,99 +150,155 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
 };
 
   const contentItems = [
-    { title: 'Intimate Morning Routine', type: 'Video • 12:45', price: '$29.99', ico: '📹' },
-    { title: 'Golden Hour Photoshoot', type: 'Gallery • 25 photos', price: '$19.99', ico: '📸' },
-    { title: 'Personal Video Message', type: 'Custom • 5:30', price: '$49.99', ico: '💬' },
-    { title: 'Behind the Scenes', type: 'BTS • 8:15', price: '$14.99', ico: '🎥' },
-  ];
-
-  const currentProfile = profiles.find(p => p.id === activeProfile) || profiles[0];
-
-  const portfolioItems = [
     {
-      image: '/images/portfolio/template-jane.jpg',
-      title: 'Profil: Jane',
-      description: 'Zmysłowa i artystyczna twórczyni premium content. Specjalizuje się w lingerie, artystycznych aktach i zmysłowych sesjach z tatuażem. Premium glamour x intimacy.',
-      link: '/profile/jane',
+      title: 'Exclusive Content',
+      description: 'Dostęp do premium materiałów od naszych topowych twórców',
+      icon: '🔒',
+      features: ['Wysoka jakość 4K', 'Codzienne aktualizacje', 'Personalizowane treści']
     },
     {
-      image: '/images/portfolio/template-alexia.jpg',
-      title: 'Szablon Premium: Alexia',
-      description: 'Luksusowy szablon dla artystek i modelek, łączący elegancję ze zmysłowością. Idealny dla twórców high-end content i fotografii artystycznej.',
-      link: '/profile/alexia',
+      title: 'Direct Interaction',
+      description: 'Bezpośredni kontakt z twórcami i custom zamówienia',
+      icon: '💬',
+      features: ['Prywatne wiadomości', 'Custom videos', 'Live sesje']
     },
     {
-      image: '/images/portfolio/template-anna.jpg',
-      title: 'Szablon Solo: Elegancja',
-      description: 'Elegancki i zmysłowy szablon profilu, idealny dla twórczyń ceniących sobie subtelność, klasę i głębokie relacje z fanami.',
-      link: '/profile/anna',
-    },
-    {
-      image: '/images/portfolio/template-marek.jpg',
-      title: 'Szablon Solo: Siła',
-      description: 'Odważny i dynamiczny szablon, stworzony dla twórców, którzy chcą podkreślić swoją siłę, charyzę i maskulinność.',
-      link: '/profile/marek',
-    },
-    {
-      image: '/images/portfolio/template-duo.jpg',
-      title: 'Profil: Anna & Marek',
-      description: 'Prawdziwa para z autentyczną chemią. Zmysłowe, intymne i profesjonalne materiały. Specjalizacja: Couple dynamics, live performance, real connection.',
-      link: '/profile/anna-marek',
-    },
+      title: 'Premium Experience',
+      description: 'Profesjonalne podejście i ekskluzywne materiały',
+      icon: '⭐',
+      features: ['Profesjonalizm', 'Bezpieczeństwo', 'Wsparcie 24/7']
+    }
   ];
 
   return (
     <>
       <Head>
         <title>Portfolio - Studio HRL Adult</title>
-        <meta name="description" content="Portfolio i szablony profili partnerek Studio HRL Adult. Zobacz nasze realizacje i styl Anna & Marek." />
+        <meta name="description" content="Poznaj naszych topowych twórców tre adult. Premium content, profesjonalizm i ekskluzywne materiały." />
       </Head>
-      <div className="min-h-screen bg-dark text-text relative">
-        <Navigation />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="container mx-auto px-4 py-8 pt-24"
-        >
-          <h1 className="text-5xl font-bold text-primary mb-8 text-center">Portfolio</h1>
-          <p className="text-lg text-center mb-12 max-w-3xl mx-auto">
-            W Studio HRL Adult z dumą prezentujemy nasze portfolio, które jest świadectwem pasji i zaangażowania w tworzenie niezapomnianych doświadczeń. Każdy projekt to unikalna historia, w której łączymy kreatywność z profesjonalizmem, aby dostarczyć naszym partnerkom narzędzia do osiągnięcia sukcesu. Poniżej znajdziesz wybrane szablony profili, które odzwierciedlają różnorodność i wysoką jakość naszych usług.
-          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {portfolioItems.map((item, index) => (
+      <div className="min-h-screen bg-dark text-text relative font-cormorant">
+        <Navigation />
+
+        <main>
+          {/* Hero Section */}
+          <section className="min-h-screen flex items-center justify-center px-[10%] relative">
+            <div className="absolute inset-0 bg-[url('/images/studio-noir.jpg')] bg-cover bg-center opacity-10"></div>
+            
+            <div className="max-w-6xl mx-auto text-center relative z-10">
               <motion.div
-                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-secondary rounded-lg shadow-lg overflow-hidden"
+                transition={{ duration: 0.8 }}
+                className="mb-16"
               >
-                <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold text-primary mb-2">{item.title}</h2>
-                  <p className="text-text-light mb-4">{item.description}</p>
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block bg-primary text-dark px-4 py-2 rounded hover:bg-primary-light transition-colors"
-                  >
-                    Zobacz więcej
-                  </a>
+                <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl text-white font-black leading-[0.9] mb-6">
+                  Nasze <span className="text-gold">Portfolio</span>
+                </h1>
+                <p className="text-xl md:text-2xl text-dim font-light italic max-w-4xl mx-auto leading-relaxed">
+                  Poznaj naszych topowych twórców. Każdy profil to gwarancja jakości, profesjonalizmu i unikalnych treści.
+                </p>
+              </motion.div>
+
+              {/* Stats Cards */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="grid md:grid-cols-3 gap-8 mb-16"
+              >
+                <div className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
+                  <div className="text-4xl font-playfair text-gold font-bold mb-2">5+</div>
+                  <div className="text-sm text-dim uppercase tracking-widest">Aktywnych Twórców</div>
+                </div>
+                <div className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
+                  <div className="text-4xl font-playfair text-gold font-bold mb-2">10K+</div>
+                  <div className="text-sm text-dim uppercase tracking-widest">Zadowolonych Fanów</div>
+                </div>
+                <div className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
+                  <div className="text-4xl font-playfair text-gold font-bold mb-2">2K+</div>
+                  <div className="text-sm text-dim uppercase tracking-widest">Premium Treści</div>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
+            </div>
+          </section>
+
+          {/* Profiles Grid */}
+          <section className="py-32 px-[10%]">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="font-playfair text-5xl md:text-6xl text-white mb-4">
+                Nasi <span className="text-gold">Twórcy</span>
+              </h2>
+              <p className="text-dim text-lg font-light italic max-w-3xl mx-auto">
+                Każdy z naszych twórców to profesjonalista z unikalnym stylem i podejściem do tworzenia treści.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+              {profiles.map((profile) => (
+                <PartnerCard key={profile.id} profile={profile} />
+              ))}
+            </div>
+          </section>
+
+          {/* Content Features */}
+          <section className="py-32 px-[10%] bg-dark-2">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="font-playfair text-5xl md:text-6xl text-white mb-4">
+                Co <span className="text-gold">Oferujemy</span>
+              </h2>
+              <p className="text-dim text-lg font-light italic max-w-3xl mx-auto">
+                Premium doświadczenie z dostępem do ekskluzywnych treści od najlepszych twórców.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+              {contentItems.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-center space-y-6"
+                >
+                  <div className="text-5xl mb-4">{item.icon}</div>
+                  <h3 className="font-playfair text-2xl text-white mb-4">{item.title}</h3>
+                  <p className="text-dim font-light mb-6">{item.description}</p>
+                  <div className="space-y-2">
+                    {item.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="text-sm text-gold/80">
+                        ✓ {feature}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          <CTA />
+        </main>
+
         <Footer />
+        <div className="grain-overlay" />
       </div>
+
       <style jsx global>{`
-        html, body {
-          background-color: #1a1a1a; /* Dark background for the whole page */
-          color: #e0e0e0; /* Light text color */
-        }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .perspective-1000 { perspective: 1000px; }
       `}</style>
     </>
   );
