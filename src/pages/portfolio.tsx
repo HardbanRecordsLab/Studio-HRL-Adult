@@ -83,46 +83,55 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
       onMouseLeave={() => setIsFlipped(false)}
     >
       <motion.div
-        className="relative w-full h-full transition-all duration-500 preserve-3d shadow-2xl"
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        className="relative w-full h-full transition-all duration-500 preserve-3d shadow-2xl group-hover:shadow-[0_25px_50px_-12px_rgba(255,215,0,0.25)]"
+        animate={{ rotateY: isFlipped ? 180 : 0, scale: isFlipped ? 1.02 : 1 }}
         transition={{ duration: 0.6, type: 'spring', stiffness: 260, damping: 20 }}
       >
         {/* Front Side: Photo & Pseudonym */}
         <div className="absolute inset-0 backface-hidden bg-dark-2 border border-gold/10 overflow-hidden flex flex-col">
-          <div className="flex-1 bg-gradient-to-br from-dark-3 to-dark-4 relative overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(200,85,106,0.1),transparent_70%)]" />
-            <div className="text-8xl filter blur-[2px] opacity-20 group-hover:blur-none group-hover:opacity-40 transition-all duration-700">
+          <div className="flex-1 bg-gradient-to-br from-dark-3 via-dark-4 to-dark-3 relative overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(200,85,106,0.15),transparent_70%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,215,0,0.05),transparent)]" />
+            <div className="text-9xl filter blur-[1px] opacity-15 group-hover:blur-none group-hover:opacity-25 transition-all duration-700 transform group-hover:scale-110">
               {profile.ico}
             </div>
-            <div className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-50 transition-all duration-700"
+            <div className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-60 transition-all duration-700 scale-105 group-hover:scale-100"
                  style={{ backgroundImage: `url('/images/${profile.id}-profile.jpg')` }}>
             </div>
             <div className="absolute top-4 left-4 flex gap-2">
               {profile.tags.map(tag => (
-                <span key={tag} className="text-[7px] tracking-[0.1em] uppercase px-2 py-0.5 bg-gold/10 text-gold border border-gold/20">
+                <span key={tag} className="text-[7px] tracking-[0.1em] uppercase px-2 py-0.5 bg-gold/10 text-gold border border-gold/20 backdrop-blur-sm">
                   {tag}
                 </span>
               ))}
             </div>
+            <div className="absolute bottom-4 right-4">
+              <div className="w-3 h-3 bg-gold rounded-full animate-pulse shadow-[0_0_20px_rgba(255,215,0,0.5)]" />
+            </div>
           </div>
-          <div className="p-8 bg-dark-2 border-t border-gold/10">
-            <h3 className="font-playfair text-3xl text-white font-bold mb-1">{profile.name}</h3>
-            <p className="text-gold text-[10px] tracking-[0.3em] uppercase">{profile.handle}</p>
+          <div className="p-8 bg-dark-2 border-t border-gold/10 relative">
+            <div className="absolute inset-0 bg-gradient-to-t from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <h3 className="font-playfair text-3xl text-white font-bold mb-1 relative z-10">{profile.name}</h3>
+            <p className="text-gold text-[10px] tracking-[0.3em] uppercase relative z-10">{profile.handle}</p>
           </div>
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+          <div className="absolute inset-0 border border-gold/30 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none" />
         </div>
 
         {/* Back Side: Measurements & Characteristics */}
         <div 
-          className="absolute inset-0 backface-hidden bg-dark-3 border border-gold/30 p-8 flex flex-col justify-between rotate-y-180"
+          className="absolute inset-0 backface-hidden bg-gradient-to-br from-dark-3 to-dark-4 border border-gold/30 p-8 flex flex-col justify-between rotate-y-180"
           style={{ transform: 'rotateY(180deg)' }}
         >
           <div className="space-y-8">
             <div>
-              <h4 className="font-playfair text-xl text-gold italic border-b border-gold/10 pb-2 mb-6">Wymiary</h4>
+              <h4 className="font-playfair text-xl text-gold italic border-b border-gold/20 pb-2 mb-6 flex items-center">
+                <span className="w-2 h-2 bg-gold rounded-full mr-3 animate-pulse" />
+                Wymiary
+              </h4>
               <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                 {profile.measurements && Object.entries(profile.measurements).map(([key, val]) => (
-                  <div key={key} className="flex justify-between items-center border-b border-gold/5 pb-1">
+                  <div key={key} className="flex justify-between items-center border-b border-gold/10 pb-2 hover:bg-gold/5 px-2 py-1 rounded transition-all">
                     <span className="text-[8px] text-dim uppercase tracking-widest">{key}</span>
                     <span className="text-xs text-white font-medium">{val}</span>
                   </div>
@@ -131,16 +140,19 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
             </div>
 
             <div>
-              <h4 className="font-playfair text-xl text-gold italic border-b border-gold/10 pb-2 mb-4">Charakterystyka</h4>
-              <p className="text-dim text-[11px] leading-relaxed font-light italic">
+              <h4 className="font-playfair text-xl text-gold italic border-b border-gold/20 pb-2 mb-4 flex items-center">
+                <span className="w-2 h-2 bg-gold rounded-full mr-3 animate-pulse" />
+                Charakterystyka
+              </h4>
+              <p className="text-dim text-[11px] leading-relaxed font-light italic bg-dark-2/50 p-4 rounded-lg border border-gold/10">
                 {profile.characteristics}
               </p>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-gold/10 flex justify-center">
-             <Link href={`/profile/${profile.id}`} className="text-[9px] text-gold uppercase tracking-[0.3em] font-bold border border-gold/20 px-6 py-2 hover:bg-gold hover:text-dark transition-all">
-               Pełny Profil
+          <div className="pt-6 border-t border-gold/20 flex justify-center">
+             <Link href={`/profile/${profile.id}`} className="text-[9px] text-gold uppercase tracking-[0.3em] font-bold border border-gold/20 px-6 py-2 hover:bg-gold hover:text-dark transition-all shadow-[0_0_20px_rgba(255,215,0,0.2)]">
+               Pe³ny Profil
              </Link>
           </div>
         </div>
