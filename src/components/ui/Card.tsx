@@ -2,23 +2,23 @@ import React from 'react';
 import { cn } from '@/utils/utils';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'dark' | 'crimson' | 'gold';
+  variant?: 'default' | 'glass' | 'gradient';
   padding?: 'sm' | 'md' | 'lg';
 }
 
 const Card: React.FC<CardProps> = ({
   className,
-  variant = 'dark',
+  variant = 'default',
   padding = 'md',
   children,
   ...props
 }) => {
-  const baseClasses = 'rounded-lg backdrop-blur-sm border';
+  const baseClasses = 'rounded-xl border';
   
   const variants = {
-    dark: 'bg-dark2 border-gold/20',
-    crimson: 'bg-gradient-to-br from-crimson/20 to-dark2 border-crimson/30',
-    gold: 'bg-gradient-to-br from-gold/10 to-dark2 border-gold/40'
+    default: 'bg-gray-800/50 border-gray-700',
+    glass: 'bg-black/20 backdrop-blur-lg border-white/10',
+    gradient: 'bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-700'
   };
   
   const paddings = {
@@ -52,7 +52,7 @@ export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
   ...props
 }) => (
-  <h3 className={cn('text-xl font-bebas text-gold mb-2', className)} {...props}>
+  <h3 className={cn('text-xl font-semibold text-white mb-2', className)} {...props}>
     {children}
   </h3>
 );
@@ -62,7 +62,7 @@ export const CardContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
   ...props
 }) => (
-  <div className={cn('', className)} {...props}>
+  <div className={cn('text-gray-300', className)} {...props}>
     {children}
   </div>
 );

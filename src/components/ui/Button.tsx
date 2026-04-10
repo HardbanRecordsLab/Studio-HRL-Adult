@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/utils/utils';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
 }
@@ -16,13 +16,14 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const baseClasses = 'font-montserrat font-semibold rounded-sm transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variants = {
-    primary: 'bg-gold text-dark hover:bg-yellow-500',
-    secondary: 'bg-crimson text-text hover:bg-red-600',
-    outline: 'border border-gold text-gold hover:bg-gold hover:text-dark',
-    danger: 'bg-red-600 text-white hover:bg-red-700'
+    primary: 'bg-gradient-to-r from-rose-500 to-rose-700 text-white hover:from-rose-600 hover:to-rose-800',
+    secondary: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700',
+    outline: 'border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white',
+    danger: 'bg-red-600 text-white hover:bg-red-700',
+    ghost: 'text-gray-300 hover:text-white hover:bg-gray-800'
   };
   
   const sizes = {

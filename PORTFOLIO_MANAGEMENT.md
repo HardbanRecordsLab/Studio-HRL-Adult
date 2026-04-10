@@ -97,12 +97,12 @@ Zmień:
 - **Po 2-3 miesiące:** dodaj trzecia (ManyVids lub Chaturbate)
 - Dostosuj zawartość do każdej platformy
 
-### Krok 5: Wdrożeniu
+### Krok 5: Wdrozenie (App Router)
 1. Skopiuj szablon z `src/lib/profileTemplates.ts`
-2. Utwórz nowy profil w `src/pages/profile/[handle].tsx`
-3. Dodaj do `src/pages/portfolio.tsx`
-4. Utwórz zdjęcie portfolio w `/public/images/portfolio/template-[name].jpg`
-5. Wdrażaj i testuj
+2. Utwórz nowy profil w `src/app/portfolio/[handle]/page.tsx`
+3. Dodaj do `src/app/portfolio/page.tsx`
+4. Utwórz zdjecie portfolio w `/public/images/portfolio/template-[name].jpg`
+5. Wdraaj i testuj
 
 ---
 
@@ -169,16 +169,12 @@ ManyVids + Custom:
 
 TOTAL: ~$56K-$78K/miesiąc
 Netto (po podatku 35%): ~$36K-$50K/miesiąc
-```
-
----
-
 ## ⚙️ Techniczna Implementacja
 
-### Struktura Pliku
+### Struktura Pliku (App Router)
 
 ```typescript
-// src/pages/profile/[handle].tsx
+// src/app/portfolio/[handle]/page.tsx
 const PROFILES: Record<string, ProfileData> = {
   'handle-name': {
     handle: 'handle-name',
@@ -198,12 +194,12 @@ const PROFILES: Record<string, ProfileData> = {
 }
 ```
 
-### Dodanie Nowego Profilu - Szybka Ścieżka
+### Dodanie Nowego Profilu - Szybka Ścieżka (App Router)
 
 1. Skopiuj template z `src/lib/profileTemplates.ts`
 2. Dostosuj wszystkie pola
-3. Dodaj do PROFILES obiektu w `[handle].tsx`
-4. Zlinuj w `src/pages/portfolio.tsx` w portfolioItems
+3. Dodaj do PROFILES obiektu w `[handle]/page.tsx`
+4. Zlinuj w `src/app/portfolio/page.tsx` w portfolioItems
 5. Commit + Push
 
 ---
