@@ -29,10 +29,13 @@ interface ProfileTemplateProps {
 
 export const ProfileTemplate: React.FC<ProfileTemplateProps> = ({ data }) => {
   const [activeTab, setActiveTab] = useState('about');
+  
+  const safeData = data || {} as any;
   const profile = {
-    ...data,
-    name: data.name || 'Model',
-    handle: data.handle || 'handle'
+    ...safeData,
+    name: safeData.name || 'Model',
+    handle: safeData.handle || 'handle',
+    bio: safeData.bio || ''
   };
 
   return (
