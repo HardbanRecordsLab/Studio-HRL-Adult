@@ -171,7 +171,7 @@ const HomePage: React.FC = () => {
                     <div className="text-[9px] tracking-[3px] text-[#555] font-arial mb-5">STUDIO INFO</div>
                     <div className="border-b border-[#1a1a1a] py-4"><div className="flex items-center gap-2 text-[9px] tracking-[3px] uppercase text-[#555] font-arial mb-1.5"><span className="w-2 h-2 rounded-full bg-[#8b1a2e]"></span>ZAŁOŻONA</div><div className="text-lg text-white font-arial">2026</div></div>
                     <div className="border-b border-[#1a1a1a] py-4"><div className="flex items-center gap-2 text-[9px] tracking-[3px] uppercase text-[#555] font-arial mb-1.5"><span className="w-2 h-2 rounded-full bg-[#b8680a]"></span>SIEDZIBA</div><div className="text-lg text-white font-arial">Cypr (Cyprus)</div></div>
-                    <div className="py-4"><div className="flex items-center gap-2 text-[9px] tracking-[3px] uppercase text-[#555] font-arial mb-1.5"><span className="w-2 h-2 rounded-full bg-[#1a6b2e]"></span>STATUS</div><div className="text-lg text-white font-arial">48 Godzin od Startu</div></div>
+                    <div className="py-4"><div className="flex items-center gap-2 text-[9px] tracking-[3px] uppercase text-[#555] font-arial mb-1.5"><span className="w-2 h-2 rounded-full bg-[#1a6b2e]"></span>STATUS</div><div className="text-lg text-white font-arial">Operational</div></div>
                   </div>
                   <div className="bg-[#1a0810] border border-[#3a1020] p-8">
                     <div className="text-[10px] tracking-[3px] text-[var(--crimson)] font-arial mb-3">WIZJA 2026+</div>
@@ -330,8 +330,60 @@ const HomePage: React.FC = () => {
             ))}
           </div>
 
+          {/* CONTACT SECTION */}
+          <section id="contact" className="py-24 px-10 bg-[#080808]">
+            <div className="max-w-[1200px] mx-auto">
+              <div className="flex items-center justify-center gap-4 text-[var(--gold)] text-[10px] tracking-[4px] font-arial mb-10"><span className="w-[30px] h-px bg-[var(--gold)]"></span>KONTAKT<span className="w-[30px] h-px bg-[var(--gold)]"></span></div>
+              <h2 className="text-[clamp(36px,5vw,64px)] font-normal text-center text-white font-georgia mb-5">Skontaktuj Się <em className="italic text-[var(--gold)]">Z Nami</em></h2>
+              <p className="text-center text-[13px] text-[#777] italic mb-16 max-w-lg mx-auto">Masz pytania? Chcesz dołączyć do naszego studia? Wypełnij formularz lub skontaktuj się bezpośrednio.</p>
+              <div className="grid grid-cols-2 gap-16">
+                <div>
+                  <h3 className="text-xl text-white mb-6 font-georgia">Formularz Kontaktowy</h3>
+                  <form className="flex flex-col gap-4">
+                    <input type="text" placeholder="Imię i Nazwisko" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
+                    <input type="email" placeholder="Email" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
+                    <input type="tel" placeholder="Telefon (opcjonalnie)" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
+                    <select className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-[#888] font-arial outline-none focus:border-[var(--gold)] transition-colors">
+                      <option>Interesuje mnie...</option>
+                      <option>Casting / Dołączenie do studia</option>
+                      <option>Współpraca partnerska</option>
+                      <option>Produkcja treści</option>
+                      <option>Inne zapytanie</option>
+                    </select>
+                    <textarea placeholder="Twoja wiadomość..." rows={5} className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors resize-none"></textarea>
+                    <button type="submit" className="bg-[var(--crimson-btn)] border-none text-white px-8 py-4 text-[11px] tracking-[3px] uppercase font-arial font-semibold cursor-pointer hover:bg-[#b0243c] transition-colors mt-2">WYŚLIJ WIADOMOŚĆ</button>
+                  </form>
+                </div>
+                <div className="space-y-8">
+                  <div>
+                    <h3 className="text-xl text-white mb-4 font-georgia">Dane Kontaktowe</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📍</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Siedziba</div><div className="text-sm text-[#ccc]">Cypr (Cyprus)</div></div></div>
+                      <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📧</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Email</div><div className="text-sm text-[#ccc]">contact@hrlstudio.com</div></div></div>
+                      <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📱</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Telefon</div><div className="text-sm text-[#ccc]">+357 XX XXX XXXX</div></div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl text-white mb-4 font-georgia">Godziny Pracy</h3>
+                    <div className="space-y-2 text-sm text-[#888]">
+                      <div className="flex justify-between"><span>Poniedziałek - Piątek:</span><span className="text-[#ccc]">9:00 - 18:00</span></div>
+                      <div className="flex justify-between"><span>Sobota:</span><span className="text-[#ccc]">10:00 - 14:00</span></div>
+                      <div className="flex justify-between"><span>Niedziela:</span><span className="text-[#ccc]">Zamknięte</span></div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl text-white mb-4 font-georgia">Social Media</h3>
+                    <div className="flex gap-3">
+                      {['Twitter/X', 'Instagram', 'Telegram'].map((s, i) => (<div key={i} className="px-4 py-2 border border-[#333] text-[10px] text-[#888] font-arial tracking-wider cursor-pointer hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all">{s}</div>))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* FOOTER */}
-          <footer id="contact" className="bg-[#080808] py-16 px-10 pb-8">
+          <footer className="bg-[#050505] py-16 px-10 pb-8 border-t border-[#1a1a1a]">
             <div className="grid grid-cols-[2fr_1.5fr_1.5fr_2fr] gap-16 mb-16">
               <div>
                 <div className="flex items-center gap-2.5 mb-4">

@@ -285,42 +285,44 @@ const AdminPage: React.FC = () => {
       </Head>
 
       {!isAuthenticated ? (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-md"
           >
             <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-rose-500/50">
-                <span className="text-2xl font-bold text-white">HRL</span>
-              </div>
+              <img 
+                src="/logo/studio hrl adultbezła logo.png" 
+                alt="Studio HRL Adult Logo" 
+                className="h-16 w-auto mx-auto mb-4"
+              />
               <h1 className="text-3xl font-bold text-white mb-2">Admin Panel</h1>
               <p className="text-gray-400">Studio HRL Adult</p>
             </div>
 
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-8 shadow-2xl">
+            <div className="bg-[#111] border border-[#222] p-8 shadow-2xl">
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                  <label className="block text-sm font-medium text-[#888] mb-2 font-arial">Email</label>
                   <input
                     type="email"
                     value={loginForm.email}
                     onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="admin@studio.com"
-                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#222] focus:outline-none focus:border-[var(--gold)] text-white font-arial"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                  <label className="block text-sm font-medium text-[#888] mb-2 font-arial">Password</label>
                   <input
                     type="password"
                     value={loginForm.password}
                     onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
-                    placeholder="â€˘â€˘â€˘â€˘â€˘â€˘â€˘â€˘"
-                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                    placeholder="••••••••"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#222] focus:outline-none focus:border-[var(--gold)] text-white font-arial"
                     required
                   />
                 </div>
@@ -329,7 +331,7 @@ const AdminPage: React.FC = () => {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm"
+                    className="p-4 bg-[#1a0a0a] border border-[var(--crimson)] text-[var(--crimson)] text-sm font-arial"
                   >
                     {loginForm.error}
                   </motion.div>
@@ -338,13 +340,13 @@ const AdminPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loginForm.loading}
-                  className="w-full py-3 bg-gradient-to-r from-rose-500 to-rose-700 hover:from-rose-600 hover:to-rose-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold rounded-lg transition-all"
+                  className="w-full py-3 bg-[var(--crimson-btn)] hover:bg-[#b0243c] disabled:bg-[#333] text-white font-bold transition-all font-arial tracking-wider"
                 >
                   {loginForm.loading ? 'Logging in...' : 'Sign In'}
                 </button>
               </form>
 
-              <p className="text-center text-gray-500 text-sm mt-6">Protected admin area</p>
+              <p className="text-center text-[#444] text-xs mt-6 font-arial tracking-wider">PROTECTED ADMIN AREA</p>
             </div>
           </motion.div>
         </div>
