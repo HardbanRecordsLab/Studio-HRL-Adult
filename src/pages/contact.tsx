@@ -5,10 +5,10 @@ import Footer from '@/components/common/Footer';
 
 const ContactPage: React.FC = () => {
   const contacts = [
+    { title: 'WhatsApp', desc: 'Szybki kontakt, konsultacje, pytania na żywo', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '💬', wa: 'https://wa.me/48725663741' },
     { title: 'E-mail ogólny', desc: 'Pytania ogólne, informacje o studio, współpraca biznesowa', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '📧' },
     { title: 'Casting', desc: 'Formularz castingowy, pytania o współpracę jako Partnerka', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '🎬' },
-    { title: 'RODO / Prywatność', desc: 'Wnioski RODO, Inspektor Ochrony Danych, usuwanie danych', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '🔒' },
-    { title: 'Prawne / § 2257', desc: 'Compliance, rejestry 2257, kwestie prawne i umowy', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '⚖️' },
+    { title: 'Prawne / RODO', desc: 'Compliance, rejestry 2257, Inspektor Ochrony Danych', email: 'hrl-adult-studio@hardbanrecordslab.online', ico: '⚖️' },
   ];
 
   return (
@@ -33,9 +33,15 @@ const ContactPage: React.FC = () => {
                 <div className="text-4xl">{contact.ico}</div>
                 <h3 className="font-cormorant text-2xl text-gold italic">{contact.title}</h3>
                 <p className="text-xs text-dim leading-relaxed max-w-xs mx-auto">{contact.desc}</p>
-                <a href={`mailto:${contact.email}`} className="inline-block text-white text-sm border-b border-gold/30 pb-1 hover:border-gold transition-all">
-                  {contact.email}
-                </a>
+                {contact.wa ? (
+                  <a href={contact.wa} target="_blank" rel="noopener noreferrer" className="inline-block text-white text-sm border-b border-gold/30 pb-1 hover:border-gold transition-all">
+                    Napisz do nas
+                  </a>
+                ) : (
+                  <a href={`mailto:${contact.email}`} className="inline-block text-white text-sm border-b border-gold/30 pb-1 hover:border-gold transition-all">
+                    {contact.email}
+                  </a>
+                )}
               </div>
             ))}
           </div>

@@ -359,8 +359,16 @@ const HomePage: React.FC = () => {
                     <h3 className="text-xl text-white mb-4 font-georgia">Dane Kontaktowe</h3>
                     <div className="space-y-4">
                       <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📍</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Siedziba</div><div className="text-sm text-[#ccc]">Cypr (Cyprus)</div></div></div>
-                      <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📧</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Email</div><div className="text-sm text-[#ccc]">contact@hrlstudio.com</div></div></div>
-                      <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📱</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Telefon</div><div className="text-sm text-[#ccc]">+357 XX XXX XXXX</div></div></div>
+                      <div className="flex items-start gap-4"><span className="text-[var(--gold)] text-lg">📧</span><div><div className="text-xs text-[#666] uppercase tracking-wider mb-1">Email</div><div className="text-sm text-[#ccc]">hrl-adult-studio@hardbanrecordslab.online</div></div></div>
+                      <div className="flex items-start gap-4">
+                        <span className="text-[var(--gold)] text-lg">💬</span>
+                        <div>
+                          <div className="text-xs text-[#666] uppercase tracking-wider mb-1">WhatsApp</div>
+                          <a href="https://wa.me/48725663741" target="_blank" rel="noopener noreferrer" className="text-sm text-[#ccc] hover:text-[var(--gold)] transition-colors flex items-center gap-2">
+                             Napisz do nas
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div>
