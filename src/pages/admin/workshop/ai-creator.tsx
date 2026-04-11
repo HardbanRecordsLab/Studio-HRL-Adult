@@ -111,6 +111,7 @@ const AICreatorWorkshop: React.FC = () => {
                   </div>
                   
                   {subMode === 'generate' ? (
+                    <>
                       <div className="space-y-4 bg-white/5 p-4 rounded-xl border border-white/5">
                         <label className="text-[9px] text-rose-500 uppercase font-black">Prompt Architect (Helper)</label>
                         <div className="grid grid-cols-2 gap-2">
@@ -152,8 +153,6 @@ const AICreatorWorkshop: React.FC = () => {
                           className="admin-input h-32 resize-none" 
                           placeholder="Opisz modelkę (np. blondynka, 175cm, lubi sport)..." 
                         />
-                      </div>
-                        </div>
                       </div>
                     </>
                   ) : (
