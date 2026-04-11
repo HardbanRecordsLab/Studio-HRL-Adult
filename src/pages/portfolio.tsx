@@ -15,11 +15,16 @@ const PortfolioPage: React.FC = () => {
     fetch('/api/profiles')
       .then((res) => res.json())
       .then((data) => {
-        setProfiles(data);
+        if (Array.isArray(data)) {
+          setProfiles(data);
+        } else {
+          setProfiles([]);
+        }
         setLoading(false);
       })
       .catch((err) => {
         console.error('Failed to fetch profiles:', err);
+        setProfiles([]);
         setLoading(false);
       });
   }, []);
@@ -205,9 +210,15 @@ const PartnerCard: React.FC<{ profile: any }> = ({ profile }) => {
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
-              {profiles.map((profile) => (
+              {Array.isArray(profiles) && profiles.map((profile) => (
                 <PartnerCard key={profile.id} profile={profile} />
               ))}
+              {(!Array.isArray(profiles) || profiles.length === 0) && !loading && (
+                <div className="col-span-full text-center py-20 bg-dark-2/30 border border-gold/10 rounded-2xl">
+                  <p className="text-gold text-lg font-playfair italic mb-2">Chwilowa przerwa w dostawie luksusu</p>
+                  <p className="text-dim text-sm uppercase tracking-widest">Wróć za chwilę, nasze modelki właśnie się przygotowują.</p>
+                </div>
+              )}
             </div>
           </section>
 

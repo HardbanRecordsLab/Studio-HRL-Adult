@@ -19,10 +19,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       } catch(e){}
 
+      const handle = p.handle || 'model';
+      const name = p.name || 'HRL Model';
+
       return {
         id: p.id,
-        name: p.name,
-        handle: p.handle.startsWith('@') ? p.handle : `@${p.handle}`,
+        name: name,
+        handle: handle.startsWith('@') ? handle : `@${handle}`,
         age: 21,
         bio: p.bio || 'Premium content creator.',
         stats,
