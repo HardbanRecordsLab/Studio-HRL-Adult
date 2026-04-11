@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,72 +8,24 @@ import Footer from '@/components/common/Footer';
 import CTA from '@/components/sections/CTA';
 
 const PortfolioPage: React.FC = () => {
-  const [activeProfile, setActiveProfile] = useState('jane');
+  const [profiles, setProfiles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const profiles = [
-    { 
-      id: 'jane', 
-      name: 'Jane', 
-      handle: '@jane_premium', 
-      age: 24, 
-      bio: 'Sensualna zmysłowa artystka • Premium content creator • Specjalizacja: Lingerie, artystyczne nudy, zmysłowe sesje. Top 5% OnlyFans.', 
-      stats: { followers: '28.5K', content: '620+', satisfaction: '97%', online: '18-22' }, 
-      tags: ['OnlyFans', 'Fansly', 'Sensual'], 
-      ico: '💋',
-      measurements: { height: '172cm', weight: '58kg', bust: '100cm', waist: '65cm', hips: '95cm' },
-      characteristics: 'Zmysłowa, artystka, naturalny seks-appeal. Specjalistka od tworzenia pięknych lingerie content i artystycznych nudów z tatuażem na biodrze.'
-    },
-    { 
-      id: 'alexia', 
-      name: 'Alexia', 
-      handle: '@alexia_premium', 
-      age: 23, 
-      bio: 'Premium Glamour Creator • 10+ lat doświadczenia w modelingu • Specjalizacja: Artistic nudes, Fashion, Lingerie. Top 3% OnlyFans & Fansly.', 
-      stats: { followers: '42.8K', content: '850+', satisfaction: '99%', online: '12-20' }, 
-      tags: ['OnlyFans', 'Fansly', 'Luxury'], 
-      ico: '✨',
-      measurements: { height: '174cm', weight: '56kg', bust: '92cm', waist: '62cm', hips: '92cm' },
-      characteristics: 'Artystka, elegancja, zmysłowość ze smakiem. Specjalistka od luxury content, artystycznych nudów i fotografii high-end. Absolutna profesjonalistka.'
-    },
-    { 
-      id: 'anna', 
-      name: 'Anna Rose', 
-      handle: '@annarose_official', 
-      age: 25, 
-      bio: 'Tworzę treści od 2 lat • 1000+ unikalnych materiałów. Specjalizacja: Intymne rozmowy, Custom videos, Daily content. Top 5% OnlyFans.', 
-      stats: { followers: '50.2K', content: '1.2K', satisfaction: '98%', online: '24/7' }, 
-      tags: ['OnlyFans', 'Premium'], 
-      ico: '📸',
-      measurements: { height: '172cm', weight: '54kg', bust: '90cm', waist: '60cm', hips: '90cm' },
-      characteristics: 'Elegancja, zmysłowość, profesjonalizm. Specjalistka od budowania głębokich relacji z fanami.'
-    },
-    { 
-      id: 'marek', 
-      name: 'Marek Wolf', 
-      handle: '@marek_wolf', 
-      age: 28, 
-      bio: 'Męski i odważny styl. Profesjonalne sesje, wysoka jakość 4K. Specjalizacja: Solo & Group content.', 
-      stats: { followers: '15.5K', content: '450', satisfaction: '95%', online: 'Daily' }, 
-      tags: ['Chaturbate', 'Top Tier'], 
-      ico: '📹',
-      measurements: { height: '185cm', weight: '82kg', bust: '110cm', waist: '82cm', hips: '95cm' },
-      characteristics: 'Charyzma, siła, autentyczność. Mistrz technicznych aspektów produkcji i dynamicznych show.'
-    },
-    { 
-      id: 'anna-marek', 
-      name: 'Anna & Marek', 
-      handle: '@anna_marek_duo', 
-      age: 'Duo', 
-      bio: 'Prawdziwa para z naturalną chemią. Zmysłowe, autentyczne i profesjonalne materiały. Specjalizacja: Couple dynamics, live sessions, custom scenarios.', 
-      stats: { followers: '4.2K', content: '240+', satisfaction: '99%', online: 'Daily' }, 
-      tags: ['OnlyFans', 'Fansly', 'Couple'], 
-      ico: '👩‍❤️‍👨',
-
-    },
-  ];
+  useEffect(() => {
+    fetch('/api/profiles')
+      .then((res) => res.json())
+      .then((data) => {
+        setProfiles(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch profiles:', err);
+        setLoading(false);
+      });
+  }, []);
 
 // ─── PARTNER CARD ────────────────────────────────────────────────────
-const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => {
+const PartnerCard: React.FC<{ profile: any }> = ({ profile }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -315,5 +267,7 @@ const PartnerCard: React.FC<{ profile: typeof profiles[0] }> = ({ profile }) => 
     </>
   );
 };
+
+
 
 export default PortfolioPage;
