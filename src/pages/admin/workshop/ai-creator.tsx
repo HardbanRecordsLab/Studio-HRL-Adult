@@ -18,16 +18,21 @@ import {
 } from 'lucide-react';
 import Navigation from '@/components/common/Navigation';
 
-const AICreatorWorkshop: React.FC = () => {
+interface AICreatorWorkshopProps {
+  embedded?: boolean;
+}
+
+const AICreatorWorkshop: React.FC<AICreatorWorkshopProps> = ({ embedded = false }) => {
   const [activeMode, setActiveMode] = useState<'visual' | 'audio' | 'script' | 'production' | 'bio'>('visual');
   const [subMode, setSubMode] = useState<'generate' | 'swap'>('generate');
   const [isProcessing, setIsProcessing] = useState(false);
   const [prompt, setPrompt] = useState('');
   
+  const [isEmbedded, setIsEmbedded] = useState(embedded);
+  
   // Script state
   const [scriptType, setScriptType] = useState('ppv');
   const [scriptTone, setScriptTone] = useState('sensual');
-
   const [result, setResult] = useState<any>(null);
 
   const handleProcess = async () => {
@@ -58,10 +63,8 @@ const AICreatorWorkshop: React.FC = () => {
     { id: 'production' as const, name: 'Produkcja (Pipeline)', icon: Zap },
   ];
 
-  const [isEmbedded, setIsEmbedded] = useState(false);
-
   useEffect(() => {
-    setIsEmbedded(window.self !== window.top);
+    if (window.self !== window.top) setIsEmbedded(true);
   }, []);
 
   return (
