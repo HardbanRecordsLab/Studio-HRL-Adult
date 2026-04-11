@@ -15,7 +15,8 @@ import {
   Filter,
   Shield,
   FileCheck,
-  History
+  History,
+  Sparkles
 } from 'lucide-react';
 import PartnersManager from './PartnersManager';
 import CastingManager from './CastingManager';
@@ -40,6 +41,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
     { id: 'finance', label: 'Finance', icon: DollarSign, description: 'Revenue and payouts' },
     { id: 'content', label: 'Content', icon: Video, description: 'Media management' },
     { id: 'academy', label: 'Academy', icon: BookOpen, description: 'Courses and progress' },
+    { id: 'workshop', label: 'AI Workshop', icon: Sparkles, description: 'Content & Bio generation' },
     { id: 'verify', label: 'Documents', icon: Shield, description: 'Identity verification' },
     { id: 'logs', label: 'Logs', icon: History, description: 'System activity logs' },
     { id: 'settings', label: 'Settings', icon: Settings, description: 'System configuration' },
@@ -220,6 +222,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
             animate={{ opacity: 1, y: 0 }}
           >
             <AcademyManager token={token} />
+          </motion.div>
+        )}
+
+        {/* AI Workshop Tab */}
+        {activeTab === 'workshop' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="w-full h-full">
+              <iframe 
+                src="/admin/workshop/ai-creator" 
+                className="w-full h-[calc(100vh-200px)] border-0 bg-transparent rounded-2xl shadow-2xl"
+                title="AI Creative Workshop"
+              />
+            </div>
           </motion.div>
         )}
 

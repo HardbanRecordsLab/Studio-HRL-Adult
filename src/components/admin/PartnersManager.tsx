@@ -55,6 +55,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
   const [showDocumentsModal, setShowDocumentsModal] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+  const [activeTab, setActiveTab] = useState<'basic' | 'visuals' | 'finance'>('basic');
   const [formData, setFormData] = useState<PartnerFormData>({
     name: '',
     handle: '',
@@ -430,149 +431,228 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
         </div>
       </div>
 
-      {/* Add/Edit Partner Modal */}
+      {/* Profile Builder / Edit Partner Modal */}
       {showModal && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="bg-dark-2 border border-gold/20 rounded-xl w-full max-w-4xl my-8 overflow-hidden shadow-[0_0_50px_rgba(255,215,0,0.1)] relative"
           >
-            <h3 className="text-xl font-bold text-white mb-6">
-              {editingPartner ? 'Edit Partner' : 'Add New Partner'}
-            </h3>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">Name</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">Handle</label>
-                  <input
-                    type="text"
-                    value={formData.handle}
-                    onChange={(e) => setFormData(prev => ({ ...prev, handle: e.target.value }))}
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                    required
-                  />
-                </div>
-              </div>
-
+            <div className="absolute inset-0 bg-grain opacity-5 pointer-events-none" />
+            
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-dark-3 to-dark-4 p-6 border-b border-gold/20 flex justify-between items-center relative z-10">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Email</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                  required
-                />
+                <h3 className="text-2xl font-playfair font-bold text-gold italic">
+                  {editingPartner ? 'Edytor Wizytówki (Profile Builder)' : 'Kreator Profilu (Nowy Twórca)'}
+                </h3>
+                <p className="text-dim text-sm mt-1">Zaprojektuj publiczną wizytówkę i ustawienia biznesowe</p>
               </div>
+              <button onClick={() => { setShowModal(false); setEditingPartner(null); resetForm(); }} className="text-gray-400 hover:text-white transition-colors">
+                <XCircle className="w-8 h-8" />
+              </button>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">Status</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">Type</label>
-                  <select
-                    value={formData.type}
-                    onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                  >
-                    <option value="solo">Solo</option>
-                    <option value="couple">Couple</option>
-                  </select>
-                </div>
-              </div>
+            {/* Tabs */}
+            <div className="flex border-b border-gold/10 bg-dark-3 relative z-10">
+              <button 
+                onClick={() => setActiveTab('basic')}
+                className={`flex-1 py-4 text-sm font-medium tracking-widest uppercase transition-all ${activeTab === 'basic' ? 'text-gold border-b-2 border-gold bg-gold/5' : 'text-dim hover:text-white hover:bg-white/5'}`}
+              >
+                1. Osobiste & BIO
+              </button>
+              <button 
+                onClick={() => setActiveTab('visuals')}
+                className={`flex-1 py-4 text-sm font-medium tracking-widest uppercase transition-all ${activeTab === 'visuals' ? 'text-gold border-b-2 border-gold bg-gold/5' : 'text-dim hover:text-white hover:bg-white/5'}`}
+              >
+                2. Wygląd & Media
+              </button>
+              <button 
+                onClick={() => setActiveTab('finance')}
+                className={`flex-1 py-4 text-sm font-medium tracking-widest uppercase transition-all ${activeTab === 'finance' ? 'text-gold border-b-2 border-gold bg-gold/5' : 'text-dim hover:text-white hover:bg-white/5'}`}
+              >
+                3. Finanse & Kontrakt
+              </button>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Bio</label>
-                <textarea
-                  value={formData.bio}
-                  onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-                  rows={3}
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="p-8 relative z-10">
+              
+              {/* TAB 1: BASIC INFO */}
+              {activeTab === 'basic' && (
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest font-bold text-gold/80 mb-2">Imię / Pseudonim Artystyczny</label>
+                      <input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                        className="w-full px-4 py-3 bg-dark-4 border border-gold/20 rounded focus:outline-none focus:border-gold text-white font-light"
+                        required
+                        placeholder="np. Lexi"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest font-bold text-gold/80 mb-2">Handle (URL)</label>
+                      <div className="flex">
+                        <span className="inline-flex items-center px-4 bg-dark-3 border border-r-0 border-gold/20 text-dim rounded-l">@</span>
+                        <input
+                          type="text"
+                          value={formData.handle}
+                          onChange={(e) => setFormData(prev => ({ ...prev, handle: e.target.value }))}
+                          className="flex-1 px-4 py-3 bg-dark-4 border border-gold/20 rounded-r focus:outline-none focus:border-gold text-white font-light"
+                          required
+                          placeholder="lexi_premium"
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Revenue Split (%)</label>
-                <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs text-gray-500 mb-1">Studio</label>
+                    <label className="block text-xs uppercase tracking-widest font-bold text-gold/80 mb-2">Email Kontaktowy (Logowanie)</label>
                     <input
-                      type="number"
-                      value={formData.revenueSplit.studio}
-                      onChange={(e) => setFormData(prev => ({
-                        ...prev,
-                        revenueSplit: { ...prev.revenueSplit, studio: parseInt(e.target.value) || 0 }
-                      }))}
-                      min="0"
-                      max="100"
-                      className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                      className="w-full px-4 py-3 bg-dark-4 border border-gold/20 rounded focus:outline-none focus:border-gold text-white font-light"
+                      required
                     />
                   </div>
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-1">Partner</label>
-                    <input
-                      type="number"
-                      value={formData.revenueSplit.partner}
-                      onChange={(e) => setFormData(prev => ({
-                        ...prev,
-                        revenueSplit: { ...prev.revenueSplit, partner: parseInt(e.target.value) || 0 }
-                      }))}
-                      min="0"
-                      max="100"
-                      className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                    />
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest font-bold text-gold/80 mb-2">Status Aktywności</label>
+                      <select
+                        value={formData.status}
+                        onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+                        className="w-full px-4 py-3 bg-dark-4 border border-gold/20 rounded focus:outline-none focus:border-gold text-white font-light"
+                      >
+                        <option value="pending">W Przygotowaniu (Ukryty)</option>
+                        <option value="active">Aktywny (Widoczny w Portfolio)</option>
+                        <option value="inactive">Zawieszony</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest font-bold text-gold/80 mb-2">Typ Konta</label>
+                      <select
+                        value={formData.type}
+                        onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
+                        className="w-full px-4 py-3 bg-dark-4 border border-gold/20 rounded focus:outline-none focus:border-gold text-white font-light"
+                      >
+                        <option value="solo">Solo Creator</option>
+                        <option value="couple">BGM / Para</option>
+                      </select>
+                    </div>
                   </div>
+
                   <div>
-                    <label className="block text-xs text-gray-500 mb-1">Referral</label>
-                    <input
-                      type="number"
-                      value={formData.revenueSplit.referral}
-                      onChange={(e) => setFormData(prev => ({
-                        ...prev,
-                        revenueSplit: { ...prev.revenueSplit, referral: parseInt(e.target.value) || 0 }
-                      }))}
-                      min="0"
-                      max="100"
-                      className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
+                    <label className="block text-xs uppercase tracking-widest font-bold text-gold/80 mb-2">Opis Profilu (BIO widoczne u fanów)</label>
+                    <textarea
+                      value={formData.bio}
+                      onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
+                      rows={4}
+                      placeholder="Napisz krótki i angażujący opis modelki do jej wizytówki..."
+                      className="w-full px-4 py-3 bg-dark-4 border border-gold/20 rounded focus:outline-none focus:border-gold text-white font-light resize-none"
                     />
                   </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex gap-3 pt-4 border-t border-gray-700">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex-1 py-2 bg-gradient-to-r from-rose-500 to-rose-700 hover:from-rose-600 hover:to-rose-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold rounded-lg transition-all"
-                >
-                  {loading ? 'Saving...' : (editingPartner ? 'Update Partner' : 'Add Partner')}
-                </button>
+              {/* TAB 2: VISUALS (Placeholder for Avatar/Images) */}
+              {activeTab === 'visuals' && (
+                <div className="space-y-8 animate-fadeIn">
+                  <div className="bg-dark-4 border border-blue-500/30 p-6 rounded relative overflow-hidden">
+                     <div className="absolute top-0 right-0 p-2 text-3xl opacity-10">📸</div>
+                     <h4 className="text-xl font-playfair text-white mb-2">Menedżer Mediów (Wkrótce)</h4>
+                     <p className="text-dim text-sm italic">W tej sekcji docelowo będziemy uploadować awatar modelki, okładkę bannerową oraz zdjęcia do galerii przy użyciu Cloudinary API. Formularz zostanie zintegrowany z modułem direct upload.</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                       <label className="block text-xs uppercase tracking-widest font-bold text-gold/80">Awatar URL</label>
+                       <input disabled className="w-full px-4 py-3 bg-dark-4/50 border border-gold/10 rounded text-dim font-light cursor-not-allowed" placeholder="Automatyczny po uploadzie..." />
+                    </div>
+                    <div className="space-y-2">
+                       <label className="block text-xs uppercase tracking-widest font-bold text-gold/80">Banner Hero URL</label>
+                       <input disabled className="w-full px-4 py-3 bg-dark-4/50 border border-gold/10 rounded text-dim font-light cursor-not-allowed" placeholder="Automatyczny po uploadzie..." />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: FINANCE */}
+              {activeTab === 'finance' && (
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="bg-dark-3 p-6 border border-gold/10 rounded">
+                    <h4 className="font-playfair text-xl text-gold italic mb-6 flex items-center gap-3">
+                      <DollarSign className="w-5 h-5" /> Reguły Podziału Zysków (Revenue Share)
+                    </h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-dim mb-2">PROWIZJA STUDIA (%)</label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            value={formData.revenueSplit.studio}
+                            onChange={(e) => setFormData(prev => ({
+                              ...prev,
+                              revenueSplit: { ...prev.revenueSplit, studio: parseInt(e.target.value) || 0 }
+                            }))}
+                            min="0" max="100"
+                            className="w-full pl-4 pr-10 py-3 bg-dark-4 border border-gold/20 rounded focus:border-gold text-white text-xl font-bold"
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gold">%</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-dim mb-2">UDZIAŁ MODELKI (%)</label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            value={formData.revenueSplit.partner}
+                            onChange={(e) => setFormData(prev => ({
+                              ...prev,
+                              revenueSplit: { ...prev.revenueSplit, partner: parseInt(e.target.value) || 0 }
+                            }))}
+                            min="0" max="100"
+                            className="w-full pl-4 pr-10 py-3 bg-dark-4 border border-gold/20 rounded focus:border-gold text-white text-xl font-bold"
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gold">%</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-dim mb-2">BUDŻET PROMOCYJNY (%)</label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            value={formData.revenueSplit.referral}
+                            onChange={(e) => setFormData(prev => ({
+                              ...prev,
+                              revenueSplit: { ...prev.revenueSplit, referral: parseInt(e.target.value) || 0 }
+                            }))}
+                            min="0" max="100"
+                            className="w-full pl-4 pr-10 py-3 bg-dark-4 border border-gold/20 rounded focus:border-gold text-white text-xl font-bold"
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gold">%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-dim italic text-center">
+                    Podział procentowy stanowi podstawę do automatycznych wyliczeń modułu Finance. Upewnij się, że suma stanowi 100%.
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 pt-8 mt-8 border-t border-gold/10">
                 <button
                   type="button"
                   onClick={() => {
@@ -580,9 +660,16 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                     setEditingPartner(null);
                     resetForm();
                   }}
-                  className="flex-1 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all"
+                  className="px-8 py-3 bg-dark-3 hover:bg-dark-4 text-white font-bold tracking-widest uppercase text-xs border border-white/10 rounded transition-all"
                 >
-                  Cancel
+                  Anuluj Tworzenie
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 py-3 bg-gold hover:bg-gold/80 text-dark font-bold tracking-widest uppercase text-xs rounded transition-all shadow-[0_0_20px_rgba(255,215,0,0.3)] disabled:opacity-50"
+                >
+                  {loading ? 'Zapisuję...' : (editingPartner ? 'Zaktualizuj i wygeneruj Wizytówkę' : 'Zapisz i utwórz Profil Publiczny')}
                 </button>
               </div>
             </form>

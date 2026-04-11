@@ -33,6 +33,7 @@ const PartnerCard: React.FC<{ profile: any }> = ({ profile }) => {
       className="relative h-[450px] w-full perspective-1000 group cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
+      onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
         className="relative w-full h-full transition-all duration-500 preserve-3d shadow-2xl group-hover:shadow-[0_25px_50px_-12px_rgba(255,215,0,0.25)]"
