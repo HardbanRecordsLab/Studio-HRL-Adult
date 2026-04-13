@@ -17,32 +17,33 @@ import {
   BarChart3,
   Search
 } from 'lucide-react';
+import { cn } from '@/utils/utils';
 import PartnersManager from './PartnersManager';
 import CastingManager from './CastingManager';
 import PlatformsManager from './PlatformsManager';
 import FinanceManager from './FinanceManager';
 import ContentManagementSystem from './ContentManagementSystem';
 import AcademyManager from './AcademyManager';
-
-// We'll import the AI Workshop logic directly here instead of an iframe
-// For now, we'll keep it as a tab that renders a placeholder that we'll fill
+import SystemSettings from './SystemSettings';
 import AICreatorWorkshop from '@/pages/admin/workshop/ai-creator';
 
 interface AdminDashboardProps {
   token: string;
+  onLogout?: () => void;
 }
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [stats, setStats] = useState({
     partners: 0,
-    platforms: 18,
+    platforms: 38,
     revenue: 'EUR 0.00',
     courses: 12
   });
+  const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
-    // Fetch real stats
+    setLoadingStats(true);
     fetch('/api/admin/stats', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
@@ -51,24 +52,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
       if (data.status === 'success') {
         setStats({
           partners: data.partnersCount,
-          platforms: 18, // Fixed logic for now
+          platforms: data.platformsCount || 38,
           revenue: `EUR ${(data.revenue || 0).toLocaleString()}`,
-          courses: 12
+          courses: data.coursesCount || 12
         });
       }
-    }).catch(e => console.error("Stats fetch error:", e));
+    }).catch(e => console.error("Stats fetch error:", e))
+    .finally(() => setLoadingStats(false));
   }, [token]);
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, description: 'Statystyki i przegląd' },
     { id: 'partners', label: 'Partnerzy', icon: Users, description: 'Baza modelek i umów' },
     { id: 'casting', label: 'Casting', icon: UserCheck, description: 'Weryfikacja zgłoszeń' },
-    { id: 'platforms', label: 'Platformy', icon: Wifi, description: 'Dystrybucja 18+' },
+    { id: 'platforms', label: 'Platformy', icon: Wifi, description: 'Dystrybucja i sieci' },
     { id: 'workshop', label: 'AI Workshop', icon: Sparkles, description: 'Produkcja Contentu AI' },
     { id: 'finance', label: 'Finanse', icon: DollarSign, description: 'Rozliczenia i zyski' },
     { id: 'content', label: 'Content', icon: Video, description: 'Zarządzanie mediami' },
     { id: 'academy', label: 'Akademia', icon: BookOpen, description: 'Kursy i progres' },
-    { id: 'settings', label: 'Ustawienia', icon: Settings, description: 'Konfiguracja systemu' },
+    { id: 'settings', label: 'System', icon: Settings, description: 'Konfiguracja serwerów' },
   ];
 
   return (
@@ -82,156 +84,144 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-[4px] uppercase font-arial">Control <span className="text-[#c9a84c]">Center</span></h1>
-              <p className="text-[10px] text-gray-500 tracking-[2px] uppercase">HRL Industrial Production Suite</p>
+              <p className="text-[10px] text-gray-500 tracking-[2px] uppercase">HRL Industrial Automation v3.0</p>
             </div>
           </div>
           
           <div className="flex items-center gap-6">
              <div className="flex flex-col items-end border-r border-white/10 pr-6">
-                <span className="text-[10px] text-white/40 uppercase tracking-widest">System Status</span>
-                <span className="text-[10px] text-green-500 font-bold uppercase flex items-center gap-1.5">
-                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Operational
+                <span className="text-[10px] text-white/40 uppercase tracking-widest">System Engine</span>
+                <span className="text-[10px] text-green-500 font-bold uppercase flex items-center gap-1.5 font-mono">
+                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]" /> Online / Encrypted
                 </span>
              </div>
-             <button className="bg-[#9b1f35] hover:bg-[#b0243c] px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-red-900/20">Wyloguj</button>
+             <button 
+               onClick={onLogout}
+               className="bg-white/5 hover:bg-red-900/40 hover:text-red-500 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border border-white/5"
+             >
+               Wyloguj
+             </button>
           </div>
         </div>
       </header>
 
       <div className="flex max-w-[1600px] mx-auto">
-        {/* Sidebar Mini */}
-        <aside className="w-20 border-r border-white/5 bg-black/40 min-h-[calc(100vh-80px)] flex flex-col items-center py-8 gap-6 pt-12">
+        {/* Sidebar Navigation */}
+        <aside className="w-24 border-r border-white/5 bg-black/40 min-h-[calc(100vh-81px)] flex flex-col items-center py-8 gap-4">
            {tabs.map(tab => (
              <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                title={tab.label}
-                className={`p-4 rounded-xl transition-all group relative ${activeTab === tab.id ? 'bg-[#c9a84c] text-black shadow-xl shadow-[#c9a84c]/20 scale-110' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
+                className={cn(
+                  "w-12 h-12 rounded-2xl flex items-center justify-center transition-all group relative",
+                  activeTab === tab.id ? "bg-[#c9a84c] text-black shadow-2xl shadow-[#c9a84c]/30 scale-110" : "text-gray-600 hover:text-white hover:bg-white/5"
+                )}
              >
-                <tab.icon className="w-6 h-6" />
-                {activeTab === tab.id && <div className="absolute left-[-10px] top-1/2 -translate-y-1/2 w-1 h-6 bg-[#c9a84c] rounded-r-full shadow-[0_0_15px_#c9a84c]" />}
+                <tab.icon className="w-5 h-5" />
+                <div className={cn(
+                  "absolute left-full ml-4 px-3 py-1.5 bg-[#c9a84c] text-black text-[9px] font-black uppercase tracking-widest rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-all z-[200] whitespace-nowrap translate-x-4 group-hover:translate-x-0 shadow-2xl",
+                  activeTab === tab.id && "hidden"
+                )}>
+                   {tab.label}
+                </div>
              </button>
            ))}
         </aside>
 
-        {/* Main Area */}
-        <main className="flex-1 p-10 overflow-y-auto custom-scrollbar h-[calc(100vh-80px)]">
+        {/* Dynamic content viewport */}
+        <main className="flex-1 p-10 overflow-y-auto custom-scrollbar h-[calc(100vh-81px)]">
            <AnimatePresence mode="wait">
              {activeTab === 'dashboard' && (
-               <motion.div key="db" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-10">
+               <motion.div key="db" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-12">
                   <header>
-                    <h2 className="text-4xl font-light italic mb-2 tracking-tight">Witaj w centrum <span className="text-[#c9a84c]">dowodzenia</span></h2>
-                    <p className="text-sm text-gray-500 uppercase tracking-widest">Oto aktualny stan Twojego imperium contentu.</p>
+                    <h2 className="text-4xl font-light italic mb-2 tracking-tight">Status Operacyjny <span className="text-[#c9a84c]">HRL Academy</span></h2>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-[4px] font-bold">Zestawienie analityczne czasu rzeczywistego // node_12</p>
                   </header>
 
-                  {/* Top Stats */}
-                  <div className="grid grid-cols-4 gap-6">
+                  {/* Core KPI Grid */}
+                  <div className="grid grid-cols-4 gap-8">
                      {[
-                       { label: 'Aktywne Partnerki', value: stats.partners, icon: Users, color: '#c9a84c' },
-                       { label: 'Platformy', value: stats.platforms, icon: Wifi, color: '#c9a84c' },
-                       { label: 'Miesięczny Przychód', value: stats.revenue, icon: BarChart3, color: '#22c55e' },
-                       { label: 'Zasoby Akademii', value: stats.courses, icon: BookOpen, color: '#ef4444' }
+                       { label: 'Aktywne Kontrakty', value: stats.partners, icon: Users, color: '#c9a84c' },
+                       { label: 'Active Nodes', value: stats.platforms, icon: Wifi, color: '#c9a84c' },
+                       { label: 'Total Equity', value: stats.revenue, icon: BarChart3, color: '#22c55e' },
+                       { label: 'System Assets', value: stats.courses, icon: BookOpen, color: '#c9a84c' }
                      ].map((s, i) => (
-                       <div key={i} className="bg-[#0d0d0d] border border-white/5 p-8 rounded-3xl relative overflow-hidden group hover:border-[#c9a84c]/30 transition-all">
-                          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
-                             <s.icon className="w-20 h-20" style={{ color: s.color }} />
+                       <div key={i} className="bg-[#0d0d0d] border border-white/5 p-8 rounded-[32px] relative overflow-hidden group hover:border-[#c9a84c]/40 transition-all shadow-2xl">
+                          <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-10 transition-all duration-700">
+                             <s.icon className="w-24 h-24" style={{ color: s.color }} />
                           </div>
-                          <p className="text-[10px] text-gray-500 uppercase tracking-[3px] mb-4 font-arial">{s.label}</p>
-                          <p className="text-4xl font-bold font-georgia">{s.value}</p>
-                          <div className="mt-4 flex items-center gap-2 text-[10px] text-green-500 uppercase font-black">
-                             <TrendingUp className="w-3 h-3" /> +12.5% vs Last Month
+                          <p className="text-[9px] text-gray-600 uppercase tracking-[2px] mb-4 font-black">{s.label}</p>
+                          <p className="text-3xl font-bold font-georgia italic">{loadingStats ? '...' : s.value}</p>
+                          <div className="mt-4 flex items-center gap-2 text-[9px] text-green-500/60 uppercase font-black tracking-widest">
+                             <TrendingUp className="w-3 h-3" /> Sync Active
                           </div>
                        </div>
                      ))}
                   </div>
 
-                  {/* Main Grid */}
                   <div className="grid grid-cols-3 gap-8">
-                     <div className="col-span-2 bg-[#0d0d0d] border border-white/5 rounded-3xl p-10">
+                     <div className="col-span-2 bg-[#0d0d0d] border border-white/5 rounded-[40px] p-10 shadow-2xl">
                         <div className="flex justify-between items-center mb-10">
-                           <h3 className="text-xl font-light uppercase tracking-[4px]">Szybka <span className="text-[#c9a84c]">Produkcja</span></h3>
-                           <button className="text-[9px] text-[#c9a84c] border border-[#c9a84c]/20 px-4 py-1.5 rounded-full font-black uppercase tracking-widest hover:bg-[#c9a84c] hover:text-black transition-all">Pełny Warsztat</button>
+                           <h3 className="text-xl font-bold font-georgia italic text-white uppercase tracking-tighter">Szybkie <span className="text-[#c9a84c]">Działania</span></h3>
+                           <Zap className="w-5 h-5 text-[#c9a84c] animate-pulse" />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-6">
                            {tabs.slice(1, 7).map(t => (
-                             <button key={t.id} onClick={() => setActiveTab(t.id)} className="flex items-center gap-4 p-6 bg-black/40 border border-white/5 rounded-2xl hover:bg-black/80 hover:border-[#c9a84c]/20 transition-all text-left">
-                                <div className="w-12 h-12 rounded-xl bg-[#c9a84c]/10 flex items-center justify-center text-[#c9a84c]">
+                             <button key={t.id} onClick={() => setActiveTab(t.id)} className="flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 rounded-3xl hover:bg-white/[0.05] hover:border-[#c9a84c]/30 transition-all text-left group">
+                                <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-[#c9a84c] group-hover:scale-110 transition-transform shadow-inner">
                                    <t.icon className="w-6 h-6" />
                                 </div>
-                                <div>
-                                   <p className="text-[11px] font-black uppercase tracking-widest mb-0.5">{t.label}</p>
-                                   <p className="text-[9px] text-gray-500 uppercase tracking-wider">{t.description}</p>
+                                <div className="space-y-1">
+                                   <p className="text-xs font-bold font-georgia text-white italic group-hover:text-[#c9a84c] transition-colors">{t.label}</p>
+                                   <p className="text-[9px] text-gray-500 uppercase tracking-widest font-bold">{t.description}</p>
                                 </div>
                              </button>
                            ))}
                         </div>
                      </div>
 
-                     <div className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-10">
-                        <h3 className="text-xl font-light uppercase tracking-[4px] mb-10 text-crimson-btn">System <span className="text-white">Alerts</span></h3>
-                        <div className="space-y-6">
+                     <div className="bg-[#0d0d0d] border border-white/5 rounded-[40px] p-10 shadow-2xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-10 opacity-[0.02]">
+                           <Shield className="w-40 h-40 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold font-georgia italic text-white uppercase tracking-tighter mb-10">Security <span className="text-red-500">Alerts</span></h3>
+                        <div className="space-y-8 relative z-10">
                            {[
-                             { d: '2m ago', t: 'Wykryto nową partnerkę w Castingu', s: 'info' },
-                             { d: '1h ago', t: 'Przychód OnlyFans przekroczył EUR 5K', s: 'success' },
-                             { d: '4h ago', t: 'Błąd synchronizacji MyFreeCams (API)', s: 'error' },
-                             { d: '1d ago', t: 'Nowa lekcja w Akademii oczekuje na publikację', s: 'info' }
+                             { d: 'NOW', t: 'Nowa partnerka w Castingu', s: 'info' },
+                             { d: '1H AGO', t: 'Przychód OF przekroczył EUR 5K', s: 'success' },
+                             { d: '4H AGO', t: 'API Sync Error: MyFreeCams', s: 'error' }
                            ].map((a, i) => (
-                             <div key={i} className="flex gap-4 border-b border-white/5 pb-6 last:border-0 last:pb-0">
-                                <div className={`w-1 h-12 rounded-full ${a.s === 'error' ? 'bg-red-500 shadow-[0_0_10px_red]' : a.s === 'success' ? 'bg-green-500 shadow-[0_0_10px_green]' : 'bg-[#c9a84c]'}`} />
-                                <div>
-                                   <p className="text-[11px] leading-relaxed mb-1">{a.t}</p>
-                                   <p className="text-[9px] text-gray-600 uppercase tracking-widest">{a.d}</p>
+                             <div key={i} className="flex gap-6 border-b border-white/5 pb-6 last:border-0">
+                                <div className={cn(
+                                   "w-1 h-12 rounded-full",
+                                   a.s === 'error' ? 'bg-red-500 shadow-[0_0_12px_#ef4444]' : a.s === 'success' ? 'bg-green-500' : 'bg-[#c9a84c]'
+                                )} />
+                                <div className="space-y-1">
+                                   <p className="text-[11px] font-bold text-gray-200">{a.t}</p>
+                                   <p className="text-[9px] text-gray-600 font-black uppercase tracking-widest">{a.d}</p>
                                 </div>
                              </div>
                            ))}
                         </div>
-                        <button className="w-full mt-10 p-4 bg-white/5 border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-[3px] hover:bg-white/10 transition-all text-gray-400">Zobacz Pełne Logi Systemowe</button>
+                        <button className="w-full mt-12 py-4 bg-white/5 border border-white/10 rounded-2xl text-[9px] font-black uppercase tracking-[4px] hover:bg-white/10 transition-all text-gray-400">Archiwum Systemowe</button>
                      </div>
                   </div>
                </motion.div>
              )}
 
-             {/* Dynamic Tab Rendering (Fixing Iframes Issue) */}
              {activeTab === 'partners' && <motion.div key="pt" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><PartnersManager token={token} /></motion.div>}
              {activeTab === 'casting' && <motion.div key="ca" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><CastingManager token={token} /></motion.div>}
              {activeTab === 'platforms' && <motion.div key="pl" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><PlatformsManager token={token} /></motion.div>}
              {activeTab === 'finance' && <motion.div key="fn" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><FinanceManager token={token} /></motion.div>}
              {activeTab === 'content' && <motion.div key="cn" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><ContentManagementSystem token={token} /></motion.div>}
              {activeTab === 'academy' && <motion.div key="ac" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><AcademyManager token={token} /></motion.div>}
+             {activeTab === 'settings' && <motion.div key="st" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><SystemSettings token={token} /></motion.div>}
              
-             {/* AI WORKSHOP - NATIVE INTEGRATION */}
              {activeTab === 'workshop' && (
-                <motion.div key="ws" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/5">
-                   <AICreatorWorkshop embedded={true} />
+                <motion.div key="ws" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full bg-black rounded-[40px] overflow-hidden shadow-2xl border border-white/5">
+                   <AICreatorWorkshop embedded={true} token={token} />
                 </motion.div>
              )}
-
-             {activeTab === 'settings' && (
-                <motion.div key="st" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-10 h-full">
-                   <h2 className="text-3xl font-light italic text-[#c9a84c] mb-10 pb-6 border-b border-white/10 uppercase tracking-tighter">System Configuration</h2>
-                   <div className="grid grid-cols-2 gap-10">
-                      <div className="space-y-6">
-                        <label className="block">
-                           <span className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 block">Site Name</span>
-                           <input type="text" className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-sm" defaultValue="Studio HRL Adult" />
-                        </label>
-                        <label className="block">
-                           <span className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 block">Production Mode</span>
-                           <select className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-sm">
-                              <option>Industrial Suite (Full)</option>
-                              <option>Minimalist (Fast)</option>
-                           </select>
-                        </label>
-                      </div>
-                      <div className="p-8 bg-red-900/10 border border-red-900/20 rounded-2xl">
-                         <h4 className="text-red-500 font-bold uppercase text-xs mb-4">Strefa Niebezpieczna</h4>
-                         <p className="text-[11px] text-gray-400 mb-6 italic">Restart systemowych usług, czyszczenie cache, lub całkowity reset bazy danych.</p>
-                         <button className="px-6 py-3 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg">Wymuś Restart Systemu</button>
-                      </div>
-                   </div>
-                </motion.div>
-             )}
-
            </AnimatePresence>
         </main>
       </div>
@@ -241,6 +231,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(201, 168, 76, 0.1); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(201, 168, 76, 0.4); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+        .text-glow { text-shadow: 0 0 20px rgba(201,168,76,0.3); }
       `}</style>
     </div>
   );

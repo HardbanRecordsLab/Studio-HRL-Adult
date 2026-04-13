@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, Download, Calendar, DollarSign, TrendingUp, TrendingDown, Users, CreditCard, FileText, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Search, 
+  Filter, 
+  Download, 
+  Calendar, 
+  DollarSign, 
+  TrendingUp, 
+  TrendingDown, 
+  Users, 
+  CreditCard, 
+  FileText, 
+  AlertCircle, 
+  CheckCircle, 
+  Clock,
+  Activity,
+  Shield,
+  Zap,
+  MoreVertical,
+  X,
+  ArrowUpRight,
+  ArrowDownRight
+} from 'lucide-react';
 
 interface FinancialRecord {
   id: string;
@@ -65,6 +86,7 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
   }, [dateRange]);
 
   const fetchFinancialData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`/api/admin/finance?range=${dateRange}`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -81,7 +103,6 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
 
   const handleSchedulePayout = async () => {
     if (!selectedPartner || !payoutAmount) return;
-
     setProcessingPayout(true);
     try {
       const response = await fetch('/api/admin/finance', {
@@ -96,7 +117,6 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
           amount: parseFloat(payoutAmount)
         })
       });
-
       if (response.ok) {
         await fetchFinancialData();
         setShowPayoutModal(false);
@@ -109,53 +129,6 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
     setProcessingPayout(false);
   };
 
-  const exportToExcel = () => {
-    // This would typically use a library like xlsx
-    alert('Excel export functionality would be implemented with a library like xlsx');
-  };
-
-  const exportToCSV = () => {
-    if (!financialData) return;
-
-    const headers = ['Date', 'Partner', 'Platform', 'Type', 'Amount', 'Status'];
-    const csvData = financialData.recentTransactions.map(record => [
-      new Date(record.date).toLocaleDateString(),
-      record.partner.name,
-      record.platform || 'Unknown',
-      record.type,
-      Math.abs(record.amount).toFixed(2),
-      record.status
-    ]);
-
-    const csv = [headers, ...csvData].map(row => row.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'financial-records.csv';
-    a.click();
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'processed': return 'text-green-400 bg-green-400/10';
-      case 'pending': return 'text-yellow-400 bg-yellow-400/10';
-      case 'failed': return 'text-red-400 bg-red-400/10';
-      default: return 'text-gray-400 bg-gray-400/10';
-    }
-  };
-
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'subscription': return 'text-blue-400 bg-blue-400/10';
-      case 'tip': return 'text-green-400 bg-green-400/10';
-      case 'ppv': return 'text-purple-400 bg-purple-400/10';
-      case 'payout': return 'text-red-400 bg-red-400/10';
-      case 'referral': return 'text-orange-400 bg-orange-400/10';
-      default: return 'text-gray-400 bg-gray-400/10';
-    }
-  };
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-EU', {
       style: 'currency',
@@ -164,391 +137,254 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
   };
 
   const swissTaxBrackets: TaxBracket[] = [
-    { min: 0, max: 14500, rate: 0, description: '0% - No tax' },
-    { min: 14501, max: 31600, rate: 0.014, description: '1.4% - Basic rate' },
-    { min: 31601, max: 41400, rate: 0.029, description: '2.9% - Low income' },
-    { min: 41401, max: 55200, rate: 0.057, description: '5.7% - Medium income' },
-    { min: 55201, max: 72500, rate: 0.087, description: '8.7% - Upper medium' },
-    { min: 72501, max: 78100, rate: 0.107, description: '10.7% - High income' },
-    { min: 78101, max: 103600, rate: 0.127, description: '12.7% - Very high' },
-    { min: 103601, max: 134600, rate: 0.147, description: '14.7% - Top tier' },
-    { min: 134601, max: 176000, rate: 0.167, description: '16.7% - Ultra high' },
-    { min: 176001, max: 755200, rate: 0.187, description: '18.7% - Maximum' },
-    { min: 755201, max: Infinity, rate: 0.215, description: '21.5% - Top bracket' }
+    { min: 0, max: 14500, rate: 0, description: 'Podstawa Kwoty Wolnej' },
+    { min: 14501, max: 31600, rate: 0.014, description: 'Próg Podstawowy I' },
+    { min: 31601, max: 41400, rate: 0.029, description: 'Próg Podstawowy II' },
+    { min: 41401, max: 55200, rate: 0.057, description: 'Próg Średni' },
+    { min: 55201, max: 176000, rate: 0.167, description: 'Próg Wysoki' },
+    { min: 176001, max: Infinity, rate: 0.215, description: 'Maximum Tax Bracket' }
   ];
 
   const calculateTax = (income: number) => {
     for (const bracket of swissTaxBrackets) {
-      if (income >= bracket.min && income <= bracket.max) {
-        return income * bracket.rate;
-      }
+      if (income >= bracket.min && income <= bracket.max) return income * bracket.rate;
     }
     return 0;
   };
 
-  if (loading) {
+  if (loading && !financialData) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
-      </div>
-    );
-  }
-
-  if (!financialData) {
-    return (
-      <div className="text-center text-gray-400 py-8">
-        Failed to load financial data
+      <div className="flex flex-col items-center justify-center h-96 space-y-4">
+        <div className="w-12 h-12 border-2 border-[#c9a84c]/20 border-t-[#c9a84c] rounded-full animate-spin" />
+        <p className="text-[10px] text-gray-500 uppercase tracking-[5px] animate-pulse">Synchronizacja Finansów...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-10 animate-fadeIn">
+      {/* Header Area */}
+      <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-2xl font-bold text-white">Financial Reporting</h2>
-          <p className="text-gray-400">Revenue tracking, payouts, and tax calculations (Swiss HQ)</p>
+          <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter">HRL <span className="text-white">Finance</span> AUDIT</h2>
+          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase">Raportowanie przychodów, wypłaty i optymalizacja podatkowa (Global HQ)</p>
         </div>
-        <div className="flex gap-3">
-          <select
-            value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-          >
-            <option value="7">Last 7 days</option>
-            <option value="30">Last 30 days</option>
-            <option value="90">Last 90 days</option>
-            <option value="365">Last year</option>
-          </select>
-          <button
-            onClick={exportToExcel}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white transition-colors"
-          >
-            <FileText className="w-4 h-4" />
-            Export Excel
-          </button>
-          <button
-            onClick={exportToCSV}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            Export CSV
-          </button>
-          <button
-            onClick={() => setShowPayoutModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-500 to-rose-700 hover:from-rose-600 hover:to-rose-800 rounded-lg text-white font-medium transition-all"
-          >
-            <CreditCard className="w-4 h-4" />
-            Schedule Payout
-          </button>
+        <div className="flex gap-4">
+           <select 
+             className="bg-white/5 border border-white/10 text-white text-[10px] uppercase font-black px-4 py-2.5 rounded outline-none focus:border-[#c9a84c] transition-all"
+             value={dateRange}
+             onChange={(e) => setDateRange(e.target.value)}
+           >
+              <option value="7">Ostatnie 7 dni</option>
+              <option value="30">Ostatnie 30 dni</option>
+              <option value="90">Ostatni Kwartał</option>
+           </select>
+           <button onClick={() => setShowPayoutModal(true)} className="flex items-center gap-3 px-6 py-2.5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-[#c9a84c]/10">
+              <CreditCard className="w-4 h-4" /> Zaplanuj Wypłatę
+           </button>
         </div>
       </div>
 
-      {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {[
-          { 
-            label: 'Total Revenue', 
-            value: formatCurrency(financialData.overview.totalRevenue), 
-            change: `+${financialData.overview.growth}%`,
-            icon: DollarSign, 
-            color: 'from-green-500 to-green-600',
-            trend: 'up'
-          },
-          { 
-            label: 'Pending Payouts', 
-            value: formatCurrency(financialData.overview.pendingPayouts), 
-            change: 'Ready to process',
-            icon: CreditCard, 
-            color: 'from-yellow-500 to-yellow-600',
-            trend: 'neutral'
-          },
-          { 
-            label: 'Monthly Revenue', 
-            value: formatCurrency(financialData.overview.monthlyRevenue), 
-            change: '+12.5%',
-            icon: TrendingUp, 
-            color: 'from-blue-500 to-blue-600',
-            trend: 'up'
-          },
-          { 
-            label: 'Active Partners', 
-            value: '24', 
-            change: '+2 this month',
-            icon: Users, 
-            color: 'from-purple-500 to-purple-600',
-            trend: 'up'
-          }
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className={`bg-gradient-to-br ${stat.color} p-4 rounded-xl`}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <stat.icon className="w-8 h-8 text-white/50" />
-              {stat.trend === 'up' && <TrendingUp className="w-4 h-4 text-white/70" />}
-              {stat.trend === 'down' && <TrendingDown className="w-4 h-4 text-white/70" />}
+      {/* Stats Grid */}
+      <div className="grid grid-cols-4 gap-6">
+         {[
+           { label: 'Revenue Total', val: formatCurrency(financialData?.overview.totalRevenue || 0), growth: '+12.4%', icon: DollarSign, color: '#c9a84c' },
+           { label: 'Pending Payouts', val: formatCurrency(financialData?.overview.pendingPayouts || 0), growth: 'Oczekujące', icon: Clock, color: '#f59e0b' },
+           { label: 'Avg Monthly', val: formatCurrency(financialData?.overview.monthlyRevenue || 0), growth: '+5.2%', icon: TrendingUp, color: '#22c55e' },
+           { label: 'Active Creators', val: '24', growth: '+2 w tym m-cu', icon: Users, color: '#ffffff' }
+         ].map((s, i) => (
+           <div key={i} className="bg-[#0d0d0d] border border-white/5 p-6 rounded-2xl flex items-center justify-between group hover:border-[#c9a84c]/20 transition-all cursor-default">
+              <div>
+                <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">{s.label}</p>
+                <div className="flex items-baseline gap-2">
+                   <p className="text-2xl font-bold font-georgia">{s.val}</p>
+                </div>
+                <p className="text-[8px] text-[#c9a84c] mt-1 font-black uppercase tracking-widest">{s.growth}</p>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
+                <s.icon className="w-6 h-6 opacity-30 group-hover:opacity-100 transition-opacity" style={{ color: s.color }} />
+              </div>
+           </div>
+         ))}
+      </div>
+
+      <div className="grid grid-cols-3 gap-8">
+         {/* Table Section */}
+         <div className="col-span-2 space-y-6">
+            <div className="flex items-center justify-between border-b border-white/5 pb-4">
+               <h4 className="text-[10px] font-black text-white uppercase tracking-[4px]">Ostatnie Transakcje</h4>
+               <div className="relative w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
+                  <input 
+                    type="text" 
+                    placeholder="Szukaj..." 
+                    className="w-full bg-[#111] border border-white/10 rounded-full py-2 pl-10 pr-4 text-[9px] text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 uppercase tracking-[2px]" 
+                  />
+               </div>
             </div>
-            <p className="text-white/80 text-sm">{stat.label}</p>
-            <p className="text-2xl font-bold text-white">{stat.value}</p>
-            <p className="text-white/70 text-xs mt-1">{stat.change}</p>
-          </motion.div>
-        ))}
-      </div>
 
-      {/* Revenue by Platform */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Revenue by Platform</h3>
-          <div className="space-y-3">
-            {financialData.revenueByPlatform.map((platform, i) => (
-              <div key={i} className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white text-xs font-bold">
-                    {platform.platform.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-white font-medium">{platform.platform}</p>
-                    <p className="text-gray-400 text-sm">{platform.percentage}% of total</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-white font-medium">{formatCurrency(platform.amount)}</p>
-                  <p className={`text-sm ${platform.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {platform.change >= 0 ? '+' : ''}{platform.change}%
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+            <div className="bg-[#0b0b0b] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
+               <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/5 bg-white/[0.02]">
+                      <th className="px-6 py-4 text-[9px] font-black text-gray-500 uppercase tracking-[2px]">Data</th>
+                      <th className="px-6 py-4 text-[9px] font-black text-gray-500 uppercase tracking-[2px]">Partner</th>
+                      <th className="px-6 py-4 text-[9px] font-black text-gray-500 uppercase tracking-[2px]">Typ</th>
+                      <th className="px-6 py-4 text-[9px] font-black text-gray-500 uppercase tracking-[2px]">Status</th>
+                      <th className="px-6 py-4 text-[9px] font-black text-gray-500 uppercase tracking-[3px] text-right">Kwota</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5 text-[10px]">
+                     {financialData?.recentTransactions.slice(0, 10).map((t) => (
+                       <tr key={t.id} className="group hover:bg-white/[0.02] transition-colors">
+                          <td className="px-6 py-4 text-gray-500">{new Date(t.date).toLocaleDateString()}</td>
+                          <td className="px-6 py-4">
+                             <div className="flex items-center gap-3">
+                                <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center font-bold text-gold text-[8px]">{t.partner.name.charAt(0)}</div>
+                                <span className="font-bold text-white uppercase tracking-wider">{t.partner.name}</span>
+                             </div>
+                          </td>
+                          <td className="px-6 py-4">
+                             <span className="text-gray-500 font-black uppercase tracking-widest text-[8px]">{t.type}</span>
+                          </td>
+                          <td className="px-6 py-4">
+                             <span className={`flex items-center gap-1.5 ${t.status === 'processed' ? 'text-green-500' : 'text-yellow-500'}`}>
+                                <div className={`w-1 h-1 rounded-full ${t.status === 'processed' ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                                <span className="uppercase font-black tracking-widest text-[8px]">{t.status}</span>
+                             </span>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                             <span className={`font-bold font-georgia ${t.amount > 0 ? 'text-white' : 'text-red-500'}`}>
+                                {t.amount > 0 ? '+' : ''}{formatCurrency(t.amount)}
+                             </span>
+                          </td>
+                       </tr>
+                     ))}
+                  </tbody>
+               </table>
+            </div>
+         </div>
 
-        {/* Swiss Tax Brackets */}
-        <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Swiss Tax Brackets</h3>
-          <div className="space-y-2 max-h-64 overflow-y-auto">
-            {swissTaxBrackets.map((bracket, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-gray-900 rounded">
-                <div>
-                  <p className="text-white text-sm">{bracket.description}</p>
-                  <p className="text-gray-400 text-xs">
-                    {formatCurrency(bracket.min)} - {bracket.max === Infinity ? '∞' : formatCurrency(bracket.max)}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-white font-medium">{(bracket.rate * 100).toFixed(1)}%</p>
-                  <p className="text-gray-400 text-xs">{formatCurrency(calculateTax((bracket.min + bracket.max) / 2))}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Search transactions..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-          />
-        </div>
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-        >
-          <option value="all">All Types</option>
-          <option value="subscription">Subscription</option>
-          <option value="tip">Tips</option>
-          <option value="ppv">PPV</option>
-          <option value="payout">Payouts</option>
-          <option value="referral">Referrals</option>
-        </select>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-        >
-          <option value="all">All Status</option>
-          <option value="processed">Processed</option>
-          <option value="pending">Pending</option>
-          <option value="failed">Failed</option>
-        </select>
-      </div>
-
-      {/* Recent Transactions */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden">
-        <div className="p-6 border-b border-gray-700">
-          <h3 className="text-lg font-semibold text-white">Recent Transactions</h3>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-700">
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Partner</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Platform</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Amount</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-700">
-              {financialData.recentTransactions
-                .filter(transaction => {
-                  const matchesSearch = searchTerm === '' || 
-                    transaction.partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    transaction.platform?.toLowerCase().includes(searchTerm.toLowerCase());
-                  const matchesType = typeFilter === 'all' || transaction.type === typeFilter;
-                  const matchesStatus = statusFilter === 'all' || transaction.status === statusFilter;
-                  return matchesSearch && matchesType && matchesStatus;
-                })
-                .map((transaction) => (
-                <motion.tr
-                  key={transaction.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="hover:bg-gray-700/50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                    {new Date(transaction.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white text-xs font-bold">
-                        {transaction.partner.name.charAt(0)}
-                      </div>
-                      <div className="ml-3">
-                        <div className="text-sm font-medium text-white">{transaction.partner.name}</div>
-                        <div className="text-sm text-gray-400">@{transaction.partner.handle}</div>
-                      </div>
+         {/* Right Sidebar: Tax & Platforms */}
+         <div className="space-y-8">
+            <div className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-8 space-y-6">
+               <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] border-b border-[#c9a84c]/20 pb-4 flex items-center justify-between">
+                  Swiss Tax Optim. <Shield className="w-3.5 h-3.5" />
+               </h4>
+               <div className="space-y-4">
+                  {swissTaxBrackets.map((b, i) => (
+                    <div key={i} className="flex justify-between items-center group">
+                       <div>
+                          <p className="text-[9px] font-bold text-white group-hover:text-[#c9a84c] transition-colors">{b.description}</p>
+                          <p className="text-[7px] text-gray-500 uppercase tracking-widest">{formatCurrency(b.min)} - {b.max === Infinity ? '∞' : formatCurrency(b.max)}</p>
+                       </div>
+                       <p className="text-[10px] font-black text-[#c9a84c]">{(b.rate * 100).toFixed(1)}%</p>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                    {transaction.platform || 'Unknown'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(transaction.type)}`}>
-                      {transaction.type}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className={`text-sm font-medium ${transaction.amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {transaction.amount > 0 ? '+' : ''}{formatCurrency(transaction.amount)}
+                  ))}
+               </div>
+               <div className="pt-6 border-t border-white/5">
+                  <p className="text-[8px] text-gray-500 uppercase tracking-[2px] leading-relaxed italic">System automatycznie rezerwuje fundusze na poczet zobowiązań HQ w Szwajcarii.</p>
+               </div>
+            </div>
+
+            <div className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-8 space-y-6">
+               <h4 className="text-[10px] font-black text-white uppercase tracking-[4px] border-b border-white/5 pb-4">Revenue Capture</h4>
+               <div className="space-y-6">
+                  {financialData?.revenueByPlatform.map((p, i) => (
+                    <div key={i} className="space-y-2">
+                       <div className="flex justify-between items-end">
+                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{p.platform}</p>
+                          <p className="text-[10px] font-bold text-white">{formatCurrency(p.amount)}</p>
+                       </div>
+                       <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                          <motion.div initial={{ width: 0 }} animate={{ width: `${p.percentage}%` }} className="h-full bg-[#c9a84c]" />
+                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(transaction.status)}`}>
-                      {transaction.status === 'processed' && <CheckCircle className="w-3 h-3" />}
-                      {transaction.status === 'pending' && <Clock className="w-3 h-3" />}
-                      {transaction.status === 'failed' && <AlertCircle className="w-3 h-3" />}
-                      {transaction.status}
-                    </span>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  ))}
+               </div>
+            </div>
+         </div>
       </div>
 
       {/* Payout Modal */}
-      {showPayoutModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-md"
-          >
-            <h3 className="text-xl font-bold text-white mb-6">Schedule Payout</h3>
+      <AnimatePresence>
+         {showPayoutModal && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-8">
+               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowPayoutModal(false)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                 animate={{ opacity: 1, scale: 1, y: 0 }} 
+                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                 className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+               >
+                  <div className="p-8 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                     <div>
+                        <h3 className="text-2xl font-bold font-georgia text-[#c9a84c] italic">Schedule <span className="text-white">Payout</span></h3>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Zatwierdzenie transferu środków do partnera</p>
+                     </div>
+                     <button onClick={() => setShowPayoutModal(false)} className="p-2 text-gray-500 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-5 h-5" /></button>
+                  </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Partner</label>
-                <select
-                  value={selectedPartner}
-                  onChange={(e) => setSelectedPartner(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                  required
-                >
-                  <option value="">Select a partner</option>
-                  {Array.from(new Set(financialData.recentTransactions.map(t => t.partner))).map((partner) => (
-                    <option key={partner.name} value={partner.name}>
-                      {partner.name} (@{partner.handle})
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <div className="p-8 space-y-6">
+                     <div>
+                        <label className="text-[9px] font-black text-gray-500 uppercase tracking-[3px] block mb-3">Wybierz Partnera / Talent</label>
+                        <select 
+                           value={selectedPartner}
+                           onChange={(e) => setSelectedPartner(e.target.value)}
+                           className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#c9a84c] selection:bg-[#c9a84c]"
+                        >
+                           <option value="" className="bg-black">Wybierz z listy...</option>
+                           {/* Dynamic options here */}
+                        </select>
+                     </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Amount (EUR)</label>
-                <input
-                  type="number"
-                  value={payoutAmount}
-                  onChange={(e) => setPayoutAmount(e.target.value)}
-                  placeholder="0.00"
-                  step="0.01"
-                  min="0"
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                  required
-                />
-              </div>
+                     <div>
+                        <label className="text-[9px] font-black text-gray-500 uppercase tracking-[3px] block mb-3">Kwota (EUR)</label>
+                        <div className="relative">
+                           <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold" />
+                           <input 
+                              type="number"
+                              value={payoutAmount}
+                              onChange={(e) => setPayoutAmount(e.target.value)}
+                              placeholder="0.00"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-2xl font-bold text-white outline-none focus:border-[#c9a84c] placeholder:text-white/10"
+                           />
+                        </div>
+                     </div>
 
-              <div className="bg-gray-800 rounded-lg p-4">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-400">Gross Amount:</span>
-                  <span className="text-white">{payoutAmount ? formatCurrency(parseFloat(payoutAmount)) : '€0.00'}</span>
-                </div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-400">Tax (Est.):</span>
-                  <span className="text-white">
-                    {payoutAmount ? formatCurrency(calculateTax(parseFloat(payoutAmount))) : '€0.00'}
-                  </span>
-                </div>
-                <div className="border-t border-gray-700 pt-2 flex justify-between">
-                  <span className="text-white font-medium">Net Amount:</span>
-                  <span className="text-white font-bold">
-                    {payoutAmount ? formatCurrency(parseFloat(payoutAmount) - calculateTax(parseFloat(payoutAmount))) : '€0.00'}
-                  </span>
-                </div>
-              </div>
+                     <div className="bg-white/5 p-6 rounded-2xl border border-white/5 space-y-3">
+                        <div className="flex justify-between text-[10px] text-gray-400">
+                           <span className="uppercase tracking-widest">Est. Tax Deduction:</span>
+                           <span className="font-bold text-red-500">-{formatCurrency(calculateTax(parseFloat(payoutAmount) || 0))}</span>
+                        </div>
+                        <div className="flex justify-between items-baseline pt-2 border-t border-white/10">
+                           <span className="text-[10px] font-black text-white uppercase tracking-[2px]">Net Transfer:</span>
+                           <span className="text-2xl font-bold text-white font-georgia">{formatCurrency((parseFloat(payoutAmount) || 0) - calculateTax(parseFloat(payoutAmount) || 0))}</span>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="p-8 bg-white/5 flex gap-4">
+                     <button 
+                        onClick={handleSchedulePayout}
+                        disabled={processingPayout || !selectedPartner || !payoutAmount}
+                        className="flex-1 py-4 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-[3px] rounded-xl hover:scale-[1.02] transition-all shadow-xl shadow-[#c9a84c]/20 disabled:opacity-50"
+                     >
+                        {processingPayout ? 'Procesor Autoryzacji...' : 'Autoryzuj Przelew'}
+                     </button>
+                  </div>
+               </motion.div>
             </div>
+         )}
+      </AnimatePresence>
 
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={handleSchedulePayout}
-                disabled={!selectedPartner || !payoutAmount || processingPayout}
-                className="flex-1 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-bold rounded-lg transition-all"
-              >
-                {processingPayout ? 'Processing...' : 'Schedule Payout'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowPayoutModal(false);
-                  setSelectedPartner('');
-                  setPayoutAmount('');
-                }}
-                className="flex-1 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all"
-              >
-                Cancel
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+      `}</style>
     </div>
   );
 };

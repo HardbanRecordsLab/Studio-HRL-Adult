@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import AdminDashboard from '@/components/admin/AdminDashboard';
@@ -167,7 +167,9 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const response = await fetch('/api/admin/settings');
+        const response = await fetch('/api/admin/settings', {
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
         if (response.ok) {
           const data = await response.json();
           setSettings(data);
@@ -352,7 +354,7 @@ const AdminPage: React.FC = () => {
         </div>
       ) : (
         <div>
-          <AdminDashboard token={adminToken} />
+          <AdminDashboard token={adminToken} onLogout={handleLogout} />
           <motion.button
             onClick={handleLogout}
             initial={{ opacity: 0, scale: 0.8 }}

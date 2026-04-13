@@ -9,121 +9,36 @@ import { getCloudinaryVideoUrl } from '@/utils/cloudinary';
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dfn5qgvpy';
 
 // ─── MEDIA ───────────────────────────────────────────────────────────────────
-const VIDEOS = [
-  {
-    id: 'v1', title: '14 Błędów Twórców Online', dur: '45:23', level: 'Początkujący',
-    desc: 'Najczęstsze błędy początkujących twórców i jak ich unikać od pierwszego dnia.',
-    cloudinaryId: 'public/video/education/14_Błędów_Twórców_Online',
-    localPath: '/video/education/14_Błędów_Twórców_Online.mp4',
-    thumb: null,
-  },
-  {
-    id: 'v2', title: 'Biznes Cyfrowej Intymności cz.1', dur: '1:23:45', level: 'Średni',
-    desc: 'Zrozumienie modelu biznesowego w branży adult – fundamenty i strategie.',
-    cloudinaryId: 'public/video/education/Biznes_Cyfrowej_Intymności_part.1',
-    localPath: '/video/education/Biznes_Cyfrowej_Intymności part.1.mp4',
-    thumb: null,
-  },
-  {
-    id: 'v3', title: 'Biznes Cyfrowej Intymności cz.2', dur: '1:45:12', level: 'Średni',
-    desc: 'Zaawansowane strategie monetyzacji, budowania marki i skalowania przychodów.',
-    cloudinaryId: 'public/video/education/Biznes_Cyfrowej_Intymności_part.2',
-    localPath: '/video/education/Biznes_Cyfrowej_Intymności part.2.mp4',
-    thumb: null,
-  },
-  {
-    id: 'v4', title: 'Plan 42 Dni – Biznes Twórcy', dur: '2:15:30', level: 'Zaawansowany',
-    desc: 'Kompleksowy plan rozwoju kariery dzień po dniu – od zera do profesjonalisty.',
-    cloudinaryId: 'public/video/education/Plan_42_Dni__Biznes_Twórcy',
-    localPath: '/video/education/Plan_42_Dni__Biznes_Twórcy.mp4',
-    thumb: null,
-  },
-  {
-    id: 'v5', title: 'Cztery Filary Skutecznego Live', dur: '32:10', level: 'Średni',
-    desc: 'Uwaga, relacja, regularność i monetyzacja – cztery filary które decydują o sukcesie.',
-    cloudinaryId: 'public/video/education/Cztery_filary_skutecznego_live',
-    localPath: '/video/education/Cztery filary skutecznego live_ uwaga, relacja, regularność.mp4',
-    thumb: null,
-  },
-  {
-    id: 'v6', title: 'Jak Zatrzymać Widza w Pierwsze 5 Sekund', dur: '18:45', level: 'Początkujący',
-    desc: 'Techniki hook, intro i pierwszego wrażenia które decydują czy widz zostaje czy odchodzi.',
-    cloudinaryId: 'public/video/education/Jak_zatrzymać_widza_w_pierwsze_5_sekund',
-    localPath: '/video/education/Jak zatrzymać widza w pierwsze 5 sekund.mp4',
-    thumb: null,
-  },
-];
+interface VideoResource {
+  id: string;
+  title: string;
+  dur: string;
+  level: string;
+  desc: string;
+  cloudinaryId: string;
+  localPath: string;
+  thumb: string | null;
+}
 
-const PODCASTS = [
-  {
-    id: 'p1', title: 'Inżynieria Iluzji Bliskości w Biznesie Par', dur: '42:15',
-    desc: 'Psychologiczne aspekty budowania relacji z fanami i monetyzacji intymności w cyfrowym świecie.',
-    file: '/audio/Inżynieria_iluzji_bliskości_w_biznesie_par.m4a',
-    ep: 'EP 01',
-  },
-  {
-    id: 'p2', title: 'Największe Błędy Biznesowe w Branży Treści +18', dur: '38:42',
-    desc: 'Analiza najczęstszych błędów biznesowych i jak ich unikać dla maksymalizacji zarobków.',
-    file: '/audio/Największe_błędy_biznesowe_w_branży_treści_+18.m4a',
-    ep: 'EP 02',
-  },
-  {
-    id: 'p3', title: 'Psychologia Sprzedaży i Cyberbezpieczeństwo', dur: '51:28',
-    desc: 'Zrozumienie psychologii klientów i ochrona danych osobowych w pracy online.',
-    file: '/audio/Psychologia_sprzedaży_i_cyberbezpieczeństwo_na_seks-kamerkach.m4a',
-    ep: 'EP 03',
-  },
-  {
-    id: 'p4', title: 'Sex-camming to Chłodna Inżynieria Iluzji Bliskości', dur: '1:08:15',
-    desc: 'Techniczne i psychologiczne aspekty pracy na platformach live cam – bez romantyzowania.',
-    file: '/audio/Sex-camming_to_chłodna_inżynieria_iluzji_bliskości.m4a',
-    ep: 'EP 04',
-  },
-  {
-    id: 'p5', title: 'Startupowy Rygor w Branży dla Dorosłych', dur: '45:33',
-    desc: 'Budowanie kariery jak startup – strategie, metody i mentalność zwycięzcy.',
-    file: '/audio/Startupowy_rygor_w_branży_dla_dorosłych.m4a',
-    ep: 'EP 05',
-  },
-  {
-    id: 'p6', title: 'Architektura Startu w Branży Adult', dur: '38:20',
-    desc: 'Fundament sukcesu – jak zbudować solidne podstawy przed pierwszą sesją.',
-    file: '/audio/Podcast_Architektura Startu w Branży Adult_ Fundament Sukcesu.mp3',
-    ep: 'EP 06',
-  },
-  {
-    id: 'p7', title: 'HRL Creator Academy – Twój Test Gotowości', dur: '29:45',
-    desc: 'Sprawdź czy jesteś gotowa na start w branży – test mentalny i biznesowy.',
-    file: '/audio/Podcast_HRL Creator Academy – Twój test gotowości.mp3',
-    ep: 'EP 07',
-  },
-];
+interface PodcastResource {
+  id: string;
+  title: string;
+  dur: string;
+  desc: string;
+  file: string;
+  ep: string;
+}
 
-const LEGAL_DOCS = [
-  { id: 'l1', title: 'Operacyjna Mapa Platform', type: 'PDF', size: '2.3 MB', desc: 'Szczegółowy przewodnik po wszystkich 28 platformach – stawki, wypłaty, strategie.', file: '/documents/Operacyjna_mapa_platform.pdf', icon: '🗺️', cat: 'Operacyjny' },
-  { id: 'l2', title: 'Dokumentacja Biznesowa', type: 'PDF', size: '4.1 MB', desc: 'Kompletna dokumentacja biznesowa Studio HRL Adult – model, procesy, standardy.', file: '/documents/Studio_HRL_Adult_01_Dokumentacja_Biznesowa.pdf', icon: '📊', cat: 'Biznesowy' },
-  { id: 'l3', title: 'Umowa Partnerska', type: 'DOCX', size: '156 KB', desc: 'Szablon umowy partnerskiej z wytycznymi prawnymi i najlepszymi praktykami.', file: '/documents/Studio_HRL_Adult_02_Umowa_Partnerska.docx', icon: '📝', cat: 'Prawny' },
-  { id: 'l4', title: 'Regulamin Szczegółowy', type: 'PDF', size: '890 KB', desc: 'Pełny regulamin współpracy, prawa i obowiązki partnerek, zasady bezpieczeństwa.', file: '/documents/Studio_HRL_Adult_03_Regulamin_Szczegolowy.pdf', icon: '⚖️', cat: 'Prawny' },
-  { id: 'l5', title: 'Formularz Castingowy', type: 'DOCX', size: '234 KB', desc: 'Oficjalny formularz aplikacyjny z instrukcją wypełnienia i wymaganiami.', file: '/documents/Studio_HRL_Adult_04_Formularz_Castingowy.docx', icon: '📋', cat: 'Casting' },
-  { id: 'l6', title: 'Przewodnik Operacyjny', type: 'PDF', size: '12.4 MB', desc: 'Kompletny przewodnik operacyjny – od pierwszej sesji do profesjonalnej kariery.', file: '/documents/Studio_HRL_Adult_Przewodnik_Operacyjny.pdf', icon: '📖', cat: 'Operacyjny' },
-  { id: 'l7', title: 'Polityka Prywatności RODO', type: 'PDF', size: '320 KB', desc: 'Pełna polityka prywatności zgodna z RODO. Twoje prawa i nasze obowiązki.', file: '/rodo', icon: '🔒', cat: 'Prawny' },
-  { id: 'l8', title: 'Rejestr 18 U.S.C. § 2257', type: 'PDF', size: '1.1 MB', desc: 'Dokumentacja zgodności z amerykańską ustawą o weryfikacji wieku twórców.', file: '/docs', icon: '🇺🇸', cat: 'Compliance' },
-  { id: 'l9', title: 'Jak Zacząć – Przewodnik Właściciela', type: 'DOCX', size: '890 KB', desc: 'Wewnętrzny przewodnik dla właścicieli studia – setup, onboarding, pierwsze kroki.', file: '/documents/Studio_HRL_Jak_zaczac.docx', icon: '🚀', cat: 'Operacyjny' },
-  { id: 'l10', title: 'Plan 42 Dni – Sex Biznes', type: 'DOCX', size: '445 KB', desc: 'Dzień po dniu – kompletny plan budowania biznesu adult content przez 42 dni.', file: '/documents/Plan_42dni.docx', icon: '📅', cat: 'Strategia' },
-  { id: 'l11', title: 'Plan 6 Tygodni Start', type: 'DOCX', size: '312 KB', desc: 'Intensywny plan startowy na 6 tygodni dla nowych partnerek studia.', file: '/documents/Plan_6_tygodni_start.docx', icon: '⚡', cat: 'Strategia' },
-];
-
-const BLOG_ARTICLES = [
-  { slug: 'psychologia-widza', cat: 'Psychologia', tag: 'MUST READ', title: 'Psychologia widza: jak budować lojalność, która płaci', excerpt: 'Zrozumienie mechanizmów psychologicznych stojących za decyzjami zakupowymi fanów to fundament każdego dochodowego konta.', readTime: '8 min', date: '28 Mar 2026', tags: ['psychologia', 'monetyzacja', 'fani'] },
-  { slug: 'onlyfans-vs-fansly-2026', cat: 'Platformy', tag: 'ANALIZA', title: 'OnlyFans vs Fansly 2026 – które konto opłaca się bardziej?', excerpt: 'Szczegółowe porównanie prowizji, algorytmów, narzędzi i potencjału zarobkowego obu platform. Dane z realnych kont.', readTime: '12 min', date: '22 Mar 2026', tags: ['onlyfans', 'fansly', 'porównanie'] },
-  { slug: 'pierwsze-30-dni-chaturbate', cat: 'Live Cam', tag: 'PORADNIK', title: 'Pierwsze 30 dni na Chaturbate – plan działania krok po kroku', excerpt: 'Jak zbudować bazę fanów, ustawić Tip Menu, zaplanować pierwsze Goal Shows i osiągnąć Top 100 w miesiąc.', readTime: '15 min', date: '15 Mar 2026', tags: ['chaturbate', 'live', 'start'] },
-  { slug: 'geo-blocking-prywatnosc', cat: 'Bezpieczeństwo', tag: 'BEZPIECZEŃSTWO', title: 'Geo-blocking i prywatność – kompletny przewodnik twórcy', excerpt: 'Jak skutecznie ukryć tożsamość, zablokować dostęp z wybranych krajów i chronić dane na wszystkich platformach.', readTime: '10 min', date: '10 Mar 2026', tags: ['prywatność', 'bezpieczeństwo', 'geo-blocking'] },
-  { slug: 'ppv-strategia', cat: 'Monetyzacja', tag: 'ZAAWANSOWANY', title: 'PPV – strategia maksymalizacji przychodów z wiadomości prywatnych', excerpt: 'Pay-Per-View to najszybciej rosnące źródło dochodu dla twórców premium. Techniki wyceny i timing wysyłki.', readTime: '11 min', date: '5 Mar 2026', tags: ['ppv', 'monetyzacja', 'onlyfans'] },
-  { slug: 'budowanie-marki-para', cat: 'Marka', tag: 'STRATEGIA', title: 'Budowanie marki jako para – przewaga, której nie mają soliści', excerpt: 'Pary mają unikalną przewagę rynkową. Jak ją wykorzystać, wybrać niszę i zbudować rozpoznawalność.', readTime: '9 min', date: '28 Feb 2026', tags: ['marka', 'para', 'strategia'] },
-  { slug: 'reddit-ruch-organiczny', cat: 'Marketing', tag: 'SEO', title: 'Reddit jako maszyna darmowego ruchu – jak robić to legalnie', excerpt: 'Subreddity dla twórców adult to goldmine organicznego ruchu. Zasady, techniki budowania karmy i strategia postowania.', readTime: '7 min', date: '20 Feb 2026', tags: ['reddit', 'marketing', 'ruch organiczny'] },
-  { slug: 'model-60-30-10', cat: 'Biznes', tag: 'PODSTAWY', title: 'Model 60/30/10 – jak działa podział przychodów w Studio HRL', excerpt: 'Transparentne wyjaśnienie modelu podziału przychodów. Co wchodzi w 30% studia i dlaczego to się opłaca.', readTime: '6 min', date: '14 Feb 2026', tags: ['model biznesowy', 'zarobki', 'studio'] },
-  { slug: 'lovense-interaktywne-zabawki', cat: 'Technologia', tag: 'TECH', title: 'Lovense i interaktywne zabawki – jak zwiększyć zarobki o 40%', excerpt: 'Integracja interaktywnych zabawek z platformami cam to jeden z najskuteczniejszych sposobów na wzrost napiwków.', readTime: '8 min', date: '7 Feb 2026', tags: ['lovense', 'technologia', 'live cam'] },
-];
+interface LegalDocResource {
+  id: string;
+  title: string;
+  type: string;
+  size: string;
+  desc: string;
+  file: string;
+  icon: string;
+  cat: string;
+}
 
 const PLATFORMS = [
   { cat: 'live', name: 'Chaturbate', ico: '🔴', badge: 'CAM GIANT', desc: 'Największa na świecie platforma live cam, będąca absolutnym fundamentem dla każdego twórcy. Działa w systemie tokenowym, gdzie 1 token to równowartość $0.05. Chaturbate oferuje niespotykany nigdzie indziej ruch organiczny, pozwalający na szybkie zbudowanie bazy lojalnych fanów bez nakładów na marketing zewnętrzny. System Tip Goals, Ticket Shows oraz zaawansowane boty automatyzujące interakcje sprawiają, że jest to maszyna do zarabiania pieniędzy. Średnie stawki w pokojach prywatnych oscylują w granicach 30-450 zł za minutę, a najlepsze modelki i pary regularnie osiągają pięciocyfrowe zarobki miesięczne.', features: ['1 token = $0.05', 'Private Shows 30-450 zł/min', 'Globalny traffic #1', 'Apps & Bots automation'] },
@@ -137,6 +52,13 @@ const PLATFORMS = [
   { cat: 'sub', name: 'OnlyFans', ico: '🔥', badge: 'PREMIUM #1', desc: 'Niekwestionowany lider rynku subskrypcyjnego, który zrewolucjonizował sposób monetyzacji treści dla dorosłych. OnlyFans to główna arteria przychodów dla większości topowych twórców, pozwalająca na budowanie stabilnego, miesięcznego dochodu z subskrypcji. Kluczem do sukcesu są tu wiadomości PPV (Pay-Per-View), które mogą generować nawet 70-80% całkowitych zarobków. Platforma oferuje pełną kontrolę nad treściami, system Geo-blocking do ochrony prywatności oraz zaawansowane statystyki. To tutaj buduje się najbardziej intymną relację z fanami, przekuwając popularność z innych portali na realny i wysoki kapitał.', features: ['Subskrypcje $5-$50', 'PPV wiadomości', 'Tips & Live', 'Geo-blocking'] },
   { cat: 'sub', name: 'Fansly', ico: '💫', badge: 'GROWING', desc: 'Najgroźniejszy konkurent OnlyFans, który zdobył uznanie twórców dzięki bardziej elastycznym regulaminom i innowacyjnym funkcjom. Fansly posiada własny algorytm rekomendacji (FYP), który pomaga w organicznym odkrywaniu nowych twórców przez fanów – coś, czego brakuje na OnlyFans. System wielopoziomowych subskrypcji (Tiered Subscriptions) pozwala na różnicowanie cen i oferowanie unikalnych treści dla różnych grup fanów. Platforma wspiera również płatności kryptowalutami, co przyciąga nowoczesne audytorium. To idealne miejsce na dywersyfikację przychodów i budowanie bazy fanów w bardziej otwartym środowisku.', features: ['Discovery algorithm', 'Tiered subscriptions', 'PPV & Media bundles', 'Crypto payouts'] },
   { cat: 'sub', name: 'ManyVids', ico: '📹', badge: 'VOD PASSIVE', desc: 'Najlepsza platforma do budowania pasywnego dochodu ze sprzedaży nagranych materiałów wideo. ManyVids łączy w sobie sklep z klipami, platformę subskrypcyjną (MV Crush) oraz sklep z przedmiotami fizycznymi. Raz nagrany i wrzucony film może zarabiać na siebie przez lata dzięki silnemu pozycjonowaniu w Google i wewnętrznemu ruchowi platformy. Możliwość przyjmowania zamówień na filmy customowe oraz system napiwków sprawiają, że jest to kompleksowe narzędzie dla każdego twórcy. ManyVids to fundament "emerytury" w tej branży – miejsce, gdzie Twoje archiwum treści staje się Twoim największym aktywem.', features: ['Video Store pasywny', 'Custom Video Requests', 'MV Crush subs', 'SEO w Google'] },
+  { cat: 'sub', name: 'JustForFans', ico: '🔞', badge: 'CREATOR FIRST', desc: 'Platforma subskrypcyjna stworzona przez twórców dla twórców, znana z najbardziej liberalnego regulaminu w branży. JustForFans pozwala na publikację dosłownie każdego rodzaju legalnych treści dla dorosłych, bez restrykcji charakterystycznych dla OnlyFans. Platforma oferuje aż 75% przychodów dla twórcy, co jest jednym z najwyższych wskaźników w branży. Dedykowany i zaangażowany support, system kolaboracji z innymi twórcami oraz możliwość sprzedaży własnych merchy sprawiają, że JFF to idealne miejsce dla twórców szukających platformy bez ograniczeń.', features: ['75% przychodów twórcy', 'Zero cenzury treści', 'Creator collabs', 'Merch store'] },
+  { cat: 'sub', name: 'FanCentro', ico: '🌐', badge: 'MULTI-PLATFORM', desc: 'Unikalna platforma agregująca, która pozwala zarządzać wieloma platformami monetyzacji w jednym miejscu. FanCentro oferuje własną platformę subskrypcyjną, narzędzia do zarządzania Instagramem, Snapchatem i Twitterem Premium, oraz zaawansowany system funnelu sprzedażowego. Dedykowany manager sukcesu pomaga w opracowaniu strategii i optymalizacji zarobków. To idealne rozwiązanie dla twórców, którzy chcą skonsolidować swoje przychody z wielu kanałów w jednym, przejrzystym panelu.', features: ['Multi-platform hub', 'Social media mgmt', 'Dedicated success mgr', 'Sales funnel tools'] },
+  { cat: 'sub', name: 'Patreon', ico: '🏛️', badge: 'CREATOR ECONOMY', desc: 'Największa platforma subskrypcyjna na świecie, nie dedykowana wyłącznie treściom adult, ale niezwykle potężna jako narzędzie budowania społeczności. Patreon pozwala na tworzenie wielu poziomów subskrypcji z różnymi benefitami, od newsletterów po ekskluzywne treści i dostęp do prywatnej społeczności. Jest to idealne miejsce do monetyzacji treści lifestyle, edukacji o branży, behind-the-scenes i contentu SFW przyciągającego szerszą publiczność.', features: ['Multi-tier subs', 'Community building', 'SFW & adult mix', 'Creator tools'] },
+  { cat: 'tube', name: 'Pornhub', ico: '🖥️', badge: 'TUBE #1', desc: 'Największa platforma tube na świecie z ponad 130 milionami odwiedzin dziennie. Model Verified Amateurs pozwala twórcom na monetyzację przez system reklam i premium treści (Pornhub Premium). Służy jako potężny funnel generujący ruch na płatne platformy – link w bio przynosi tysiące kliknięć miesięcznie. Platforma posiada również własny program partnerski i możliwość sprzedaży klipów. Obecność na Pornhub to kluczowy element SEO w branży adult.', features: ['130M wizyt/dzień', 'Verified Amateurs', 'Traffic funnel #1', 'Premium content'] },
+  { cat: 'tube', name: 'xVideos', ico: '🖥️', badge: 'GLOBAL REACH', desc: 'Jedna z największych platform tube na świecie, szczególnie popularna w Europie, Ameryce Łacińskiej i Azji. Model Red Girls pozwala na monetyzację treści przez reklamy i subskrypcje premium. xVideos oferuje jeden z najlepszych systemów SEO w branży – dobrze zoptymalizowane wideo może trafiać na pierwszą stronę Google. Platforma dostarcza szczegółowe statystyki i posiada aktywną społeczność komentujących, co pomaga w budowaniu lojalności widzów.', features: ['Red Girls program', 'Europa & LatAm traffic', 'SEO Google top results', 'Detailed analytics'] },
+  { cat: 'tube', name: 'xHamster', ico: '🖥️', badge: 'COMMUNITY', desc: 'Platforma tube z wyjątkowo silną społecznością i systemem gamifikacji. xHamster posiada własny program monetyzacji dla twórców, aktywne forum dyskusyjne oraz unikalny system "Hamster points" nagradzający aktywność. Platforma jest znana z otwartości na różnorodność treści i niszy, co czyni ją idealnym miejscem dla twórców z niekonwencjonalnymi niszami. Fan Page na xHamster pozwala na bezpośrednią komunikację z widzami.', features: ['Creator monetization', 'Strong community', 'Fan Pages', 'Diverse niches'] },
+  { cat: 'tube', name: 'AVN Stars', ico: '⭐', badge: 'INDUSTRY CRED', desc: 'Platforma subskrypcyjna i tube stworzona przez wydawców magazynu AVN – biblii branży adult. AVN Stars daje twórcom niesamowity prestiż i dostęp do branżowych nagród i nominacji. Platforma posiada najbardziej zaangażowaną publiczność spośród hardcorowych fanów branży, którzy traktują twórców jak gwiazdy. Obecność na AVN Stars to sygnał profesjonalizmu i jakości. Regularne nagrody AVN Awards zwiększają ekspozycję najaktywniejszych twórców.', features: ['Industry prestige', 'AVN Awards exposure', 'Hardcore fan base', 'Professional cred'] },
   { cat: 'marketing', name: 'Twitter / X', ico: '🐦', badge: 'ESSENTIAL', desc: 'Główna arteria ruchu dla całej branży adult content. Twitter to miejsce, gdzie buduje się networking, nawiązuje relacje z innymi twórcami i przede wszystkim przyciąga fanów do płatnych platform jak OnlyFans czy Fansly. Bez aktywnego konta na Twitterze, twórca jest praktycznie niewidzialny w cyfrowym świecie. Wykorzystanie odpowiednich hashtagów, udział w Twitter Spaces oraz strategiczne przypinanie postów z linkami to absolutna podstawa marketingu. To tutaj bije serce społeczności twórców, gdzie można wymieniać się doświadczeniami i budować rozpoznawalność marki osobistej na skalę globalną.', features: ['Hashtag networking', 'Pinned tweet funnel', 'Twitter Spaces', 'Industry community'] },
   { cat: 'marketing', name: 'Reddit', ico: '🤖', badge: 'ORGANIC', desc: 'Najlepsze źródło darmowego ruchu dla par. Reddit to potężne narzędzie, które przy odpowiednim podejściu potrafi generować tysiące wejść dziennie na Twoje płatne profile. Kluczem jest tu budowanie "karmy", weryfikacja na niszowych subredditach oraz publikowanie angażujących, autentycznych treści. Reddit ceni autentyczność bardziej niż profesjonalne sesje, dlatego jest to idealne miejsce na budowanie relacji z fanami, którzy szukają czegoś więcej niż tylko obrazu. Nasz zespół pomaga w procesie weryfikacji i doradza, gdzie i kiedy postować, aby zmaksymalizować konwersję.', features: ['Niche subreddits', 'Karma building', 'Verified creator', 'Direct traffic funnel'] },
   { cat: 'marketing', name: 'TikTok / Instagram', ico: '📱', badge: 'AWARENESS', desc: 'Platformy służące do budowania świadomości marki i przyciągania masowego ruchu ze świata SFW (Safe For Work). Na TikTok i Instagramie stawiamy na lifestyle, estetykę i budowanie więzi emocjonalnej z widzem, kierując go strategicznie do "linku w bio". To tutaj tworzy się lejek sprzedażowy, który z przypadkowego widza robi lojalnego subskrybenta. Dzięki wykorzystaniu trendów, odpowiedniej muzyki i profesjonalnego montażu, Twoje profile mogą osiągać miliony wyświetleń, stając się potężnym silnikiem napędowym dla Twojego biznesu adult.', features: ['Lifestyle content', 'Brand personality', 'Massive reach SFW', 'Linktree integration'] },
@@ -201,7 +123,7 @@ const AudioPlayer: React.FC<{ src: string; title: string }> = ({ src, title }) =
 };
 
 // ─── VIDEO CARD ───────────────────────────────────────────────────────────────
-const VideoCard: React.FC<{ v: typeof VIDEOS[0]; locked: boolean }> = ({ v, locked }) => {
+const VideoCard: React.FC<{ v: VideoResource; locked: boolean }> = ({ v, locked }) => {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -311,17 +233,54 @@ const PlatformCard: React.FC<{ plat: typeof PLATFORMS[0] }> = ({ plat }) => {
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 const AcademyPage: React.FC = () => {
   const [activeCat, setActiveCat] = useState('all');
-  const [docFilter, setDocFilter] = useState('all');  const [blogArticles, setBlogArticles] = useState<any[]>([]);
-  const [articlesLoading, setArticlesLoading] = useState(true);
+  const [docFilter, setDocFilter] = useState('all');
+  
+  // Dynamic Content States
+  const [videos, setVideos] = useState<VideoResource[]>([]);
+  const [podcasts, setPodcasts] = useState<PodcastResource[]>([]);
+  const [legalDocs, setLegalDocs] = useState<LegalDocResource[]>([]);
+  const [blogArticles, setBlogArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch blog articles from database
-    const fetchArticles = async () => {
+    const fetchAllContent = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('/api/academy/content?type=articles');
-        if (response.ok) {
-          const data = await response.json();
-          // Transform database articles to match display format
+        // Fetch resources in parallel
+        const [vRes, pRes, dRes, aRes] = await Promise.all([
+          fetch('/api/admin/academy/videos'),
+          fetch('/api/admin/academy/podcasts'),
+          fetch('/api/admin/academy/documents'),
+          fetch('/api/academy/content?type=articles')
+        ]);
+
+        if (vRes.ok) {
+          const vData = await vRes.json();
+          setVideos(vData.map((v: any) => ({
+            id: v.id, title: v.title, dur: v.duration, level: v.level,
+            desc: v.description, cloudinaryId: v.cloudinaryId,
+            localPath: v.url, thumb: v.thumbnail
+          })));
+        }
+
+        if (pRes.ok) {
+          const pData = await pRes.json();
+          setPodcasts(pData.map((p: any) => ({
+            id: p.id, title: p.title, dur: p.duration,
+            desc: p.description, file: p.url, ep: p.episodeNumber
+          })));
+        }
+
+        if (dRes.ok) {
+          const dData = await dRes.json();
+          setLegalDocs(dData.map((d: any) => ({
+            id: d.id, title: d.title, type: d.type, size: d.size,
+            desc: d.description, file: d.url, icon: d.icon, cat: d.category
+          })));
+        }
+
+        if (aRes.ok) {
+          const data = await aRes.json();
           const transformed = data.map((article: any) => ({
             slug: article.slug,
             cat: article.category,
@@ -336,16 +295,15 @@ const AcademyPage: React.FC = () => {
           setBlogArticles(transformed);
         }
       } catch (error) {
-        console.error('Error fetching articles:', error);
-        // Fallback to empty array
-        setBlogArticles([]);
+        console.error('Error fetching academy content:', error);
       } finally {
-        setArticlesLoading(false);
+        setLoading(false);
       }
     };
 
-    fetchArticles();
+    fetchAllContent();
   }, []);
+
   return (
     <>
       <Head>
@@ -361,7 +319,6 @@ const AcademyPage: React.FC = () => {
           {/* ── HERO ── */}
           <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-[7%]">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_40%,rgba(155,31,53,0.18),rgba(90,15,30,0.08)_50%,transparent_70%)]" />
-            {/* Placeholder hero media strip */}
             <div className="absolute bottom-0 left-0 right-0 h-32 overflow-hidden opacity-20 pointer-events-none">
               <div className="flex gap-1 h-full">
                 {Array.from({ length: 12 }).map((_, i) => (
@@ -386,7 +343,6 @@ const AcademyPage: React.FC = () => {
                 Kursy wideo, podcasty, mapa 28 platform, dokumenty prawne i blog branżowy.
                 Wszystko czego potrzebujesz żeby zarabiać profesjonalnie i bezpiecznie.
               </p>
-              {/* Stats bar */}
               <div className="flex flex-wrap justify-center gap-8 pt-4">
                 {[
                   { val: '28', label: 'Platform' },
@@ -408,7 +364,7 @@ const AcademyPage: React.FC = () => {
             </div>
           </section>
 
-          {/* ── PROMO MEDIA STRIP – placeholder na mini-video z branży ── */}
+          {/* ── PROMO MEDIA STRIP ── */}
           <section className="py-8 overflow-hidden border-y border-gold/10 bg-dark-2">
             <div className="flex gap-3 px-[7%] overflow-x-auto scrollbar-hide">
               {Array.from({ length: 8 }).map((_, i) => (
@@ -423,7 +379,7 @@ const AcademyPage: React.FC = () => {
             </div>
           </section>
 
-          {/* ── CTA ZAMIAST LOGINU ── */}
+          {/* ── CTA ── */}
           <section className="px-[7%] max-w-4xl mx-auto my-20">
             <div className="bg-dark-3/50 border border-gold/20 p-12 text-center space-y-6 relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient" />
@@ -461,12 +417,12 @@ const AcademyPage: React.FC = () => {
             {/* VIDEOS */}
             {(activeCat === 'all' || activeCat === 'videos') && (
               <section className="space-y-10">
-                <div className="flex items-center justify-between">
-                  <div className="section-tag">🎬 Kursy Wideo</div>
-                  <span className="text-[8px] text-dim uppercase tracking-widest">{VIDEOS.length} kursów</span>
-                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {VIDEOS.map(v => <VideoCard key={v.id} v={v} locked={false} />)}
+                  {videos.length === 0 && !loading ? (
+                    <div className="col-span-full py-20 text-center text-dim uppercase tracking-widest opacity-30">Brak dostępnych kursów wideo</div>
+                  ) : (
+                    videos.map(v => <VideoCard key={v.id} v={v} locked={false} />)
+                  )}
                 </div>
               </section>
             )}
@@ -476,29 +432,33 @@ const AcademyPage: React.FC = () => {
               <section className="space-y-10">
                 <div className="flex items-center justify-between">
                   <div className="section-tag">🎙️ Podcasty HRL</div>
-                  <span className="text-[8px] text-dim uppercase tracking-widest">{PODCASTS.length} odcinków</span>
+                  <span className="text-[8px] text-dim uppercase tracking-widest">{podcasts.length} odcinków</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {PODCASTS.map(pod => (
-                    <div key={pod.id} className="bg-dark-2 border border-gold/10 p-6 hover:border-gold/30 transition-all group">
-                      <div className="flex gap-5 items-start">
-                        <div className="w-16 h-16 bg-gradient-to-br from-crimson/30 to-dark-4 border border-gold/20 flex items-center justify-center flex-shrink-0">
-                          <span className="font-cormorant text-gold text-sm font-bold">{pod.ep}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-cormorant text-lg text-white italic leading-tight mb-2 group-hover:text-gold transition-colors">{pod.title}</h3>
-                          <p className="text-dim text-[9px] leading-relaxed font-light mb-1">{pod.desc}</p>
-                          <div className="text-[8px] text-dim/50 uppercase tracking-widest">{pod.dur}</div>
-                          <AudioPlayer src={pod.file} title={pod.title} />
+                  {podcasts.length === 0 && !loading ? (
+                    <div className="col-span-full py-20 text-center text-dim uppercase tracking-widest opacity-30">Brak dostępnych podcastów</div>
+                  ) : (
+                    podcasts.map(pod => (
+                      <div key={pod.id} className="bg-dark-2 border border-gold/10 p-6 hover:border-gold/30 transition-all group">
+                        <div className="flex gap-5 items-start">
+                          <div className="w-16 h-16 bg-gradient-to-br from-crimson/30 to-dark-4 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                            <span className="font-cormorant text-gold text-sm font-bold">{pod.ep}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-cormorant text-lg text-white italic leading-tight mb-2 group-hover:text-gold transition-colors">{pod.title}</h3>
+                            <p className="text-dim text-[9px] leading-relaxed font-light mb-1">{pod.desc}</p>
+                            <div className="text-[8px] text-dim/50 uppercase tracking-widest">{pod.dur}</div>
+                            <AudioPlayer src={pod.file} title={pod.title} />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </section>
             )}
 
-            {/* PLATFORMS (MOVED HERE) */}
+            {/* PLATFORMS */}
             {['all', 'live', 'sub', 'tube', 'marketing'].includes(activeCat) && (
               <>
                 {['live', 'sub', 'tube', 'marketing'].filter(c => activeCat === 'all' || activeCat === c).map(cat => {
@@ -519,7 +479,7 @@ const AcademyPage: React.FC = () => {
               </>
             )}
 
-            {/* DOCUMENTS / LEGAL */}
+            {/* DOCUMENTS */}
             {(activeCat === 'all' || activeCat === 'guides') && (
               <section className="space-y-10">
                 <div className="flex items-center justify-between flex-wrap gap-4">
@@ -536,27 +496,31 @@ const AcademyPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {LEGAL_DOCS.filter(d => docFilter === 'all' || d.cat === docFilter).map(doc => (
-                    <div key={doc.id} className="bg-dark-2 border border-gold/10 p-6 hover:border-gold/30 transition-all group relative overflow-hidden">
-                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="text-3xl">{doc.icon}</div>
-                        <div className="flex gap-2">
-                          <span className="text-[7px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 uppercase">{doc.type}</span>
-                          <span className="text-[7px] bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 uppercase">{doc.cat}</span>
+                  {legalDocs.length === 0 && !loading ? (
+                    <div className="col-span-full py-20 text-center text-dim uppercase tracking-widest opacity-30">Brak dostępnych dokumentów</div>
+                  ) : (
+                    legalDocs.filter(d => docFilter === 'all' || d.cat === docFilter).map(doc => (
+                      <div key={doc.id} className="bg-dark-2 border border-gold/10 p-6 hover:border-gold/30 transition-all group relative overflow-hidden">
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gold-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="text-3xl">{doc.icon}</div>
+                          <div className="flex gap-2">
+                            <span className="text-[7px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 uppercase">{doc.type}</span>
+                            <span className="text-[7px] bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 uppercase">{doc.cat}</span>
+                          </div>
+                        </div>
+                        <h3 className="font-cormorant text-lg text-white italic mb-2">{doc.title}</h3>
+                        <p className="text-dim text-[9px] leading-relaxed font-light mb-4">{doc.desc}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[8px] text-dim/50 uppercase tracking-widest">{doc.size}</span>
+                          <a href={doc.file} target="_blank" rel="noopener noreferrer"
+                            className="text-[8px] text-gold uppercase tracking-widest border border-gold/20 px-3 py-1.5 hover:bg-gold hover:text-dark transition-all">
+                            Pobierz
+                          </a>
                         </div>
                       </div>
-                      <h3 className="font-cormorant text-lg text-white italic mb-2">{doc.title}</h3>
-                      <p className="text-dim text-[9px] leading-relaxed font-light mb-4">{doc.desc}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[8px] text-dim/50 uppercase tracking-widest">{doc.size}</span>
-                        <a href={doc.file} target="_blank" rel="noopener noreferrer"
-                          className="text-[8px] text-gold uppercase tracking-widest border border-gold/20 px-3 py-1.5 hover:bg-gold hover:text-dark transition-all">
-                          Pobierz
-                        </a>
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </section>
             )}
@@ -568,16 +532,15 @@ const AcademyPage: React.FC = () => {
                   <div className="section-tag">✍️ Blog & Artykuły</div>
                   <span className="text-[8px] text-dim uppercase tracking-widest">{blogArticles.length} artykułów</span>
                 </div>
-                {articlesLoading ? (
-                  <div className="text-center text-dim">Ładowanie artykułów...</div>
+                {loading ? (
+                  <div className="text-center text-dim py-20 animate-pulse tracking-[5px] uppercase text-[10px]">Inicjalizacja Sieci Wiedzy...</div>
                 ) : blogArticles.length === 0 ? (
-                  <div className="text-center text-dim">Brak artykułów. Zanim 30 sekund...</div>
+                  <div className="text-center text-dim py-20">Brak artykułów w tej kategorii.</div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogArticles.map(article => (
                       <motion.div key={article.slug} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
                         className="bg-dark-2 border border-gold/10 hover:border-gold/30 transition-all group overflow-hidden flex flex-col">
-                        {/* Placeholder image */}
                         <div className="aspect-video bg-gradient-to-br from-dark-4 to-dark-3 relative overflow-hidden">
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="text-[8px] text-dim/30 uppercase tracking-widest">Zdjęcie artykułu</div>

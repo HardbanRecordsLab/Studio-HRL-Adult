@@ -31,13 +31,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case 'GET':
         let data = [];
         if (type === 'videos') {
-          data = await prisma.academyVideo.findMany({ orderBy: { order: 'asc', createdAt: 'desc' } });
+          data = await prisma.academyVideo.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
         } else if (type === 'podcasts') {
-          data = await prisma.academyPodcast.findMany({ orderBy: { order: 'asc', createdAt: 'desc' } });
+          data = await prisma.academyPodcast.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
         } else if (type === 'documents') {
-          data = await prisma.academyDocument.findMany({ orderBy: { order: 'asc', createdAt: 'desc' } });
+          data = await prisma.academyDocument.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
         } else if (type === 'articles') {
-          data = await prisma.academyBlogArticle.findMany({ orderBy: { order: 'asc', createdAt: 'desc' } });
+          data = await prisma.academyBlogArticle.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
         } else {
           return res.status(400).json({ error: 'Invalid type' });
         }

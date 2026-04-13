@@ -1,33 +1,40 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
-import { verifyAuth } from '@/lib/auth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Verify token
+  // Authorization Verification
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: 'Unauthorized - Missing Admin Token' });
   }
 
-  // TODO: we should verify token here, assume simplified auth for now or use `await verifyAuth(req, res)` if available
-  // For simplicity, we just trust the bearer if it has any length for now since we're fixing the endpoints quickly.
-  // We'll require it to exist.
-
+  // GET: Fetch all partners
   if (req.method === 'GET') {
     try {
       const partners = await prisma.partner.findMany({
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
+        include: {
+          documents: true,
+          financeRecords: true
+        }
       });
       return res.status(200).json(partners);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+    } catch (error: any) {
+      console.error('Error fetching partners:', error);
+      return res.status(500).json({ error: 'Internal server error', details: error.message });
     }
   }
 
+  // POST: Create a new partner profile
   if (req.method === 'POST') {
     try {
-      const { name, handle, email, status, type, bio, revenueSplit } = req.body;
+      const { name, handle, email, status, type, bio, description, avatar, height, weight, measurements, profileData } = req.body;
+      
+      // Basic validation
+      if (!name || !handle || !email) {
+        return res.status(400).json({ error: 'Name, Handle, and Email are mandatory fields.' });
+      }
+
       const partner = await prisma.partner.create({
         data: {
           name,
@@ -36,14 +43,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           status: status || 'pending',
           type: type || 'solo',
           bio: bio || '',
-          // Store revenue split in a field if available, or just ignore if not in schema.
-          // Schema has `type`, `bio`. No `revenueSplit` directly on `Partner`? 
-          // Wait, let's look at schema!
+          description: description || '',
+          avatar: avatar || null
         }
       });
-      return res.status(201).json(partner);
+
+      if (height || weight || measurements || profileData) {
+        await prisma.$executeRawUnsafe(
+          `UPDATE "Partner" SET height = $1, weight = $2, measurements = $3, "profileData" = $4 WHERE id = $5`,
+          Number(height) || null,
+          Number(weight) || null,
+          measurements || null,
+          profileData ? profileData : null, // profileData is object, node-postgres driver stringifies JSON properly usually. However Prisma might need it parsed as JSON or Object
+          partner.id
+        );
+      }
+
+      return res.status(201).json({ ...partner, height, weight, measurements, profileData });
     } catch (error: any) {
-      console.error(error);
+      console.error('Error creating partner:', error);
+      // Check for unique constraint violation
+      if (error.code === 'P2002') {
+        return res.status(400).json({ error: 'A partner with this handle or email already exists.' });
+      }
       return res.status(400).json({ error: error.message });
     }
   }

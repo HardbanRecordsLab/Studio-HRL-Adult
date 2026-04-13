@@ -21,14 +21,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const partnersCount = await prisma.partner.count();
     
-    // In a real scenario, we would calculate revenue sum here
-    // For now, let's provide a realistic number or sum if field exists
-    const revenue = 125000; // Total accumulated or monthly projection
+    // Aggregating real revenue from FinancialRecord
+    const revenueStats = await prisma.financialRecord.aggregate({
+      where: { type: { not: 'payout' } },
+      _sum: { amount: true }
+    });
+
+    // Counting all academy assets for true statistics
+    const videoCount = await prisma.academyVideo.count();
+    const podcastCount = await prisma.academyPodcast.count();
+    const docCount = await prisma.academyDocument.count();
+    const articleCount = await prisma.academyBlogArticle.count();
+    
+    const coursesCount = videoCount + podcastCount + docCount + articleCount;
+
+    // Global supported platforms count (sync with platforms API)
+    const platformsCount = 38; // Or fetch from a central config/DB if that's where they are stored
 
     return res.status(200).json({
       status: 'success',
       partnersCount,
-      revenue,
+      revenue: revenueStats._sum.amount || 0,
+      coursesCount,
+      platformsCount,
       timestamp: new Date().toISOString()
     });
   } catch (error) {

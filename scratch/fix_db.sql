@@ -1,0 +1,1 @@
+ALTER TABLE "PartnerDocument" ADD COLUMN IF NOT EXISTS "type" TEXT;

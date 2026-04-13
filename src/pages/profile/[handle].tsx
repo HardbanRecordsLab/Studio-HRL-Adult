@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { ProfileTemplate } from './template';
+import { ProfileTemplate } from '@/components/profile/ProfileTemplate';
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();

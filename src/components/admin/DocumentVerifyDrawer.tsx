@@ -14,9 +14,15 @@ import {
   AlertCircle,
   Eye,
   EyeOff,
-  Clock
+  Clock,
+  Shield,
+  Fingerprint,
+  Activity,
+  Zap,
+  Briefcase
 } from 'lucide-react';
 import AddDocumentForm from './AddDocumentForm';
+import { cn } from '@/utils/utils';
 
 interface Partner {
   id: string;
@@ -98,44 +104,19 @@ const DocumentVerifyDrawer: React.FC<DocumentVerifyDrawerProps> = ({
 
   const getDocumentTypeLabel = (type: string) => {
     switch (type) {
-      case 'id_card':
-        return 'Dowód osobisty';
-      case 'passport':
-        return 'Paszport';
-      case 'driving_license':
-        return 'Prawo jazdy';
-      default:
-        return type;
+      case 'id_card': return 'Dowód Osobisty';
+      case 'passport': return 'Paszport';
+      case 'driving_license': return 'Prawo Jazdy';
+      default: return type;
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusInfo = (status: string) => {
     switch (status) {
-      case 'verified':
-        return 'text-green-400 bg-green-400/10 border-green-400/20';
-      case 'rejected':
-        return 'text-red-400 bg-red-400/10 border-red-400/20';
-      case 'pending':
-        return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
-      case 'expired':
-        return 'text-orange-400 bg-orange-400/10 border-orange-400/20';
-      default:
-        return 'text-gray-400 bg-gray-400/10 border-gray-400/20';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'verified':
-        return <CheckCircle className="w-4 h-4" />;
-      case 'rejected':
-        return <XCircle className="w-4 h-4" />;
-      case 'pending':
-        return <AlertCircle className="w-4 h-4" />;
-      case 'expired':
-        return <Calendar className="w-4 h-4" />;
-      default:
-        return <Clock className="w-4 h-4" />;
+      case 'verified': return { label: 'Zaszyfrowany & Zweryfikowany', color: 'text-green-500', bg: 'bg-green-500/10', border: 'border-green-500/20', icon: <CheckCircle className="w-3 h-3" /> };
+      case 'rejected': return { label: 'Odrzucony / Błąd weryfikacji', color: 'text-red-500', bg: 'bg-red-500/10', border: 'border-red-500/20', icon: <XCircle className="w-3 h-3" /> };
+      case 'pending': return { label: 'Oczekiwanie na Audyt', color: 'text-[#c9a84c]', bg: 'bg-[#c9a84c]/10', border: 'border-[#c9a84c]/20', icon: <Clock className="w-3 h-3" /> };
+      default: return { label: status, color: 'text-gray-500', bg: 'bg-white/5', border: 'border-white/5', icon: <Clock className="w-3 h-3" /> };
     }
   };
 
@@ -150,222 +131,247 @@ const DocumentVerifyDrawer: React.FC<DocumentVerifyDrawerProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/70 backdrop-blur-md z-[100]"
             onClick={onClose}
           />
 
-          {/* Drawer */}
+          {/* Luxury Security Drawer */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-5xl bg-gradient-to-br from-gray-900 via-gray-800 to-black border-l border-gray-700 z-50 overflow-hidden"
+            className="fixed right-0 top-0 h-full w-full max-w-6xl bg-[#050505] border-l border-white/5 z-[110] overflow-hidden flex flex-col"
           >
-            {/* Header */}
-            <div className="sticky top-0 z-10 bg-black/50 backdrop-blur border-b border-gray-700">
-              <div className="flex items-center justify-between p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white font-bold">
+            {/* Security Header */}
+            <div className="p-10 border-b border-white/5 bg-gradient-to-r from-black to-[#0a0a0a] flex justify-between items-center relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
+                  <Fingerprint className="w-48 h-48 text-white" />
+               </div>
+               
+               <div className="flex items-center gap-8 relative z-10">
+                  <div className="w-20 h-20 rounded-[24px] bg-gradient-to-br from-gray-800 to-black border border-white/10 flex items-center justify-center shadow-2xl overflow-hidden">
                     {partner.avatar ? (
-                      <img src={partner.avatar} alt={partner.name} className="w-12 h-12 rounded-full object-cover" />
+                      <img src={partner.avatar} alt={partner.name} className="w-full h-full object-cover" />
                     ) : (
-                      partner.name.charAt(0).toUpperCase()
+                      <span className="text-3xl font-bold text-[#c9a84c]">{partner.name.charAt(0).toUpperCase()}</span>
                     )}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">{partner.name}</h2>
-                    <div className="text-gray-400">@{partner.handle} | {partner.email}</div>
+                    <h2 className="text-3xl font-bold font-georgia italic text-white uppercase tracking-tighter">
+                      KYC <span className="text-[#c9a84c]">Verification</span> Portal
+                    </h2>
+                    <div className="flex items-center gap-3 mt-2">
+                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{partner.name}</span>
+                       <span className="text-gray-600">/</span>
+                       <span className="text-[10px] font-black text-[#c9a84c] uppercase tracking-widest">@{partner.handle}</span>
+                    </div>
                   </div>
-                </div>
-                <button
-                  onClick={onClose}
-                  className="p-2 hover:bg-gray-800 rounded-lg text-white transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+               </div>
+               
+               <button
+                 onClick={onClose}
+                 className="p-4 hover:bg-white/5 rounded-2xl text-gray-500 hover:text-white transition-all border border-white/5"
+               >
+                 <X className="w-6 h-6" />
+               </button>
             </div>
 
-            {/* Content */}
-            <div className="h-full overflow-y-auto p-6 pb-32">
+            {/* Verification Content */}
+            <div className="flex-1 overflow-y-auto p-12 custom-scrollbar">
               {documents.length === 0 ? (
-                <div className="text-center py-12">
-                  <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">No Documents</h3>
-                  <p className="text-gray-400 mb-6">This partner hasn't uploaded any documents yet.</p>
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-8 animate-fadeIn">
+                  <div className="w-32 h-32 bg-white/[0.02] border border-white/5 rounded-full flex items-center justify-center text-gray-800">
+                     <FileText className="w-12 h-12" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-2 font-georgia italic">Brak dokumentów w systemie</h3>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-[4px]">Ten partner nie przesłał jeszcze żadnych danych KYC do weryfikacji.</p>
+                  </div>
                   <button
                     onClick={() => setShowAddForm(true)}
-                    className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition-colors"
+                    className="px-12 py-5 bg-[#c9a84c] hover:bg-[#e6c15c] text-black text-[10px] font-black uppercase tracking-[4px] rounded-2xl transition-all shadow-xl shadow-[#c9a84c]/20"
                   >
-                    Request Documents (TODO)
+                    Wymuś Przesłanie Dokumentów
                   </button>
                 </div>
               ) : (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold text-white">Documents</h3>
-                    <button
-                      onClick={() => setShowAddForm(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 rounded-lg text-white font-medium transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Add Document
-                    </button>
+                <div className="space-y-12">
+                  <div className="flex items-end justify-between border-b border-white/5 pb-8">
+                     <div>
+                        <h3 className="text-[10px] font-black text-white uppercase tracking-[4px]">HRL Vault: Bezpieczny Magazyn Dokumentów</h3>
+                        <p className="text-[8px] text-gray-600 uppercase tracking-[2px] mt-2">Wszystkie dane są szyfrowane i maskowane do czasu Twojej autoryzacji.</p>
+                     </div>
+                     <button
+                       onClick={() => setShowAddForm(true)}
+                       className="flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-[#c9a84c] border border-white/10 hover:border-[#c9a84c] text-white hover:text-black text-[9px] font-black uppercase tracking-widest rounded-2xl transition-all group"
+                     >
+                       <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+                       Dodaj Nowy Zasób
+                     </button>
                   </div>
 
-                  {documents.map((doc) => (
-                    <div key={doc.id} className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-                      <div className="flex items-start justify-between mb-6">
-                        <div>
-                          <h4 className="text-lg font-semibold text-white mb-2">
-                            {getDocumentTypeLabel(doc.type)}
-                          </h4>
-                          <div className="flex items-center gap-4 text-sm text-gray-400">
-                            <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(doc.status)}`}>
-                              {getStatusIcon(doc.status)}
-                              {doc.status}
-                            </span>
-                            {doc.verifiedAt && (
-                              <span>Verified: {new Date(doc.verifiedAt).toLocaleDateString()}</span>
-                            )}
-                            {doc.verifiedBy && (
-                              <span>By: {doc.verifiedBy}</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                  <div className="grid grid-cols-1 gap-12">
+                     {documents.map((doc) => {
+                       const status = getStatusInfo(doc.status);
+                       return (
+                         <div key={doc.id} className="bg-[#0b0b0b] border border-white/5 rounded-[40px] p-10 space-y-10 group hover:border-[#c9a84c]/20 transition-all shadow-2xl relative overflow-hidden">
+                           {/* Background Decor Clip */}
+                           <div className="absolute -bottom-10 -right-10 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
+                              <Shield className="w-48 h-48" />
+                           </div>
 
-                      {/* Document Images */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        {/* Front */}
-                        <div className="relative group">
-                          <div className="aspect-[3/2] bg-gray-900 rounded-lg overflow-hidden">
-                            <img
-                              src={doc.frontUrl}
-                              alt="Document front"
-                              className={`w-full h-full object-cover transition-all duration-300 ${
-                                isImageVisible(doc.id, 'front') ? '' : 'blur-lg'
-                              }`}
-                            />
-                          </div>
-                          <button
-                            onClick={() => toggleImageVisibility(doc.id, 'front')}
-                            className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-black/70 rounded-lg text-white transition-colors"
-                          >
-                            {isImageVisible(doc.id, 'front') ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                          </button>
-                          <div className="mt-2 text-center">
-                            <span className="text-sm text-gray-400">Front</span>
-                          </div>
-                        </div>
+                           <div className="flex items-start justify-between relative z-10">
+                             <div className="space-y-4">
+                               <div className="flex items-center gap-4">
+                                  <div className="p-4 bg-white/5 rounded-2xl text-[#c9a84c]">
+                                     <Fingerprint className="w-8 h-8" />
+                                  </div>
+                                  <div>
+                                     <h4 className="text-2xl font-bold text-white font-georgia italic uppercase tracking-tighter">
+                                       {getDocumentTypeLabel(doc.type)}
+                                     </h4>
+                                     <div className="flex items-center gap-4 mt-1">
+                                       <span className={cn("inline-flex items-center gap-2 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border", status.bg, status.color, status.border)}>
+                                         {status.icon}
+                                         {status.label}
+                                       </span>
+                                     </div>
+                                  </div>
+                               </div>
+                               <div className="flex gap-8 text-[9px] font-black text-gray-500 uppercase tracking-widest pl-2">
+                                  {doc.verifiedAt && <span className="flex items-center gap-2 mt-2"><Activity className="w-3 h-3" /> Data Weryfikacji: {new Date(doc.verifiedAt).toLocaleDateString()}</span>}
+                                  {doc.verifiedBy && <span className="flex items-center gap-2 mt-2"><User className="w-3 h-3" /> Audytor: {doc.verifiedBy}</span>}
+                               </div>
+                             </div>
+                           </div>
 
-                        {/* Back */}
-                        {doc.backUrl && (
-                          <div className="relative group">
-                            <div className="aspect-[3/2] bg-gray-900 rounded-lg overflow-hidden">
-                              <img
-                                src={doc.backUrl}
-                                alt="Document back"
-                                className={`w-full h-full object-cover transition-all duration-300 ${
-                                  isImageVisible(doc.id, 'back') ? '' : 'blur-lg'
-                                }`}
-                              />
-                            </div>
-                            <button
-                              onClick={() => toggleImageVisibility(doc.id, 'back')}
-                              className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-black/70 rounded-lg text-white transition-colors"
-                            >
-                              {isImageVisible(doc.id, 'back') ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                            </button>
-                            <div className="mt-2 text-center">
-                              <span className="text-sm text-gray-400">Back</span>
-                            </div>
-                          </div>
-                        )}
+                           {/* Document Images (The Core Verification Part) */}
+                           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                             {/* Front */}
+                             <div className="space-y-4">
+                                <p className="text-[8px] text-gray-600 font-black uppercase tracking-widest text-center">Widok: Awers (Front)</p>
+                                <div className="relative group/img aspect-[3/2] bg-black rounded-[24px] overflow-hidden border border-white/5 shadow-2xl">
+                                  <img
+                                    src={doc.frontUrl}
+                                    alt="Document front"
+                                    className={cn("w-full h-full object-cover transition-all duration-700", isImageVisible(doc.id, 'front') ? "scale-105" : "blur-[20px] scale-110 opacity-30")}
+                                  />
+                                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-100 group-hover/img:bg-black/20 transition-all">
+                                     <button
+                                       onClick={() => toggleImageVisibility(doc.id, 'front')}
+                                       className="p-5 bg-black/60 backdrop-blur-md rounded-[20px] text-white border border-white/10 hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all"
+                                     >
+                                       {isImageVisible(doc.id, 'front') ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                                     </button>
+                                  </div>
+                                  {isImageVisible(doc.id, 'front') && (
+                                     <div className="absolute top-4 left-4 p-2 bg-[#c9a84c] text-black rounded-lg">
+                                        <Shield className="w-3 h-3" />
+                                     </div>
+                                  )}
+                                </div>
+                             </div>
 
-                        {/* Selfie */}
-                        {doc.selfieUrl && (
-                          <div className="relative group">
-                            <div className="aspect-[3/2] bg-gray-900 rounded-lg overflow-hidden">
-                              <img
-                                src={doc.selfieUrl}
-                                alt="Selfie with document"
-                                className={`w-full h-full object-cover transition-all duration-300 ${
-                                  isImageVisible(doc.id, 'selfie') ? '' : 'blur-lg'
-                                }`}
-                              />
-                            </div>
-                            <button
-                              onClick={() => toggleImageVisibility(doc.id, 'selfie')}
-                              className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-black/70 rounded-lg text-white transition-colors"
-                            >
-                              {isImageVisible(doc.id, 'selfie') ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                            </button>
-                            <div className="mt-2 text-center">
-                              <span className="text-sm text-gray-400">Selfie</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                             {/* Back */}
+                             {doc.backUrl && (
+                               <div className="space-y-4">
+                                  <p className="text-[8px] text-gray-600 font-black uppercase tracking-widest text-center">Widok: Rewers (Back)</p>
+                                  <div className="relative group/img aspect-[3/2] bg-black rounded-[24px] overflow-hidden border border-white/5 shadow-2xl">
+                                    <img
+                                      src={doc.backUrl}
+                                      alt="Document back"
+                                      className={cn("w-full h-full object-cover transition-all duration-700", isImageVisible(doc.id, 'back') ? "scale-105" : "blur-[20px] scale-110 opacity-30")}
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-100 group-hover/img:bg-black/20 transition-all">
+                                       <button
+                                         onClick={() => toggleImageVisibility(doc.id, 'back')}
+                                         className="p-5 bg-black/60 backdrop-blur-md rounded-[20px] text-white border border-white/10 hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all"
+                                       >
+                                         {isImageVisible(doc.id, 'back') ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                                       </button>
+                                    </div>
+                                  </div>
+                               </div>
+                             )}
 
-                      {/* Document Info */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        {doc.expiryDate && (
-                          <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1">Expiry Date</label>
-                            <div className="text-white">{new Date(doc.expiryDate).toLocaleDateString()}</div>
-                          </div>
-                        )}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-400 mb-1">Uploaded</label>
-                          <div className="text-white">{new Date(doc.createdAt).toLocaleDateString()}</div>
-                        </div>
-                      </div>
+                             {/* Selfie */}
+                             {doc.selfieUrl && (
+                               <div className="space-y-4">
+                                  <p className="text-[8px] text-gray-600 font-black uppercase tracking-widest text-center">Widok: Biometria (Selfie)</p>
+                                  <div className="relative group/img aspect-[3/2] bg-black rounded-[24px] overflow-hidden border border-white/5 shadow-2xl">
+                                    <img
+                                      src={doc.selfieUrl}
+                                      alt="Selfie with document"
+                                      className={cn("w-full h-full object-cover transition-all duration-700", isImageVisible(doc.id, 'selfie') ? "scale-105 shadow-inner" : "blur-[20px] scale-110 opacity-30")}
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-100 group-hover/img:bg-black/20 transition-all">
+                                       <button
+                                         onClick={() => toggleImageVisibility(doc.id, 'selfie')}
+                                         className="p-5 bg-black/60 backdrop-blur-md rounded-[20px] text-white border border-white/10 hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all"
+                                       >
+                                         {isImageVisible(doc.id, 'selfie') ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                                       </button>
+                                    </div>
+                                  </div>
+                               </div>
+                             )}
+                           </div>
 
-                      {/* Notes */}
-                      <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-400 mb-2">Admin Notes</label>
-                        <textarea
-                          value={notes[doc.id] || doc.notes || ''}
-                          onChange={(e) => setNotes(prev => ({ ...prev, [doc.id]: e.target.value }))}
-                          placeholder="Add notes about this document..."
-                          className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-                          rows={3}
-                        />
-                      </div>
+                           {/* Notes & Lifecycle Data */}
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end relative z-10 p-8 bg-white/[0.01] border border-white/5 rounded-[32px]">
+                              <div className="space-y-4">
+                                <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                                   <Zap className="w-3 h-3 text-[#c9a84c]" /> Notatki Audytorskie
+                                </label>
+                                <textarea
+                                  value={notes[doc.id] || doc.notes || ''}
+                                  onChange={(e) => setNotes(prev => ({ ...prev, [doc.id]: e.target.value }))}
+                                  placeholder="Wpisz treść uwag lub powód odrzucenia..."
+                                  className="w-full px-6 py-4 bg-black border border-white/10 rounded-2xl focus:border-[#c9a84c]/40 outline-none transition-all placeholder:text-gray-800 text-sm text-white h-24"
+                                />
+                              </div>
+                              <div className="space-y-6">
+                                 <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest text-gray-500">
+                                    <span>Ważność Dokumentu:</span>
+                                    <span className="text-white italic">{doc.expiryDate ? new Date(doc.expiryDate).toLocaleDateString() : 'Bezterminowy'}</span>
+                                 </div>
+                                 <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest text-gray-500">
+                                    <span>Sync HRL ID:</span>
+                                    <span className="text-gray-700 font-mono">#{doc.id.slice(0, 12)}...</span>
+                                 </div>
 
-                      {/* Actions */}
-                      {doc.status === 'pending' && (
-                        <div className="flex items-center gap-4">
-                          <button
-                            onClick={() => handleStatusUpdate(doc.id, 'verified')}
-                            disabled={loading}
-                            className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 rounded-lg text-white font-medium transition-colors"
-                          >
-                            <CheckCircle className="w-4 h-4" />
-                            {loading ? 'Processing...' : 'Verify'}
-                          </button>
-                          <button
-                            onClick={() => handleStatusUpdate(doc.id, 'rejected')}
-                            disabled={loading || !notes[doc.id]}
-                            className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 rounded-lg text-white font-medium transition-colors"
-                          >
-                            <XCircle className="w-4 h-4" />
-                            {loading ? 'Processing...' : 'Reject'}
-                          </button>
-                          {!notes[doc.id] && (
-                            <span className="text-sm text-gray-400">Notes required for rejection</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                                 {doc.status === 'pending' && (
+                                   <div className="flex gap-4 pt-4 border-t border-white/5">
+                                     <button
+                                       onClick={() => handleStatusUpdate(doc.id, 'rejected')}
+                                       disabled={loading || !notes[doc.id]}
+                                       className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/50 text-gray-600 hover:text-red-500 text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all disabled:opacity-30"
+                                     >
+                                       <XCircle className="w-4 h-4" />
+                                       Odrzuć
+                                     </button>
+                                     <button
+                                       onClick={() => handleStatusUpdate(doc.id, 'verified')}
+                                       disabled={loading}
+                                       className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-[#c9a84c] hover:bg-[#e6c15c] text-black text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-[#c9a84c]/20"
+                                     >
+                                       <CheckCircle className="w-4 h-4" />
+                                       Zatwierdź
+                                     </button>
+                                   </div>
+                                 )}
+                              </div>
+                           </div>
+                         </div>
+                       );
+                     })}
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Add Document Form */}
+            {/* Sticky Overlay Forms (Modals) */}
             <AnimatePresence>
               {showAddForm && (
                 <AddDocumentForm
@@ -378,21 +384,28 @@ const DocumentVerifyDrawer: React.FC<DocumentVerifyDrawerProps> = ({
                 />
               )}
             </AnimatePresence>
-          </motion.div>
 
-          {/* Toast Notification */}
-          {toast && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-medium ${
-                toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'
-              }`}
-            >
-              {toast.message}
-            </motion.div>
-          )}
+            {/* Notification System */}
+            <AnimatePresence>
+              {toast && (
+                <motion.div
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                  className={cn("fixed bottom-12 right-12 px-10 py-5 rounded-[24px] text-white text-[10px] font-black uppercase tracking-[3px] shadow-2xl z-[200]", toast.type === 'success' ? 'bg-[#c9a84c] text-black' : 'bg-red-600')}
+                >
+                  {toast.message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <style jsx global>{`
+              .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+              .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+              .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.1); border-radius: 20px; }
+              .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #c9a84c; }
+            `}</style>
+          </motion.div>
         </>
       )}
     </AnimatePresence>

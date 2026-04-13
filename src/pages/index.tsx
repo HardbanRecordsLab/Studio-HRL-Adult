@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const HomePage: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
+  const [stats, setStats] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setStats(data.stats);
+      })
+      .catch(err => console.error('Stats fetch error:', err));
+  }, []);
 
   const playVideo = (id: string) => {
     setActiveVideo(id);
@@ -89,7 +100,12 @@ const HomePage: React.FC = () => {
 
           {/* STATS */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="bg-[#0d0d0d] py-16 px-10 grid grid-cols-4 gap-0 border-t border-[#1a1a1a]">
-            {[{ num: '60%', label: 'DLA PARTNERKI' }, { num: '30%', label: 'DLA MODELA' }, { num: '10%', label: 'DLA STUDIA' }, { num: '4K', label: 'JAKOŚĆ HDR' }].map((stat, i) => (
+            {[
+              { num: '60%', label: 'DLA PARTNERKI' },
+              { num: '30%', label: 'DLA MODELA' },
+              { num: '10%', label: 'DLA STUDIA' },
+              { num: '4K', label: 'JAKOŚĆ HDR' }
+            ].map((stat, i) => (
               <div key={i} className="text-center border-r border-[#1a1a1a] last:border-r-0 py-5">
                 <div className="text-[52px] text-[var(--gold)] font-georgia leading-none">{stat.num}</div>
                 <div className="text-[10px] tracking-[3px] text-[var(--gold)] mt-2 font-arial">{stat.label}</div>
@@ -309,16 +325,56 @@ const HomePage: React.FC = () => {
             </div>
           </section>
 
-          {/* PARTNER BANNER */}
-          <section className="py-16 px-10">
-            <div className="mx-10 bg-gradient-to-br from-[#111] to-[#1a0c12] border border-[#2a1520] p-16 flex items-center justify-between">
-              <div>
-                <h2 className="text-4xl uppercase tracking-[4px] font-normal text-white font-georgia mb-1">PARTNER WITH US<em className="italic text-[var(--crimson)] block text-4xl">DISTRIBUTION PLATFORM</em></h2>
-                <p className="text-[13px] text-[#888] max-w-md mt-4 leading-7">Our advanced infrastructure ensures your content reaches the right audience across 10+ premium platforms simultaneously.</p>
-                <button className="bg-[var(--crimson-btn)] border-none text-white px-8 py-3.5 text-[10px] tracking-[3px] uppercase font-arial font-semibold cursor-pointer mt-6 hover:bg-[#b0243c] transition-colors">EXPLORE PARTNERSHIPS</button>
+          {/* CASTING CTA BANNER */}
+          <section className="py-20 px-10">
+            <div className="max-w-[1200px] mx-auto">
+              <div className="relative bg-gradient-to-br from-[#110008] via-[#1a0010] to-[#0a0a0a] border border-[#3a1525] overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent" />
+                <div className="absolute -right-24 -top-24 w-96 h-96 bg-[var(--crimson)] opacity-[0.06] rounded-full blur-3xl" />
+                <div className="relative z-10 grid grid-cols-[1fr_auto] items-center gap-12 p-16">
+                  <div>
+                    <div className="flex items-center gap-3 text-[var(--gold)] text-[9px] tracking-[4px] font-arial mb-5">
+                      <span className="w-6 h-px bg-[var(--gold)]" />APLIKUJ DO STUDIA
+                    </div>
+                    <h2 className="font-georgia text-[clamp(32px,4vw,56px)] font-normal text-white leading-[1.1] mb-4">
+                      Zostań Partnerką<br />
+                      <em className="italic text-[var(--gold)]">Studio HRL Adult</em>
+                    </h2>
+                    <p className="text-sm text-[#888] leading-7 max-w-xl mb-8">
+                      Pracuj ze studiem, które daje Ci 60% przychodów, profesjonalny sprzęt 4K, kompleksowy marketing i prawną ochronę wizerunku. Otwarte casting — aplikuj online już dziś.
+                    </p>
+                    <div className="flex flex-wrap gap-6 mb-10">
+                      {[
+                        { ico: '💰', val: '60%', label: 'Twoje przychody' },
+                        { ico: '🎥', val: stats?.experience || '4K', label: stats?.experienceLabel || 'Produkcja' },
+                        { ico: '🌍', val: stats?.models || '5+', label: stats?.modelsLabel || 'Platform' },
+                        { ico: '⚖️', val: stats?.content || '2K+', label: stats?.contentLabel || 'Legalnie' },
+                      ].map((s) => (
+                        <div key={s.val} className="text-center">
+                          <div className="text-2xl mb-1">{s.ico}</div>
+                          <div className="text-[var(--gold)] font-georgia text-2xl font-bold">{s.val}</div>
+                          <div className="text-[#666] text-[9px] tracking-[2px] uppercase font-arial">{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-4">
+                      <Link href="/casting" className="no-underline bg-[var(--crimson-btn)] text-white px-10 py-4 text-[10px] tracking-[3px] uppercase font-arial font-semibold hover:bg-[#b0243c] transition-colors inline-block">APLIKUJ NA CASTING →</Link>
+                      <Link href="/academy" className="no-underline border border-[#333] text-[#888] px-10 py-4 text-[10px] tracking-[3px] uppercase font-arial hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all inline-block">POZNAJ AKADEMIĘ</Link>
+                    </div>
+                  </div>
+                  <div className="min-w-[200px] space-y-4">
+                    {[{ n: '01', t: 'Formularz online' }, { n: '02', t: 'Weryfikacja wstępna' }, { n: '03', t: 'Rozmowa z managerem' }, { n: '04', t: 'Umowa & onboarding' }, { n: '05', t: 'Start & zarobki' }].map((step) => (
+                      <div key={step.n} className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center text-[11px] text-[#555] font-georgia flex-shrink-0">{step.n}</div>
+                        <div className="text-[11px] text-[#777] font-arial tracking-wide">{step.t}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </section>
+
 
           {/* COUNTERS */}
           <div className="bg-[#0a0a0a] py-20 px-10 grid grid-cols-4 gap-0 text-center border-t border-b border-[#1a1a1a]">

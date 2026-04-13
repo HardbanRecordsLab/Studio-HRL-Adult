@@ -1,7 +1,30 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Globe, 
+  BarChart3, 
+  Settings2, 
+  Plus, 
+  Search, 
+  Activity, 
+  ShieldCheck, 
+  Lock, 
+  ChevronRight,
+  TrendingUp,
+  CreditCard,
+  Layers,
+  Zap,
+  MoreVertical,
+  CheckCircle2,
+  XCircle,
+  Clock4,
+  ExternalLink,
+  DollarSign,
+  PieChart
+} from 'lucide-react';
 import { cn } from '@/utils/utils';
 
+// PEŁNA LISTA PLATFORM (Przywrócona)
 const ALL_PLATFORMS = [
   // LIVE CAM
   { id: 'chaturbate', name: 'Chaturbate', cat: 'live', ico: '🔴', commission: '50%', payout: 'Paxum, Wire', minPayout: '$50', schedule: 'Tygodniowo', traffic: 'Globalny', tokenRate: '$0.05/token', desc: 'Największa platforma live cam na świecie z systemem tokenów' },
@@ -39,15 +62,13 @@ const ALL_PLATFORMS = [
 
 const CATS = [
   { id: 'all', label: 'Wszystkie', count: ALL_PLATFORMS.length },
-  { id: 'live', label: '🎥 Live Cam', count: ALL_PLATFORMS.filter(p => p.cat === 'live').length },
-  { id: 'fansite', label: '👑 Fansite', count: ALL_PLATFORMS.filter(p => p.cat === 'fansite').length },
-  { id: 'tube', label: '🖥️ Tube', count: ALL_PLATFORMS.filter(p => p.cat === 'tube').length },
-  { id: 'marketing', label: '📣 Marketing', count: ALL_PLATFORMS.filter(p => p.cat === 'marketing').length },
+  { id: 'live', label: 'Live Cam', count: ALL_PLATFORMS.filter(p => p.cat === 'live').length },
+  { id: 'fansite', label: 'Fansite', count: ALL_PLATFORMS.filter(p => p.cat === 'fansite').length },
+  { id: 'tube', label: 'Tube', count: ALL_PLATFORMS.filter(p => p.cat === 'tube').length },
+  { id: 'marketing', label: 'Marketing', count: ALL_PLATFORMS.filter(p => p.cat === 'marketing').length },
 ];
 
-type PlatformStatus = 'connected' | 'disconnected' | 'pending';
-
-const initialStatuses: Record<string, PlatformStatus> = {
+const initialStatuses: Record<string, 'connected' | 'disconnected' | 'pending'> = {
   chaturbate: 'connected', onlyfans: 'connected', fansly: 'connected',
   stripchat: 'connected', bongacams: 'connected', pornhub: 'connected',
   twitter: 'connected', telegram: 'connected',
@@ -69,9 +90,9 @@ const initialPartners: Record<string, string[]> = {
 
 export const PlatformsSection: React.FC = () => {
   const [activeCat, setActiveCat] = useState('all');
-  const [statuses, setStatuses] = useState<Record<string, PlatformStatus>>(initialStatuses);
-  const [selected, setSelected] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState<string | null>(null);
+  const [statuses, setStatuses] = useState(initialStatuses);
   const [credentials, setCredentials] = useState<Record<string, { apiKey: string; username: string }>>({});
   const [editCreds, setEditCreds] = useState<string | null>(null);
   const [tempCreds, setTempCreds] = useState({ apiKey: '', username: '' });
@@ -81,7 +102,7 @@ export const PlatformsSection: React.FC = () => {
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const connected = Object.values(statuses).filter(s => s === 'connected').length;
+  const connectedCount = Object.values(statuses).filter(s => s === 'connected').length;
   const totalRevenue = Object.values(initialRevenue).reduce((a, b) => a + b, 0);
 
   const toggleStatus = (id: string) => {
@@ -96,220 +117,211 @@ export const PlatformsSection: React.FC = () => {
     setEditCreds(null);
   };
 
-  const statusColor = (s?: PlatformStatus) => {
-    if (s === 'connected') return 'text-green-500 border-green-500/30 bg-green-500/10';
-    if (s === 'pending') return 'text-gold border-gold/30 bg-gold/10';
-    return 'text-dim border-dim/20 bg-dim/5';
-  };
-  const statusLabel = (s?: PlatformStatus) => s === 'connected' ? 'Połączona' : s === 'pending' ? 'Oczekuje' : 'Rozłączona';
-
   return (
-    <div className="space-y-10">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div className="space-y-12 animate-fadeIn pb-20">
+      {/* Premium Header */}
+      <div className="flex justify-between items-end">
         <div>
-          <h2 className="font-cormorant text-4xl text-white italic">Platform Manager</h2>
-          <p className="text-dim text-xs tracking-widest uppercase mt-1">Zarządzaj wszystkimi {ALL_PLATFORMS.length} platformami z jednego miejsca</p>
+          <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter text-glow">Platform <span className="text-white">COMMAND</span></h2>
+          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase font-bold">Infrastruktura Dystrybucji // Pełne zestawienie {ALL_PLATFORMS.length} węzłów</p>
         </div>
-        <div className="flex gap-4">
-          <div className="border border-gold/10 bg-dark-2 px-6 py-3 text-center">
-            <div className="font-cormorant text-2xl text-green-500">{connected}</div>
-            <div className="text-[8px] text-dim uppercase tracking-widest">Połączone</div>
-          </div>
-          <div className="border border-gold/10 bg-dark-2 px-6 py-3 text-center">
-            <div className="font-cormorant text-2xl text-gold">€{(totalRevenue / 1000).toFixed(1)}K</div>
-            <div className="text-[8px] text-dim uppercase tracking-widest">Przychód/mies.</div>
-          </div>
-          <div className="border border-gold/10 bg-dark-2 px-6 py-3 text-center">
-            <div className="font-cormorant text-2xl text-white">{ALL_PLATFORMS.length}</div>
-            <div className="text-[8px] text-dim uppercase tracking-widest">Wszystkich</div>
-          </div>
+        <div className="flex gap-8">
+           <div className="text-right">
+              <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest block mb-1">Połączone</span>
+              <span className="text-2xl font-bold text-white tracking-tighter">{connectedCount} <span className="text-gray-600">/ {ALL_PLATFORMS.length}</span></span>
+           </div>
+           <div className="text-right">
+              <span className="text-[9px] font-black text-[#c9a84c] uppercase tracking-widest block mb-1">Est. Revenue</span>
+              <span className="text-2xl font-bold text-[#c9a84c] tracking-tighter">€{(totalRevenue / 1000).toFixed(1)}K</span>
+           </div>
         </div>
       </div>
 
-      {/* Filters + Search */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-        <div className="flex flex-wrap gap-2">
-          {CATS.map(cat => (
-            <button key={cat.id} onClick={() => setActiveCat(cat.id)}
-              className={cn('px-4 py-2 text-[9px] tracking-widest uppercase border transition-all',
-                activeCat === cat.id ? 'bg-gold text-dark border-gold font-bold' : 'bg-dark-3/40 text-dim border-gold/10 hover:border-gold/30'
-              )}>
-              {cat.label} <span className="ml-1 opacity-60">({cat.count})</span>
-            </button>
-          ))}
-        </div>
-        <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Szukaj platformy..."
-          className="bg-dark-2 border border-gold/10 px-4 py-2 text-[11px] text-white outline-none focus:border-gold/40 transition-colors w-64" />
+      {/* Dynamic Tabs & Search Container */}
+      <div className="flex flex-col md:flex-row gap-6 items-center justify-between bg-[#0d0d0d] border border-white/5 p-4 rounded-[40px] shadow-2xl">
+         <div className="flex gap-2 p-1.5 bg-white/5 rounded-full overflow-x-auto no-scrollbar">
+            {CATS.map(cat => (
+              <button 
+                key={cat.id} 
+                onClick={() => setActiveCat(cat.id)}
+                className={cn(
+                  "px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap",
+                  activeCat === cat.id ? "bg-[#c9a84c] text-black shadow-lg shadow-[#c9a84c]/20" : "text-gray-500 hover:text-white"
+                )}
+              >
+                {cat.label} <span className="ml-1 opacity-40">({cat.count})</span>
+              </button>
+            ))}
+         </div>
+         <div className="relative w-full md:w-96">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+            <input 
+              type="text" 
+              placeholder="Wyszukaj platformę w bazie..." 
+              className="w-full bg-white/5 border border-white/10 rounded-full py-3.5 pl-14 pr-6 text-[10px] text-white focus:border-[#c9a84c]/40 outline-none transition-all placeholder:text-gray-700 uppercase tracking-widest font-bold"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+         </div>
       </div>
 
       {/* Platform Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {filtered.map(p => {
-          const status = statuses[p.id];
-          const rev = initialRevenue[p.id];
-          const partners = initialPartners[p.id] || [];
-          const creds = credentials[p.id];
-          const isSelected = selected === p.id;
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+         <AnimatePresence mode="popLayout">
+            {filtered.map((p, i) => {
+              const status = statuses[p.id] || 'disconnected';
+              const rev = initialRevenue[p.id];
+              const isSelected = selected === p.id;
+              const hasCreds = !!credentials[p.id];
 
-          return (
-            <motion.div key={p.id} layout
-              className={cn('bg-dark-2 border transition-all duration-300 overflow-hidden',
-                isSelected ? 'border-gold/40' : 'border-gold/10 hover:border-gold/25'
-              )}>
-              {/* Card Header */}
-              <div className="p-5 flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <div className="text-2xl flex-shrink-0">{p.ico}</div>
-                  <div className="min-w-0">
-                    <div className="font-cormorant text-lg text-white italic truncate">{p.name}</div>
-                    <div className="text-[9px] text-dim truncate">{p.desc}</div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                  <span className={cn('text-[7px] px-2 py-0.5 border uppercase tracking-widest font-bold', statusColor(status))}>
-                    {statusLabel(status)}
-                  </span>
-                  {status === 'connected' && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              return (
+                <motion.div
+                  key={p.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ delay: i * 0.05 }}
+                  className={cn(
+                    "group bg-[#0d0d0d] border border-white/5 rounded-[40px] overflow-hidden hover:border-[#c9a84c]/30 transition-all shadow-2xl relative",
+                    isSelected && "ring-2 ring-[#c9a84c]/30 border-[#c9a84c]/50"
                   )}
-                </div>
-              </div>
-
-              {/* Stats Row */}
-              <div className="px-5 pb-4 grid grid-cols-3 gap-2 border-t border-gold/5 pt-4">
-                <div>
-                  <div className="text-[8px] text-dim uppercase tracking-widest">Prowizja</div>
-                  <div className="text-xs text-gold font-bold mt-0.5">{p.commission}</div>
-                </div>
-                <div>
-                  <div className="text-[8px] text-dim uppercase tracking-widest">Wypłata min.</div>
-                  <div className="text-xs text-white mt-0.5">{p.minPayout}</div>
-                </div>
-                <div>
-                  <div className="text-[8px] text-dim uppercase tracking-widest">Przychód</div>
-                  <div className="text-xs text-gold font-bold mt-0.5">{rev ? `€${rev.toLocaleString()}` : '—'}</div>
-                </div>
-              </div>
-
-              {/* Partners */}
-              {partners.length > 0 && (
-                <div className="px-5 pb-3">
-                  <div className="text-[8px] text-dim uppercase tracking-widest mb-1.5">Aktywne partnerki</div>
-                  <div className="flex flex-wrap gap-1">
-                    {partners.map(partner => (
-                      <span key={partner} className="text-[8px] bg-gold/10 text-gold border border-gold/20 px-2 py-0.5">{partner}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Actions */}
-              <div className="px-5 pb-4 flex gap-2 flex-wrap">
-                <button onClick={() => toggleStatus(p.id)}
-                  className={cn('text-[8px] uppercase tracking-widest px-3 py-1.5 border transition-all',
-                    status === 'connected'
-                      ? 'border-crimson/30 text-crimson hover:bg-crimson/10'
-                      : 'border-green-500/30 text-green-500 hover:bg-green-500/10'
-                  )}>
-                  {status === 'connected' ? 'Rozłącz' : 'Połącz'}
-                </button>
-                <button onClick={() => { setSelected(isSelected ? null : p.id); setEditCreds(null); }}
-                  className="text-[8px] uppercase tracking-widest px-3 py-1.5 border border-gold/20 text-gold hover:bg-gold/10 transition-all">
-                  {isSelected ? 'Zwiń' : 'Szczegóły'}
-                </button>
-                <button onClick={() => { setEditCreds(p.id); setSelected(p.id); setTempCreds(creds || { apiKey: '', username: '' }); }}
-                  className="text-[8px] uppercase tracking-widest px-3 py-1.5 border border-blue-500/20 text-blue-400 hover:bg-blue-500/10 transition-all">
-                  Credentials
-                </button>
-              </div>
-
-              {/* Expanded Details */}
-              {isSelected && (
-                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                  className="border-t border-gold/10 bg-dark-3/50 px-5 py-4 space-y-4">
-                  <div className="grid grid-cols-2 gap-3 text-[10px]">
-                    <div><span className="text-dim">Metody wypłat:</span><br /><span className="text-white">{p.payout}</span></div>
-                    <div><span className="text-dim">Harmonogram:</span><br /><span className="text-white">{p.schedule}</span></div>
-                    <div><span className="text-dim">Traffic:</span><br /><span className="text-white">{p.traffic}</span></div>
-                    <div><span className="text-dim">Stawka:</span><br /><span className="text-gold">{p.tokenRate}</span></div>
-                  </div>
-
-                  {/* Credentials Form */}
-                  {editCreds === p.id && (
-                    <div className="space-y-3 border-t border-gold/10 pt-4">
-                      <div className="text-[9px] text-gold uppercase tracking-widest font-bold">API Credentials</div>
-                      <input value={tempCreds.username} onChange={e => setTempCreds(prev => ({ ...prev, username: e.target.value }))}
-                        placeholder="Username / Login"
-                        className="w-full bg-dark-4 border border-gold/10 px-3 py-2 text-[11px] text-white outline-none focus:border-gold/30" />
-                      <input value={tempCreds.apiKey} onChange={e => setTempCreds(prev => ({ ...prev, apiKey: e.target.value }))}
-                        placeholder="API Key / Token"
-                        type="password"
-                        className="w-full bg-dark-4 border border-gold/10 px-3 py-2 text-[11px] text-white outline-none focus:border-gold/30" />
-                      <div className="flex gap-2">
-                        <button onClick={() => saveCreds(p.id)} className="btn-gold text-[8px] py-1.5 px-4">Zapisz</button>
-                        <button onClick={() => setEditCreds(null)} className="text-[8px] text-dim hover:text-white transition-colors px-3">Anuluj</button>
-                      </div>
-                      {creds && (
-                        <div className="text-[9px] text-green-500 flex items-center gap-1.5">
-                          <span>✓</span> Credentials zapisane
+                >
+                  <div className="p-8 space-y-8 relative z-10">
+                     <div className="flex justify-between items-start">
+                        <div className="flex gap-4 items-center">
+                           <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-inner border border-white/5">
+                              {p.ico}
+                           </div>
+                           <div>
+                              <h3 className="text-xl font-bold text-white font-georgia italic mb-0.5 group-hover:text-[#c9a84c] transition-colors">{p.name}</h3>
+                              <div className="flex items-center gap-2">
+                                 <div className={cn("w-1.5 h-1.5 rounded-full", status === 'connected' ? 'bg-green-500 animate-pulse' : 'bg-gray-700')} />
+                                 <span className="text-[7px] font-black text-gray-500 uppercase tracking-[2px]">
+                                    {status === 'connected' ? 'LIVE Connection' : status === 'pending' ? 'Authenticating...' : 'Node Inactive'}
+                                 </span>
+                              </div>
+                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
+                        <button onClick={() => toggleStatus(p.id)} className={cn(
+                          "px-3 py-1 rounded-full text-[7px] font-black uppercase tracking-widest border transition-all",
+                          status === 'connected' ? "border-green-500/20 text-green-500 bg-green-500/5 hover:bg-green-500/10" : "border-gray-800 text-gray-500 hover:text-white"
+                        )}>{status === 'connected' ? 'Linked' : 'Link Node'}</button>
+                     </div>
+
+                     <div className="grid grid-cols-3 gap-4 border-y border-white/5 py-6">
+                        <div className="space-y-1">
+                           <p className="text-[7px] text-gray-600 uppercase tracking-widest font-black">Commission</p>
+                           <p className="text-sm font-bold text-white font-mono">{p.commission}</p>
+                        </div>
+                        <div className="space-y-1">
+                           <p className="text-[7px] text-gray-600 uppercase tracking-widest font-black">Min Payout</p>
+                           <p className="text-sm font-bold text-white font-mono">{p.minPayout}</p>
+                        </div>
+                        <div className="space-y-1">
+                           <p className="text-[7px] text-gray-600 uppercase tracking-widest font-black">Est. Monthly</p>
+                           <p className="text-sm font-bold text-[#c9a84c] font-mono">{rev ? `€${rev.toLocaleString()}` : '—'}</p>
+                        </div>
+                     </div>
+
+                     <div className="flex gap-2">
+                        <button 
+                          onClick={() => setSelected(isSelected ? null : p.id)}
+                          className="flex-1 py-3 bg-white/5 text-[9px] font-black text-white/50 uppercase tracking-widest rounded-2xl hover:bg-white/10 hover:text-white transition-all border border-white/5"
+                        >
+                          {isSelected ? 'Zwiń Detale' : 'Specyfikacja'}
+                        </button>
+                        <button 
+                          onClick={() => { setEditCreds(p.id); setSelected(p.id); setTempCreds(credentials[p.id] || { apiKey: '', username: '' }); }}
+                          className={cn(
+                            "px-6 py-3 text-[9px] font-black uppercase tracking-widest rounded-2xl transition-all border",
+                            hasCreds ? "bg-blue-500/10 text-blue-400 border-blue-500/20" : "bg-white/5 text-gray-500 border-white/5 hover:text-[#c9a84c]"
+                          )}
+                        >
+                           <Lock className="w-4 h-4" />
+                        </button>
+                     </div>
+
+                     {isSelected && (
+                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="pt-6 space-y-6 border-t border-white/5 shadow-inner bg-black/20 -mx-8 -mb-8 p-8">
+                          <div className="grid grid-cols-2 gap-6 text-[9px] font-bold uppercase tracking-widest text-gray-400">
+                             <div className="space-y-1.5"><p className="text-gray-600">Payout System</p><p className="text-white bg-white/5 px-4 py-2 rounded-xl border border-white/5">{p.payout}</p></div>
+                             <div className="space-y-1.5"><p className="text-gray-600">Sync Schedule</p><p className="text-white bg-white/5 px-4 py-2 rounded-xl border border-white/5">{p.schedule}</p></div>
+                             <div className="space-y-1.5"><p className="text-gray-600">Traffic Node</p><p className="text-white bg-white/5 px-4 py-2 rounded-xl border border-white/5">{p.traffic}</p></div>
+                             <div className="space-y-1.5"><p className="text-gray-600">Token Rate</p><p className="text-[#c9a84c] bg-[#c9a84c]/5 px-4 py-2 rounded-xl border border-[#c9a84c]/10">{p.tokenRate}</p></div>
+                          </div>
+
+                          {editCreds === p.id && (
+                             <div className="space-y-4 pt-4 border-t border-white/5 animate-fadeIn">
+                                <p className="text-[10px] font-black text-[#c9a84c] uppercase tracking-widest flex items-center gap-2"><Lock className="w-3 h-3" /> Secure Access Credentials</p>
+                                <div className="space-y-3">
+                                   <input value={tempCreds.username} onChange={e => setTempCreds(prev => ({ ...prev, username: e.target.value }))} placeholder="Platform Username" className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-[10px] text-white focus:border-[#c9a84c]/40 outline-none font-mono" />
+                                   <input value={tempCreds.apiKey} onChange={e => setTempCreds(prev => ({ ...prev, apiKey: e.target.value }))} placeholder="API / Private Key" type="password" className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-[10px] text-[#c9a84c] focus:border-[#c9a84c]/40 outline-none font-mono" />
+                                </div>
+                                <div className="flex gap-2">
+                                   <button onClick={() => saveCreds(p.id)} className="flex-1 py-3 bg-[#c9a84c] text-black text-[9px] font-black uppercase tracking-widest rounded-xl hover:scale-[1.02] transition-all shadow-lg shadow-[#c9a84c]/10 text-center">Update Secret</button>
+                                   <button onClick={() => setEditCreds(null)} className="flex-1 py-3 bg-white/5 text-white/50 text-[9px] font-black uppercase tracking-widest rounded-xl hover:text-white">Cancel</button>
+                                </div>
+                             </div>
+                          )}
+                       </motion.div>
+                     )}
+                  </div>
                 </motion.div>
-              )}
-            </motion.div>
-          );
-        })}
+              );
+            })}
+         </AnimatePresence>
       </div>
 
-      {/* Revenue Overview Table */}
-      <div className="bg-dark-2 border border-gold/10 overflow-hidden">
-        <div className="p-6 border-b border-gold/5 flex justify-between items-center">
-          <h3 className="font-cormorant text-2xl text-gold italic">Przychody według platformy</h3>
-          <span className="text-[9px] text-dim uppercase tracking-widest">Bieżący miesiąc</span>
+      {/* Revenue Performance Table (Przywrócona i Ulepszona) */}
+      <div className="bg-[#0d0d0d] border border-white/5 rounded-[40px] overflow-hidden shadow-2xl">
+        <div className="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+           <div>
+              <h3 className="text-2xl font-bold font-georgia italic text-white flex items-center gap-3"><DollarSign className="w-6 h-6 text-[#c9a84c]" /> Analiza Rentowności Platform</h3>
+              <p className="text-[9px] text-gray-500 uppercase tracking-[2px] mt-1 font-bold">Zestawienie udziału rynkowego w portfelu HRL Studio</p>
+           </div>
+           <PieChart className="w-8 h-8 text-gray-700" />
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-dark-3/50">
-                <th className="px-6 py-4 text-[8px] text-gold tracking-widest uppercase">Platforma</th>
-                <th className="px-6 py-4 text-[8px] text-gold tracking-widest uppercase">Kategoria</th>
-                <th className="px-6 py-4 text-[8px] text-gold tracking-widest uppercase">Status</th>
-                <th className="px-6 py-4 text-[8px] text-gold tracking-widest uppercase">Partnerki</th>
-                <th className="px-6 py-4 text-[8px] text-gold tracking-widest uppercase">Przychód</th>
-                <th className="px-6 py-4 text-[8px] text-gold tracking-widest uppercase">Udział %</th>
+              <tr className="bg-white/[0.03]">
+                <th className="px-8 py-5 text-[8px] text-gray-500 font-black tracking-widest uppercase">Node Engine</th>
+                <th className="px-8 py-5 text-[8px] text-gray-500 font-black tracking-widest uppercase">Category</th>
+                <th className="px-8 py-5 text-[8px] text-gray-500 font-black tracking-widest uppercase">Partners</th>
+                <th className="px-8 py-5 text-[8px] text-gray-500 font-black tracking-widest uppercase text-right">Revenue Share</th>
+                <th className="px-8 py-5 text-[8px] text-gray-500 font-black tracking-widest uppercase text-right">Portfolio %</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gold/5">
+            <tbody className="divide-y divide-white/5">
               {ALL_PLATFORMS.filter(p => initialRevenue[p.id]).sort((a, b) => (initialRevenue[b.id] || 0) - (initialRevenue[a.id] || 0)).map(p => {
                 const rev = initialRevenue[p.id] || 0;
                 const pct = Math.round((rev / totalRevenue) * 100);
-                const status = statuses[p.id];
+                const partnersCount = (initialPartners[p.id] || []).length;
                 return (
-                  <tr key={p.id} className="hover:bg-gold/5 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <span>{p.ico}</span>
-                        <span className="text-xs text-white font-medium">{p.name}</span>
+                  <tr key={p.id} className="hover:bg-white/5 transition-colors group">
+                    <td className="px-8 py-5">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">{p.ico}</span>
+                        <span className="text-xs text-white font-bold group-hover:text-[#c9a84c] transition-colors">{p.name}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-[9px] text-dim uppercase tracking-widest">{p.cat}</td>
-                    <td className="px-6 py-4">
-                      <span className={cn('text-[7px] px-2 py-0.5 border uppercase tracking-widest font-bold', statusColor(status))}>
-                        {statusLabel(status)}
-                      </span>
+                    <td className="px-8 py-5 tracking-widest font-bold">
+                       <span className="text-[9px] text-gray-500 uppercase border border-white/10 px-3 py-1 rounded-full group-hover:border-[#c9a84c]/20 transition-all">{p.cat}</span>
                     </td>
-                    <td className="px-6 py-4 text-[10px] text-dim">{(initialPartners[p.id] || []).length || '—'}</td>
-                    <td className="px-6 py-4 font-cormorant text-lg text-gold">€{rev.toLocaleString()}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 h-1 bg-dark-4 max-w-[80px]">
-                          <div className="h-full bg-gold" style={{ width: `${pct}%` }} />
+                    <td className="px-8 py-5">
+                       <div className="flex items-center gap-2">
+                          <span className="text-xs text-white font-black">{partnersCount || '—'}</span>
+                          <span className="text-[8px] text-gray-600 uppercase font-bold tracking-tight">Active Accounts</span>
+                       </div>
+                    </td>
+                    <td className="px-8 py-5 text-right font-mono text-xs text-[#c9a84c] font-bold">€{rev.toLocaleString()}</td>
+                    <td className="px-8 py-5">
+                      <div className="flex items-center justify-end gap-4">
+                        <div className="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden hidden md:block">
+                           <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} className="h-full bg-gradient-to-r from-[#c9a84c] to-[#e6c15c]" />
                         </div>
-                        <span className="text-[9px] text-dim">{pct}%</span>
+                        <span className="text-[10px] text-white font-black w-8 text-right font-mono">{pct}%</span>
                       </div>
                     </td>
                   </tr>
@@ -319,6 +331,14 @@ export const PlatformsSection: React.FC = () => {
           </table>
         </div>
       </div>
+
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+        .text-glow { text-shadow: 0 0 20px rgba(201,168,76,0.3); }
+      `}</style>
     </div>
   );
 };

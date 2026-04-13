@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, Download, Eye, Edit, Trash2, CheckCircle, XCircle, Clock, Mail, FileText, Calendar, User, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Search, 
+  Filter, 
+  Download, 
+  Eye, 
+  CheckCircle, 
+  XCircle, 
+  Clock, 
+  Mail, 
+  FileText, 
+  Calendar, 
+  User, 
+  Star,
+  Activity,
+  Shield,
+  Zap,
+  MoreVertical,
+  X,
+  Phone,
+  Info
+} from 'lucide-react';
 
 interface CastingApplication {
   id: string;
@@ -43,23 +63,14 @@ interface CastingManagerProps {
 
 const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
   const [applications, setApplications] = useState<CastingApplication[]>([]);
-  const [filteredApplications, setFilteredApplications] = useState<CastingApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [showModal, setShowModal] = useState(false);
-  const [selectedApplication, setSelectedApplication] = useState<CastingApplication | null>(null);
-  const [sendingEmail, setSendingEmail] = useState(false);
-
-  useEffect(() => {
-    fetchApplications();
-  }, []);
-
-  useEffect(() => {
-    filterApplications();
-  }, [applications, searchTerm, statusFilter]);
+  const [selectedApp, setSelectedApp] = useState<CastingApplication | null>(null);
 
   const fetchApplications = async () => {
+    setLoading(true);
     try {
       const response = await fetch('/api/admin/casting', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -74,27 +85,13 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
     setLoading(false);
   };
 
-  const filterApplications = () => {
-    let filtered = applications;
+  useEffect(() => {
+    fetchApplications();
+  }, [token]);
 
-    if (searchTerm) {
-      filtered = filtered.filter(app =>
-        app.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(app => app.status === statusFilter);
-    }
-
-    setFilteredApplications(filtered);
-  };
-
-  const handleStatusChange = async (applicationId: string, newStatus: string) => {
+  const handleStatusChange = async (id: string, newStatus: string) => {
     try {
-      const response = await fetch(`/api/admin/casting/${applicationId}`, {
+      const response = await fetch(`/api/admin/casting/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -102,527 +99,299 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
         },
         body: JSON.stringify({ status: newStatus })
       });
-
-      if (response.ok) {
-        await fetchApplications();
-        
-        // Send automated email
-        await sendDecisionEmail(applicationId, newStatus);
-      }
-    } catch (error) {
-      console.error('Error updating status:', error);
-    }
+      if (response.ok) fetchApplications();
+    } catch (e) { console.error(e); }
   };
 
-  const sendDecisionEmail = async (applicationId: string, decision: string) => {
-    setSendingEmail(true);
-    try {
-      const response = await fetch('/api/admin/casting/send-email', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          applicationId,
-          decision,
-          template: decision === 'approved' ? 'approval' : decision === 'rejected' ? 'rejection' : 'review'
-        })
-      });
+  const filtered = applications.filter(a => {
+    const matchesSearch = `${a.firstName} ${a.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) || a.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || a.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
-      if (response.ok) {
-        console.log('Email sent successfully');
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-    setSendingEmail(false);
-  };
-
-  const exportToCSV = () => {
-    const headers = ['Name', 'Email', 'Phone', 'Status', 'Experience', 'Applied Date'];
-    const csvData = filteredApplications.map(app => [
-      `${app.firstName} ${app.lastName}`,
-      app.email,
-      app.phone,
-      app.status,
-      app.experience,
-      new Date(app.createdAt).toLocaleDateString()
-    ]);
-
-    const csv = [headers, ...csvData].map(row => row.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'casting-applications.csv';
-    a.click();
-  };
-
-  const exportToPDF = () => {
-    // This would typically use a library like jsPDF
-    alert('PDF export functionality would be implemented with a PDF library');
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'approved': return 'text-green-400 bg-green-400/10';
-      case 'rejected': return 'text-red-400 bg-red-400/10';
-      case 'pending': return 'text-yellow-400 bg-yellow-400/10';
-      default: return 'text-gray-400 bg-gray-400/10';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'approved': return <CheckCircle className="w-4 h-4" />;
-      case 'rejected': return <XCircle className="w-4 h-4" />;
-      case 'pending': return <Clock className="w-4 h-4" />;
-      default: return null;
-    }
-  };
-
-  const calculateAge = (birthDate: string) => {
-    const birth = new Date(birthDate);
+  const calculateAge = (date: string) => {
+    const birth = new Date(date);
     const today = new Date();
     let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
+    if (today.getMonth() < birth.getMonth() || (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())) age--;
     return age;
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-10 animate-fadeIn">
+      {/* Header Area */}
+      <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-2xl font-bold text-white">Casting Applications</h2>
-          <p className="text-gray-400">Review and manage new model applications</p>
+          <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter">HRL <span className="text-white">Casting</span> HUB</h2>
+          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase">Zarządzanie nowymi talentami i weryfikacja zgłoszeń</p>
         </div>
-        <div className="flex gap-3">
-          <button
-            onClick={exportToPDF}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white transition-colors"
-          >
-            <FileText className="w-4 h-4" />
-            Export PDF
-          </button>
-          <button
-            onClick={exportToCSV}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            Export CSV
-          </button>
+        <div className="flex gap-4">
+           <button className="flex items-center gap-3 px-6 py-2.5 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded transition-all hover:bg-white/10">
+              <Download className="w-4 h-4" /> Eksportuj PDF
+           </button>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Total Applications', value: applications.length, icon: User, color: 'from-blue-500 to-blue-600' },
-          { label: 'Pending Review', value: applications.filter(a => a.status === 'pending').length, icon: Clock, color: 'from-yellow-500 to-yellow-600' },
-          { label: 'Approved', value: applications.filter(a => a.status === 'approved').length, icon: CheckCircle, color: 'from-green-500 to-green-600' },
-          { label: 'Rejected', value: applications.filter(a => a.status === 'rejected').length, icon: XCircle, color: 'from-red-500 to-red-600' }
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className={`bg-gradient-to-br ${stat.color} p-4 rounded-xl`}
-          >
-            <div className="flex items-center justify-between">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-4 gap-6">
+         {[
+           { label: 'Wszystkie Zgłoszenia', val: applications.length, icon: User, color: '#c9a84c' },
+           { label: 'Oczekujące', val: applications.filter(a => a.status === 'pending').length, icon: Clock, color: '#f59e0b' },
+           { label: 'Zakwalifikowane', val: applications.filter(a => a.status === 'approved').length, icon: CheckCircle, color: '#22c55e' },
+           { label: 'Odrzucone', val: applications.filter(a => a.status === 'rejected').length, icon: XCircle, color: '#ef4444' }
+         ].map((s, i) => (
+           <div key={i} className="bg-[#0d0d0d] border border-white/5 p-6 rounded-2xl flex items-center justify-between group hover:border-[#c9a84c]/20 transition-all cursor-default">
               <div>
-                <p className="text-white/80 text-sm">{stat.label}</p>
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
+                <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">{s.label}</p>
+                <p className="text-2xl font-bold font-georgia">{s.val}</p>
               </div>
-              <stat.icon className="w-8 h-8 text-white/50" />
-            </div>
-          </motion.div>
-        ))}
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
+                <s.icon className="w-6 h-6 opacity-30 group-hover:opacity-100 transition-opacity" style={{ color: s.color }} />
+              </div>
+           </div>
+         ))}
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Search applications..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-          />
-        </div>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-        >
-          <option value="all">All Status</option>
-          <option value="pending">Pending Review</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
+      {/* Filters Bar */}
+      <div className="flex items-center justify-between border-b border-white/5 pb-4">
+         <div className="flex gap-1 bg-black/40 p-1 rounded-lg border border-white/5">
+            {['all', 'pending', 'approved', 'rejected'].map(f => (
+              <button
+                key={f}
+                onClick={() => setStatusFilter(f)}
+                className={`px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-[#c9a84c] text-black' : 'text-gray-500 hover:text-white'}`}
+              >
+                {f === 'all' ? 'Wszystko' : f === 'pending' ? 'Oczekujące' : f === 'approved' ? 'Zatwierdzone' : 'Odrzucone'}
+              </button>
+            ))}
+         </div>
+
+         <div className="relative w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
+            <input 
+              type="text" 
+              placeholder="Szukaj po nazwisku / email..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-[#111] border border-white/10 rounded-full py-2.5 pl-10 pr-4 text-[10px] text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 uppercase tracking-[2px]" 
+            />
+         </div>
       </div>
 
       {/* Applications Table */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-700">
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Applicant</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Contact</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Details</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Experience</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Applied</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-700">
-              {filteredApplications.map((application) => (
-                <motion.tr
-                  key={application.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="hover:bg-gray-700/50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white font-bold">
-                        {application.firstName.charAt(0)}{application.lastName.charAt(0)}
+      <div className="bg-[#0d0d0d] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-white/5 bg-white/5">
+              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Aplikant</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Kontakt</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Wiek / Detale</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Doświadczenie</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Status</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Akcje</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+             {loading ? (
+                <tr>
+                   <td colSpan={6} className="py-20 text-center text-gray-600 uppercase tracking-[10px] animate-pulse">Analiza bazy talentów...</td>
+                </tr>
+             ) : filtered.length === 0 ? (
+                <tr>
+                   <td colSpan={6} className="py-20 text-center text-gray-600 uppercase tracking-[10px]">Brak nowych zgłoszeń</td>
+                </tr>
+             ) : filtered.map((a) => (
+                <tr key={a.id} className="group hover:bg-white/[0.02] transition-colors">
+                   <td className="px-8 py-6">
+                      <div className="flex items-center gap-4">
+                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-crimson/20 to-dark-4 border border-white/10 flex items-center justify-center text-gold font-bold">
+                            {a.firstName.charAt(0)}{a.lastName.charAt(0)}
+                         </div>
+                         <div>
+                            <p className="text-sm font-bold font-georgia text-white group-hover:text-[#c9a84c] transition-colors">{a.firstName} {a.lastName}</p>
+                            <p className="text-[10px] text-gray-500 uppercase tracking-widest">{new Date(a.createdAt).toLocaleDateString()}</p>
+                         </div>
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-white">
-                          {application.firstName} {application.lastName}
-                        </div>
-                        <div className="text-sm text-gray-400">
-                          Age: {calculateAge(application.birthDate)}
-                        </div>
+                   </td>
+                   <td className="px-8 py-6">
+                      <p className="text-[10px] text-white font-bold">{a.email}</p>
+                      <p className="text-[9px] text-gray-500">{a.phone}</p>
+                   </td>
+                   <td className="px-8 py-6">
+                      <p className="text-[10px] text-white">{calculateAge(a.birthDate)} lat</p>
+                      <p className="text-[9px] text-gray-500 font-black uppercase tracking-widest">{a.height}cm / {a.weight}kg</p>
+                   </td>
+                   <td className="px-8 py-6">
+                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${a.experience === 'yes' ? 'bg-green-500/10 text-green-500' : 'bg-white/5 text-gray-500'}`}>
+                         {a.experience === 'yes' ? 'Doświadczona' : 'Nowa'}
+                      </span>
+                   </td>
+                   <td className="px-8 py-6">
+                      <span className={`inline-flex items-center gap-2 px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest ${
+                        a.status === 'approved' ? 'bg-green-500/10 text-green-500' : 
+                        a.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-red-500/10 text-red-500'
+                      }`}>
+                         {a.status}
+                      </span>
+                   </td>
+                   <td className="px-8 py-6">
+                      <div className="flex items-center gap-4">
+                         <button onClick={() => { setSelectedApp(a); setShowModal(true); }} className="p-2 text-gray-600 hover:text-white transition-all"><Eye className="w-4 h-4" /></button>
+                         {a.status === 'pending' && (
+                           <>
+                             <button onClick={() => handleStatusChange(a.id, 'approved')} className="p-2 text-gray-600 hover:text-green-500 transition-all"><CheckCircle className="w-4 h-4" /></button>
+                             <button onClick={() => handleStatusChange(a.id, 'rejected')} className="p-2 text-gray-600 hover:text-red-500 transition-all"><XCircle className="w-4 h-4" /></button>
+                           </>
+                         )}
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-white">{application.email}</div>
-                    <div className="text-sm text-gray-400">{application.phone}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-300">
-                      {application.height && <div>Height: {application.height}cm</div>}
-                      {application.weight && <div>Weight: {application.weight}kg</div>}
-                      {application.hairColor && <div>Hair: {application.hairColor}</div>}
-                      {application.eyeColor && <div>Eyes: {application.eyeColor}</div>}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                      application.experience === 'yes' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
-                    }`}>
-                      <Star className="w-3 h-3" />
-                      {application.experience === 'yes' ? 'Experienced' : 'New'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-300">
-                      {new Date(application.createdAt).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(application.status)}`}>
-                      {getStatusIcon(application.status)}
-                      {application.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedApplication(application);
-                          setShowModal(true);
-                        }}
-                        className="text-blue-400 hover:text-blue-300"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      {application.status === 'pending' && (
-                        <>
-                          <button
-                            onClick={() => handleStatusChange(application.id, 'approved')}
-                            className="text-green-400 hover:text-green-300"
-                            title="Approve"
-                          >
-                            <CheckCircle className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleStatusChange(application.id, 'rejected')}
-                            className="text-red-400 hover:text-red-300"
-                            title="Reject"
-                          >
-                            <XCircle className="w-4 h-4" />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                   </td>
+                </tr>
+             ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Application Detail Modal */}
-      {showModal && selectedApplication && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-white">Application Details</h3>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-white"
-              >
-                <XCircle className="w-6 h-6" />
-              </button>
+      <AnimatePresence>
+         {showModal && selectedApp && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-8">
+               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowModal(false)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                 animate={{ opacity: 1, scale: 1, y: 0 }} 
+                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                 className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+               >
+                  <div className="p-8 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                     <div>
+                        <h3 className="text-2xl font-bold font-georgia text-[#c9a84c] italic">Karta Aplikanta <span className="text-white">#{selectedApp.id.slice(-6)}</span></h3>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Status zgłoszenia: {selectedApp.status}</p>
+                     </div>
+                     <button onClick={() => setShowModal(false)} className="p-2 text-gray-500 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-6 h-6" /></button>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto p-10">
+                     <div className="grid grid-cols-3 gap-12">
+                        {/* Section 1: Basic & Physical */}
+                        <div className="space-y-8">
+                           <div>
+                              <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] mb-6 border-b border-[#c9a84c]/20 pb-2">Dane Osobowe</h4>
+                              <div className="space-y-4">
+                                 <div>
+                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest">Pełne Imię i Nazwisko</p>
+                                    <p className="text-lg font-bold text-white">{selectedApp.firstName} {selectedApp.lastName}</p>
+                                 </div>
+                                 <div className="flex gap-8">
+                                    <div>
+                                       <p className="text-[8px] text-gray-500 uppercase tracking-widest">Wiek</p>
+                                       <p className="text-sm font-bold text-white">{calculateAge(selectedApp.birthDate)} lat</p>
+                                    </div>
+                                    <div>
+                                       <p className="text-[8px] text-gray-500 uppercase tracking-widest">Wzrost / Waga</p>
+                                       <p className="text-sm font-bold text-white">{selectedApp.height}cm / {selectedApp.weight}kg</p>
+                                    </div>
+                                 </div>
+                                 <div>
+                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest">Cechy</p>
+                                    <p className="text-[10px] font-bold text-gray-300 uppercase tracking-wider">{selectedApp.hairColor} / {selectedApp.eyeColor} / {selectedApp.breastSize}</p>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div>
+                              <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] mb-6 border-b border-[#c9a84c]/20 pb-2">Kontakt</h4>
+                              <div className="space-y-3">
+                                 <div className="flex items-center gap-3 text-white">
+                                    <Mail className="w-4 h-4 text-[#c9a84c]" />
+                                    <span className="text-[10px] font-bold">{selectedApp.email}</span>
+                                 </div>
+                                 <div className="flex items-center gap-3 text-white">
+                                    <Phone className="w-4 h-4 text-[#c9a84c]" />
+                                    <span className="text-[10px] font-bold">{selectedApp.phone}</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        {/* Section 2: Experience & Motivation */}
+                        <div className="col-span-2 space-y-8">
+                           <div className="grid grid-cols-2 gap-8">
+                              <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+                                 <h4 className="text-[9px] font-black text-white uppercase tracking-widest mb-4">Doświadczenie</h4>
+                                 <p className="text-xs text-gray-400 leading-relaxed italic">{selectedApp.experienceDesc || 'Brak wcześniejszego doświadczenia stacjonarnego.'}</p>
+                              </div>
+                              <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+                                 <h4 className="text-[9px] font-black text-white uppercase tracking-widest mb-4">Motywacja</h4>
+                                 <p className="text-xs text-gray-400 leading-relaxed italic">"{selectedApp.motivation}"</p>
+                              </div>
+                           </div>
+
+                           <div>
+                              <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] mb-6 border-b border-[#c9a84c]/20 pb-2">Preferencje & Zakres</h4>
+                              <div className="grid grid-cols-2 gap-x-12 gap-y-6">
+                                 <div>
+                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Typy Contentu</p>
+                                    <p className="text-[10px] text-white font-bold">{selectedApp.contentTypes}</p>
+                                 </div>
+                                 <div>
+                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Limity (Boundaries)</p>
+                                    <p className="text-[10px] text-white font-bold">{selectedApp.limits || 'Brak zadeklarowanych limitów'}</p>
+                                 </div>
+                                 <div>
+                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Dostępność</p>
+                                    <p className="text-[10px] text-white font-bold">{selectedApp.sessionsPerWeek} sesji / {selectedApp.workingTimes}</p>
+                                 </div>
+                                 <div>
+                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Platformy</p>
+                                    <p className="text-[10px] text-white font-bold">{selectedApp.platforms}</p>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div>
+                              <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] mb-6 border-b border-[#c9a84c]/20 pb-2">Media & Portret</h4>
+                              <div className="flex gap-4">
+                                 {[selectedApp.photo1, selectedApp.photo2, selectedApp.photo3].map((img, i) => img && (
+                                   <div key={i} className="w-32 h-44 bg-black border border-white/10 rounded-xl overflow-hidden group relative">
+                                       <img src={img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="" />
+                                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                                          <Eye className="w-6 h-6 text-white" />
+                                       </div>
+                                   </div>
+                                 ))}
+                                 {selectedApp.video && (
+                                    <div className="w-32 h-44 bg-black border border-white/10 rounded-xl flex items-center justify-center cursor-pointer group hover:border-[#c9a84c]/50">
+                                       <Zap className="w-8 h-8 text-gold animate-pulse" />
+                                    </div>
+                                 )}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="p-8 bg-white/5 border-t border-white/5 flex gap-4">
+                     {selectedApp.status === 'pending' ? (
+                        <>
+                           <button onClick={() => { handleStatusChange(selectedApp.id, 'approved'); setShowModal(false); }} className="flex-1 py-4 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-[3px] rounded-xl hover:scale-[1.02] transition-all shadow-xl shadow-[#c9a84c]/20">Zatwierdź & Wyślij Kontrakt</button>
+                           <button onClick={() => { handleStatusChange(selectedApp.id, 'rejected'); setShowModal(false); }} className="flex-1 py-4 bg-white/5 text-red-500 text-[10px] font-black uppercase tracking-[3px] border border-red-500/30 rounded-xl hover:bg-red-500/10 transition-all">Odrzuć Aplikację</button>
+                        </>
+                     ) : (
+                        <button onClick={() => setShowModal(false)} className="w-full py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-[3px] rounded-xl">Zamknij Kartę</button>
+                     )}
+                  </div>
+               </motion.div>
             </div>
+         )}
+      </AnimatePresence>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Personal Information */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-semibold text-white">Personal Information</h4>
-                <div className="bg-gray-800 rounded-lg p-4 space-y-3">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-400">First Name</label>
-                      <p className="text-white">{selectedApplication.firstName}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400">Last Name</label>
-                      <p className="text-white">{selectedApplication.lastName}</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-400">Email</label>
-                      <p className="text-white">{selectedApplication.email}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400">Phone</label>
-                      <p className="text-white">{selectedApplication.phone}</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-400">Birth Date</label>
-                      <p className="text-white">{new Date(selectedApplication.birthDate).toLocaleDateString()}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400">Age</label>
-                      <p className="text-white">{calculateAge(selectedApplication.birthDate)} years</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Physical Details */}
-                <h4 className="text-lg font-semibold text-white">Physical Details</h4>
-                <div className="bg-gray-800 rounded-lg p-4 space-y-3">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-400">Height</label>
-                      <p className="text-white">{selectedApplication.height || 'Not specified'} cm</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400">Weight</label>
-                      <p className="text-white">{selectedApplication.weight || 'Not specified'} kg</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-400">Hair Color</label>
-                      <p className="text-white">{selectedApplication.hairColor || 'Not specified'}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400">Eye Color</label>
-                      <p className="text-white">{selectedApplication.eyeColor || 'Not specified'}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400">Breast Size</label>
-                      <p className="text-white">{selectedApplication.breastSize || 'Not specified'}</p>
-                    </div>
-                  </div>
-                  {selectedApplication.bodyModifications && (
-                    <div>
-                      <label className="text-xs text-gray-400">Body Modifications</label>
-                      <p className="text-white">{selectedApplication.bodyModifications}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Professional Information */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-semibold text-white">Professional Information</h4>
-                <div className="bg-gray-800 rounded-lg p-4 space-y-3">
-                  <div>
-                    <label className="text-xs text-gray-400">Experience</label>
-                    <p className="text-white">{selectedApplication.experience === 'yes' ? 'Experienced' : 'New to industry'}</p>
-                  </div>
-                  {selectedApplication.experienceDesc && (
-                    <div>
-                      <label className="text-xs text-gray-400">Experience Description</label>
-                      <p className="text-white">{selectedApplication.experienceDesc}</p>
-                    </div>
-                  )}
-                  {selectedApplication.skills && (
-                    <div>
-                      <label className="text-xs text-gray-400">Skills</label>
-                      <p className="text-white">{selectedApplication.skills}</p>
-                    </div>
-                  )}
-                  {selectedApplication.platforms && (
-                    <div>
-                      <label className="text-xs text-gray-400">Platforms</label>
-                      <p className="text-white">{selectedApplication.platforms}</p>
-                    </div>
-                  )}
-                  {selectedApplication.contentTypes && (
-                    <div>
-                      <label className="text-xs text-gray-400">Content Types</label>
-                      <p className="text-white">{selectedApplication.contentTypes}</p>
-                    </div>
-                  )}
-                  {selectedApplication.limits && (
-                    <div>
-                      <label className="text-xs text-gray-400">Limits/Boundaries</label>
-                      <p className="text-white">{selectedApplication.limits}</p>
-                    </div>
-                  )}
-                  {selectedApplication.sessionsPerWeek && (
-                    <div>
-                      <label className="text-xs text-gray-400">Sessions Per Week</label>
-                      <p className="text-white">{selectedApplication.sessionsPerWeek}</p>
-                    </div>
-                  )}
-                  {selectedApplication.workingTimes && (
-                    <div>
-                      <label className="text-xs text-gray-400">Working Times</label>
-                      <p className="text-white">{selectedApplication.workingTimes}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Motivation */}
-                <h4 className="text-lg font-semibold text-white">Motivation</h4>
-                <div className="bg-gray-800 rounded-lg p-4">
-                  <p className="text-white">{selectedApplication.motivation}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Media Files */}
-            <div className="mt-6">
-              <h4 className="text-lg font-semibold text-white mb-4">Media Files</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {selectedApplication.photo1 && (
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <img src={selectedApplication.photo1} alt="Photo 1" className="w-full h-32 object-cover rounded" />
-                    <p className="text-xs text-gray-400 mt-2 text-center">Photo 1</p>
-                  </div>
-                )}
-                {selectedApplication.photo2 && (
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <img src={selectedApplication.photo2} alt="Photo 2" className="w-full h-32 object-cover rounded" />
-                    <p className="text-xs text-gray-400 mt-2 text-center">Photo 2</p>
-                  </div>
-                )}
-                {selectedApplication.photo3 && (
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <img src={selectedApplication.photo3} alt="Photo 3" className="w-full h-32 object-cover rounded" />
-                    <p className="text-xs text-gray-400 mt-2 text-center">Photo 3</p>
-                  </div>
-                )}
-                {selectedApplication.video && (
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <div className="w-full h-32 bg-gray-700 rounded flex items-center justify-center">
-                      <FileText className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-2 text-center">Video</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Consents */}
-            <div className="mt-6">
-              <h4 className="text-lg font-semibold text-white mb-4">Consents</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className={`p-3 rounded-lg text-center ${selectedApplication.consentAge ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                  <CheckCircle className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-sm">Age Verification</p>
-                </div>
-                <div className={`p-3 rounded-lg text-center ${selectedApplication.consentTerms ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                  <CheckCircle className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-sm">Terms & Conditions</p>
-                </div>
-                <div className={`p-3 rounded-lg text-center ${selectedApplication.consentData ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                  <CheckCircle className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-sm">Data Processing</p>
-                </div>
-                <div className={`p-3 rounded-lg text-center ${selectedApplication.consentMarketing ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                  <CheckCircle className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-sm">Marketing</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions */}
-            {selectedApplication.status === 'pending' && (
-              <div className="flex gap-3 mt-6 pt-6 border-t border-gray-700">
-                <button
-                  onClick={() => {
-                    handleStatusChange(selectedApplication.id, 'approved');
-                    setShowModal(false);
-                  }}
-                  disabled={sendingEmail}
-                  className="flex-1 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  {sendingEmail ? 'Sending Email...' : 'Approve & Send Email'}
-                </button>
-                <button
-                  onClick={() => {
-                    handleStatusChange(selectedApplication.id, 'rejected');
-                    setShowModal(false);
-                  }}
-                  disabled={sendingEmail}
-                  className="flex-1 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
-                >
-                  <XCircle className="w-5 h-5" />
-                  {sendingEmail ? 'Sending Email...' : 'Reject & Send Email'}
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all"
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
-      )}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+      `}</style>
     </div>
   );
 };

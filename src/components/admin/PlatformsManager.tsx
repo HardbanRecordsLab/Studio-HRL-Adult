@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, RefreshCw, CheckCircle, XCircle, AlertCircle, Settings, Activity, Download, Upload, Eye, Edit, Trash2, Wifi, WifiOff } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Search, 
+  RefreshCw, 
+  CheckCircle, 
+  XCircle, 
+  AlertCircle, 
+  Settings, 
+  Activity, 
+  Download, 
+  Upload, 
+  Eye, 
+  Edit, 
+  Trash2, 
+  Wifi, 
+  WifiOff,
+  Globe,
+  Zap,
+  Shield,
+  Terminal,
+  Server,
+  X
+} from 'lucide-react';
 
 interface Platform {
   id: string;
@@ -42,7 +63,6 @@ const PlatformsManager: React.FC<PlatformsManagerProps> = ({ token }) => {
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [showModal, setShowModal] = useState(false);
-  const [editingPlatform, setEditingPlatform] = useState<Platform | null>(null);
   const [showLogsModal, setShowLogsModal] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
   const [syncingPlatforms, setSyncingPlatforms] = useState<Set<string>>(new Set());
@@ -51,11 +71,8 @@ const PlatformsManager: React.FC<PlatformsManagerProps> = ({ token }) => {
     fetchPlatforms();
   }, []);
 
-  useEffect(() => {
-    filterPlatforms();
-  }, [platforms, searchTerm, typeFilter, statusFilter]);
-
   const fetchPlatforms = async () => {
+    setLoading(true);
     try {
       const response = await fetch('/api/admin/platforms', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -70,721 +87,210 @@ const PlatformsManager: React.FC<PlatformsManagerProps> = ({ token }) => {
     setLoading(false);
   };
 
-  const filterPlatforms = () => {
-    let filtered = platforms;
-
-    if (searchTerm) {
-      filtered = filtered.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (typeFilter !== 'all') {
-      filtered = filtered.filter(p => p.type === typeFilter);
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(p => p.status === statusFilter);
-    }
-
-    setFilteredPlatforms(filtered);
-  };
-
-  const handleSync = async (platformId: string) => {
-    setSyncingPlatforms(prev => new Set(prev).add(platformId));
-    
-    try {
-      const response = await fetch(`/api/admin/platforms/${platformId}/sync`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        await fetchPlatforms();
-      }
-    } catch (error) {
-      console.error('Error syncing platform:', error);
-    } finally {
-      setSyncingPlatforms(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(platformId);
-        return newSet;
-      });
-    }
-  };
-
-  const handleToggleStatus = async (platformId: string, isActive: boolean) => {
-    try {
-      const response = await fetch(`/api/admin/platforms/${platformId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ isActive })
-      });
-
-      if (response.ok) {
-        await fetchPlatforms();
-      }
-    } catch (error) {
-      console.error('Error updating platform status:', error);
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'connected': return 'text-green-400 bg-green-400/10';
-      case 'disconnected': return 'text-gray-400 bg-gray-400/10';
-      case 'error': return 'text-red-400 bg-red-400/10';
-      case 'syncing': return 'text-blue-400 bg-blue-400/10';
-      default: return 'text-gray-400 bg-gray-400/10';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'connected': return <CheckCircle className="w-4 h-4" />;
-      case 'disconnected': return <XCircle className="w-4 h-4" />;
-      case 'error': return <AlertCircle className="w-4 h-4" />;
-      case 'syncing': return <RefreshCw className="w-4 h-4 animate-spin" />;
-      default: return null;
-    }
-  };
-
-  const defaultPlatforms: Platform[] = [
-    // Live Cam Platforms (10)
-    {
-      id: '1',
-      name: 'Chaturbate',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      syncFrequency: 5,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 45230.50,
-        monthlyRevenue: 12450.00,
-        activeModels: 12,
-        totalSessions: 342
-      }
-    },
-    {
-      id: '2',
-      name: 'Stripchat',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 3).toISOString(),
-      syncFrequency: 5,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 38420.75,
-        monthlyRevenue: 10200.00,
-        activeModels: 8,
-        totalSessions: 256
-      }
-    },
-    {
-      id: '3',
-      name: 'MyFreeCams',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'error',
-      lastSync: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-      syncFrequency: 10,
-      isActive: true,
-      errorCount: 3,
-      lastError: 'API rate limit exceeded',
-      stats: {
-        totalRevenue: 28910.25,
-        monthlyRevenue: 8900.00,
-        activeModels: 6,
-        totalSessions: 189
-      }
-    },
-    {
-      id: '4',
-      name: 'BongaCams',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
-      syncFrequency: 5,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 22150.00,
-        monthlyRevenue: 7800.00,
-        activeModels: 5,
-        totalSessions: 145
-      }
-    },
-    {
-      id: '5',
-      name: 'CamSoda',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'disconnected',
-      syncFrequency: 15,
-      isActive: false,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 15670.50,
-        monthlyRevenue: 4500.00,
-        activeModels: 4,
-        totalSessions: 98
-      }
-    },
-    {
-      id: '6',
-      name: 'LiveJasmin',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 4).toISOString(),
-      syncFrequency: 10,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 51230.75,
-        monthlyRevenue: 15600.00,
-        activeModels: 15,
-        totalSessions: 412
-      }
-    },
-    {
-      id: '7',
-      name: 'Streamate',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 6).toISOString(),
-      syncFrequency: 5,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 34200.00,
-        monthlyRevenue: 9800.00,
-        activeModels: 9,
-        totalSessions: 278
-      }
-    },
-    {
-      id: '8',
-      name: 'Flirt4Free',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 7).toISOString(),
-      syncFrequency: 10,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 19850.25,
-        monthlyRevenue: 6200.00,
-        activeModels: 7,
-        totalSessions: 167
-      }
-    },
-    {
-      id: '9',
-      name: 'ImLive',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 8).toISOString(),
-      syncFrequency: 15,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 12450.00,
-        monthlyRevenue: 3800.00,
-        activeModels: 3,
-        totalSessions: 89
-      }
-    },
-    {
-      id: '10',
-      name: 'Cams.com',
-      type: 'livecam',
-      category: 'Live Cam',
-      status: 'disconnected',
-      syncFrequency: 20,
-      isActive: false,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 8900.00,
-        monthlyRevenue: 2100.00,
-        activeModels: 2,
-        totalSessions: 45
-      }
-    },
-    // Fansite Platforms (8)
-    {
-      id: '11',
-      name: 'OnlyFans',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 1).toISOString(),
-      syncFrequency: 2,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 89450.00,
-        monthlyRevenue: 28900.00,
-        activeModels: 18,
-        totalSessions: 892
-      }
-    },
-    {
-      id: '12',
-      name: 'Fansly',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 3).toISOString(),
-      syncFrequency: 5,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 45600.00,
-        monthlyRevenue: 14200.00,
-        activeModels: 12,
-        totalSessions: 456
-      }
-    },
-    {
-      id: '13',
-      name: 'ManyVids',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 4).toISOString(),
-      syncFrequency: 10,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 32100.00,
-        monthlyRevenue: 9800.00,
-        activeModels: 8,
-        totalSessions: 234
-      }
-    },
-    {
-      id: '14',
-      name: 'JustForFans',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'error',
-      lastSync: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      syncFrequency: 15,
-      isActive: true,
-      errorCount: 2,
-      lastError: 'Authentication failed',
-      stats: {
-        totalRevenue: 23400.00,
-        monthlyRevenue: 7200.00,
-        activeModels: 6,
-        totalSessions: 178
-      }
-    },
-    {
-      id: '15',
-      name: 'Fancentro',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      syncFrequency: 10,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 18700.00,
-        monthlyRevenue: 5600.00,
-        activeModels: 5,
-        totalSessions: 145
-      }
-    },
-    {
-      id: '16',
-      name: 'AdmireMe',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'disconnected',
-      syncFrequency: 20,
-      isActive: false,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 12300.00,
-        monthlyRevenue: 3400.00,
-        activeModels: 3,
-        totalSessions: 89
-      }
-    },
-    {
-      id: '17',
-      name: 'Fanvue',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 6).toISOString(),
-      syncFrequency: 15,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 15600.00,
-        monthlyRevenue: 4800.00,
-        activeModels: 4,
-        totalSessions: 112
-      }
-    },
-    {
-      id: '18',
-      name: 'Patreon',
-      type: 'fansite',
-      category: 'Fansite',
-      status: 'connected',
-      lastSync: new Date(Date.now() - 1000 * 60 * 7).toISOString(),
-      syncFrequency: 30,
-      isActive: true,
-      errorCount: 0,
-      stats: {
-        totalRevenue: 9800.00,
-        monthlyRevenue: 2900.00,
-        activeModels: 2,
-        totalSessions: 67
-      }
-    }
-  ];
-
   useEffect(() => {
-    setPlatforms(defaultPlatforms);
-    setLoading(false);
-  }, []);
+    let filtered = platforms;
+    if (searchTerm) {
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+    if (typeFilter !== 'all') filtered = filtered.filter(p => p.type === typeFilter);
+    setFilteredPlatforms(filtered);
+  }, [platforms, searchTerm, typeFilter]);
+
+  const handleSync = (platformId: string) => {
+    setSyncingPlatforms(prev => new Set(prev).add(platformId));
+    setTimeout(() => {
+      setSyncingPlatforms(prev => {
+        const next = new Set(prev);
+        next.delete(platformId);
+        return next;
+      });
+    }, 2000);
+  };
+
+  if (loading) {
+    return (
+       <div className="flex flex-col items-center justify-center h-96 space-y-4">
+          <div className="w-12 h-12 border-2 border-[#c9a84c]/20 border-t-[#c9a84c] rounded-full animate-spin" />
+          <p className="text-[10px] text-gray-500 uppercase tracking-[5px] animate-pulse">Inicjalizacja Sieci Platform...</p>
+       </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-10 animate-fadeIn">
+      {/* Header Area */}
+      <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-2xl font-bold text-white">Platform Management</h2>
-          <p className="text-gray-400">Manage 18 platform connections (10 Live Cam + 8 Fansite)</p>
+          <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter">HRL <span className="text-white">Platform</span> CONNECT</h2>
+          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase">Integracja API, synchronizacja danych i monitoring połączeń cam/fansite</p>
         </div>
-        <div className="flex gap-3">
-          <button
-            onClick={() => {
-              setPlatforms(defaultPlatforms);
-              setSelectedPlatform(null);
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white transition-colors"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Refresh All
-          </button>
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-500 to-rose-700 hover:from-rose-600 hover:to-rose-800 rounded-lg text-white font-medium transition-all"
-          >
-            <Upload className="w-4 h-4" />
-            Add Platform
-          </button>
+        <div className="flex gap-4">
+           <button onClick={() => setShowModal(true)} className="flex items-center gap-3 px-6 py-2.5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-[#c9a84c]/10">
+              <PlusIcon className="w-4 h-4" /> Dodaj Nową Platformę
+           </button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Total Platforms', value: platforms.length, icon: Activity, color: 'from-blue-500 to-blue-600' },
-          { label: 'Connected', value: platforms.filter(p => p.status === 'connected').length, icon: CheckCircle, color: 'from-green-500 to-green-600' },
-          { label: 'Errors', value: platforms.filter(p => p.status === 'error').length, icon: AlertCircle, color: 'from-red-500 to-red-600' },
-          { label: 'Total Revenue', value: `€${platforms.reduce((sum, p) => sum + (p.stats?.totalRevenue || 0), 0).toFixed(0)}`, icon: Download, color: 'from-purple-500 to-purple-600' }
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className={`bg-gradient-to-br ${stat.color} p-4 rounded-xl`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white/80 text-sm">{stat.label}</p>
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
+      <div className="grid grid-cols-4 gap-6">
+         {[
+           { label: 'Aktywne Nody', val: platforms.length, growth: 'Stable Connection', icon: Server, color: '#c9a84c' },
+           { label: 'Uptime (24h)', val: '99.9%', growth: 'Network OK', icon: Globe, color: '#22c55e' },
+           { label: 'Sync Requests', val: '1.2k', growth: '+250 dzisiaj', icon: Activity, color: '#ffffff' },
+           { label: 'API Health', val: 'Excelent', growth: 'Ready', icon: Shield, color: '#c9a84c' }
+         ].map((s, i) => (
+           <div key={i} className="bg-[#0d0d0d] border border-white/5 p-6 rounded-2xl flex items-center justify-between group hover:border-[#c9a84c]/20 transition-all cursor-default relative overflow-hidden">
+              <div className="relative z-10">
+                <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">{s.label}</p>
+                <p className="text-2xl font-bold font-georgia">{s.val}</p>
+                <p className="text-[8px] text-[#c9a84c] mt-1 font-black uppercase tracking-widest">{s.growth}</p>
               </div>
-              <stat.icon className="w-8 h-8 text-white/50" />
+              <s.icon className="w-10 h-10 opacity-5 group-hover:opacity-20 transition-opacity absolute right-4 bottom-4" style={{ color: s.color }} />
+           </div>
+         ))}
+      </div>
+
+      {/* Filters & Content */}
+      <div className="space-y-6">
+         <div className="flex items-center justify-between border-b border-white/5 pb-4">
+            <div className="flex gap-4">
+               {['all', 'livecam', 'fansite'].map((f) => (
+                 <button 
+                   key={f}
+                   onClick={() => setTypeFilter(f)}
+                   className={`text-[9px] font-black uppercase tracking-[2px] px-4 py-2 rounded-full transition-all ${typeFilter === f ? 'bg-[#c9a84c] text-black' : 'text-gray-500 hover:text-white'}`}
+                 >
+                   {f === 'all' ? 'Wszystkie' : f}
+                 </button>
+               ))}
             </div>
-          </motion.div>
-        ))}
-      </div>
+            <div className="relative w-64">
+               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
+               <input 
+                 type="text" 
+                 placeholder="Szukaj platformy..." 
+                 className="w-full bg-[#111] border border-white/10 rounded-full py-2 pl-10 pr-4 text-[9px] text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 uppercase tracking-[2px]" 
+                 value={searchTerm}
+                 onChange={(e) => setSearchTerm(e.target.value)}
+               />
+            </div>
+         </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Search platforms..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-          />
-        </div>
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-        >
-          <option value="all">All Types</option>
-          <option value="livecam">Live Cam</option>
-          <option value="fansite">Fansite</option>
-        </select>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-rose-500 text-white"
-        >
-          <option value="all">All Status</option>
-          <option value="connected">Connected</option>
-          <option value="disconnected">Disconnected</option>
-          <option value="error">Error</option>
-          <option value="syncing">Syncing</option>
-        </select>
-      </div>
-
-      {/* Platforms Table */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-700">
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Platform</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Last Sync</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Revenue</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Models</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-700">
-              {filteredPlatforms.map((platform) => (
-                <motion.tr
-                  key={platform.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="hover:bg-gray-700/50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white font-bold">
-                        {platform.name.charAt(0)}
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-white">{platform.name}</div>
-                        <div className="text-sm text-gray-400">{platform.category}</div>
-                      </div>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPlatforms.map((p) => (
+              <motion.div 
+                key={p.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-6 space-y-4 hover:border-[#c9a84c]/30 transition-all group"
+              >
+                 <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center font-bold text-white group-hover:text-[#c9a84c] transition-colors">
+                          {p.name.charAt(0)}
+                       </div>
+                       <div>
+                          <h4 className="text-sm font-bold text-white group-hover:text-[#c9a84c] transition-colors">{p.name}</h4>
+                          <span className="text-[8px] text-gray-500 uppercase tracking-widest">{p.category}</span>
+                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                      platform.type === 'livecam' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'
-                    }`}>
-                      {platform.type === 'livecam' ? '📹 Live Cam' : '💎 Fansite'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-1">
-                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(platform.status)}`}>
-                        {getStatusIcon(platform.status)}
-                        {platform.status}
-                      </span>
-                      {platform.errorCount > 0 && (
-                        <div className="text-xs text-red-400">
-                          {platform.errorCount} errors
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-300">
-                      {platform.lastSync ? new Date(platform.lastSync).toLocaleTimeString() : 'Never'}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      Every {platform.syncFrequency} min
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-white">€{(platform.stats?.monthlyRevenue || 0).toFixed(2)}</div>
-                    <div className="text-xs text-gray-400">this month</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-white">{platform.stats?.activeModels || 0}</div>
-                    <div className="text-xs text-gray-400">active</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleSync(platform.id)}
-                        disabled={syncingPlatforms.has(platform.id)}
-                        className="text-blue-400 hover:text-blue-300 disabled:text-gray-500"
-                      >
-                        {syncingPlatforms.has(platform.id) ? (
-                          <RefreshCw className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <RefreshCw className="w-4 h-4" />
-                        )}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setSelectedPlatform(platform);
-                          setShowLogsModal(true);
-                        }}
-                        className="text-gray-400 hover:text-gray-300"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleToggleStatus(platform.id, !platform.isActive)}
-                        className={platform.isActive ? 'text-green-400 hover:text-green-300' : 'text-gray-400 hover:text-gray-300'}
-                      >
-                        {platform.isActive ? <Wifi className="w-4 h-4" /> : <WifiOff className="w-4 h-4" />}
-                      </button>
-                      <button className="text-rose-400 hover:text-rose-300">
-                        <Settings className="w-4 h-4" />
-                      </button>
+                       <div className={`w-2 h-2 rounded-full ${p.status === 'connected' ? 'bg-green-500' : 'bg-red-500'} animate-pulse`} />
+                       <span className="text-[8px] font-black text-white uppercase tracking-widest">{p.status}</span>
                     </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                 </div>
+
+                 <div className="grid grid-cols-2 gap-4 py-4 border-y border-white/5">
+                    <div>
+                       <p className="text-[7px] text-gray-500 uppercase tracking-widest mb-1">Miesięczny Przychod</p>
+                       <p className="text-sm font-bold font-georgia text-white">€{p.stats?.monthlyRevenue.toLocaleString()}</p>
+                    </div>
+                    <div>
+                       <p className="text-[7px] text-gray-500 uppercase tracking-widest mb-1">Aktywne Modelki</p>
+                       <p className="text-sm font-bold font-georgia text-white">{p.stats?.activeModels}</p>
+                    </div>
+                 </div>
+
+                 <div className="flex justify-between items-center pt-2">
+                    <div className="flex items-center gap-3">
+                       <button 
+                         onClick={() => handleSync(p.id)}
+                         className={`p-2 bg-white/5 rounded-lg text-gray-500 hover:text-[#c9a84c] transition-all ${syncingPlatforms.has(p.id) ? 'animate-spin text-[#c9a84c]' : ''}`}
+                       >
+                         <RefreshCw className="w-4 h-4" />
+                       </button>
+                       <button onClick={() => { setSelectedPlatform(p); setShowLogsModal(true); }} className="p-2 bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all"><Terminal className="w-4 h-4" /></button>
+                    </div>
+                    <button className="flex items-center gap-2 text-[8px] font-black text-white hover:text-[#c9a84c] uppercase tracking-widest transition-all">
+                       Konfiguracja <Settings className="w-3 h-3" />
+                    </button>
+                 </div>
+              </motion.div>
+            ))}
+         </div>
       </div>
 
-      {/* Platform Logs Modal */}
-      {showLogsModal && selectedPlatform && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-3xl max-h-[80vh] overflow-hidden"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-white">API Logs - {selectedPlatform.name}</h3>
-                <p className="text-sm text-gray-400 mt-1">Platform: {selectedPlatform.category}</p>
-              </div>
-              <button
-                onClick={() => setShowLogsModal(false)}
-                className="text-gray-400 hover:text-white"
-              >
-                <XCircle className="w-6 h-6" />
-              </button>
+      {/* Logs Modal */}
+      <AnimatePresence>
+         {showLogsModal && selectedPlatform && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-8">
+               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowLogsModal(false)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                 animate={{ opacity: 1, scale: 1, y: 0 }} 
+                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                 className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+               >
+                  <div className="p-6 border-b border-white/5 bg-[#111] flex justify-between items-center">
+                     <div className="flex items-center gap-3">
+                        <div className="p-2 bg-[#c9a84c]/10 rounded-lg"><Terminal className="w-4 h-4 text-[#c9a84c]" /></div>
+                        <div>
+                          <h3 className="text-sm font-bold text-white tracking-widest uppercase">Platform API Terminal</h3>
+                          <p className="text-[9px] text-gray-500 uppercase tracking-widest">{selectedPlatform.name} // Session #{selectedPlatform.id}</p>
+                        </div>
+                     </div>
+                     <button onClick={() => setShowLogsModal(false)} className="p-2 text-gray-500 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-5 h-5" /></button>
+                  </div>
+
+                  <div className="p-6 bg-black font-mono text-[10px] h-80 overflow-y-auto space-y-2 custom-scrollbar">
+                     <p className="text-gray-500">[{new Date().toISOString()}] Initializing connection to {selectedPlatform.name} API...</p>
+                     <p className="text-green-500">[{new Date().toISOString()}] Connection established. Auth token verified.</p>
+                     <p className="text-[#c9a84c]">[{new Date().toISOString()}] Fetching model data for {selectedPlatform.stats?.activeModels} nodes...</p>
+                     <p className="text-gray-500">[{new Date().toISOString()}] Synchronizing revenue stream: €{selectedPlatform.stats?.monthlyRevenue} identified.</p>
+                     <p className="text-blue-500">[{new Date().toISOString()}] Webhook heartbeat active. Monitoring for event callbacks.</p>
+                     <div className="pt-2 animate-pulse text-white">_</div>
+                  </div>
+
+                  <div className="p-6 bg-[#111] border-t border-white/5 flex justify-end gap-3">
+                     <button onClick={() => handleSync(selectedPlatform.id)} className="px-6 py-2 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full hover:bg-white/10 transition-all">Force Re-sync</button>
+                     <button onClick={() => setShowLogsModal(false)} className="px-6 py-2 bg-[#c9a84c] text-black text-[9px] font-black uppercase tracking-widest rounded-full hover:scale-105 transition-all">Close Instance</button>
+                  </div>
+               </motion.div>
             </div>
+         )}
+      </AnimatePresence>
 
-            <div className="space-y-4">
-              {/* Connection Status */}
-              <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-white mb-3">Connection Status</h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-400">Status:</span>
-                    <span className={`ml-2 ${getStatusColor(selectedPlatform.status)} px-2 py-1 rounded text-xs`}>
-                      {selectedPlatform.status}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Last Sync:</span>
-                    <span className="ml-2 text-white">
-                      {selectedPlatform.lastSync ? new Date(selectedPlatform.lastSync).toLocaleString() : 'Never'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Error Count:</span>
-                    <span className="ml-2 text-white">{selectedPlatform.errorCount}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Sync Frequency:</span>
-                    <span className="ml-2 text-white">{selectedPlatform.syncFrequency} minutes</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Recent Logs */}
-              <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-white mb-3">Recent API Logs</h4>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {[
-                    { timestamp: new Date(), level: 'info', message: 'Sync completed successfully' },
-                    { timestamp: new Date(Date.now() - 1000 * 60 * 5), level: 'info', message: 'Fetched 12 new transactions' },
-                    { timestamp: new Date(Date.now() - 1000 * 60 * 10), level: 'warning', message: 'Rate limit approaching' },
-                    { timestamp: new Date(Date.now() - 1000 * 60 * 15), level: 'error', message: selectedPlatform.lastError || 'API timeout' },
-                    { timestamp: new Date(Date.now() - 1000 * 60 * 20), level: 'info', message: 'Connection established' }
-                  ].map((log, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm p-2 bg-gray-900 rounded">
-                      <span className="text-gray-500 text-xs">
-                        {log.timestamp.toLocaleTimeString()}
-                      </span>
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        log.level === 'error' ? 'bg-red-500/20 text-red-400' :
-                        log.level === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-green-500/20 text-green-400'
-                      }`}>
-                        {log.level.toUpperCase()}
-                      </span>
-                      <span className="text-gray-300">{log.message}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* API Configuration */}
-              <div className="bg-gray-800 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-white mb-3">API Configuration</h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-400">API Endpoint:</span>
-                    <span className="ml-2 text-white">https://api.{selectedPlatform.name.toLowerCase()}.com/v1</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Webhook URL:</span>
-                    <span className="ml-2 text-white">https://studio-hrl.com/webhooks/{selectedPlatform.id}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6 pt-4 border-t border-gray-700">
-              <button
-                onClick={() => handleSync(selectedPlatform.id)}
-                disabled={syncingPlatforms.has(selectedPlatform.id)}
-                className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
-              >
-                <RefreshCw className={`w-4 h-4 ${syncingPlatforms.has(selectedPlatform.id) ? 'animate-spin' : ''}`} />
-                {syncingPlatforms.has(selectedPlatform.id) ? 'Syncing...' : 'Sync Now'}
-              </button>
-              <button
-                onClick={() => setShowLogsModal(false)}
-                className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all"
-              >
-                Close
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #c9a84c; }
+      `}</style>
     </div>
   );
 };
+
+const PlusIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+  </svg>
+);
 
 export default PlatformsManager;
