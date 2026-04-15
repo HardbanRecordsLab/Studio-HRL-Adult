@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma';
 
 const DEMO = [
   {
-    id: 'luna-hrl', name: 'Luna', handle: '@luna.hrl',
+    id: 'luna-hrl', name: 'Luna', handle: 'luna.hrl',
     bio: 'Premium content creator ze Studio HRL Adult. Specjalizacja: live cam, ekskluzywne subskrypcje, artystyczne treści adult. Top 3% OnlyFans.',
     stats: { followers: '3.6K', content: '240+', satisfaction: '98%', online: '21-23' },
     tags: ['OnlyFans', 'Live Cam', 'Premium'], ico: '🌙',
@@ -11,7 +11,7 @@ const DEMO = [
     characteristics: 'Naturalna elegancja i profesjonalizm. Tworzę treści na najwyższym poziomie jakości w Studio HRL Adult.',
   },
   {
-    id: 'alexia-hrl', name: 'Alexia', handle: '@alexia.hrl',
+    id: 'alexia-hrl', name: 'Alexia', handle: 'alexia.hrl',
     bio: 'Premium Glamour Creator • Studio HRL Adult • Artistic nudes, Lingerie, Live. Top 5% OnlyFans & Fansly.',
     stats: { followers: '5.2K', content: '380+', satisfaction: '99%', online: '20-00' },
     tags: ['Fansly', 'Luxury', 'Studio'], ico: '✨',
@@ -19,7 +19,7 @@ const DEMO = [
     characteristics: 'Artystka, elegancja, zmysłowość ze smakiem. Specjalistka od luxury content i fotografii high-end.',
   },
   {
-    id: 'sofia-hrl', name: 'Sofia', handle: '@sofia.hrl',
+    id: 'sofia-hrl', name: 'Sofia', handle: 'sofia.hrl',
     bio: 'Multi-platform creator • Studio HRL Adult • BDSM, Fetish & Vanilla. ManyVids Top Seller 2025.',
     stats: { followers: '8.9K', content: '620+', satisfaction: '97%', online: '22-02' },
     tags: ['ManyVids', 'Chaturbate', 'BDSM'], ico: '🔥',
@@ -52,11 +52,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       let tags = ['Premium'];
       try { if (p.platforms) { const keys = Object.keys(JSON.parse(p.platforms)); if (keys.length) tags = keys.slice(0, 3).map((k: string) => k.charAt(0).toUpperCase() + k.slice(1)); } } catch {}
 
-      const handle = (p.handle || p.id || 'model');
+      const handle = p.handle || p.id || 'model';
       return {
         id: handle,
         name: p.name || 'HRL Model',
-        handle: handle.startsWith('@') ? handle : `@${handle}`,
+        handle: handle,
         bio: p.bio || 'Premium content creator.',
         stats, tags: tags.length > 0 ? tags : ['Premium'],
         ico: '✨', measurements: null,

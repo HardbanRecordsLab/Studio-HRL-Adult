@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // POST: Create a new partner profile
   if (req.method === 'POST') {
     try {
-      const { name, handle, email, status, type, bio, description, avatar, height, weight, measurements, profileData } = req.body;
+      const { name, handle, email, status, type, bio, description, avatar, height, weight, measurements, profileData, characteristics, heroPitch, bust, waist, hips, size } = req.body;
       
       // Basic validation
       if (!name || !handle || !email) {
@@ -40,26 +40,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           name,
           handle,
           email,
-          status: status || 'pending',
+          status: status || 'active',
           type: type || 'solo',
           bio: bio || '',
-          description: description || '',
-          avatar: avatar || null
+          description: characteristics || description || '',
+          avatar: avatar || null,
+          height: height ? Number(height) : null,
+          weight: weight ? Number(weight) : null,
+          measurements: measurements || null,
+          profileData: profileData || null
         }
       });
 
-      if (height || weight || measurements || profileData) {
-        await prisma.$executeRawUnsafe(
-          `UPDATE "Partner" SET height = $1, weight = $2, measurements = $3, "profileData" = $4 WHERE id = $5`,
-          Number(height) || null,
-          Number(weight) || null,
-          measurements || null,
-          profileData ? profileData : null, // profileData is object, node-postgres driver stringifies JSON properly usually. However Prisma might need it parsed as JSON or Object
-          partner.id
-        );
-      }
-
-      return res.status(201).json({ ...partner, height, weight, measurements, profileData });
+      return res.status(201).json(partner);
     } catch (error: any) {
       console.error('Error creating partner:', error);
       // Check for unique constraint violation

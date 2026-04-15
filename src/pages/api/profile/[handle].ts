@@ -99,6 +99,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try { return typeof s === 'string' ? JSON.parse(s) : (s || fallback); } catch { return fallback; }
       };
 
+      // Parse profileData
+      const parsedProfileData = safeJSON(partner.profileData, {
+        likes: [], boundaries: [], bestInMe: [], whyWatchMe: [], gallery: []
+      });
+
       // Ensure we return the real DB columns that the new ProfileTemplate expects
       return res.status(200).json({
         ...partner,
@@ -106,15 +111,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         weight: partner.weight || '58',
         measurements: partner.measurements || '92C / 62 / 92',
         bio: partner.bio || partner.description || '',
-        characteristics: partner.description || '', // Characteristics text goes here
+        characteristics: partner.description || '',
         platforms: safeJSON(partner.platforms),
         stats: safeJSON(partner.profileStats),
         liveSchedule: safeJSON(partner.liveSchedule, []),
         subscriptionPlans: safeJSON(partner.subscriptionPlans, []),
         testimonials: safeJSON(partner.testimonials, []),
-        profileData: safeJSON(partner.profileData, {
-            likes: [], boundaries: [], bestInMe: [], whyWatchMe: [], gallery: []
-        }),
+        profileData: {
+          likes: parsedProfileData.likes || [],
+          boundaries: parsedProfileData.boundaries || [],
+          bestInMe: parsedProfileData.bestInMe || [],
+          whyWatchMe: parsedProfileData.whyWatchMe || [],
+          gallery: parsedProfileData.gallery || []
+        },
         tags: ['Premium', 'Studio HRL'],
         ico: '⭐',
       });

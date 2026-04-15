@@ -109,7 +109,15 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
   });
 
   const [newPartner, setNewPartner] = useState({
-    name: '', handle: '', email: '', bio: '', height: '', weight: '', measurements: '', avatar: ''
+    name: '', handle: '', email: '', bio: '', height: '', weight: '', measurements: '', avatar: '',
+    heroPitch: '',
+    bust: '', waist: '', hips: '', size: '',
+    characteristics: '',
+    likes: ['', '', '', '', '', ''],
+    boundaries: ['', '', '', '', '', ''],
+    bestInMe: ['', '', '', '', '', '', '', '', '', ''],
+    whyWatchMe: ['', '', '', '', '', '', '', '', '', ''],
+    gallery: ['', '', '', '', '']
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -119,6 +127,16 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
     try {
       // Ensure handle has no leading @ before saving to DB unless desired
       const cleanHandle = newPartner.handle.startsWith('@') ? newPartner.handle.substring(1) : newPartner.handle;
+      
+      // Build profileData object
+      const profileData = {
+        likes: newPartner.likes.filter((l: string) => l.trim() !== ''),
+        boundaries: newPartner.boundaries.filter((b: string) => b.trim() !== ''),
+        bestInMe: newPartner.bestInMe.filter((b: string) => b.trim() !== ''),
+        whyWatchMe: newPartner.whyWatchMe.filter((w: string) => w.trim() !== ''),
+        gallery: newPartner.gallery.filter((g: string) => g.trim() !== '')
+      };
+
       const response = await fetch('/api/admin/partners', {
         method: 'POST',
         headers: {
@@ -126,11 +144,26 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
           'Authorization': `Bearer ${token}`
         },
         // We set status active by default so it publishes immediately
-        body: JSON.stringify({ ...newPartner, handle: cleanHandle, status: 'active', type: 'solo' })
+        body: JSON.stringify({ 
+          ...newPartner, 
+          handle: cleanHandle, 
+          status: 'active', 
+          type: 'solo',
+          profileData: JSON.stringify(profileData),
+          measurements: newPartner.bust && newPartner.waist && newPartner.hips 
+            ? `${newPartner.bust} / ${newPartner.waist} / ${newPartner.hips}` 
+            : newPartner.measurements
+        })
       });
       if (response.ok) {
         setShowModal(false);
-        setNewPartner({ name: '', handle: '', email: '', bio: '', height: '', weight: '', measurements: '', avatar: '' });
+        setNewPartner({ 
+          name: '', handle: '', email: '', bio: '', height: '', weight: '', measurements: '', avatar: '',
+          heroPitch: '', bust: '', waist: '', hips: '', size: '', characteristics: '',
+          likes: ['', '', '', '', '', ''], boundaries: ['', '', '', '', '', ''],
+          bestInMe: ['', '', '', '', '', '', '', '', '', ''], whyWatchMe: ['', '', '', '', '', '', '', '', '', ''],
+          gallery: ['', '', '', '', '']
+        });
         fetchPartners();
         onPartnersUpdate?.();
       } else {
@@ -324,49 +357,177 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                 </button>
               </div>
               
-              <form onSubmit={handleCreatePartner} className="p-8 space-y-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Pseudonim (Imię)</label>
-                    <input type="text" required value={newPartner.name} onChange={e => setNewPartner({...newPartner, name: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700 font-georgia" placeholder="Np. Alexia, Sophia" />
+              <form onSubmit={handleCreatePartner} className="max-h-[70vh] overflow-y-auto p-8 space-y-8 custom-scrollbar">
+                {/* SECTION 1: HERO / PITCH */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Hero / Działło</h4>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Unikalny Handle (URL)</label>
-                    <input type="text" required value={newPartner.handle} onChange={e => setNewPartner({...newPartner, handle: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700" placeholder="Np. alexia.hrl" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Email Kontaktowy (B2B)</label>
-                  <input type="email" required value={newPartner.email} onChange={e => setNewPartner({...newPartner, email: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700" placeholder="model@studio.com" />
-                </div>
-
-                <div className="grid grid-cols-3 gap-6">
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Wzrost (cm)</label>
-                    <input type="number" required value={newPartner.height} onChange={e => setNewPartner({...newPartner, height: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700" placeholder="174" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Waga (kg)</label>
-                    <input type="number" required value={newPartner.weight} onChange={e => setNewPartner({...newPartner, weight: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700" placeholder="58" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Wymiary (np. 92C/62/92)</label>
-                    <input type="text" required value={newPartner.measurements} onChange={e => setNewPartner({...newPartner, measurements: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700" placeholder="92C/62/92" />
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Pitch Wizerunkowy</label>
+                    <textarea value={newPartner.heroPitch} onChange={e => setNewPartner({...newPartner, heroPitch: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 min-h-[60px]" placeholder="Krótki, chwytliwy pitch opisujący wizerunek..." maxLength={200} />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Opis Główny (Lead Bio)</label>
-                  <textarea required value={newPartner.bio} onChange={e => setNewPartner({...newPartner, bio: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700 min-h-[80px]" placeholder="Opis wstępny widoczny od razu na samej górze profilu..." />
+                {/* SECTION 2: PODSTAWOWE DANE */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Podstawowe Dane</h4>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Pseudonim (Imię)</label>
+                      <input type="text" required value={newPartner.name} onChange={e => setNewPartner({...newPartner, name: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 font-georgia" placeholder="Np. Alexia, Sophia" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Unikalny Handle (URL)</label>
+                      <input type="text" required value={newPartner.handle} onChange={e => setNewPartner({...newPartner, handle: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="Np. alexia.hrl" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Email Kontaktowy (B2B)</label>
+                    <input type="email" required value={newPartner.email} onChange={e => setNewPartner({...newPartner, email: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="model@studio.com" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Opis Główny (Lead Bio)</label>
+                    <textarea required value={newPartner.bio} onChange={e => setNewPartner({...newPartner, bio: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 min-h-[80px]" placeholder="Opis wstępny widoczny od razu na samej górze profilu..." />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Hero Image (URL avataru)</label>
+                    <input type="text" value={newPartner.avatar} onChange={e => setNewPartner({...newPartner, avatar: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="/image/Alexia.jpg" />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Hero Image (URL avataru)</label>
-                  <input type="text" value={newPartner.avatar} onChange={e => setNewPartner({...newPartner, avatar: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-purple-500 outline-none transition-all placeholder:text-gray-700" placeholder="/image/Alexia.jpg" />
+                {/* SECTION 3: WYMIARY */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Wymiary</h4>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Wzrost (cm)</label>
+                      <input type="number" value={newPartner.height} onChange={e => setNewPartner({...newPartner, height: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="174" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Waga (kg)</label>
+                      <input type="number" value={newPartner.weight} onChange={e => setNewPartner({...newPartner, weight: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="58" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Rozmiar</label>
+                      <input type="text" value={newPartner.size} onChange={e => setNewPartner({...newPartner, size: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="75C" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Biust (cm)</label>
+                      <input type="number" value={newPartner.bust} onChange={e => setNewPartner({...newPartner, bust: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="92" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Talia (cm)</label>
+                      <input type="number" value={newPartner.waist} onChange={e => setNewPartner({...newPartner, waist: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="62" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Biodra (cm)</label>
+                      <input type="number" value={newPartner.hips} onChange={e => setNewPartner({...newPartner, hips: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="92" />
+                    </div>
+                  </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex justify-end gap-4">
+                {/* SECTION 4: CHARAKTERYSTYKA */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Charakterystyka</h4>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Opis Charakterystyczny (max 700 znaków)</label>
+                    <textarea value={newPartner.characteristics} onChange={e => setNewPartner({...newPartner, characteristics: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 min-h-[100px]" placeholder="Szczegółowy opis charakterystyki osobowości i stylu..." maxLength={700} />
+                    <p className="text-[8px] text-gray-600 mt-1 text-right">{newPartner.characteristics.length}/700</p>
+                  </div>
+                </div>
+
+                {/* SECTION 5: UPODOPANIA I GRANICE */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Upodobania i Granice</h4>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Upodobania (6 pozycji)</label>
+                      {newPartner.likes.map((like, i) => (
+                        <input key={i} type="text" value={like} onChange={e => {
+                          const newLikes = [...newPartner.likes];
+                          newLikes[i] = e.target.value;
+                          setNewPartner({...newPartner, likes: newLikes});
+                        }} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 text-[10px] mb-2" placeholder={`Upodobanie ${i + 1}`} />
+                      ))}
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Granice (6 pozycji)</label>
+                      {newPartner.boundaries.map((boundary, i) => (
+                        <input key={i} type="text" value={boundary} onChange={e => {
+                          const newBoundaries = [...newPartner.boundaries];
+                          newBoundaries[i] = e.target.value;
+                          setNewPartner({...newPartner, boundaries: newBoundaries});
+                        }} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 text-[10px] mb-2" placeholder={`Granica ${i + 1}`} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* SECTION 6: ZALETY I POWODY */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Zalety i Powody do Oglądania</h4>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Mój Atut (10 pozycji)</label>
+                      {newPartner.bestInMe.map((attr, i) => (
+                        <input key={i} type="text" value={attr} onChange={e => {
+                          const newBestInMe = [...newPartner.bestInMe];
+                          newBestInMe[i] = e.target.value;
+                          setNewPartner({...newPartner, bestInMe: newBestInMe});
+                        }} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 text-[10px] mb-2" placeholder={`Atut ${i + 1}`} />
+                      ))}
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Dlaczego Mnie Oglądać (10 pozycji)</label>
+                      {newPartner.whyWatchMe.map((reason, i) => (
+                        <input key={i} type="text" value={reason} onChange={e => {
+                          const newWhyWatchMe = [...newPartner.whyWatchMe];
+                          newWhyWatchMe[i] = e.target.value;
+                          setNewPartner({...newPartner, whyWatchMe: newWhyWatchMe});
+                        }} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 text-[10px] mb-2" placeholder={`Powód ${i + 1}`} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* SECTION 7: GALERIA */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Galeria Portfolio</h4>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">URL Zdjęć (5 pozycji)</label>
+                    {newPartner.gallery.map((url, i) => (
+                      <input key={i} type="text" value={url} onChange={e => {
+                        const newGallery = [...newPartner.gallery];
+                        newGallery[i] = e.target.value;
+                        setNewPartner({...newPartner, gallery: newGallery});
+                      }} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 text-[10px] mb-2" placeholder={`/image/photo${i + 1}.jpg`} />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-white/10 flex justify-end gap-4 sticky bottom-0 bg-[#0a0a0c] py-4">
                   <button type="button" onClick={() => setShowModal(false)} className="px-6 py-3 text-[10px] font-black text-gray-400 hover:text-white uppercase tracking-widest transition-all">Anuluj</button>
                   <button type="submit" disabled={submitting} className="px-8 py-3 bg-gradient-to-r from-purple-600 to-[#c9a84c] text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all hover:scale-105 shadow-[0_0_20px_rgba(201,168,76,0.3)] disabled:opacity-50">
                     {submitting ? 'GENEROWANIE PROFILU...' : 'PUBLIKUJ MODELKĘ'}

@@ -77,6 +77,12 @@ model Partner {
   subscriptionPlans String?  // JSON: array of subscription plans
   testimonials String?  // JSON: array of { username, text, since, rating, avatar }
   
+  // Extended Profile Data
+  height      Int?
+  weight      Int?
+  measurements String?
+  profileData String?  // JSON: { likes, boundaries, bestInMe, whyWatchMe, gallery }
+  
   financeRecords FinancialRecord[]
   documents      PartnerDocument[]
 }
