@@ -32,31 +32,30 @@ interface CastingApplication {
   lastName: string;
   email: string;
   phone: string;
-  dateOfBirth: string;
-  height: number;
-  weight: number;
-  hairColor: string;
-  eyeColor: string;
-  bustSize: string;
-  hasExperience: boolean;
-  experienceDescription?: string;
-  platforms: string[];
-  contentTypes: string[];
-  workingTimes: {
-    dayOfWeek: number;
-    startTime: string;
-    endTime: string;
-  }[];
+  birthDate: string;
+  height?: number;
+  weight?: number;
+  hairColor?: string;
+  eyeColor?: string;
+  breastSize?: string;
+  experience: string;
+  experienceDesc?: string;
+  platforms?: string;
+  contentTypes?: string;
+  limits?: string;
+  sessionsPerWeek?: string;
+  workingTimes?: string;
   motivation: string;
-  bodyModifications: string;
-  skills: string;
+  bodyModifications?: string;
+  skills?: string;
   photo1?: string;
   photo2?: string;
   photo3?: string;
-  videoUrl?: string;
+  video?: string;
   consentAge: boolean;
   consentTerms: boolean;
   consentData: boolean;
+  consentMarketing: boolean;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
   updatedAt: string;
@@ -98,6 +97,11 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
     const days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
     return days[dayOfWeek];
   };
+
+  // Parse JSON strings
+  const platforms = application.platforms ? JSON.parse(application.platforms) : [];
+  const contentTypes = application.contentTypes ? JSON.parse(application.contentTypes) : [];
+  const workingTimes = application.workingTimes ? JSON.parse(application.workingTimes) : [];
 
   const photos = [application.photo1, application.photo2, application.photo3].filter(Boolean);
   const statusInfo = getStatusInfo(application.status);
@@ -182,8 +186,8 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         <div className="grid grid-cols-2 gap-6">
                            <div className="p-6 bg-[#c9a84c]/5 border border-[#c9a84c]/10 rounded-3xl">
                               <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-3">Status Doświadczenia</p>
-                              <span className={cn("px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest", application.hasExperience ? "bg-[#c9a84c] text-black" : "bg-white/5 text-gray-500")}>
-                                 {application.hasExperience ? 'Profesjonalistka' : 'New Face'}
+                              <span className={cn("px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest", application.experience === 'yes' ? "bg-[#c9a84c] text-black" : "bg-white/5 text-gray-500")}>
+                                 {application.experience === 'yes' ? 'Profesjonalistka' : 'New Face'}
                               </span>
                            </div>
                            <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl">
@@ -191,10 +195,10 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                               <p className="text-[11px] text-white font-medium">{application.skills || 'Brak danych'}</p>
                            </div>
                         </div>
-                        {application.experienceDescription && (
+                        {application.experienceDesc && (
                            <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl">
                               <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-3">Opis Doświadczenia</p>
-                              <p className="text-[11px] text-gray-300 leading-relaxed">{application.experienceDescription}</p>
+                              <p className="text-[11px] text-gray-300 leading-relaxed">{application.experienceDesc}</p>
                            </div>
                         )}
                      </section>
@@ -225,17 +229,17 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         </div>
                      </section>
 
-                     {application.videoUrl && (
+                     {application.video && (
                         <section className="space-y-6">
                            <div className="flex items-center gap-4 text-[#c9a84c]">
                               <Video className="w-5 h-5" />
                               <h3 className="text-[10px] font-black uppercase tracking-[4px]">Weryfikacja Wideo</h3>
                            </div>
                            <div className="relative aspect-video bg-black rounded-[32px] overflow-hidden border border-white/5 shadow-2xl group">
-                              <video src={application.videoUrl} className="w-full h-full object-cover opacity-60" />
+                              <video src={application.video} className="w-full h-full object-cover opacity-60" />
                               <div className="absolute inset-0 flex items-center justify-center">
                                  <a
-                                    href={application.videoUrl}
+                                    href={application.video}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="p-6 bg-[#c9a84c] text-black rounded-full shadow-[0_0_50px_rgba(201,168,76,0.5)] hover:scale-110 transition-all flex items-center gap-3"
@@ -257,27 +261,27 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         <div className="grid grid-cols-2 gap-8">
                            <div className="space-y-1">
                               <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Wiek</p>
-                              <p className="text-xl font-bold text-white">{new Date().getFullYear() - new Date(application.dateOfBirth).getFullYear()} lat</p>
+                              <p className="text-xl font-bold text-white">{application.birthDate ? new Date().getFullYear() - new Date(application.birthDate).getFullYear() : 'N/A'} lat</p>
                            </div>
                            <div className="space-y-1">
                               <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Wzrost</p>
-                              <p className="text-xl font-bold text-white">{application.height} cm</p>
+                              <p className="text-xl font-bold text-white">{application.height || 'N/A'} cm</p>
                            </div>
                            <div className="space-y-1">
                               <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Waga</p>
-                              <p className="text-xl font-bold text-white">{application.weight} kg</p>
+                              <p className="text-xl font-bold text-white">{application.weight || 'N/A'} kg</p>
                            </div>
                            <div className="space-y-1">
                               <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Biust</p>
-                              <p className="text-xl font-bold text-white">{application.bustSize}</p>
+                              <p className="text-xl font-bold text-white">{application.breastSize || 'N/A'}</p>
                            </div>
                            <div className="space-y-1">
                               <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Włosy</p>
-                              <p className="text-xl font-bold text-white">{application.hairColor}</p>
+                              <p className="text-xl font-bold text-white">{application.hairColor || 'N/A'}</p>
                            </div>
                            <div className="space-y-1">
                               <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Oczy</p>
-                              <p className="text-xl font-bold text-white">{application.eyeColor}</p>
+                              <p className="text-xl font-bold text-white">{application.eyeColor || 'N/A'}</p>
                            </div>
                         </div>
 
@@ -303,13 +307,13 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                      <div className="p-8 bg-white/[0.02] border border-white/5 rounded-[40px] space-y-8">
                         <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px]">Preferowane Platformy</h4>
                         <div className="flex flex-wrap gap-3">
-                           {application.platforms.map((p, i) => (
+                           {platforms.map((p: string, i: number) => (
                               <span key={i} className="px-4 py-2 bg-black border border-white/10 rounded-xl text-[10px] font-bold text-gray-300 uppercase tracking-widest">{p}</span>
                            ))}
                         </div>
                         <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] pt-4">Typ Kontentu</h4>
                         <div className="flex flex-wrap gap-3">
-                           {application.contentTypes.map((t, i) => (
+                           {contentTypes.map((t: string, i: number) => (
                               <span key={i} className="px-4 py-2 border border-[#c9a84c]/20 rounded-xl text-[10px] font-bold text-[#c9a84c] uppercase tracking-widest">{t}</span>
                            ))}
                         </div>
@@ -320,7 +324,7 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                            <Clock className="w-4 h-4 text-[#c9a84c]" /> Dostępność (Grafik)
                         </h4>
                         <div className="space-y-3">
-                           {application.workingTimes.map((time, index) => (
+                           {workingTimes.map((time: any, index: number) => (
                               <div key={index} className="flex items-center justify-between p-4 bg-white/[0.02] rounded-2xl border border-white/5">
                                  <span className="text-[10px] font-black uppercase tracking-widest text-[#c9a84c]">{getDayName(time.dayOfWeek)}</span>
                                  <span className="text-[11px] font-bold text-white">{time.startTime} — {time.endTime}</span>

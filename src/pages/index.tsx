@@ -2,11 +2,36 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { subPlatforms, vodPlatforms, socialPlatforms } from '@/data/platforms';
 
 const HomePage: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   const [stats, setStats] = useState<any>(null);
+
+  const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', topic: '', message: '' });
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactForm),
+      });
+      if (res.ok) {
+        setContactStatus('sent');
+        setContactForm({ name: '', email: '', phone: '', topic: '', message: '' });
+        setTimeout(() => setContactStatus('idle'), 5000);
+      } else {
+        setContactStatus('error');
+      }
+    } catch {
+      setContactStatus('error');
+    }
+  };
 
   useEffect(() => {
     fetch('/api/stats')
@@ -140,25 +165,34 @@ const HomePage: React.FC = () => {
           {/* PHILOSOPHY */}
           <section id="philosophy" className="py-24 px-10 bg-[#080808]">
             <div className="max-w-[1200px] mx-auto">
-              <div className="flex items-center gap-4 text-[var(--gold)] text-[10px] tracking-[4px] font-arial mb-10"><span className="w-[30px] h-px bg-[var(--gold)]"></span>OUR PHILOSOPHY</div>
-              <h2 className="text-[clamp(28px,4vw,52px)] tracking-[4px] uppercase font-normal text-center mb-16 font-georgia">THE ART OF ADULT<br /><em className="italic text-[var(--gold)]">ENTERTAINMENT</em></h2>
+              <div className="flex items-center gap-4 text-[var(--gold)] text-[10px] tracking-[4px] font-arial mb-10"><span className="w-[30px] h-px bg-[var(--gold)]"></span>NASZA FILOZOFIA</div>
+              <h2 className="text-[clamp(28px,4vw,52px)] tracking-[4px] uppercase font-normal text-center mb-16 font-georgia">Sztuka Adult<br /><em className="italic text-[var(--gold)]">Rozrywki</em></h2>
               <div className="grid grid-cols-2 gap-20 items-start">
                 <div>
-                  <blockquote className="text-base italic text-[#ccc] leading-7 border-l-2 border-[var(--gold)] pl-6 my-10">&quot;We believe that adult content creation is a form of art that requires both artistic vision and business professionalism. Great content is neither purely commercial nor purely artistic – it's a perfect synthesis.&quot;</blockquote>
-                  <p className="text-sm text-[#888] leading-7 mb-5">At Studio HRL Adult, we combine high-end aesthetics with operational efficiency. Our approach is built on four core pillars: absolute respect, peak professionalism, full transparency, and sustainable growth.</p>
+                  <blockquote className="text-base italic text-[#ccc] leading-7 border-l-2 border-[var(--gold)] pl-6 my-10">&quot;Wierzymy, że tworzenie treści adult to forma sztuki wymagająca zarówno artystycznej wizji, jak i biznesowego profesjonalizmu. Świetna treść nie jest ani czysto komercyjna, ani czysto artystyczna – to doskonała synteza.&quot;</blockquote>
+                  <p className="text-sm text-[#888] leading-7 mb-5">W Studio HRL Adult łączymy wysoką estetykę z operacyjną efektywnością. Nasze podejście opiera się na czterech filarach: absolutny szacunek, szczytowy profesjonalizm, pełna transparentność i zrównoważony wzrost.</p>
                   <div className="grid grid-cols-2 gap-8 mt-10">
-                    {[{ num: '01.', title: 'EXCELLENCE', desc: 'Uncompromising quality in every frame, from 4K cinematography to pixel-perfect editing.' }, { num: '02.', title: 'PRIVACY', desc: 'Your security, anonymity, and data protection are non-negotiable operational priorities.' }, { num: '03.', title: 'EARNINGS', desc: 'Transparent partnership model ensures you keep what you earn with guaranteed startup support.' }, { num: '04.', title: 'SUPPORT', desc: '24/7 professional team dedicated to your growth, marketing, and platform optimization.' }].map((p, i) => (
+                    {[{ num: '01.', title: 'EKSCLENCJA', desc: 'Niekompromisowa jakość w każdej klatce, od kinematografii 4K po perfekcyjny montaż.' }, { num: '02.', title: 'PRYWATNOŚĆ', desc: 'Twoje bezpieczeństwo, anonimowość i ochrona danych to nienegocjowalne priorytety.' }, { num: '03.', title: 'ZAROBKI', desc: 'Transparentny model partnerski gwarantuje, że zatrzymujesz to, co zarabiasz, ze wsparciem startowym.' }, { num: '04.', title: 'WSPARCIE', desc: 'Zespół profesjonalistów 24/7 dedykowany Twojemu wzrostowi, marketingowi i optymalizacji.' }].map((p, i) => (
                       <div key={i}><div className="text-[13px] text-[var(--gold)] tracking-[2px] font-arial mb-1.5">{p.num}</div><div className="text-[11px] tracking-[3px] uppercase text-white font-arial font-semibold mb-2">{p.title}</div><div className="text-xs text-[#666] leading-relaxed">{p.desc}</div></div>
                     ))}
                   </div>
                 </div>
-                <div>
-                  <div className="text-[15px] italic text-[var(--gold)] mb-4">Production Showcase</div>
-                  <div className="grid grid-cols-3 gap-0.5">
-                    {['#1a1a1a', '#1e1814', '#161616', '#181818', '#141414', '#1c1c1c', '#161616', '#1a1510', '#0e0e0e'].map((bg, i) => (
-                      <div key={i} className="aspect-square bg-[#1a1a1a] overflow-hidden relative" style={{ background: bg }}>
-                        <div className="w-full h-full flex items-center justify-center text-[#333] text-xs font-arial"></div>
-                        {i === 1 && <div className="absolute bottom-2.5 left-2.5 text-[var(--gold)] text-[13px] italic">Velvet Intimacy</div>}
+                <div className="space-y-8">
+                  <div className="bg-[#111] border border-[#222] p-8">
+                    <div className="text-[9px] tracking-[3px] text-[#555] font-arial mb-4">NASZE PODEJŚCIE</div>
+                    <div className="text-[13px] text-[#ccc] leading-7 mb-4">Nie tworzymy po prostu treści — budujemy marki osobiste. Każda partnerka otrzymuje strategię łączącą artystyczną wizję z biznesowym planem.</div>
+                    <div className="text-[13px] text-[#ccc] leading-7">Traktujemy twórców z szacunkiem, oferujemy transparentne warunki i narzędzia do budowy trwałej kariery.</div>
+                  </div>
+                  <div className="bg-[#1a0810] border border-[#3a1020] p-8">
+                    <div className="text-[10px] tracking-[3px] text-[var(--crimson)] font-arial mb-3">NASZE PRZYRZECZENIE</div>
+                    <div className="text-[13px] text-[#ccc] leading-7">Zobowiązujemy się, aby każda osoba z nami współpracująca czuła się bezpiecznie, była sprawiedliwie wynagradzana i miała pełną kontrolę nad swoją karierą.</div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    {[{ icon: '🎭', title: 'Artystyczna Wizja', desc: 'Każda produkcja to opowieść.' }, { icon: '📈', title: 'Biznesowa Mądrość', desc: 'Strategia oparta na danych.' }, { icon: '🤝', title: 'Wzajemny Szacunek', desc: 'Partnerstwo, nie wyzysk.' }, { icon: '🔮', title: 'Innowacyjność', desc: 'Krok przed trendami.' }].map((v, i) => (
+                      <div key={i} className="bg-[#0d0d0d] border border-[#1a1a1a] p-5">
+                        <div className="text-lg mb-2">{v.icon}</div>
+                        <div className="text-[10px] tracking-[2px] uppercase text-white font-arial font-semibold mb-1.5">{v.title}</div>
+                        <div className="text-[11px] text-[#666] leading-relaxed">{v.desc}</div>
                       </div>
                     ))}
                   </div>
@@ -263,6 +297,69 @@ const HomePage: React.FC = () => {
                         <ul className="text-[11px] text-[#aaa] leading-relaxed">
                           {p.details.map((d, j) => (<li key={j} className="mb-1 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-[var(--gold)]">{d}</li>))}
                         </ul>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Subskrypcje & Treści Ekskluzywne */}
+              <div className="text-[15px] italic text-[var(--gold)] my-10">Subskrypcje & Treści Ekskluzywne</div>
+              <div className="grid grid-cols-5 gap-3 mb-8">
+                {subPlatforms.map((p, i) => (
+                  <div key={i} className="h-[160px] perspective-[1000px] cursor-pointer group">
+                    <div className="relative w-full h-full transition-transform duration-[550ms] transform-style-preserve-3d group-hover:rotate-y-180">
+                      <div className="absolute inset-0 bg-[#0d0d0d] border border-[#222] p-3 flex flex-col justify-center items-center text-center backface-hidden">
+                        <div className="text-[13px] text-white mb-0.5 font-georgia">{p.name}</div>
+                        <div className="text-[7px] tracking-[2px] uppercase text-[var(--gold)] font-arial mb-1.5">{p.tag}</div>
+                        <div className="text-[10px] text-[#666] leading-relaxed">{p.short}</div>
+                        <div className="text-[7px] text-[#444] tracking-wider font-arial mt-auto italic">najedź →</div>
+                      </div>
+                      <div className="absolute inset-0 bg-[#140a10] border border-[#3a1520] p-3 flex flex-col justify-start rotate-y-180 backface-hidden overflow-y-auto">
+                        <div className="text-[10px] text-[var(--gold)] tracking-wider font-arial font-semibold mb-1.5 pb-1 border-b border-[#2a1020]">{p.name.toUpperCase()}</div>
+                        <ul className="text-[9px] text-[#aaa] leading-relaxed">{p.details.map((d, j) => (<li key={j} className="mb-0.5 pl-2.5 relative before:content-['›'] before:absolute before:left-0 before:text-[var(--gold)]">{d}</li>))}</ul>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* VOD & Tube */}
+              <div className="text-[15px] italic text-[var(--gold)] my-10">VOD & Tube</div>
+              <div className="grid grid-cols-5 gap-3 mb-8">
+                {vodPlatforms.map((p, i) => (
+                  <div key={i} className="h-[160px] perspective-[1000px] cursor-pointer group">
+                    <div className="relative w-full h-full transition-transform duration-[550ms] transform-style-preserve-3d group-hover:rotate-y-180">
+                      <div className="absolute inset-0 bg-[#0d0d0d] border border-[#222] p-3 flex flex-col justify-center items-center text-center backface-hidden">
+                        <div className="text-[13px] text-white mb-0.5 font-georgia">{p.name}</div>
+                        <div className="text-[7px] tracking-[2px] uppercase text-[var(--gold)] font-arial mb-1.5">{p.tag}</div>
+                        <div className="text-[10px] text-[#666] leading-relaxed">{p.short}</div>
+                        <div className="text-[7px] text-[#444] tracking-wider font-arial mt-auto italic">najedź →</div>
+                      </div>
+                      <div className="absolute inset-0 bg-[#140a10] border border-[#3a1520] p-3 flex flex-col justify-start rotate-y-180 backface-hidden overflow-y-auto">
+                        <div className="text-[10px] text-[var(--gold)] tracking-wider font-arial font-semibold mb-1.5 pb-1 border-b border-[#2a1020]">{p.name.toUpperCase()}</div>
+                        <ul className="text-[9px] text-[#aaa] leading-relaxed">{p.details.map((d, j) => (<li key={j} className="mb-0.5 pl-2.5 relative before:content-['›'] before:absolute before:left-0 before:text-[var(--gold)]">{d}</li>))}</ul>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social & Promocja */}
+              <div className="text-[15px] italic text-[var(--gold)] my-10">Social & Promocja</div>
+              <div className="grid grid-cols-5 gap-3 mb-8">
+                {socialPlatforms.map((p, i) => (
+                  <div key={i} className="h-[160px] perspective-[1000px] cursor-pointer group">
+                    <div className="relative w-full h-full transition-transform duration-[550ms] transform-style-preserve-3d group-hover:rotate-y-180">
+                      <div className="absolute inset-0 bg-[#0d0d0d] border border-[#222] p-3 flex flex-col justify-center items-center text-center backface-hidden">
+                        <div className="text-[13px] text-white mb-0.5 font-georgia">{p.name}</div>
+                        <div className="text-[7px] tracking-[2px] uppercase text-[var(--gold)] font-arial mb-1.5">{p.tag}</div>
+                        <div className="text-[10px] text-[#666] leading-relaxed">{p.short}</div>
+                        <div className="text-[7px] text-[#444] tracking-wider font-arial mt-auto italic">najedź →</div>
+                      </div>
+                      <div className="absolute inset-0 bg-[#140a10] border border-[#3a1520] p-3 flex flex-col justify-start rotate-y-180 backface-hidden overflow-y-auto">
+                        <div className="text-[10px] text-[var(--gold)] tracking-wider font-arial font-semibold mb-1.5 pb-1 border-b border-[#2a1020]">{p.name.toUpperCase()}</div>
+                        <ul className="text-[9px] text-[#aaa] leading-relaxed">{p.details.map((d, j) => (<li key={j} className="mb-0.5 pl-2.5 relative before:content-['›'] before:absolute before:left-0 before:text-[var(--gold)]">{d}</li>))}</ul>
                       </div>
                     </div>
                   </div>
@@ -395,19 +492,22 @@ const HomePage: React.FC = () => {
               <div className="grid grid-cols-2 gap-16">
                 <div>
                   <h3 className="text-xl text-white mb-6 font-georgia">Formularz Kontaktowy</h3>
-                  <form className="flex flex-col gap-4">
-                    <input type="text" placeholder="Imię i Nazwisko" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
-                    <input type="email" placeholder="Email" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
-                    <input type="tel" placeholder="Telefon (opcjonalnie)" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
-                    <select className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-[#888] font-arial outline-none focus:border-[var(--gold)] transition-colors">
-                      <option>Interesuje mnie...</option>
-                      <option>Casting / Dołączenie do studia</option>
-                      <option>Współpraca partnerska</option>
-                      <option>Produkcja treści</option>
-                      <option>Inne zapytanie</option>
+                  <form onSubmit={handleContactSubmit} className="flex flex-col gap-4">
+                    <input type="text" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} placeholder="Imię i Nazwisko" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
+                    <input type="email" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} placeholder="Email" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
+                    <input type="tel" value={contactForm.phone} onChange={(e) => setContactForm({...contactForm, phone: e.target.value})} placeholder="Telefon (opcjonalnie)" className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors" />
+                    <select value={contactForm.topic} onChange={(e) => setContactForm({...contactForm, topic: e.target.value})} className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-[#888] font-arial outline-none focus:border-[var(--gold)] transition-colors">
+                      <option value="">Interesuje mnie...</option>
+                      <option value="casting">Casting / Dołączenie do studia</option>
+                      <option value="partnership">Współpraca partnerska</option>
+                      <option value="production">Produkcja treści</option>
+                      <option value="other">Inne zapytanie</option>
                     </select>
-                    <textarea placeholder="Twoja wiadomość..." rows={5} className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors resize-none"></textarea>
-                    <button type="submit" className="bg-[var(--crimson-btn)] border-none text-white px-8 py-4 text-[11px] tracking-[3px] uppercase font-arial font-semibold cursor-pointer hover:bg-[#b0243c] transition-colors mt-2">WYŚLIJ WIADOMOŚĆ</button>
+                    <textarea value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} placeholder="Twoja wiadomość..." rows={5} className="bg-[#111] border border-[#222] px-5 py-3.5 text-sm text-white font-arial outline-none focus:border-[var(--gold)] transition-colors resize-none"></textarea>
+                    <button type="submit" disabled={contactStatus === 'sending'} className="bg-[var(--crimson-btn)] border-none text-white px-8 py-4 text-[11px] tracking-[3px] uppercase font-arial font-semibold cursor-pointer hover:bg-[#b0243c] transition-colors mt-2 disabled:opacity-50">
+                      {contactStatus === 'sending' ? 'WYSYŁANIE...' : contactStatus === 'sent' ? 'WYSŁANO!' : 'WYŚLIJ WIADOMOŚĆ'}
+                    </button>
+                    {contactStatus === 'error' && <div className="text-red-500 text-xs mt-2">Wystąpił błąd. Spróbuj ponownie.</div>}
                   </form>
                 </div>
                 <div className="space-y-8">

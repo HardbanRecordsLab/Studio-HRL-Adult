@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
+import { sendEmail, emailTemplates } from '@/lib/email';
 
 const verifyToken = (req: NextApiRequest) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -26,11 +27,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'PUT') {
     try {
-      const { status } = req.body;
+      const { status, sendEmail: shouldSendEmail = true } = req.body;
+      
+      // Get current application to check if status is changing
+      const currentApp = await prisma.castingApplication.findUnique({
+        where: { id }
+      });
+
+      if (!currentApp) {
+        return res.status(404).json({ error: 'Application not found' });
+      }
+
+      // Only send email if status is actually changing
+      if (currentApp.status !== status && shouldSendEmail) {
+        const template = emailTemplates.castingApplication(currentApp.firstName, status);
+        await sendEmail({
+          to: currentApp.email,
+          subject: template.subject,
+          html: template.html,
+          text: template.text
+        });
+      }
+
       const updatedApp = await prisma.castingApplication.update({
         where: { id },
         data: { status }
       });
+      
       return res.status(200).json(updatedApp);
     } catch (error: any) {
       console.error(error);
