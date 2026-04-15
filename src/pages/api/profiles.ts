@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 const DEMO = [
   {
     id: 'luna-hrl', name: 'Luna', handle: 'luna.hrl',
-    bio: 'Premium content creator ze Studio HRL Adult. Specjalizacja: live cam, ekskluzywne subskrypcje, artystyczne treści adult. Top 3% OnlyFans.',
+    bio: 'Luna to premium twórczyni treści adult z Studio HRL. Specjalizacja: live cam, ekskluzywne subskrypcje, artystyczne treści. Top 3% OnlyFans.',
     stats: { followers: '3.6K', content: '240+', satisfaction: '98%', online: '21-23' },
     tags: ['OnlyFans', 'Live Cam', 'Premium'], ico: '🌙',
     measurements: { 'Wzrost': '168 cm', 'Biust': '90 cm', 'Talia': '64 cm', 'Biodra': '92 cm' },
@@ -12,7 +12,7 @@ const DEMO = [
   },
   {
     id: 'alexia-hrl', name: 'Alexia', handle: 'alexia.hrl',
-    bio: 'Premium Glamour Creator • Studio HRL Adult • Artistic nudes, Lingerie, Live. Top 5% OnlyFans & Fansly.',
+    bio: 'Alexia to premium glamour creator z Studio HRL. Specjalizacja: artystyczne nudes, lingerie, live. Top 5% OnlyFans i Fansly.',
     stats: { followers: '5.2K', content: '380+', satisfaction: '99%', online: '20-00' },
     tags: ['Fansly', 'Luxury', 'Studio'], ico: '✨',
     measurements: { 'Wzrost': '174 cm', 'Biust': '92 cm', 'Talia': '62 cm', 'Biodra': '92 cm' },
@@ -20,7 +20,7 @@ const DEMO = [
   },
   {
     id: 'sofia-hrl', name: 'Sofia', handle: 'sofia.hrl',
-    bio: 'Multi-platform creator • Studio HRL Adult • BDSM, Fetish & Vanilla. ManyVids Top Seller 2025.',
+    bio: 'Sofia to multi-platform creator z Studio HRL. Specjalizacja: BDSM, fetish i vanilla. ManyVids Top Seller 2025.',
     stats: { followers: '8.9K', content: '620+', satisfaction: '97%', online: '22-02' },
     tags: ['ManyVids', 'Chaturbate', 'BDSM'], ico: '🔥',
     measurements: { 'Wzrost': '166 cm', 'Biust': '95 cm', 'Talia': '68 cm', 'Biodra': '98 cm' },
@@ -36,14 +36,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
              COALESCE(name, CONCAT("firstName", ' ', "lastName"), 'HRL Model') as name,
              COALESCE(handle, id) as handle,
              COALESCE(bio, description, 'Premium content creator.') as bio,
-             "profileStats", platforms, description
+             avatar, "profileStats", platforms, description
       FROM "Partner"
       WHERE status = 'active'
       ORDER BY "createdAt" DESC
     `;
 
     if (!rawProfiles || rawProfiles.length === 0) {
-      return res.status(200).json(DEMO);
+      return res.status(200).json([]);
     }
 
     const profiles = rawProfiles.map((p: any) => {
@@ -58,6 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: p.name || 'HRL Model',
         handle: handle,
         bio: p.bio || 'Premium content creator.',
+        avatar: p.avatar || null,
         stats, tags: tags.length > 0 ? tags : ['Premium'],
         ico: '✨', measurements: null,
         characteristics: p.description || p.bio || 'Professional model.',
@@ -67,6 +68,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json(profiles);
   } catch (error: any) {
     console.error('Profiles API error:', error.message);
-    return res.status(200).json(DEMO);
+    return res.status(500).json({ error: error.message });
   }
 }

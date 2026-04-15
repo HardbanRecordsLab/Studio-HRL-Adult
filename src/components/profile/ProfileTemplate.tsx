@@ -13,6 +13,7 @@ interface ProfileTemplateProps {
     avatar?: string;
     heroImage?: string;
     characteristics?: string;
+    type?: string;
     profileData?: {
         likes?: string[];
         boundaries?: string[];
@@ -42,7 +43,7 @@ export const ProfileTemplate: React.FC<ProfileTemplateProps> = ({ data }) => {
             <div className="mb-8 relative inline-block">
               <div className="absolute inset-0 bg-gradient-to-tr from-purple-500 to-amber-300 rounded-full blur-xl opacity-30 animate-pulse"></div>
               <img 
-                src={data.heroImage || data.avatar || "/image/Alexia.jpg"} 
+                src={data.heroImage || data.avatar || "/images/default-profile.jpg"} 
                 alt={data.name} 
                 className="relative w-64 h-64 mx-auto rounded-full object-cover shadow-[0_0_40px_rgba(0,0,0,0.8)] border-2 border-white/10 ring-4 ring-purple-500/20" 
               />
@@ -67,14 +68,38 @@ export const ProfileTemplate: React.FC<ProfileTemplateProps> = ({ data }) => {
                   <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl relative overflow-hidden group">
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
                     <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300 mb-6 uppercase tracking-wider text-sm">Wymiary</h3>
-                    <div className="grid grid-cols-2 gap-y-6 gap-x-4 text-base">
-                      <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Wzrost</span> <span className="text-white font-medium">{data.height || '174'} cm</span></div>
-                      <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Waga</span> <span className="text-white font-medium">{data.weight || '58'} kg</span></div>
-                      <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Biust</span> <span className="text-white font-medium">{data.measurements?.split('/')[0]?.trim() || '92C'}</span></div>
-                      <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Talia</span> <span className="text-white font-medium">{data.measurements?.split('/')[1]?.trim() || '62'} cm</span></div>
-                      <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Biodra</span> <span className="text-white font-medium">{data.measurements?.split('/')[2]?.trim() || '92'} cm</span></div>
-                      <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Rozmiar</span> <span className="text-white font-medium">{data.profileData?.size || 'S/M'}</span></div>
-                    </div>
+                    {data.type === 'couple' ? (
+                      <div className="grid grid-cols-2 gap-8">
+                        {/* Anna */}
+                        <div>
+                          <h4 className="text-gold font-bold mb-4 text-sm uppercase tracking-wider">Anna</h4>
+                          <div className="space-y-3 text-sm">
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Wzrost</span> <span className="text-white font-medium">170 cm</span></div>
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Biust</span> <span className="text-white font-medium">88C</span></div>
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Talia</span> <span className="text-white font-medium">64 cm</span></div>
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Biodra</span> <span className="text-white font-medium">90 cm</span></div>
+                          </div>
+                        </div>
+                        {/* Mark */}
+                        <div>
+                          <h4 className="text-gold font-bold mb-4 text-sm uppercase tracking-wider">Mark</h4>
+                          <div className="space-y-3 text-sm">
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Wzrost</span> <span className="text-white font-medium">182 cm</span></div>
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Waga</span> <span className="text-white font-medium">85 kg</span></div>
+                            <div className="flex justify-between"><span className="text-gray-500 uppercase text-xs">Budowa</span> <span className="text-white font-medium">Athletic</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-y-6 gap-x-4 text-base">
+                        <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Wzrost</span> <span className="text-white font-medium">{data.height || '174'} cm</span></div>
+                        <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Waga</span> <span className="text-white font-medium">{data.weight || '58'} kg</span></div>
+                        <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Biust</span> <span className="text-white font-medium">{data.measurements?.split('/')[0]?.trim() || '92C'}</span></div>
+                        <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Talia</span> <span className="text-white font-medium">{data.measurements?.split('/')[1]?.trim() || '62'} cm</span></div>
+                        <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Biodra</span> <span className="text-white font-medium">{data.measurements?.split('/')[2]?.trim() || '92'} cm</span></div>
+                        <div className="flex flex-col"><span className="text-gray-500 text-xs uppercase tracking-wider mb-1">Rozmiar</span> <span className="text-white font-medium">{data.profileData?.size || 'S/M'}</span></div>
+                      </div>
+                    )}
                   </div>
                   {/* CHARACTERISTICS CARD */}
                   <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl relative overflow-hidden">
@@ -90,8 +115,8 @@ export const ProfileTemplate: React.FC<ProfileTemplateProps> = ({ data }) => {
               <div className="order-1 lg:order-2">
                 <div className="relative rounded-3xl overflow-hidden p-1 bg-gradient-to-b from-white/10 to-transparent">
                   <img 
-                    src="/image/alexia2.jpg" 
-                    alt="Portret" 
+                    src={data.heroImage || data.avatar || "/images/default-profile.jpg"} 
+                    alt={data.name} 
                     className="w-full rounded-2xl object-cover shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none rounded-3xl"></div>
@@ -225,13 +250,7 @@ export const ProfileTemplate: React.FC<ProfileTemplateProps> = ({ data }) => {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-center text-white mb-16" style={{ fontFamily: 'Cinzel, serif' }}>Galeria Portfolio</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {(data.profileData?.gallery?.length ? data.profileData.gallery : [
-                '/image/Alexia.jpg', 
-                '/image/alexia2.jpg', 
-                '/image/alexia3.jpg', 
-                '/image/alexia4.jpg', 
-                '/image/alexia5.jpg'
-              ]).slice(0, 5).map((imgSrc, i) => (
+              {(data.profileData?.gallery?.length ? data.profileData.gallery.slice(0, 5) : []).map((imgSrc, i) => (
                 <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#111113] group relative">
                   <div className="absolute inset-0 bg-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 mix-blend-overlay"></div>
                   <img 

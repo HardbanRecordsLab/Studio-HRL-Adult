@@ -396,7 +396,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                   </div>
                   <div>
                     <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Hero Image (URL avataru)</label>
-                    <input type="text" value={newPartner.avatar} onChange={e => setNewPartner({...newPartner, avatar: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="/image/Alexia.jpg" />
+                    <input type="text" value={newPartner.avatar} onChange={e => setNewPartner({...newPartner, avatar: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="/images/default-profile.jpg" />
                   </div>
                 </div>
 
