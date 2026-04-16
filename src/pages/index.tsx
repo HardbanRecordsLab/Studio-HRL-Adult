@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { subPlatforms, vodPlatforms, socialPlatforms } from '@/data/platforms';
+import { liveCamPlatforms, subPlatforms, tubePlatforms, marketingPlatforms } from '@/data/platforms';
 
 const HomePage: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
@@ -283,20 +283,18 @@ const HomePage: React.FC = () => {
               {/* Live Cam */}
               <div className="text-[15px] italic text-[var(--gold)] my-10">Live Cam</div>
               <div className="grid grid-cols-4 gap-3 mb-8">
-                {[{ name: 'Chaturbate', tag: '#1 ŚWIAT', short: 'Największa platforma live cam na świecie.', details: ['Ponad 6 mln unikalnych widzów dziennie', 'Prowizja do 80% dla modeli z token tips', 'Automatyczne linki afiliacyjne i fanclub', 'Funkcja Spy Shows i Private Shows', 'Płatności co tydzień lub dwa razy w miesiącu'] }, { name: 'MyFreeCams', tag: '#2 ŚWIAT', short: 'Lojalna społeczność, wysoki payout.', details: ['Stała baza lojalnych widzów premium', 'System Miss MFC – ranking i bonusy', 'Wysoki payout: do 60% netto', 'Własny player i strona profilu', 'Platforma tylko dla kobiet'] }, { name: 'LiveJasmin', tag: 'PREMIUM', short: 'Najwyższe stawki w private shows.', details: ['Najbardziej premium platforma live cam', 'Private show od $2.99/min – wyższe stawki', 'Wyselekcjonowani, płacący widzowie', 'Profesjonalne wsparcie i dedykowany manager', 'Certyfikat jakości studia HRL'] }, { name: 'StripChat', tag: 'VR LEADER', short: 'Fan Club, VR shows, do 80% prowizji.', details: ['Lider technologii VR w live cam', 'Fan Club z miesięczną subskrypcją', 'Ultra HD i VR stream 180°', 'Do 80% prowizji dla top modeli', 'Silny algorytm organiczny dla nowych modeli'] }].map((p, i) => (
+                {liveCamPlatforms.map((p, i) => (
                   <div key={i} className="h-[180px] perspective-[1000px] cursor-pointer group">
                     <div className="relative w-full h-full transition-transform duration-[550ms] transform-style-preserve-3d group-hover:rotate-y-180">
                       <div className="absolute inset-0 bg-[#0d0d0d] border border-[#222] p-5 flex flex-col justify-center items-center text-center backface-hidden">
                         <div className="text-[15px] text-white mb-1.5 font-georgia">{p.name}</div>
                         <div className="text-[8px] tracking-[3px] uppercase text-[var(--gold)] font-arial mb-2.5">{p.tag}</div>
                         <div className="text-[11px] text-[#666] leading-relaxed">{p.short}</div>
-                        <div className="text-[9px] text-[#444] tracking-wider font-arial mt-auto italic">najedź aby zobaczyć więcej</div>
+                        <div className="text-[9px] text-[#444] tracking-wider font-arial mt-auto italic">najedź →</div>
                       </div>
-                      <div className="absolute inset-0 bg-[#140a10] border border-[#3a1520] p-5 flex flex-col justify-start rotate-y-180 backface-hidden">
+                      <div className="absolute inset-0 bg-[#140a10] border border-[#3a1520] p-5 flex flex-col justify-start rotate-y-180 backface-hidden overflow-y-auto">
                         <div className="text-[12px] text-[var(--gold)] tracking-wider font-arial font-semibold mb-2.5 pb-2 border-b border-[#2a1020]">{p.name.toUpperCase()}</div>
-                        <ul className="text-[11px] text-[#aaa] leading-relaxed">
-                          {p.details.map((d, j) => (<li key={j} className="mb-1 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-[var(--gold)]">{d}</li>))}
-                        </ul>
+                        <ul className="text-[11px] text-[#aaa] leading-relaxed">{p.details.map((d, j) => (<li key={j} className="mb-1 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-[var(--gold)]">{d}</li>))}</ul>
                       </div>
                     </div>
                   </div>
@@ -324,10 +322,10 @@ const HomePage: React.FC = () => {
                 ))}
               </div>
 
-              {/* VOD & Tube */}
-              <div className="text-[15px] italic text-[var(--gold)] my-10">VOD & Tube</div>
-              <div className="grid grid-cols-5 gap-3 mb-8">
-                {vodPlatforms.map((p, i) => (
+              {/* Tube / Lejek */}
+              <div className="text-[15px] italic text-[var(--gold)] my-10">Tube / Lejek Ruchu</div>
+              <div className="grid grid-cols-4 gap-3 mb-8">
+                {tubePlatforms.map((p, i) => (
                   <div key={i} className="h-[160px] perspective-[1000px] cursor-pointer group">
                     <div className="relative w-full h-full transition-transform duration-[550ms] transform-style-preserve-3d group-hover:rotate-y-180">
                       <div className="absolute inset-0 bg-[#0d0d0d] border border-[#222] p-3 flex flex-col justify-center items-center text-center backface-hidden">
@@ -345,10 +343,10 @@ const HomePage: React.FC = () => {
                 ))}
               </div>
 
-              {/* Social & Promocja */}
-              <div className="text-[15px] italic text-[var(--gold)] my-10">Social & Promocja</div>
+              {/* Marketing & Promocja */}
+              <div className="text-[15px] italic text-[var(--gold)] my-10">Marketing & Promocja</div>
               <div className="grid grid-cols-5 gap-3 mb-8">
-                {socialPlatforms.map((p, i) => (
+                {marketingPlatforms.map((p, i) => (
                   <div key={i} className="h-[160px] perspective-[1000px] cursor-pointer group">
                     <div className="relative w-full h-full transition-transform duration-[550ms] transform-style-preserve-3d group-hover:rotate-y-180">
                       <div className="absolute inset-0 bg-[#0d0d0d] border border-[#222] p-3 flex flex-col justify-center items-center text-center backface-hidden">
