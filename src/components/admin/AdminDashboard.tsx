@@ -86,7 +86,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-[4px] uppercase font-arial">Control <span className="text-[#c9a84c]">Center</span></h1>
-              <p className="text-[10px] text-gray-500 tracking-[2px] uppercase">HRL Industrial Automation v3.0</p>
+              <p className="text-[10px] text-gray-300 tracking-[2px] uppercase">HRL Industrial Automation v3.0</p>
             </div>
           </div>
           
@@ -116,7 +116,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
                   "w-12 h-12 rounded-2xl flex items-center justify-center transition-all group relative",
-                  activeTab === tab.id ? "bg-[#c9a84c] text-black shadow-2xl shadow-[#c9a84c]/30 scale-110" : "text-gray-600 hover:text-white hover:bg-white/5"
+                  activeTab === tab.id ? "bg-[#c9a84c] text-black shadow-2xl shadow-[#c9a84c]/30 scale-110" : "text-gray-300 hover:text-white hover:bg-white/5"
                 )}
              >
                 <tab.icon className="w-5 h-5" />
@@ -137,7 +137,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
                <motion.div key="db" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-12">
                   <header>
                     <h2 className="text-4xl font-light italic mb-2 tracking-tight">Status Operacyjny <span className="text-[#c9a84c]">HRL Academy</span></h2>
-                    <p className="text-[10px] text-gray-500 uppercase tracking-[4px] font-bold">Zestawienie analityczne czasu rzeczywistego // node_12</p>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-[4px] font-bold">Zestawienie analityczne czasu rzeczywistego // node_12</p>
                   </header>
 
                   {/* Core KPI Grid */}
@@ -175,7 +175,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
                                 </div>
                                 <div className="space-y-1">
                                    <p className="text-xs font-bold font-georgia text-white italic group-hover:text-[#c9a84c] transition-colors">{t.label}</p>
-                                   <p className="text-[9px] text-gray-500 uppercase tracking-widest font-bold">{t.description}</p>
+                                   <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold">{t.description}</p>
                                 </div>
                              </button>
                            ))}

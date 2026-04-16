@@ -1,10 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
+import { requireAdminSession } from '@/lib/adminSession';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const authHeader = req.headers.authorization;
-  // Temporary auth check - in production use JWT
-  // if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
+  const adminSession = requireAdminSession(req, res);
+  if (!adminSession) {
+    return;
+  }
 
   const { method } = req;
 
@@ -48,23 +50,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             status, 
             notes,
             verifiedAt: status === 'verified' ? new Date() : undefined,
-            verifiedBy: 'System Admin' // This would come from token in prod
+            verifiedBy: status === 'verified' ? adminSession.email : null
           }
         });
-
-        // Also update the partner status if needed
-        if (status === 'verified') {
-           const allDocs = await prisma.partnerDocument.findMany({
-             where: { partnerId: document.partnerId }
-           });
-           const isFullyVerified = allDocs.every(d => d.status === 'verified');
-           if (isFullyVerified) {
-              await prisma.partner.update({
-                where: { id: document.partnerId },
-                data: { documentStatus: 'verified' }
-              });
-           }
-        }
 
         return res.status(200).json(document);
       }

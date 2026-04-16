@@ -153,7 +153,7 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                
                <button
                  onClick={onClose}
-                 className="p-4 hover:bg-white/5 rounded-2xl text-gray-500 hover:text-white transition-all border border-white/5"
+                 className="p-4 hover:bg-white/5 rounded-2xl text-gray-400 hover:text-white transition-all border border-white/5"
                >
                  <X className="w-6 h-6" />
                </button>
@@ -185,19 +185,19 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         </div>
                         <div className="grid grid-cols-2 gap-6">
                            <div className="p-6 bg-[#c9a84c]/5 border border-[#c9a84c]/10 rounded-3xl">
-                              <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-3">Status Doświadczenia</p>
-                              <span className={cn("px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest", application.experience === 'yes' ? "bg-[#c9a84c] text-black" : "bg-white/5 text-gray-500")}>
+                              <p className="text-[8px] text-gray-400 font-black uppercase tracking-widest mb-3">Status Doświadczenia</p>
+                              <span className={cn("px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest", application.experience === 'yes' ? "bg-[#c9a84c] text-black" : "bg-white/5 text-gray-400")}>
                                  {application.experience === 'yes' ? 'Profesjonalistka' : 'New Face'}
                               </span>
                            </div>
                            <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl">
-                              <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-3">Umiejętności Dodatkowe</p>
+                              <p className="text-[8px] text-gray-400 font-black uppercase tracking-widest mb-3">Umiejętności Dodatkowe</p>
                               <p className="text-[11px] text-white font-medium">{application.skills || 'Brak danych'}</p>
                            </div>
                         </div>
                         {application.experienceDesc && (
                            <div className="p-6 bg-white/[0.01] border border-white/5 rounded-3xl">
-                              <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-3">Opis Doświadczenia</p>
+                              <p className="text-[8px] text-gray-400 font-black uppercase tracking-widest mb-3">Opis Doświadczenia</p>
                               <p className="text-[11px] text-gray-300 leading-relaxed">{application.experienceDesc}</p>
                            </div>
                         )}
@@ -260,33 +260,33 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         
                         <div className="grid grid-cols-2 gap-8">
                            <div className="space-y-1">
-                              <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Wiek</p>
+                              <p className="text-[7px] text-gray-400 font-black uppercase tracking-widest">Wiek</p>
                               <p className="text-xl font-bold text-white">{application.birthDate ? new Date().getFullYear() - new Date(application.birthDate).getFullYear() : 'N/A'} lat</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Wzrost</p>
+                              <p className="text-[7px] text-gray-400 font-black uppercase tracking-widest">Wzrost</p>
                               <p className="text-xl font-bold text-white">{application.height || 'N/A'} cm</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Waga</p>
+                              <p className="text-[7px] text-gray-400 font-black uppercase tracking-widest">Waga</p>
                               <p className="text-xl font-bold text-white">{application.weight || 'N/A'} kg</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Biust</p>
+                              <p className="text-[7px] text-gray-400 font-black uppercase tracking-widest">Biust</p>
                               <p className="text-xl font-bold text-white">{application.breastSize || 'N/A'}</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Włosy</p>
+                              <p className="text-[7px] text-gray-400 font-black uppercase tracking-widest">Włosy</p>
                               <p className="text-xl font-bold text-white">{application.hairColor || 'N/A'}</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[7px] text-gray-500 font-black uppercase tracking-widest">Oczy</p>
+                              <p className="text-[7px] text-gray-400 font-black uppercase tracking-widest">Oczy</p>
                               <p className="text-xl font-bold text-white">{application.eyeColor || 'N/A'}</p>
                            </div>
                         </div>
 
                         <div className="space-y-4 pt-6 border-t border-white/5">
-                           <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest">Kontakt Bezpośredni</p>
+                           <p className="text-[8px] text-gray-400 font-black uppercase tracking-widest">Kontakt Bezpośredni</p>
                            <div className="space-y-3">
                               <div className="flex items-center gap-4 text-sm text-white">
                                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-[#c9a84c]">
@@ -368,7 +368,7 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         <button
                            onClick={() => onStatusUpdate(application.id, 'rejected')}
                            disabled={loading}
-                           className="px-10 py-5 bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/50 text-gray-500 hover:text-red-500 text-[10px] font-black uppercase tracking-[4px] rounded-2xl transition-all"
+                           className="px-10 py-5 bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/50 text-gray-400 hover:text-red-500 text-[10px] font-black uppercase tracking-[4px] rounded-2xl transition-all"
                         >
                            Odrzuć Kandydaturę
                         </button>
@@ -381,7 +381,7 @@ const CastingDetailDrawer: React.FC<CastingDetailDrawerProps> = ({
                         </button>
                      </>
                   ) : (
-                     <div className="px-10 py-5 bg-white/5 border border-white/5 rounded-2xl text-[10px] font-black text-gray-500 uppercase tracking-widest italic">
+                     <div className="px-10 py-5 bg-white/5 border border-white/5 rounded-2xl text-[10px] font-black text-gray-400 uppercase tracking-widest italic">
                         Aplikacja została już przetworzona: <span className="text-white ml-2 underline">{application.status}</span>
                      </div>
                   )}

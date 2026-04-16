@@ -123,7 +123,7 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter">HRL <span className="text-white">Casting</span> HUB</h2>
-          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase">Zarządzanie nowymi talentami i weryfikacja zgłoszeń</p>
+          <p className="text-[10px] text-gray-400 tracking-[3px] uppercase">Zarządzanie nowymi talentami i weryfikacja zgłoszeń</p>
         </div>
         <div className="flex gap-4">
            <button className="flex items-center gap-3 px-6 py-2.5 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded transition-all hover:bg-white/10">
@@ -142,7 +142,7 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
          ].map((s, i) => (
            <div key={i} className="bg-[#0d0d0d] border border-white/5 p-6 rounded-2xl flex items-center justify-between group hover:border-[#c9a84c]/20 transition-all cursor-default">
               <div>
-                <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">{s.label}</p>
+                <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">{s.label}</p>
                 <p className="text-2xl font-bold font-georgia">{s.val}</p>
               </div>
               <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
@@ -159,7 +159,7 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
               <button
                 key={f}
                 onClick={() => setStatusFilter(f)}
-                className={`px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-[#c9a84c] text-black' : 'text-gray-500 hover:text-white'}`}
+                className={`px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-[#c9a84c] text-black' : 'text-gray-400 hover:text-white'}`}
               >
                 {f === 'all' ? 'Wszystko' : f === 'pending' ? 'Oczekujące' : f === 'approved' ? 'Zatwierdzone' : 'Odrzucone'}
               </button>
@@ -183,12 +183,12 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-white/5 bg-white/5">
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Aplikant</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Kontakt</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Wiek / Detale</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Doświadczenie</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Status</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Akcje</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Aplikant</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Kontakt</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Wiek / Detale</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Doświadczenie</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Status</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Akcje</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
@@ -209,20 +209,20 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                          </div>
                          <div>
                             <p className="text-sm font-bold font-georgia text-white group-hover:text-[#c9a84c] transition-colors">{a.firstName} {a.lastName}</p>
-                            <p className="text-[10px] text-gray-500 uppercase tracking-widest">{new Date(a.createdAt).toLocaleDateString()}</p>
+                            <p className="text-[10px] text-gray-400 uppercase tracking-widest">{new Date(a.createdAt).toLocaleDateString()}</p>
                          </div>
                       </div>
                    </td>
                    <td className="px-8 py-6">
                       <p className="text-[10px] text-white font-bold">{a.email}</p>
-                      <p className="text-[9px] text-gray-500">{a.phone}</p>
+                      <p className="text-[9px] text-gray-400">{a.phone}</p>
                    </td>
                    <td className="px-8 py-6">
                       <p className="text-[10px] text-white">{calculateAge(a.birthDate)} lat</p>
-                      <p className="text-[9px] text-gray-500 font-black uppercase tracking-widest">{a.height}cm / {a.weight}kg</p>
+                      <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest">{a.height}cm / {a.weight}kg</p>
                    </td>
                    <td className="px-8 py-6">
-                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${a.experience === 'yes' ? 'bg-green-500/10 text-green-500' : 'bg-white/5 text-gray-500'}`}>
+                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${a.experience === 'yes' ? 'bg-green-500/10 text-green-500' : 'bg-white/5 text-gray-400'}`}>
                          {a.experience === 'yes' ? 'Doświadczona' : 'Nowa'}
                       </span>
                    </td>
@@ -265,9 +265,9 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                   <div className="p-8 border-b border-white/5 bg-white/5 flex justify-between items-center">
                      <div>
                         <h3 className="text-2xl font-bold font-georgia text-[#c9a84c] italic">Karta Aplikanta <span className="text-white">#{selectedApp.id.slice(-6)}</span></h3>
-                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Status zgłoszenia: {selectedApp.status}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Status zgłoszenia: {selectedApp.status}</p>
                      </div>
-                     <button onClick={() => setShowModal(false)} className="p-2 text-gray-500 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-6 h-6" /></button>
+                     <button onClick={() => setShowModal(false)} className="p-2 text-gray-400 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-6 h-6" /></button>
                   </div>
 
                   <div className="flex-1 overflow-y-auto p-10">
@@ -278,21 +278,21 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                               <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] mb-6 border-b border-[#c9a84c]/20 pb-2">Dane Osobowe</h4>
                               <div className="space-y-4">
                                  <div>
-                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest">Pełne Imię i Nazwisko</p>
+                                    <p className="text-[8px] text-gray-400 uppercase tracking-widest">Pełne Imię i Nazwisko</p>
                                     <p className="text-lg font-bold text-white">{selectedApp.firstName} {selectedApp.lastName}</p>
                                  </div>
                                  <div className="flex gap-8">
                                     <div>
-                                       <p className="text-[8px] text-gray-500 uppercase tracking-widest">Wiek</p>
+                                       <p className="text-[8px] text-gray-400 uppercase tracking-widest">Wiek</p>
                                        <p className="text-sm font-bold text-white">{calculateAge(selectedApp.birthDate)} lat</p>
                                     </div>
                                     <div>
-                                       <p className="text-[8px] text-gray-500 uppercase tracking-widest">Wzrost / Waga</p>
+                                       <p className="text-[8px] text-gray-400 uppercase tracking-widest">Wzrost / Waga</p>
                                        <p className="text-sm font-bold text-white">{selectedApp.height}cm / {selectedApp.weight}kg</p>
                                     </div>
                                  </div>
                                  <div>
-                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest">Cechy</p>
+                                    <p className="text-[8px] text-gray-400 uppercase tracking-widest">Cechy</p>
                                     <p className="text-[10px] font-bold text-gray-300 uppercase tracking-wider">{selectedApp.hairColor} / {selectedApp.eyeColor} / {selectedApp.breastSize}</p>
                                  </div>
                               </div>
@@ -330,19 +330,19 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                               <h4 className="text-[10px] font-black text-[#c9a84c] uppercase tracking-[4px] mb-6 border-b border-[#c9a84c]/20 pb-2">Preferencje & Zakres</h4>
                               <div className="grid grid-cols-2 gap-x-12 gap-y-6">
                                  <div>
-                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Typy Contentu</p>
+                                    <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Typy Contentu</p>
                                     <p className="text-[10px] text-white font-bold">{selectedApp.contentTypes}</p>
                                  </div>
                                  <div>
-                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Limity (Boundaries)</p>
+                                    <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Limity (Boundaries)</p>
                                     <p className="text-[10px] text-white font-bold">{selectedApp.limits || 'Brak zadeklarowanych limitów'}</p>
                                  </div>
                                  <div>
-                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Dostępność</p>
+                                    <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Dostępność</p>
                                     <p className="text-[10px] text-white font-bold">{selectedApp.sessionsPerWeek} sesji / {selectedApp.workingTimes}</p>
                                  </div>
                                  <div>
-                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Platformy</p>
+                                    <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Platformy</p>
                                     <p className="text-[10px] text-white font-bold">{selectedApp.platforms}</p>
                                  </div>
                               </div>

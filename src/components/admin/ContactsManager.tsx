@@ -144,15 +144,15 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold font-georgia italic text-white mb-2">Wiadomości <span className="text-[#c9a84c]">Kontaktowe</span></h2>
-          <p className="text-[10px] text-gray-500 uppercase tracking-[4px] font-bold">Zarządzanie formularzem kontaktowym</p>
+          <p className="text-[10px] text-gray-400 uppercase tracking-[4px] font-bold">Zarządzanie formularzem kontaktowym</p>
         </div>
         <div className="flex gap-4">
           <div className="bg-[#0d0d0d] border border-white/5 px-6 py-3 rounded-2xl">
-            <span className="text-[9px] text-gray-500 uppercase tracking-widest font-black">Nowe</span>
+            <span className="text-[9px] text-gray-400 uppercase tracking-widest font-black">Nowe</span>
             <span className="ml-2 text-lg font-bold text-white">{messages.filter(m => m.status === 'new').length}</span>
           </div>
           <div className="bg-[#0d0d0d] border border-white/5 px-6 py-3 rounded-2xl">
-            <span className="text-[9px] text-gray-500 uppercase tracking-widest font-black">Wszystkie</span>
+            <span className="text-[9px] text-gray-400 uppercase tracking-widest font-black">Wszystkie</span>
             <span className="ml-2 text-lg font-bold text-white">{messages.length}</span>
           </div>
         </div>
@@ -162,7 +162,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
       <div className="bg-[#0d0d0d] border border-white/5 rounded-2xl p-6">
         <div className="flex flex-wrap gap-4 items-center">
           <div className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-xl px-4 py-2 flex-1 max-w-md">
-            <Search className="w-4 h-4 text-gray-500" />
+            <Search className="w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Szukaj po imieniu, emailu, temacie lub treści..."
@@ -181,7 +181,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                   "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all",
                   statusFilter === status 
                     ? "bg-[#c9a84c] text-black border-[#c9a84c]/50" 
-                    : "bg-white/5 text-gray-400 border-white/10 hover:bg-white/10"
+                    : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10"
                 )}
               >
                 {status === 'all' ? 'Wszystkie' : 
@@ -201,7 +201,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                   "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all",
                   sortBy === sort 
                     ? "bg-[#c9a84c] text-black border-[#c9a84c]/50" 
-                    : "bg-white/5 text-gray-400 border-white/10 hover:bg-white/10"
+                    : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10"
                 )}
               >
                 {sort === 'date' ? 'Data' : sort === 'status' ? 'Status' : 'Nazwa'}
@@ -221,9 +221,9 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
             
             <div className="divide-y divide-white/5 max-h-[600px] overflow-y-auto">
               {loading ? (
-                <div className="p-6 text-center text-gray-500">Ładowanie wiadomości...</div>
+                <div className="p-6 text-center text-gray-400">Ładowanie wiadomości...</div>
               ) : filteredMessages.length === 0 ? (
-                <div className="p-6 text-center text-gray-500">Brak wiadomości spełniających kryteria</div>
+                <div className="p-6 text-center text-gray-400">Brak wiadomości spełniających kryteria</div>
               ) : (
                 filteredMessages.map(message => (
                   <div
@@ -242,17 +242,17 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-white">{message.name}</span>
-                            <span className="text-xs text-gray-500">{message.email}</span>
+                            <span className="text-xs text-gray-400">{message.email}</span>
                             {message.phone && (
                               <>
                                 <span className="text-gray-600">•</span>
-                                <span className="text-xs text-gray-500">{message.phone}</span>
+                                <span className="text-xs text-gray-400">{message.phone}</span>
                               </>
                             )}
                           </div>
                           <div className="flex items-center gap-2 mt-1">
                             <span className="text-xs text-[#c9a84c] font-bold">{message.topic}</span>
-                            <span className="text-xs text-gray-500">{new Date(message.createdAt).toLocaleString('pl-PL')}</span>
+                            <span className="text-xs text-gray-400">{new Date(message.createdAt).toLocaleString('pl-PL')}</span>
                           </div>
                         </div>
                       </div>
@@ -270,13 +270,13 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                             e.stopPropagation();
                             deleteMessage(message.id);
                           }}
-                          className="p-2 text-gray-500 hover:text-red-400 transition-colors"
+                          className="p-2 text-gray-400 hover:text-red-400 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
-                    <div className="text-sm text-gray-400 line-clamp-2">
+                    <div className="text-sm text-gray-300 line-clamp-2">
                       {message.message}
                     </div>
                   </div>
@@ -319,7 +319,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                   {selectedMessage.status !== 'archived' && (
                     <button
                       onClick={() => updateStatus(selectedMessage.id, 'archived')}
-                      className="px-4 py-2 bg-gray-500/20 text-gray-400 border border-gray-500/30 rounded-xl text-xs font-bold hover:bg-gray-500/30 transition-all"
+                      className="px-4 py-2 bg-gray-500/20 text-gray-300 border border-gray-500/30 rounded-xl text-xs font-bold hover:bg-gray-500/30 transition-all"
                     >
                       <XCircle className="w-4 h-4 inline mr-1" />
                       Archiwum
@@ -332,12 +332,12 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                 <div className="bg-black/50 border border-white/10 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <User className="w-4 h-4 text-[#c9a84c]" />
-                    <span className="text-xs text-gray-500 uppercase tracking-widest font-black">Nadawca</span>
+                    <span className="text-xs text-gray-400 uppercase tracking-widest font-black">Nadawca</span>
                   </div>
                   <div className="text-white font-bold">{selectedMessage.name}</div>
-                  <div className="text-sm text-gray-400">{selectedMessage.email}</div>
+                  <div className="text-sm text-gray-300">{selectedMessage.email}</div>
                   {selectedMessage.phone && (
-                    <div className="text-sm text-gray-400 mt-1 flex items-center gap-1">
+                    <div className="text-sm text-gray-300 mt-1 flex items-center gap-1">
                       <Phone className="w-3 h-3" />
                       {selectedMessage.phone}
                     </div>
@@ -347,7 +347,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                 <div className="bg-black/50 border border-white/10 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Tag className="w-4 h-4 text-[#c9a84c]" />
-                    <span className="text-xs text-gray-500 uppercase tracking-widest font-black">Temat</span>
+                    <span className="text-xs text-gray-400 uppercase tracking-widest font-black">Temat</span>
                   </div>
                   <div className="text-white">{selectedMessage.topic}</div>
                 </div>
@@ -355,9 +355,9 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                 <div className="bg-black/50 border border-white/10 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Calendar className="w-4 h-4 text-[#c9a84c]" />
-                    <span className="text-xs text-gray-500 uppercase tracking-widest font-black">Data</span>
+                    <span className="text-xs text-gray-400 uppercase tracking-widest font-black">Data</span>
                   </div>
-                  <div className="text-sm text-gray-400">
+                  <div className="text-sm text-gray-300">
                     <div>Wysłano: {new Date(selectedMessage.createdAt).toLocaleString('pl-PL')}</div>
                   </div>
                 </div>
@@ -365,7 +365,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                 <div className="bg-black/50 border border-white/10 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <MessageSquare className="w-4 h-4 text-[#c9a84c]" />
-                    <span className="text-xs text-gray-500 uppercase tracking-widest font-black">Treść</span>
+                    <span className="text-xs text-gray-400 uppercase tracking-widest font-black">Treść</span>
                   </div>
                   <div className="text-sm text-gray-300 whitespace-pre-wrap">{selectedMessage.message}</div>
                 </div>
@@ -392,7 +392,7 @@ const ContactsManager: React.FC<{ token: string }> = ({ token }) => {
                 <Mail className="w-8 h-8 text-[#c9a84c]" />
               </div>
               <h3 className="text-lg font-bold font-georgia italic text-white mb-2">Wybierz Wiadomość</h3>
-              <p className="text-sm text-gray-500">Kliknij na wiadomość z listy, aby wyświetlić jej szczegóły</p>
+              <p className="text-sm text-gray-300">Kliknij na wiadomość z listy, aby wyświetlić jej szczegóły</p>
             </div>
           )}
         </div>

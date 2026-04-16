@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
+import { requireAdminSession } from '@/lib/adminSession';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Authorization Verification
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized - Missing Admin Token' });
+  if (!requireAdminSession(req, res)) {
+    return;
   }
 
   // GET: Fetch all partners

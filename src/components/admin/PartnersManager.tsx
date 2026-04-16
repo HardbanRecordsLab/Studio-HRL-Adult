@@ -184,7 +184,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter">HRL <span className="text-white">Partners</span> HUB</h2>
-          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase">Zarządzanie talentami i kontraktami premium</p>
+          <p className="text-[10px] text-gray-400 tracking-[3px] uppercase">Zarządzanie talentami i kontraktami premium</p>
         </div>
         <div className="flex gap-4">
            <button onClick={() => setShowModal(true)} className="flex items-center gap-3 px-6 py-2.5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-[#c9a84c]/10">
@@ -206,7 +206,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
          ].map((s, i) => (
            <div key={i} className="bg-[#0d0d0d] border border-white/5 p-6 rounded-2xl flex items-center justify-between group hover:border-[#c9a84c]/20 transition-all cursor-default">
               <div>
-                <p className="text-[8px] text-gray-500 uppercase tracking-widest mb-1">{s.label}</p>
+                <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">{s.label}</p>
                 <p className="text-2xl font-bold font-georgia">{s.val}</p>
               </div>
               <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
@@ -223,7 +223,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
               <button
                 key={f}
                 onClick={() => setStatusFilter(f)}
-                className={`px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-[#c9a84c] text-black' : 'text-gray-500 hover:text-white'}`}
+                className={`px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-[#c9a84c] text-black' : 'text-gray-400 hover:text-white'}`}
               >
                 {f === 'all' ? 'Wszyscy' : f === 'active' ? 'Aktywni' : f === 'pending' ? 'Oczekujący' : 'Zawieszeni'}
               </button>
@@ -247,12 +247,12 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-white/5 bg-white/5">
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Partnerka / Talent</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Status</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Weryfikacja</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Zarobki (Total)</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Split</th>
-              <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-[3px]">Akcje</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Partnerka / Talent</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Status</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Weryfikacja</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Zarobki (Total)</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Split</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Akcje</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
@@ -286,7 +286,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                       </div>
                       <div>
                          <p className="text-sm font-bold font-georgia text-white mb-0.5 group-hover:text-[#c9a84c] transition-colors">{p.name}</p>
-                         <p className="text-[10px] text-gray-500 uppercase tracking-widest italic">@{p.handle}</p>
+                         <p className="text-[10px] text-gray-400 uppercase tracking-widest italic">@{p.handle}</p>
                       </div>
                     </div>
                   </td>
@@ -306,11 +306,11 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                      <div className="flex flex-col gap-1.5">
                         <div className="flex items-center gap-2">
                            <Shield className={`w-3 h-3 ${p.ageVerified ? 'text-green-500' : 'text-gray-700'}`} />
-                           <span className="text-[8px] font-black uppercase tracking-widest text-gray-500">18+</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest text-gray-400">18+</span>
                         </div>
                         <div className="flex items-center gap-2">
                            <FileText className={`w-3 h-3 ${p.documentsVerified ? 'text-green-500' : 'text-gray-700'}`} />
-                           <span className="text-[8px] font-black uppercase tracking-widest text-gray-500">Docs</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest text-gray-400">Docs</span>
                         </div>
                      </div>
                   </td>

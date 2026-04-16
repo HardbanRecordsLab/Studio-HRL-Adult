@@ -1,6 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+﻿import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
+import { sendEmail, emailTemplates } from '@/lib/email';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -8,65 +9,42 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
+async function persistMediaAsset(value: unknown, resourceType: 'image' | 'video') {
+  if (typeof value !== 'string' || !value.trim()) return null;
+  if (value.startsWith('http://') || value.startsWith('https://')) return value;
+  if (!value.startsWith('data:')) return null;
+
+  const uploadResult = await cloudinary.uploader.upload(value, {
+    folder: 'casting-applications',
+    resource_type: resourceType,
+  });
+
+  return uploadResult.secure_url;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       const data = req.body;
-      
-      // Upload files to Cloudinary if they exist
-      let photo1Url = null;
-      let photo2Url = null;
-      let photo3Url = null;
-      let videoUrl = null;
-
-      if (data.photo1 && typeof data.photo1 === 'string') {
-        try {
-          const uploadResult = await cloudinary.uploader.upload(data.photo1, {
-            folder: 'casting-applications',
-            resource_type: 'image',
-          });
-          photo1Url = uploadResult.secure_url;
-        } catch (error) {
-          console.error('Error uploading photo1:', error);
-        }
+      if (!data.firstName || !data.lastName || !data.email || !data.phone || !data.birthDate || !data.motivation) {
+        return res.status(400).json({ message: 'Missing required fields' });
       }
 
-      if (data.photo2 && typeof data.photo2 === 'string') {
-        try {
-          const uploadResult = await cloudinary.uploader.upload(data.photo2, {
-            folder: 'casting-applications',
-            resource_type: 'image',
-          });
-          photo2Url = uploadResult.secure_url;
-        } catch (error) {
-          console.error('Error uploading photo2:', error);
-        }
-      }
+      const [photo1Url, photo2Url, photo3Url, videoUrl] = await Promise.all([
+        persistMediaAsset(data.photo1, 'image'),
+        persistMediaAsset(data.photo2, 'image'),
+        persistMediaAsset(data.photo3, 'image'),
+        persistMediaAsset(data.video, 'video'),
+      ]);
 
-      if (data.photo3 && typeof data.photo3 === 'string') {
-        try {
-          const uploadResult = await cloudinary.uploader.upload(data.photo3, {
-            folder: 'casting-applications',
-            resource_type: 'image',
-          });
-          photo3Url = uploadResult.secure_url;
-        } catch (error) {
-          console.error('Error uploading photo3:', error);
-        }
-      }
-
-      if (data.video && typeof data.video === 'string') {
-        try {
-          const uploadResult = await cloudinary.uploader.upload(data.video, {
-            folder: 'casting-applications',
-            resource_type: 'video',
-          });
-          videoUrl = uploadResult.secure_url;
-        } catch (error) {
-          console.error('Error uploading video:', error);
-        }
-      }
-      
       const newApplication = await prisma.castingApplication.create({
         data: {
           firstName: data.firstName,
@@ -74,49 +52,57 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           email: data.email,
           phone: data.phone,
           birthDate: new Date(data.birthDate),
-          height: data.height ? parseInt(data.height) : null,
-          weight: data.weight ? parseInt(data.weight) : null,
-          hairColor: data.hairColor,
-          eyeColor: data.eyeColor,
-          breastSize: data.breastSize,
-          experience: data.experience,
-          experienceDesc: data.experienceDesc,
+          height: data.height ? parseInt(data.height, 10) : null,
+          weight: data.weight ? parseInt(data.weight, 10) : null,
+          hairColor: data.hairColor || null,
+          eyeColor: data.eyeColor || null,
+          breastSize: data.breastSize || null,
+          experience: data.experience || 'no',
+          experienceDesc: data.experienceDesc || null,
           platforms: JSON.stringify(data.platforms || []),
           contentTypes: JSON.stringify(data.contentTypes || []),
-          limits: data.limits,
-          sessionsPerWeek: data.sessionsPerWeek,
+          limits: data.limits || null,
+          sessionsPerWeek: data.sessionsPerWeek || null,
           workingTimes: JSON.stringify(data.workingTimes || []),
           motivation: data.motivation,
-          bodyModifications: data.bodyModifications,
-          skills: data.skills,
-          consentAge: data.consentAge,
-          consentTerms: data.consentTerms,
-          consentData: data.consentData,
-          consentMarketing: data.consentMarketing,
+          bodyModifications: data.bodyModifications || null,
+          skills: data.skills || null,
+          consentAge: Boolean(data.consentAge),
+          consentTerms: Boolean(data.consentTerms),
+          consentData: Boolean(data.consentData),
+          consentMarketing: Boolean(data.consentMarketing),
           photo1: photo1Url,
           photo2: photo2Url,
           photo3: photo3Url,
           video: videoUrl,
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       });
-      
+
+      const template = emailTemplates.castingApplication(data.firstName, 'pending');
+      await sendEmail({
+        to: data.email,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+
       return res.status(201).json({ message: 'Application submitted successfully', data: newApplication });
     } catch (error: any) {
       console.error('Submission error:', error);
       return res.status(500).json({ message: 'Error saving application', error: error.message });
     }
-  } else if (req.method === 'GET') {
+  }
+
+  if (req.method === 'GET') {
     try {
-      const applications = await prisma.castingApplication.findMany({
-        orderBy: { createdAt: 'desc' }
-      });
+      const applications = await prisma.castingApplication.findMany({ orderBy: { createdAt: 'desc' } });
       return res.status(200).json(applications);
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
-  } else {
-    res.setHeader('Allow', ['POST', 'GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
+
+  res.setHeader('Allow', ['POST', 'GET']);
+  res.status(405).end(`Method ${req.method} Not Allowed`);
 }

@@ -1,67 +1,65 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+﻿import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 
-const DEMO = [
-  {
-    id: 'luna-hrl', name: 'Luna', handle: 'luna.hrl',
-    bio: 'Luna to premium twórczyni treści adult z Studio HRL. Specjalizacja: live cam, ekskluzywne subskrypcje, artystyczne treści. Top 3% OnlyFans.',
-    stats: { followers: '3.6K', content: '240+', satisfaction: '98%', online: '21-23' },
-    tags: ['OnlyFans', 'Live Cam', 'Premium'], ico: '🌙',
-    measurements: { 'Wzrost': '168 cm', 'Biust': '90 cm', 'Talia': '64 cm', 'Biodra': '92 cm' },
-    characteristics: 'Naturalna elegancja i profesjonalizm. Tworzę treści na najwyższym poziomie jakości w Studio HRL Adult.',
-  },
-  {
-    id: 'alexia-hrl', name: 'Alexia', handle: 'alexia.hrl',
-    bio: 'Alexia to premium glamour creator z Studio HRL. Specjalizacja: artystyczne nudes, lingerie, live. Top 5% OnlyFans i Fansly.',
-    stats: { followers: '5.2K', content: '380+', satisfaction: '99%', online: '20-00' },
-    tags: ['Fansly', 'Luxury', 'Studio'], ico: '✨',
-    measurements: { 'Wzrost': '174 cm', 'Biust': '92 cm', 'Talia': '62 cm', 'Biodra': '92 cm' },
-    characteristics: 'Artystka, elegancja, zmysłowość ze smakiem. Specjalistka od luxury content i fotografii high-end.',
-  },
-  {
-    id: 'sofia-hrl', name: 'Sofia', handle: 'sofia.hrl',
-    bio: 'Sofia to multi-platform creator z Studio HRL. Specjalizacja: BDSM, fetish i vanilla. ManyVids Top Seller 2025.',
-    stats: { followers: '8.9K', content: '620+', satisfaction: '97%', online: '22-02' },
-    tags: ['ManyVids', 'Chaturbate', 'BDSM'], ico: '🔥',
-    measurements: { 'Wzrost': '166 cm', 'Biust': '95 cm', 'Talia': '68 cm', 'Biodra': '98 cm' },
-    characteristics: 'Dominująca osobowość, profesjonalne podejście do fetish content. Najbardziej wszechstronna twórczyni w portfolio studia.',
-  },
-];
+const DEFAULT_STATS = {
+  followers: '10K+',
+  content: '100+',
+  satisfaction: '98%',
+  online: 'Daily',
+};
+
+function safeParseJson<T>(value: string | null | undefined, fallback: T): T {
+  try {
+    return value ? (JSON.parse(value) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', ['GET']);
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
-    // Use raw SQL to only select columns that actually exist in the DB
-    const rawProfiles: any[] = await prisma.$queryRaw`
-      SELECT id, email, status, "createdAt",
-             COALESCE(name, CONCAT("firstName", ' ', "lastName"), 'HRL Model') as name,
-             COALESCE(handle, id) as handle,
-             COALESCE(bio, description, 'Premium content creator.') as bio,
-             avatar, "profileStats", platforms, description
-      FROM "Partner"
-      WHERE status = 'active'
-      ORDER BY "createdAt" DESC
-    `;
+    const partners = await prisma.partner.findMany({
+      where: { status: 'active' },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        handle: true,
+        bio: true,
+        description: true,
+        avatar: true,
+        profileStats: true,
+        platforms: true,
+      },
+    });
 
-    if (!rawProfiles || rawProfiles.length === 0) {
-      return res.status(200).json([]);
-    }
+    const profiles = partners.map((partner) => {
+      const stats = {
+        ...DEFAULT_STATS,
+        ...safeParseJson<Record<string, string>>(partner.profileStats, {}),
+      };
+      const platformData = safeParseJson<Record<string, { username?: string }>>(partner.platforms, {});
+      const tags = Object.keys(platformData).length
+        ? Object.keys(platformData).slice(0, 3).map((key) => key.charAt(0).toUpperCase() + key.slice(1))
+        : ['Premium'];
+      const handle = partner.handle || partner.id;
 
-    const profiles = rawProfiles.map((p: any) => {
-      let stats = { followers: '10K+', content: '100+', satisfaction: '98%', online: 'Daily' };
-      try { if (p.profileStats) stats = { ...stats, ...JSON.parse(p.profileStats) }; } catch {}
-      let tags = ['Premium'];
-      try { if (p.platforms) { const keys = Object.keys(JSON.parse(p.platforms)); if (keys.length) tags = keys.slice(0, 3).map((k: string) => k.charAt(0).toUpperCase() + k.slice(1)); } } catch {}
-
-      const handle = p.handle || p.id || 'model';
       return {
         id: handle,
-        name: p.name || 'HRL Model',
-        handle: handle,
-        bio: p.bio || 'Premium content creator.',
-        avatar: p.avatar || null,
-        stats, tags: tags.length > 0 ? tags : ['Premium'],
-        ico: '✨', measurements: null,
-        characteristics: p.description || p.bio || 'Professional model.',
+        name: partner.name || 'HRL Model',
+        handle,
+        bio: partner.bio || partner.description || 'Premium content creator.',
+        avatar: partner.avatar || null,
+        stats,
+        tags,
+        ico: '✨',
+        measurements: null,
+        characteristics: partner.description || partner.bio || 'Professional model.',
       };
     });
 
