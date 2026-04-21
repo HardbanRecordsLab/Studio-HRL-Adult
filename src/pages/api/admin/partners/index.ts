@@ -44,10 +44,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           bio: bio || '',
           description: characteristics || description || '',
           avatar: avatar || null,
+          heroImage: heroPitch || null,
           height: height ? Number(height) : null,
           weight: weight ? Number(weight) : null,
           measurements: measurements || null,
-          profileData: profileData || null
+          profileData: {
+            ...(profileData || {}),
+            size: size || null
+          }
         }
       });
 

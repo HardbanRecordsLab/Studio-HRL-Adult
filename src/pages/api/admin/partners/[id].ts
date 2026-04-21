@@ -31,6 +31,8 @@ export default async function handler(
         profileData,
         characteristics,
         avatar,
+        heroPitch,
+        size
       } = req.body;
 
       const data: any = {};
@@ -41,11 +43,17 @@ export default async function handler(
       if (type !== undefined) data.type = type;
       if (bio !== undefined) data.bio = bio;
       if (avatar !== undefined) data.avatar = avatar;
+      if (heroPitch !== undefined) data.heroImage = heroPitch;
       if (characteristics !== undefined) data.description = characteristics;
       if (height !== undefined) data.height = Number(height);
       if (weight !== undefined) data.weight = Number(weight);
       if (measurements !== undefined) data.measurements = measurements;
-      if (profileData !== undefined) data.profileData = profileData;
+      if (profileData !== undefined) {
+        data.profileData = {
+          ...profileData,
+          size: size || profileData.size || null
+        };
+      }
 
       const partner = await prisma.partner.update({
         where: { id },

@@ -19,7 +19,8 @@ import {
   MoreVertical,
   X,
   Phone,
-  Info
+  Info,
+  Trash2
 } from 'lucide-react';
 
 interface CastingApplication {
@@ -98,6 +99,17 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: newStatus })
+      });
+      if (response.ok) fetchApplications();
+    } catch (e) { console.error(e); }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Czy na pewno chcesz trwale usunąć to zgłoszenie?')) return;
+    try {
+      const response = await fetch(`/api/admin/casting/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) fetchApplications();
     } catch (e) { console.error(e); }
@@ -243,6 +255,7 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                              <button onClick={() => handleStatusChange(a.id, 'rejected')} className="p-2 text-gray-600 hover:text-red-500 transition-all"><XCircle className="w-4 h-4" /></button>
                            </>
                          )}
+                         <button onClick={() => handleDelete(a.id)} className="p-2 text-gray-800 hover:text-red-600 transition-all"><Trash2 className="w-4 h-4" /></button>
                       </div>
                    </td>
                 </tr>

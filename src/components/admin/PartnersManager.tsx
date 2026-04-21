@@ -345,6 +345,8 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                         <a href={`/profile/${p.handle}`} target="_blank" rel="noreferrer" className="p-2 text-gray-600 hover:text-white transition-all"><Eye className="w-4 h-4" /></a>
                         <button onClick={() => {
                           const pd = typeof p.profileData === 'string' ? JSON.parse(p.profileData) : (p.profileData || {});
+                          const mParts = p.measurements ? p.measurements.split('/').map(s => s.trim()) : [];
+                          
                           setNewPartner({
                             ...newPartner,
                             name: p.name || '',
@@ -356,8 +358,11 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                             measurements: p.measurements || '',
                             avatar: p.avatar || '',
                             heroPitch: p.heroImage || '',
-                            bust: '', waist: '', hips: '', size: '', // Optional parsing if stored in measurements
-                            characteristics: pd.characteristics || '',
+                            bust: mParts[0] || '', 
+                            waist: mParts[1] || '', 
+                            hips: mParts[2] || '', 
+                            size: pd.size || '',
+                            characteristics: p.description || pd.characteristics || '',
                             likes: pd.likes?.length ? pd.likes.concat(Array(Math.max(0, 6 - pd.likes.length)).fill('')) : ['', '', '', '', '', ''],
                             boundaries: pd.boundaries?.length ? pd.boundaries.concat(Array(Math.max(0, 6 - pd.boundaries.length)).fill('')) : ['', '', '', '', '', ''],
                             bestInMe: pd.bestInMe?.length ? pd.bestInMe.concat(Array(Math.max(0, 10 - pd.bestInMe.length)).fill('')) : ['', '', '', '', '', '', '', '', '', ''],

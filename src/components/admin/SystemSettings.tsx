@@ -340,7 +340,16 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({ token }) => {
                           {id}
                         </span>
                         <div
-                          className={`w-10 h-5 rounded-full relative cursor-pointer ${active ? "bg-[#c9a84c]" : "bg-white/10"}`}
+                          onClick={() => {
+                            setSettings({
+                              ...settings,
+                              integrations: {
+                                ...settings.integrations,
+                                [id]: !active
+                              }
+                            });
+                          }}
+                          className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${active ? "bg-[#c9a84c]" : "bg-white/10"}`}
                         >
                           <div
                             className={`absolute top-1 w-3 h-3 rounded-full bg-black transition-all ${active ? "right-1" : "left-1"}`}
@@ -349,6 +358,81 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({ token }) => {
                       </div>
                     ))}
                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "revenue" && (
+              <motion.div
+                key="revenue"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-10 relative z-10"
+              >
+                <h3 className="text-xl font-bold font-georgia text-white mb-6 italic">
+                  Finanse & <span className="text-[#c9a84c]">Splity B2B</span>
+                </h3>
+                
+                <div className="grid grid-cols-3 gap-6">
+                  {[
+                    { label: 'Model Share', key: 'revenueModelShare' },
+                    { label: 'Partner Share', key: 'revenuePartnerShare' },
+                    { label: 'Studio Share', key: 'revenueStudioShare' }
+                  ].map((s) => (
+                    <div key={s.key} className="space-y-4 p-6 bg-white/[0.02] border border-white/5 rounded-3xl">
+                      <label className="text-[8px] text-gray-500 uppercase tracking-widest font-black">{s.label} (%)</label>
+                      <input 
+                        type="number" 
+                        value={settings[s.key]} 
+                        onChange={e => setSettings({...settings, [s.key]: parseInt(e.target.value)})}
+                        className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-[#c9a84c] outline-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-8 bg-blue-500/5 border border-blue-500/10 rounded-3xl flex items-center gap-6">
+                   <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+                      <Zap className="w-8 h-8" />
+                   </div>
+                   <div>
+                      <p className="text-sm font-bold text-white mb-1">Globalna polityka podziału zysków</p>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-widest">Te ustawienia definiują domyślne stawki dla nowych kontraktów w Studio HRL.</p>
+                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "roles" && (
+              <motion.div
+                key="roles"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-8 relative z-10"
+              >
+                <h3 className="text-xl font-bold font-georgia text-white mb-6 italic">
+                  Hierarchia & <span className="text-[#c9a84c]">Uprawnienia</span>
+                </h3>
+                
+                <div className="space-y-4">
+                  {['Administrator', 'Manager Operacyjny', 'Modelka (Self-Service)'].map((role) => (
+                    <div key={role} className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex justify-between items-center group hover:border-[#c9a84c]/20 transition-all">
+                       <div className="flex items-center gap-4">
+                          <div className="p-3 bg-white/5 rounded-2xl text-gray-400 group-hover:text-[#c9a84c] transition-colors">
+                             <Users className="w-5 h-5" />
+                          </div>
+                          <div>
+                             <p className="text-[10px] font-black text-white uppercase tracking-widest">{role}</p>
+                             <p className="text-[8px] text-gray-500 uppercase mt-1">Definiuj dostęp do modułów i wrażliwych danych</p>
+                          </div>
+                       </div>
+                       <button className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-all">
+                          Edytuj Uprawnienia
+                       </button>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
             )}

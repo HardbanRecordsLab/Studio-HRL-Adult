@@ -32,7 +32,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       case 'POST': {
-        const { studioName, contactEmail, notificationEmail, revenueModelShare, revenuePartnerShare, revenueStudioShare } = req.body;
+        const { 
+          studioName, contactEmail, notificationEmail, 
+          revenueModelShare, revenuePartnerShare, revenueStudioShare,
+          roles, apiKeys, notifications, integrations, security, general
+        } = req.body;
         
         const settings = await prisma.studioSettings.upsert({
           where: { id: 'singleton' },
@@ -42,7 +46,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             notificationEmail,
             revenueModelShare,
             revenuePartnerShare,
-            revenueStudioShare
+            revenueStudioShare,
+            roles: roles || undefined,
+            apiKeys: apiKeys || undefined,
+            notifications: notifications || undefined,
+            integrations: integrations || undefined,
+            security: security || undefined,
+            general: general || undefined
           },
           create: {
             id: 'singleton',
@@ -51,7 +61,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             notificationEmail: notificationEmail || '',
             revenueModelShare: revenueModelShare || 60,
             revenuePartnerShare: revenuePartnerShare || 30,
-            revenueStudioShare: revenueStudioShare || 10
+            revenueStudioShare: revenueStudioShare || 10,
+            roles: roles || {},
+            apiKeys: apiKeys || {},
+            notifications: notifications || {},
+            integrations: integrations || {},
+            security: security || {},
+            general: general || {}
           }
         });
         

@@ -221,6 +221,14 @@ model StudioSettings {
   revenueStudioShare     Int      @default(10)
   castingEmailTemplate   String?  // szablon emaila dla approved
   castingRejectTemplate  String?  // szablon emaila dla rejected
+  
+  // Advanced Settings
+  roles                  Json?    // Roles configuration
+  apiKeys                Json?    // API Keys (Cloudinary, Sendgrid, etc.)
+  notifications          Json?    // Notification preferences
+  integrations           Json?    // 3rd party integration toggles
+  security               Json?    // Security policy (2FA, timeout, IP)
+  general                Json?    // General configuration (studioName, email, etc.)
 }
 
 model ContactMessage {

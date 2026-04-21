@@ -31,7 +31,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const platformStats = SUPPORTED_PLATFORMS.map(platform => {
           const activeModels = partners.filter(p => {
             try {
-              const pData = JSON.parse(p.platforms || '{}');
+              const pData = typeof p.platforms === 'string' 
+                ? JSON.parse(p.platforms) 
+                : (p.platforms as Record<string, any> || {});
               return pData[platform.id] && pData[platform.id].username;
             } catch { return false; }
           }).length;
