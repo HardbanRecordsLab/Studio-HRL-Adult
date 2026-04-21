@@ -35,8 +35,13 @@ interface Partner {
   lastSync?: string;
   type?: 'couple' | 'solo';
   avatar?: string;
+  heroImage?: string;
   bio?: string;
+  height?: number | string;
+  weight?: number | string;
+  measurements?: string;
   platforms?: string;
+  profileData?: any;
   ageVerified: boolean;
   documentsVerified: boolean;
   revenueSplit: {
