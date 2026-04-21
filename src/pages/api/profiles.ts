@@ -1,4 +1,4 @@
-﻿import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 
 const DEFAULT_STATS = {
@@ -8,9 +8,11 @@ const DEFAULT_STATS = {
   online: 'Daily',
 };
 
-function safeParseJson<T>(value: string | null | undefined, fallback: T): T {
+function safeParseJson<T>(value: any, fallback: T): T {
+  if (!value) return fallback;
+  if (typeof value === 'object') return value as T;
   try {
-    return value ? (JSON.parse(value) as T) : fallback;
+    return JSON.parse(value) as T;
   } catch {
     return fallback;
   }

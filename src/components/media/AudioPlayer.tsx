@@ -37,6 +37,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   
   const audioRef = useRef<HTMLAudioElement>(null);
+  const waveformClickRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -96,8 +97,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const generateWaveform = async () => {
     if (!audioRef.current) return;
     
+    let audioContext: AudioContext | null = null;
     try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const response = await fetch(src);
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
@@ -120,10 +122,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       drawWaveform(filteredData);
     } catch (error) {
       console.error('Error generating waveform:', error);
-      // Generate random waveform as fallback
-      const randomWaveform = Array.from({ length: 200 }, () => Math.random() * 0.8 + 0.1);
-      setWaveformData(randomWaveform);
-      drawWaveform(randomWaveform);
+      setWaveformData([]);
+    } finally {
+      try {
+        await audioContext?.close();
+      } catch {
+        // ignore close errors
+      }
     }
   };
 
@@ -163,9 +168,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!audioRef.current || !progressBarRef.current) return;
-    
-    const rect = progressBarRef.current.getBoundingClientRect();
+    if (!audioRef.current) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percentage = x / rect.width;
     const newTime = percentage * duration;
@@ -252,7 +257,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           />
           {/* Clickable progress bar */}
           <div
-            ref={progressBarRef}
+            ref={waveformClickRef}
             className="absolute top-0 left-0 w-full h-full cursor-pointer"
             onClick={handleProgressClick}
           />

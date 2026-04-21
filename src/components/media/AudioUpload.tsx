@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/utils';
 
 interface AudioUploadProps {
@@ -21,14 +21,22 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState<string>('');
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState<string>('0:00');
   const [waveformData, setWaveformData] = useState<number[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const objectUrlRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+        objectUrlRef.current = null;
+      }
+    };
+  }, []);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -74,7 +82,11 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
     setFile(selectedFile);
     
     if (preview) {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
       const url = URL.createObjectURL(selectedFile);
+      objectUrlRef.current = url;
       setAudioUrl(url);
       
       // Generate waveform visualization
@@ -83,13 +95,14 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
       }
     }
 
-    // Simulate upload progress
-    simulateUpload(selectedFile);
+    // No mocked progress: hand off file immediately
+    onUpload(selectedFile);
   };
 
   const generateWaveform = async (audioFile: File) => {
+    let audioContext: AudioContext | null = null;
     try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const arrayBuffer = await audioFile.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       
@@ -111,10 +124,13 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
       drawWaveform(filteredData);
     } catch (error) {
       console.error('Error generating waveform:', error);
-      // Generate random waveform as fallback
-      const randomWaveform = Array.from({ length: 100 }, () => Math.random() * 0.8 + 0.1);
-      setWaveformData(randomWaveform);
-      drawWaveform(randomWaveform);
+      setWaveformData([]);
+    } finally {
+      try {
+        await audioContext?.close();
+      } catch {
+        // ignore close errors (Safari can throw if already closed)
+      }
     }
   };
 
@@ -145,31 +161,17 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
     });
   };
 
-  const simulateUpload = (fileToUpload: File) => {
-    setIsUploading(true);
-    setUploadProgress(0);
-
-    const interval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsUploading(false);
-          onUpload(fileToUpload);
-          return 100;
-        }
-        return prev + 5;
-      });
-    }, 100);
-  };
-
   const removeFile = () => {
     setFile(null);
     setAudioUrl('');
     setWaveformData([]);
     setDuration('0:00');
-    setUploadProgress(0);
-    setIsUploading(false);
     setIsPlaying(false);
+
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
     
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -261,11 +263,6 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
                       height={100}
                       className="w-full h-24 bg-dark2 rounded-lg"
                     />
-                    {/* Progress overlay */}
-                    <div
-                      className="absolute top-0 left-0 h-full bg-gold/30 pointer-events-none transition-all duration-100"
-                      style={{ width: `${uploadProgress}%` }}
-                    />
                   </div>
                 )}
 
@@ -309,19 +306,17 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
                       </div>
                     </div>
                     
-                    {!isUploading && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeFile();
-                        }}
-                        className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    )}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFile();
+                      }}
+                      className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -340,30 +335,15 @@ const AudioUpload: React.FC<AudioUploadProps> = ({
               </div>
             </div>
 
-            {/* Upload Progress */}
-            {isUploading && (
-              <div className="space-y-2">
-                <div className="w-full bg-dark3 rounded-full h-2">
-                  <div
-                    className="bg-gold h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${uploadProgress}%` }}
-                  />
-                </div>
-                <p className="text-gold text-sm">Przesyłanie... {uploadProgress}%</p>
-              </div>
-            )}
-
-            {!isUploading && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openFileDialog();
-                }}
-                className="text-gold hover:text-yellow-400 font-montserrat"
-              >
-                Wybierz inny plik audio
-              </button>
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                openFileDialog();
+              }}
+              className="text-gold hover:text-yellow-400 font-montserrat"
+            >
+              Wybierz inny plik audio
+            </button>
           </div>
         ) : (
           <div className="space-y-4">

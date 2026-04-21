@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { cn } from '@/utils/utils';
 
 interface ImageUploadProps {
@@ -35,7 +35,23 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, maxFiles = 1, accep
   };
 
   const handleFiles = (fileList: FileList) => {
-    const validFiles = Array.from(fileList).filter((file) => file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024);
+    const validFiles: File[] = [];
+    const invalidFiles: string[] = [];
+
+    Array.from(fileList).forEach((file) => {
+      if (!file.type.startsWith('image/')) {
+        invalidFiles.push(`${file.name} (niepoprawny format)`);
+      } else if (file.size > 10 * 1024 * 1024) {
+        invalidFiles.push(`${file.name} (powyżej 10MB)`);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      alert(`Niektóre pliki zostały odrzucone:\n${invalidFiles.join('\\n')}`);
+    }
+
     if (validFiles.length > 0) {
       const newFiles = maxFiles === 1 ? [validFiles[0]] : validFiles.slice(0, maxFiles);
       previews.forEach((previewUrl) => URL.revokeObjectURL(previewUrl));

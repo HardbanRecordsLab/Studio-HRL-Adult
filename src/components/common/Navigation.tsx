@@ -26,7 +26,7 @@ const Navigation: React.FC = () => {
     <nav className={`fixed top-0 left-0 right-0 z-[1000] h-[76px] px-[5%] flex items-center justify-between transition-all duration-500 border-b ${isScrolled ? 'bg-dark/95 backdrop-blur-xl border-gold/10' : 'bg-gradient-to-b from-dark/80 to-transparent border-transparent'}`}>
       <Link href={ROUTES.HOME} className="flex items-center gap-3 group">
         <div className="w-9 h-9 rounded-full overflow-hidden border border-gold/40 group-hover:border-gold transition-colors">
-          <img src="/logo/studio hrl adultbezĹ‚a logo.png" alt="Studio HRL Adult" className="w-full h-full object-cover" />
+          <img src="/logo/studio hrl adultbezła logo.png" alt="Studio HRL Adult" className="w-full h-full object-cover" />
         </div>
         <span className="font-cormorant text-lg font-semibold text-gold tracking-[0.2em] uppercase">Studio HRL Adult</span>
       </Link>

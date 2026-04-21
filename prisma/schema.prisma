@@ -26,11 +26,11 @@ model CastingApplication {
   breastSize      String?
   experience      String   @default("no")
   experienceDesc  String?
-  platforms       String?  // Stored as JSON string
-  contentTypes    String?  // Stored as JSON string
+  platforms       Json?
+  contentTypes    Json?
   limits          String?
   sessionsPerWeek String?
-  workingTimes    String?  // Stored as JSON string
+  workingTimes    Json?
   motivation      String
   bodyModifications String?
   skills          String?
@@ -62,8 +62,8 @@ model Partner {
   // Unified Profile Management
   bio         String?
   avatar      String?
-  platforms   String?  // JSON: { onlyfans: { username, url, followers, apiKey? }, instagram: {...}, twitter: {...}, tiktok: {...}, youtube: {...}, patreon: {...}, fancentro: {...}, justforfans: {...} }
-  contentSchedule String? // JSON: weekly posting schedule per platform
+  platforms   Json?
+  contentSchedule Json?
   
   // Profile Display Fields
   type        String?  // couple, solo
@@ -72,16 +72,16 @@ model Partner {
   aboutImage2 String?
   description String?
   yearsTogether Int?
-  profileStats String?  // JSON: { subscribers, content, satisfaction }
-  liveSchedule String?  // JSON: array of { day, time, active }
-  subscriptionPlans String?  // JSON: array of subscription plans
-  testimonials String?  // JSON: array of { username, text, since, rating, avatar }
+  profileStats Json?
+  liveSchedule Json?
+  subscriptionPlans Json?
+  testimonials Json?
   
   // Extended Profile Data
   height      Int?
   weight      Int?
   measurements String?
-  profileData String?  // JSON: { likes, boundaries, bestInMe, whyWatchMe, gallery }
+  profileData Json?
   
   financeRecords FinancialRecord[]
   documents      PartnerDocument[]

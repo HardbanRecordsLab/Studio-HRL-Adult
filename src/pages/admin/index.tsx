@@ -1,45 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { motion } from 'framer-motion';
-import AdminDashboard from '@/components/admin/AdminDashboard';
-import { cn } from '@/utils/utils';
-import { useAuth } from '@/hooks/useAuth';
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
+import { motion } from "framer-motion";
+import AdminDashboard from "@/components/admin/AdminDashboard";
+import { cn } from "@/utils/utils";
+import { useAuth } from "@/hooks/useAuth";
 import {
   PlatformDataType,
   LoginFormState,
   Profile,
   CastingApplication,
-  SettingsState
-} from '@/types';
+  SettingsState,
+} from "@/types";
 
 const AdminPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminToken, setAdminToken] = useState('');
+  const [adminToken, setAdminToken] = useState("");
   const [pageLoading, setPageLoading] = useState(true);
   const [loginForm, setLoginForm] = useState<LoginFormState>({
-    email: '',
-    password: '',
-    error: '',
+    email: "",
+    password: "",
+    error: "",
     loading: false,
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      setAdminToken(token);
-      setIsAuthenticated(true);
-    }
-    setPageLoading(false);
+    const verifySession = async () => {
+      try {
+        const response = await fetch("/api/admin/verify", {
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setAdminToken(data.token || "valid");
+          setIsAuthenticated(true);
+        }
+      } catch {}
+      setPageLoading(false);
+    };
+    verifySession();
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoginForm(prev => ({ ...prev, error: '', loading: true }));
+    setLoginForm((prev) => ({ ...prev, error: "", loading: true }));
 
     try {
-      const response = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: loginForm.email,
           password: loginForm.password,
@@ -48,63 +56,71 @@ const AdminPage: React.FC = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        setLoginForm(prev => ({
+        setLoginForm((prev) => ({
           ...prev,
-          error: data.error || 'Login failed',
+          error: data.error || "Login failed",
           loading: false,
         }));
         return;
       }
 
       const data = await response.json();
-      localStorage.setItem('adminToken', data.token);
-      setAdminToken(data.token);
+      setAdminToken(data.token || "valid");
       setIsAuthenticated(true);
       setLoginForm({
-        email: '',
-        password: '',
-        error: '',
+        email: "",
+        password: "",
+        error: "",
         loading: false,
       });
     } catch (error) {
-      setLoginForm(prev => ({ ...prev, error: 'An error occurred. Please try again.', loading: false }));
+      setLoginForm((prev) => ({
+        ...prev,
+        error: "An error occurred. Please try again.",
+        loading: false,
+      }));
     }
   };
 
   // Handle logout
-  const handleAdminLogout = () => {
-    localStorage.removeItem('adminToken');
+  const handleAdminLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {}
     window.location.reload();
   };
 
-  const [activeTab, setActiveTab] = useState('profiles');
+  const [activeTab, setActiveTab] = useState("profiles");
   const [profiles, setProfiles] = useState([
     {
       id: 1,
-      handle: '@example_creator',
-      name: 'Example Creator',
-      template: 'elegant',
-      bio: 'Professional content creator',
-      image: '/images/studio-noir.jpg',
-      status: 'active',
+      handle: "@example_creator",
+      name: "Example Creator",
+      template: "elegant",
+      bio: "Professional content creator",
+      image: "/images/studio-noir.jpg",
+      status: "active",
     },
   ]);
 
   const [newProfile, setNewProfile] = useState({
-    name: '',
-    handle: '',
-    bio: '',
-    template: 'elegant',
+    name: "",
+    handle: "",
+    bio: "",
+    template: "elegant",
   });
 
   const [castingApplications, setCastingApplications] = useState([
     {
       id: 1,
-      firstName: 'Anna',
-      lastName: 'Test',
-      email: 'anna@test.com',
-      status: 'pending',
-      submittedAt: '2026-04-08',
+      firstName: "Anna",
+      lastName: "Test",
+      email: "anna@test.com",
+      status: "pending",
+      submittedAt: "2026-04-08",
     },
   ]);
 
@@ -112,70 +128,192 @@ const AdminPage: React.FC = () => {
   const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
   const [platformData, setPlatformData] = useState<PlatformDataType>({
     // Live Cam Platforms
-    chaturbate: { username: '', url: '', followers: 12500, posts: 45, features: ['Tip Menu', 'Private Show', 'Interactive Toys', 'Fanclub'] },
-    myfreecams: { username: '', url: '', followers: 8200, posts: 128, features: ['Premium', 'MFCCoins', 'Club Members'] },
-    livejasmin: { username: '', url: '', followers: 15700, posts: 234, features: ['Private Show', 'VIP Show', 'HD/4K'] },
-    stripchat: { username: '', url: '', followers: 22100, posts: 67, features: ['Fan Club', 'VR Shows', 'Gold Shows'] },
-    camsoda: { username: '', url: '', followers: 5300, posts: 23, features: ['VR Shows', 'Crypto Tips', 'VOD'] },
-    bongacams: { username: '', url: '', followers: 3100, posts: 12, features: ['Gold Shows', 'European Focus'] },
-    flirt4free: { username: '', url: '', followers: 8900, posts: 78, features: ['Party Chat', 'Feature Shows'] },
-    imlive: { username: '', url: '', followers: 6700, posts: 34, features: ['Multi-Viewer', 'Wish List'] },
-    
+    chaturbate: {
+      username: "",
+      url: "",
+      followers: 12500,
+      posts: 45,
+      features: ["Tip Menu", "Private Show", "Interactive Toys", "Fanclub"],
+    },
+    myfreecams: {
+      username: "",
+      url: "",
+      followers: 8200,
+      posts: 128,
+      features: ["Premium", "MFCCoins", "Club Members"],
+    },
+    livejasmin: {
+      username: "",
+      url: "",
+      followers: 15700,
+      posts: 234,
+      features: ["Private Show", "VIP Show", "HD/4K"],
+    },
+    stripchat: {
+      username: "",
+      url: "",
+      followers: 22100,
+      posts: 67,
+      features: ["Fan Club", "VR Shows", "Gold Shows"],
+    },
+    camsoda: {
+      username: "",
+      url: "",
+      followers: 5300,
+      posts: 23,
+      features: ["VR Shows", "Crypto Tips", "VOD"],
+    },
+    bongacams: {
+      username: "",
+      url: "",
+      followers: 3100,
+      posts: 12,
+      features: ["Gold Shows", "European Focus"],
+    },
+    flirt4free: {
+      username: "",
+      url: "",
+      followers: 8900,
+      posts: 78,
+      features: ["Party Chat", "Feature Shows"],
+    },
+    imlive: {
+      username: "",
+      url: "",
+      followers: 6700,
+      posts: 34,
+      features: ["Multi-Viewer", "Wish List"],
+    },
+
     // Subscription/Fansite Platforms
-    onlyfans: { username: '', url: '', followers: 12500, posts: 45, apiKey: '', features: ['Subskrypcja', 'PPV', 'DM', 'Custom Content'] },
-    fansly: { username: '', url: '', followers: 8200, posts: 128, features: ['Algorytm', 'Tiers', 'Multi-media'] },
-    manyvids: { username: '', url: '', followers: 15700, posts: 234, features: ['VOD', 'MV Crush', 'Store'] },
-    clips4sale: { username: '', url: '', followers: 22100, posts: 67, features: ['Fetish Niche', 'Studio System'] },
-    avnstars: { username: '', url: '', followers: 5300, posts: 23, features: ['Sub', 'VOD', 'Live Cam'] },
-    fanvue: { username: '', url: '', followers: 3100, posts: 12, apiKey: '', features: ['Low Fee', 'AI Tools'] },
-    
+    onlyfans: {
+      username: "",
+      url: "",
+      followers: 12500,
+      posts: 45,
+      apiKey: "",
+      features: ["Subskrypcja", "PPV", "DM", "Custom Content"],
+    },
+    fansly: {
+      username: "",
+      url: "",
+      followers: 8200,
+      posts: 128,
+      features: ["Algorytm", "Tiers", "Multi-media"],
+    },
+    manyvids: {
+      username: "",
+      url: "",
+      followers: 15700,
+      posts: 234,
+      features: ["VOD", "MV Crush", "Store"],
+    },
+    clips4sale: {
+      username: "",
+      url: "",
+      followers: 22100,
+      posts: 67,
+      features: ["Fetish Niche", "Studio System"],
+    },
+    avnstars: {
+      username: "",
+      url: "",
+      followers: 5300,
+      posts: 23,
+      features: ["Sub", "VOD", "Live Cam"],
+    },
+    fanvue: {
+      username: "",
+      url: "",
+      followers: 3100,
+      posts: 12,
+      apiKey: "",
+      features: ["Low Fee", "AI Tools"],
+    },
+
     // Tube/UGC Platforms
-    pornhub: { username: '', url: '', followers: 8900, posts: 78, features: ['ModelHub', 'Rev Share', 'Fanclub'] },
-    xhamster: { username: '', url: '', followers: 6700, posts: 34, features: ['Creator Program', 'SEO'] },
-    xvideos: { username: '', url: '', followers: 12500, posts: 45, features: ['RED Sub', 'Rev Share'] },
-    xhamsterlive: { username: '', url: '', followers: 8200, posts: 128, features: ['Live Cam', 'xHamster Base'] },
-    
+    pornhub: {
+      username: "",
+      url: "",
+      followers: 8900,
+      posts: 78,
+      features: ["ModelHub", "Rev Share", "Fanclub"],
+    },
+    xhamster: {
+      username: "",
+      url: "",
+      followers: 6700,
+      posts: 34,
+      features: ["Creator Program", "SEO"],
+    },
+    xvideos: {
+      username: "",
+      url: "",
+      followers: 12500,
+      posts: 45,
+      features: ["RED Sub", "Rev Share"],
+    },
+    xhamsterlive: {
+      username: "",
+      url: "",
+      followers: 8200,
+      posts: 128,
+      features: ["Live Cam", "xHamster Base"],
+    },
+
     // Marketing Platforms
-    twitter: { username: '', url: '', followers: 15700, posts: 234, features: ['Threads', 'Spaces', 'Polls'] },
-    reddit: { username: '', url: '', followers: 22100, posts: 67, features: ['Subreddits', 'Upvotes'] },
+    twitter: {
+      username: "",
+      url: "",
+      followers: 15700,
+      posts: 234,
+      features: ["Threads", "Spaces", "Polls"],
+    },
+    reddit: {
+      username: "",
+      url: "",
+      followers: 22100,
+      posts: 67,
+      features: ["Subreddits", "Upvotes"],
+    },
   });
 
   // Settings State
   const [settings, setSettings] = useState({
     general: {
-      siteName: 'Studio HRL Adult',
-      adminEmail: 'admin@hrlstudio.com',
-      currency: 'EUR',
-      timezone: 'Europe/Warsaw'
+      siteName: "Studio HRL Adult",
+      adminEmail: "admin@hrlstudio.com",
+      currency: "EUR",
+      timezone: "Europe/Warsaw",
     },
     integrations: {
-      cloudinary: { status: 'connected' },
-      supabase: { status: 'connected' },
-      stripe: { status: 'not_configured' },
-      sendgrid: { status: 'not_configured' },
-      twitter: { status: 'pending' },
-      meta: { status: 'pending' }
+      cloudinary: { status: "connected" },
+      supabase: { status: "connected" },
+      stripe: { status: "not_configured" },
+      sendgrid: { status: "not_configured" },
+      twitter: { status: "pending" },
+      meta: { status: "pending" },
     },
     maintenance: {
-      lastBackup: '2026-04-08 02:00',
-      systemUptime: '15 days',
-      version: '2.1.0'
-    }
+      lastBackup: "2026-04-08 02:00",
+      systemUptime: "15 days",
+      version: "2.1.0",
+    },
   });
 
   // Load settings on mount
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const response = await fetch('/api/admin/settings', {
-          headers: { 'Authorization': `Bearer ${adminToken}` }
+        const response = await fetch("/api/admin/settings", {
+          headers: { Authorization: `Bearer ${adminToken}` },
         });
         if (response.ok) {
           const data = await response.json();
           setSettings(data);
         }
       } catch (error) {
-        console.error('Failed to load settings:', error);
+        console.error("Failed to load settings:", error);
       }
     };
     loadSettings();
@@ -183,45 +321,45 @@ const AdminPage: React.FC = () => {
 
   const profileTemplates = [
     {
-      id: 'elegant',
-      name: 'Elegant Noir',
-      description: 'Premium minimalist design with dark aesthetic',
-      color: 'from-dark via-dark-2 to-dark-3',
+      id: "elegant",
+      name: "Elegant Noir",
+      description: "Premium minimalist design with dark aesthetic",
+      color: "from-dark via-dark-2 to-dark-3",
     },
     {
-      id: 'luxury',
-      name: 'Luxury Gold',
-      description: 'Luxurious gold accent theme',
-      color: 'from-dark via-gold/5 to-dark',
+      id: "luxury",
+      name: "Luxury Gold",
+      description: "Luxurious gold accent theme",
+      color: "from-dark via-gold/5 to-dark",
     },
     {
-      id: 'modern',
-      name: 'Modern Vibrant',
-      description: 'Contemporary design with vibrant accents',
-      color: 'from-dark via-crimson/5 to-dark',
+      id: "modern",
+      name: "Modern Vibrant",
+      description: "Contemporary design with vibrant accents",
+      color: "from-dark via-crimson/5 to-dark",
     },
   ];
 
   const handleCreateProfile = () => {
     if (!newProfile.name || !newProfile.handle) {
-      alert('Please fill in all required fields');
+      alert("Please fill in all required fields");
       return;
     }
 
     const profile = {
       id: profiles.length + 1,
       ...newProfile,
-      image: '/images/studio-noir.jpg',
-      status: 'active',
+      image: "/images/studio-noir.jpg",
+      status: "active",
     };
 
     setProfiles([...profiles, profile]);
-    setNewProfile({ name: '', handle: '', bio: '', template: 'elegant' });
-    alert('Profile created successfully and added to portfolio!');
+    setNewProfile({ name: "", handle: "", bio: "", template: "elegant" });
+    alert("Profile created successfully and added to portfolio!");
   };
 
   const handleDeleteProfile = (id: number) => {
-    if (confirm('Are you sure you want to delete this profile?')) {
+    if (confirm("Are you sure you want to delete this profile?")) {
       setProfiles(profiles.filter((p) => p.id !== id));
     }
   };
@@ -229,17 +367,21 @@ const AdminPage: React.FC = () => {
   const handleApproveApplication = (id: number) => {
     setCastingApplications(
       castingApplications.map((app) =>
-        app.id === id ? { ...app, status: 'approved' } : app
-      )
+        app.id === id ? { ...app, status: "approved" } : app,
+      ),
     );
-    alert('Application approved! Profile will be created.');
+    alert("Application approved! Profile will be created.");
   };
 
   // Unified Profile Handlers
   const handlePlatformUpdate = (platform: string, data: any): void => {
     setPlatformData((prev: PlatformDataType) => ({
       ...prev,
-      [platform]: { ...prev[platform], ...data, lastSync: new Date().toISOString() }
+      [platform]: {
+        ...prev[platform],
+        ...data,
+        lastSync: new Date().toISOString(),
+      },
     }));
     alert(`${platform} settings updated successfully!`);
   };
@@ -249,21 +391,26 @@ const AdminPage: React.FC = () => {
     setTimeout(() => {
       setPlatformData((prev: PlatformDataType) => ({
         ...prev,
-        [platform]: { 
-          ...prev[platform], 
+        [platform]: {
+          ...prev[platform],
           lastSync: new Date().toISOString(),
-          error: 'An error occurred. Please try again.',
-          loading: false
-        }
+          error: "An error occurred. Please try again.",
+          loading: false,
+        },
       }));
     }, 1000);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    setAdminToken('');
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {}
+    setAdminToken("");
     setIsAuthenticated(false);
-    setLoginForm({ email: '', password: '', error: '', loading: false });
+    setLoginForm({ email: "", password: "", error: "", loading: false });
   };
 
   if (pageLoading) {
@@ -294,23 +441,32 @@ const AdminPage: React.FC = () => {
             className="w-full max-w-md"
           >
             <div className="text-center mb-8">
-              <img 
-                src="/logo/studio hrl adultbezła logo.png" 
-                alt="Studio HRL Adult Logo" 
+              <img
+                src="/logo/studio hrl adultbezła logo.png"
+                alt="Studio HRL Adult Logo"
                 className="h-16 w-auto mx-auto mb-4"
               />
-              <h1 className="text-3xl font-bold text-white mb-2">Admin Panel</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Admin Panel
+              </h1>
               <p className="text-gray-400">Studio HRL Adult</p>
             </div>
 
             <div className="bg-[#111] border border-[#222] p-8 shadow-2xl">
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-[#888] mb-2 font-arial">Email</label>
+                  <label className="block text-sm font-medium text-[#888] mb-2 font-arial">
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={loginForm.email}
-                    onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setLoginForm((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     placeholder="admin@studio.com"
                     className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#222] focus:outline-none focus:border-[var(--gold)] text-white font-arial"
                     required
@@ -318,11 +474,18 @@ const AdminPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#888] mb-2 font-arial">Password</label>
+                  <label className="block text-sm font-medium text-[#888] mb-2 font-arial">
+                    Password
+                  </label>
                   <input
                     type="password"
                     value={loginForm.password}
-                    onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                    onChange={(e) =>
+                      setLoginForm((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
                     placeholder="••••••••"
                     className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#222] focus:outline-none focus:border-[var(--gold)] text-white font-arial"
                     required
@@ -344,11 +507,13 @@ const AdminPage: React.FC = () => {
                   disabled={loginForm.loading}
                   className="w-full py-3 bg-[var(--crimson-btn)] hover:bg-[#b0243c] disabled:bg-[#333] text-white font-bold transition-all font-arial tracking-wider"
                 >
-                  {loginForm.loading ? 'Logging in...' : 'Sign In'}
+                  {loginForm.loading ? "Logging in..." : "Sign In"}
                 </button>
               </form>
 
-              <p className="text-center text-[#444] text-xs mt-6 font-arial tracking-wider">PROTECTED ADMIN AREA</p>
+              <p className="text-center text-[#444] text-xs mt-6 font-arial tracking-wider">
+                PROTECTED ADMIN AREA
+              </p>
             </div>
           </motion.div>
         </div>

@@ -1,17 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   images: {
-    domains: ['localhost', 'studio-adult.hardbanrecordslab.online', 'res.cloudinary.com'],
-    formats: ['image/webp', 'image/avif'],
+    domains: [
+      "localhost",
+      "studio-adult.hardbanrecordslab.online",
+      "res.cloudinary.com",
+    ],
+    formats: ["image/webp", "image/avif"],
   },
   env: {
-    CUSTOM_KEY: 'studio-hrl-adult',
+    CUSTOM_KEY: "studio-hrl-adult",
   },
   async rewrites() {
     return [

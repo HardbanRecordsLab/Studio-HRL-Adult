@@ -90,11 +90,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const handleStr = Array.isArray(handle) ? handle[0] : (handle ?? '');
 
   try {
-    // Try DB first with raw query to fetch non-prisma mapped columns
-    const partners: any[] = await prisma.$queryRawUnsafe(`SELECT *, "profileData" FROM "Partner" WHERE handle = $1 LIMIT 1;`, handleStr);
+    const partner = await prisma.partner.findUnique({ where: { handle: handleStr } });
     
-    if (partners && partners.length > 0) {
-      const partner = partners[0];
+    if (partner) {
       const safeJSON = (s: string | null | undefined, fallback: any = {}) => {
         try { return typeof s === 'string' ? JSON.parse(s) : (s || fallback); } catch { return fallback; }
       };

@@ -268,8 +268,15 @@ export const analyzeAudioFile = async (file: File): Promise<{
 }> => {
   return new Promise((resolve, reject) => {
     const audio = new Audio();
+    const objectUrl = URL.createObjectURL(file);
+
+    const cleanup = () => {
+      URL.revokeObjectURL(objectUrl);
+      audio.src = '';
+    };
     
     audio.addEventListener('loadedmetadata', () => {
+      cleanup();
       resolve({
         duration: audio.duration,
         sampleRate: 0, // Cannot get sample rate from HTML5 audio element
@@ -279,16 +286,18 @@ export const analyzeAudioFile = async (file: File): Promise<{
     });
     
     audio.addEventListener('error', () => {
+      cleanup();
       reject(new Error('Failed to load audio file'));
     });
     
-    audio.src = URL.createObjectURL(file);
+    audio.src = objectUrl;
   });
 };
 
 export const generateWaveformData = async (audioFile: File, samples: number = 100): Promise<number[]> => {
+  let audioContext: AudioContext | null = null;
   try {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const arrayBuffer = await audioFile.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
     
@@ -308,8 +317,13 @@ export const generateWaveformData = async (audioFile: File, samples: number = 10
     return filteredData;
   } catch (error) {
     console.error('Error generating waveform data:', error);
-    // Return random data as fallback
-    return Array.from({ length: samples }, () => Math.random() * 0.8 + 0.1);
+    return [];
+  } finally {
+    try {
+      await audioContext?.close();
+    } catch {
+      // ignore close errors
+    }
   }
 };
 

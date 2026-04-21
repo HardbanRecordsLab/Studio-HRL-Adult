@@ -1,39 +1,55 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { signAdminSession } from '@/lib/adminSession';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { signAdminSession } from "@/lib/adminSession";
 
-// In a target production environment, use a real Admin database or env-hashed credentials
-// For now, aligning with the "hrl-studio-secret-key-2026" used in other endpoints
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@hrlstudio.com';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'hrl-premium-2026';
+function getAdminCredentials() {
+  const email = process.env.ADMIN_EMAIL;
+  const password = process.env.ADMIN_PASSWORD;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (!email || !password) {
+    throw new Error(
+      "ADMIN_EMAIL and ADMIN_PASSWORD environment variables must be set",
+    );
+  }
+
+  return { email, password };
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
     const { email, password } = req.body;
+    const { email: adminEmail, password: adminPassword } =
+      getAdminCredentials();
 
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      const token = signAdminSession(email);
+    if (email === adminEmail && password === adminPassword) {
+      const token = signAdminSession(adminEmail);
+
+      res.setHeader("Set-Cookie", [
+        `adminToken=${token}; HttpOnly; Path=/; Max-Age=28800; SameSite=Strict${process.env.NODE_ENV === "production" ? "; Secure" : ""}`,
+      ]);
 
       return res.status(200).json({
         success: true,
-        token,
         admin: {
-          email,
-          role: 'admin',
+          email: adminEmail,
+          role: "admin",
         },
-        message: 'Master authentication successful',
+        message: "Authentication successful",
       });
     }
 
-    return res.status(401).json({ 
-      success: false, 
-      error: 'Invalid credentials. Access Denied.' 
+    return res.status(401).json({
+      success: false,
+      error: "Invalid credentials",
     });
   } catch (error: any) {
-    console.error('Login API Error:', error);
-    return res.status(500).json({ error: 'Authentication internal failure' });
+    console.error("Login API Error:", error);
+    return res.status(500).json({ error: "Authentication internal failure" });
   }
 }

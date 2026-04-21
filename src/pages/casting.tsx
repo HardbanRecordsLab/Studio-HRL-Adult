@@ -140,8 +140,8 @@ const CastingPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Casting Studio HRL Adult +18 | DoĹ‚Ä…cz do Ekskluzywnej SpoĹ‚ecznoĹ›ci</title>
-        <meta name="description" content="DoĹ‚Ä…cz do Studio HRL Adult. Realistyczne zarobki 1.5k-30k+ PLN, profesjonalne studio 4K, model 60/30/10. Aplikuj na casting i zacznij karierÄ™ w branĹĽy treĹ›ci dla dorosĹ‚ych." />
+        <title>Casting Studio HRL Adult +18 | Dołącz do Ekskluzywnej Społeczności</title>
+        <meta name="description" content="Dołącz do Studio HRL Adult. Realistyczne zarobki 1.5k-30k+ PLN, profesjonalne studio 4K, model 60/30/10. Aplikuj na casting i zacznij karierę w branży treści dla dorosłych." />
       </Head>
 
       <div className="min-h-screen bg-dark text-text relative">
@@ -167,7 +167,7 @@ const CastingPage: React.FC = () => {
                 transition={{ delay: 0.1 }}
                 className="h1-premium text-white"
               >
-                DoĹ‚Ä…cz do <br /><span className="italic bg-gold-gradient bg-clip-text text-transparent">ekskluzywnej</span> spoĹ‚ecznoĹ›ci
+                Dołącz do <br /><span className="italic bg-gold-gradient bg-clip-text text-transparent">ekskluzywnej</span> społeczności
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
@@ -175,7 +175,7 @@ const CastingPage: React.FC = () => {
                 transition={{ delay: 0.2 }}
                 className="font-cormorant text-xl italic text-dim"
               >
-                Odkryj swĂłj potencjaĹ‚ w branĹĽy treĹ›ci dla dorosĹ‚ych z profesjonalnym wsparciem
+                Odkryj swój potencjał w branży treści dla dorosłych z profesjonalnym wsparciem
               </motion.p>
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
@@ -183,7 +183,7 @@ const CastingPage: React.FC = () => {
                 transition={{ delay: 0.3 }}
                 className="text-dim text-sm leading-loose font-light max-w-2xl mx-auto"
               >
-                Studio HRL Adult to wiÄ™cej niĹĽ miejsce pracy â€“ to partnerstwo, w ktĂłrym Twoja kreatywnoĹ›Ä‡ spotyka siÄ™ z profesjonalizmem i sukcesem finansowym. Oferujemy kompletne wsparcie na kaĹĽdym etapie Twojej kariery.
+                Studio HRL Adult to więcej niż miejsce pracy - to partnerstwo, w którym Twoja kreatywność spotyka się z profesjonalizmem i sukcesem finansowym. Oferujemy kompletne wsparcie na każdym etapie Twojej kariery.
               </motion.p>
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -200,7 +200,7 @@ const CastingPage: React.FC = () => {
           {/* PROCESS SECTION */}
           <section id="process" className="py-24 bg-dark-2 px-[7%]">
             <div className="max-w-7xl mx-auto">
-              <div className="section-tag">Jak to dziaĹ‚a</div>
+              <div className="section-tag">Jak to działa</div>
               <h2 className="h1-premium">Proste kroki do <span className="italic bg-gold-gradient bg-clip-text text-transparent">sukcesu</span></h2>
               <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
               
@@ -210,19 +210,19 @@ const CastingPage: React.FC = () => {
                 <div className="relative z-10 text-center space-y-6">
                   <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">1</div>
                   <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Aplikuj</h3>
-                  <p className="text-xs text-dim leading-relaxed">WypeĹ‚nij usprawniony formularz castingowy i przeĹ›lij podstawowe informacje</p>
+                  <p className="text-xs text-dim leading-relaxed">Wypełnij usprawniony formularz castingowy i prześlij podstawowe informacje</p>
                 </div>
                 
                 <div className="relative z-10 text-center space-y-6">
                   <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">2</div>
                   <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Sesja</h3>
-                  <p className="text-xs text-dim leading-relaxed">PrzyjdĹş na profesjonalnÄ… sesjÄ™ testowÄ… w naszym studiu 4K</p>
+                  <p className="text-xs text-dim leading-relaxed">Przyjdź na profesjonalną sesję testową w naszym studiu 4K</p>
                 </div>
                 
                 <div className="relative z-10 text-center space-y-6">
                   <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">3</div>
                   <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Zarabiaj</h3>
-                  <p className="text-xs text-dim leading-relaxed">Rozpocznij tworzenie treĹ›ci i zarabiaj w hybrydowym modelu ze wsparciem</p>
+                  <p className="text-xs text-dim leading-relaxed">Rozpocznij tworzenie treści i zarabiaj w hybrydowym modelu ze wsparciem</p>
                 </div>
               </div>
             </div>
@@ -232,10 +232,10 @@ const CastingPage: React.FC = () => {
           <section id="form" className="py-24 px-[7%] bg-dark-3">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16 space-y-4">
-                <div className="section-tag justify-center">KrĂłtki Formularz</div>
+                <div className="section-tag justify-center">Krótki Formularz</div>
                 <h2 className="h1-premium">Twoja <span className="italic bg-gold-gradient bg-clip-text text-transparent">aplikacja</span></h2>
                 <p className="text-dim text-sm font-light italic">
-                  ZredukowaliĹ›my iloĹ›Ä‡ pytaĹ„ â€“ wypeĹ‚nienie caĹ‚oĹ›ci zajmie Ci jedyne 3 minuty!
+                  Zredukowaliśmy ilość pytań - wypełnienie całości zajmie Ci jedyne 3 minuty!
                 </p>
               </div>
 
@@ -245,12 +245,12 @@ const CastingPage: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   className="bg-gold/5 border border-gold/20 p-16 text-center space-y-6"
                 >
-                  <div className="text-6xl">âś¨</div>
-                  <h3 className="font-cormorant text-4xl text-gold italic">DziÄ™kujemy za aplikacjÄ™!</h3>
+                  <div className="text-6xl">✨</div>
+                  <h3 className="font-cormorant text-4xl text-gold italic">Dziękujemy za aplikację!</h3>
                   <p className="text-dim max-w-md mx-auto leading-loose">
-                    Twoje zgĹ‚oszenie zostaĹ‚o pomyĹ›lnie przesĹ‚ane. Nasz zespĂłĹ‚ przeanalizuje materiaĹ‚y i skontaktuje siÄ™ w ciÄ…gu 24 godz.
+                    Twoje zgłoszenie zostało pomyślnie przesłane. Nasz zespół przeanalizuje materiały i skontaktuje się w ciągu 24 godz.
                   </p>
-                  <button onClick={() => setIsSubmitted(false)} className="btn-outline">WyĹ›lij kolejne zgĹ‚oszenie</button>
+                  <button onClick={() => setIsSubmitted(false)} className="btn-outline">Wyślij kolejne zgłoszenie</button>
                 </motion.div>
               ) : (
                 <>
@@ -296,20 +296,20 @@ const CastingPage: React.FC = () => {
                             <div className="space-y-8">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">ImiÄ™ <span className="text-crimson">*</span></label>
-                                  <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-input" placeholder="WprowadĹş imiÄ™..." />
+                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Imię <span className="text-crimson">*</span></label>
+                                  <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-input" placeholder="Wprowadź imię..." />
                                 </div>
                                 <div className="space-y-2">
                                   <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Nazwisko <span className="text-crimson">*</span></label>
-                                  <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="form-input" placeholder="WprowadĹş nazwisko..." />
+                                  <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="form-input" placeholder="Wprowadź nazwisko..." />
                                 </div>
                                 <div className="space-y-2">
                                   <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Email <span className="text-crimson">*</span></label>
-                                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="form-input" placeholder="WprowadĹş email..." />
+                                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="form-input" placeholder="Wprowadź email..." />
                                 </div>
                                 <div className="space-y-2">
                                   <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Telefon <span className="text-crimson">*</span></label>
-                                  <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-input" placeholder="WprowadĹş num..." />
+                                  <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-input" placeholder="Wprowadź num..." />
                                 </div>
                                 <div className="space-y-2">
                                   <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Data urodzenia <span className="text-crimson">*</span></label>
@@ -323,8 +323,8 @@ const CastingPage: React.FC = () => {
                                   </div>
                                 </div>
                                 <div className="space-y-2 md:col-span-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Cechy szczegĂłlne (opcjonalnie)</label>
-                                  <textarea name="bodyModifications" value={formData.bodyModifications} onChange={handleChange} className="form-input h-[80px]" placeholder="Rozmiar biustu, kolor wĹ‚osĂłw, tatuaĹĽe, dodatkowe atuty..."></textarea>
+                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Cechy szczególne (opcjonalnie)</label>
+                                  <textarea name="bodyModifications" value={formData.bodyModifications} onChange={handleChange} className="form-input h-[80px]" placeholder="Rozmiar biustu, kolor włosów, tatuaże, dodatkowe atuty..."></textarea>
                                 </div>
                               </div>
                             </div>
@@ -333,7 +333,7 @@ const CastingPage: React.FC = () => {
                           {currentStep === 2 && (
                             <div className="space-y-8">
                                <div className="space-y-4">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">DoĹ›wiadczenie w branĹĽy (+18)</label>
+                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Doświadczenie w branży (+18)</label>
                                 <div className="flex flex-wrap gap-4">
                                   <label className="flex items-center gap-3 p-4 bg-dark-4 border border-gold/10 cursor-pointer hover:border-gold/30 transition-colors">
                                     <input type="radio" name="experience" value="no" checked={formData.experience === 'no'} onChange={handleChange} className="accent-crimson" />
@@ -341,14 +341,14 @@ const CastingPage: React.FC = () => {
                                   </label>
                                   <label className="flex items-center gap-3 p-4 bg-dark-4 border border-gold/10 cursor-pointer hover:border-gold/30 transition-colors">
                                     <input type="radio" name="experience" value="yes" checked={formData.experience === 'yes'} onChange={handleChange} className="accent-crimson" />
-                                    <span className="text-xs text-dim">Mam doĹ›wiadczenie</span>
+                                    <span className="text-xs text-dim">Mam doświadczenie</span>
                                   </label>
                                 </div>
                               </div>
                               <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Typ preferowanych treĹ›ci</label>
+                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Typ preferowanych treści</label>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                  {['ZdjÄ™cia Solo', 'Wideo Solo', 'Live stream', 'BGM (Pary)', 'Zabawki', 'Wszystko'].map(t => (
+                                  {['Zdjęcia Solo', 'Wideo Solo', 'Live stream', 'BGM (Pary)', 'Zabawki', 'Wszystko'].map(t => (
                                     <label key={t} className="flex items-center gap-3 p-3 bg-dark-4 border border-gold/5 cursor-pointer hover:border-gold/20 transition-colors">
                                       <input type="checkbox" name="contentTypes" value={t.toLowerCase()} checked={formData.contentTypes.includes(t.toLowerCase())} onChange={handleChange} className="accent-gold" />
                                       <span className="text-[10px] text-dim">{t}</span>
@@ -357,8 +357,8 @@ const CastingPage: React.FC = () => {
                                 </div>
                               </div>
                               <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Twoja gĹ‚Ăłwna motywacja doĹ‚Ä…czenia <span className="text-crimson">*</span></label>
-                                <textarea required name="motivation" value={formData.motivation} onChange={handleChange} className="form-input min-h-[80px]" placeholder="Dlaczego chcesz z nami stworzyÄ‡ imperium biznesowe?"></textarea>
+                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Twoja główna motywacja dołączenia <span className="text-crimson">*</span></label>
+                                <textarea required name="motivation" value={formData.motivation} onChange={handleChange} className="form-input min-h-[80px]" placeholder="Dlaczego chcesz z nami stworzyć imperium biznesowe?"></textarea>
                               </div>
                             </div>
                           )}
@@ -366,14 +366,14 @@ const CastingPage: React.FC = () => {
                           {currentStep === 3 && (
                             <div className="space-y-8">
                               <div className="p-6 bg-gold/5 border border-gold/10">
-                                <p className="text-[11px] text-dim leading-relaxed mb-4">Wymagane minimum 2 zdjÄ™cia (W tym 1 sylwetki nago/bielizna) oraz max 30s filmik prĂłbny <span className="text-crimson">*</span></p>
+                                <p className="text-[11px] text-dim leading-relaxed mb-4">Wymagane minimum 2 zdjęcia (W tym 1 sylwetki nago/bielizna) oraz max 30s filmik próbny <span className="text-crimson">*</span></p>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                   <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">ZdjÄ™cie Sylwetki <span className="text-crimson">*</span></label>
+                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie Sylwetki <span className="text-crimson">*</span></label>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo1: files[0] ?? null }))} />
                                   </div>
                                   <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">ZdjÄ™cie Twarzy <span className="text-crimson">*</span></label>
+                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie Twarzy <span className="text-crimson">*</span></label>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo2: files[0] ?? null }))} />
                                   </div>
                                   <div className="space-y-2">
@@ -384,15 +384,15 @@ const CastingPage: React.FC = () => {
                               </div>
                               
                               <div className="bg-dark-4/50 border border-crimson/20 p-8 space-y-4">
-                                <h4 className="font-cormorant text-xl text-gold italic">Wymagane OĹ›wiadczenia:</h4>
+                                <h4 className="font-cormorant text-xl text-gold italic">Wymagane Oświadczenia:</h4>
                                 <div className="space-y-4">
                                   <label className="flex items-start gap-4 cursor-pointer group">
                                     <input required type="checkbox" name="consentAge" checked={formData.consentAge} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Jestem osobÄ… peĹ‚noletniÄ… (+18). <span className="text-crimson">*</span></span>
+                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Jestem osobą pełnoletnią (+18). <span className="text-crimson">*</span></span>
                                   </label>
                                   <label className="flex items-start gap-4 cursor-pointer group">
                                     <input required type="checkbox" name="consentTerms" checked={formData.consentTerms} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">AkceptujÄ™ Regulamin, RODO i wykorzystanie plikĂłw dla oceny zespoĹ‚u HRL. <span className="text-crimson">*</span></span>
+                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Akceptuję Regulamin, RODO i wykorzystanie plików dla oceny zespołu HRL. <span className="text-crimson">*</span></span>
                                   </label>
                                 </div>
                               </div>
@@ -433,18 +433,18 @@ const CastingPage: React.FC = () => {
 
           {/* FAQ SECTION */}
           <section id="faq" className="py-24 px-[7%] max-w-5xl mx-auto">
-            <div className="section-tag">NajczÄ™stsze Pytania</div>
+            <div className="section-tag">Najczęstsze Pytania</div>
             <h2 className="h1-premium">Pytania i <span className="italic bg-gold-gradient bg-clip-text text-transparent">odpowiedzi</span></h2>
             <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
             
             <div className="space-y-4">
               {[
-                { q: "Czy muszÄ™ mieÄ‡ doĹ›wiadczenie?", a: "Nie, nie wymagamy doĹ›wiadczenia. Zapewniamy peĹ‚ne szkolenie i wsparcie na kaĹĽdym etapie. Wiele naszych najlepszych partnerek zaczynaĹ‚o bez ĹĽadnego doĹ›wiadczenia w branĹĽy." },
-                { q: "Czy muszÄ™ mieÄ‡ wĹ‚asny sprzÄ™t?", a: "Nie, zapewniamy caĹ‚y profesjonalny sprzÄ™t 4K, oĹ›wietlenie, studia i wszystko, czego potrzebujesz do tworzenia treĹ›ci w najwyĹĽszej jakoĹ›ci." },
-                { q: "Jak szybko mogÄ™ zaczÄ…Ä‡ zarabiaÄ‡?", a: "Po zatwierdzeniu aplikacji i odbyciu sesji testowej, moĹĽesz zaczÄ…Ä‡ zarabiaÄ‡ juĹĽ w pierwszym tygodniu. Wszystko zaleĹĽy od Twojej dostÄ™pnoĹ›ci i zaangaĹĽowania." },
-                { q: "Czy moje dane sÄ… bezpieczne?", a: "Tak, stosujemy najwyĹĽsze standardy bezpieczeĹ„stwa danych i peĹ‚nÄ… anonimowoĹ›Ä‡. Twoje dane osobowe sÄ… chronione zgodnie z RODO i nigdy nie sÄ… udostÄ™pniane osobom trzecim." },
-                { q: "Czy mogÄ™ pracowaÄ‡ anonimowo?", a: "Tak, oferujemy peĹ‚nÄ… anonimowoĹ›Ä‡. MoĹĽesz uĹĽywaÄ‡ pseudonimu, maskowaÄ‡ twarz lub pracowaÄ‡ w sposĂłb, ktĂłry zapewni Ci peĹ‚nÄ… prywatnoĹ›Ä‡." },
-                { q: "Jak wyglÄ…da proces wypĹ‚at?", a: "WypĹ‚aty realizujemy co tydzieĹ„ lub co dwa tygodnie, zgodnie z Twoimi preferencjami. Otrzymujesz szczegĂłĹ‚owe raporty przy kaĹĽdej wypĹ‚acie z peĹ‚nym wglÄ…dem w swoje zarobki." }
+                { q: "Czy muszę mieć doświadczenie?", a: "Nie, nie wymagamy doświadczenia. Zapewniamy pełne szkolenie i wsparcie na każdym etapie. Wiele naszych najlepszych partnerek zaczynało bez żadnego doświadczenia w branży." },
+                { q: "Czy muszę mieć własny sprzęt?", a: "Nie, zapewniamy cały profesjonalny sprzęt 4K, oświetlenie, studia i wszystko, czego potrzebujesz do tworzenia treści w najwyższej jakości." },
+                { q: "Jak szybko mogę zacząć zarabiać?", a: "Po zatwierdzeniu aplikacji i odbyciu sesji testowej, możesz zacząć zarabiać już w pierwszym tygodniu. Wszystko zależy od Twojej dostępności i zaangażowania." },
+                { q: "Czy moje dane są bezpieczne?", a: "Tak, stosujemy najwyższe standardy bezpieczeństwa danych i pełną anonimowość. Twoje dane osobowe są chronione zgodnie z RODO i nigdy nie są udostępniane osobom trzecim." },
+                { q: "Czy mogę pracować anonimowo?", a: "Tak, oferujemy pełną anonimowość. Możesz używać pseudonimu, maskować twarz lub pracować w sposób, który zapewni Ci pełną prywatność." },
+                { q: "Jak wygląda proces wypłat?", a: "Wypłaty realizujemy co tydzień lub co dwa tygodnie, zgodnie z Twoimi preferencjami. Otrzymujesz szczegółowe raporty przy każdej wypłacie z pełnym wglądem w swoje zarobki." }
               ].map((item, i) => (
                 <FAQItem key={i} question={item.q} answer={item.a} />
               ))}
@@ -454,16 +454,16 @@ const CastingPage: React.FC = () => {
           {/* PRIVACY ASSURANCE */}
           <section className="py-24 px-[7%] max-w-7xl mx-auto">
             <div className="bg-dark-3/40 border-l-4 border-gold p-12 space-y-6">
-              <h3 className="font-cormorant text-2xl text-gold italic">đź”’ Twoja PrywatnoĹ›Ä‡ Jest Naszym Priorytetem</h3>
-              <p className="text-dim text-sm leading-relaxed">W Studio HRL Adult rozumiemy, jak waĹĽna jest prywatnoĹ›Ä‡ w branĹĽy treĹ›ci dla dorosĹ‚ych. Dlatego gwarantujemy:</p>
+              <h3 className="font-cormorant text-2xl text-gold italic">🔒 Twoja Prywatność Jest Naszym Priorytetem</h3>
+              <p className="text-dim text-sm leading-relaxed">W Studio HRL Adult rozumiemy, jak ważna jest prywatność w branży treści dla dorosłych. Dlatego gwarantujemy:</p>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-dim italic">
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> PeĹ‚nÄ… zgodnoĹ›Ä‡ z RODO i przepisami o ochronie danych</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> ZgodnoĹ›Ä‡ z amerykaĹ„skÄ… ustawÄ… 18 U.S.C. Â§ 2257</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> AnonimowoĹ›Ä‡ i ochronÄ™ toĹĽsamoĹ›ci</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Bezpieczne przechowywanie dokumentĂłw</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> TransparentnoĹ›Ä‡ w zarzÄ…dzaniu danymi</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Pełną zgodność z RODO i przepisami o ochronie danych</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Zgodność z amerykańską ustawą 18 U.S.C. Â§ 2257</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Anonimowość i ochronę tożsamości</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Bezpieczne przechowywanie dokumentów</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Transparentność w zarządzaniu danymi</li>
               </ul>
-              <p className="text-gold/60 text-[10px] font-bold tracking-widest uppercase">Twoje dane sÄ… bezpieczne u nas. Zawsze.</p>
+              <p className="text-gold/60 text-[10px] font-bold tracking-widest uppercase">Twoje dane są bezpieczne u nas. Zawsze.</p>
             </div>
           </section>
         </main>

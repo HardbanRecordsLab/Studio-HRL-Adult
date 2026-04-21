@@ -1,4 +1,4 @@
-﻿import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
 import { sendEmail, emailTemplates } from '@/lib/email';
@@ -59,11 +59,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           breastSize: data.breastSize || null,
           experience: data.experience || 'no',
           experienceDesc: data.experienceDesc || null,
-          platforms: JSON.stringify(data.platforms || []),
-          contentTypes: JSON.stringify(data.contentTypes || []),
+          platforms: data.platforms || [],
+          contentTypes: data.contentTypes || [],
           limits: data.limits || null,
           sessionsPerWeek: data.sessionsPerWeek || null,
-          workingTimes: JSON.stringify(data.workingTimes || []),
+          workingTimes: data.workingTimes || [],
           motivation: data.motivation,
           bodyModifications: data.bodyModifications || null,
           skills: data.skills || null,

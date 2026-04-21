@@ -125,10 +125,8 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
     e.preventDefault();
     setSubmitting(true);
     try {
-      // Ensure handle has no leading @ before saving to DB unless desired
       const cleanHandle = newPartner.handle.startsWith('@') ? newPartner.handle.substring(1) : newPartner.handle;
       
-      // Build profileData object
       const profileData = {
         likes: newPartner.likes.filter((l: string) => l.trim() !== ''),
         boundaries: newPartner.boundaries.filter((b: string) => b.trim() !== ''),
@@ -137,26 +135,31 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
         gallery: newPartner.gallery.filter((g: string) => g.trim() !== '')
       };
 
-      const response = await fetch('/api/admin/partners', {
-        method: 'POST',
+      const payload = {
+        ...newPartner, 
+        handle: cleanHandle, 
+        status: editingPartner ? editingPartner.status : 'active', 
+        type: 'solo',
+        profileData: profileData,
+        measurements: newPartner.bust && newPartner.waist && newPartner.hips 
+          ? `${newPartner.bust} / ${newPartner.waist} / ${newPartner.hips}` 
+          : newPartner.measurements
+      };
+
+      const url = editingPartner ? `/api/admin/partners/${editingPartner.id}` : '/api/admin/partners';
+      const method = editingPartner ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        // We set status active by default so it publishes immediately
-        body: JSON.stringify({ 
-          ...newPartner, 
-          handle: cleanHandle, 
-          status: 'active', 
-          type: 'solo',
-          profileData: JSON.stringify(profileData),
-          measurements: newPartner.bust && newPartner.waist && newPartner.hips 
-            ? `${newPartner.bust} / ${newPartner.waist} / ${newPartner.hips}` 
-            : newPartner.measurements
-        })
+        body: JSON.stringify(payload)
       });
       if (response.ok) {
         setShowModal(false);
+        setEditingPartner(null);
         setNewPartner({ 
           name: '', handle: '', email: '', bio: '', height: '', weight: '', measurements: '', avatar: '',
           heroPitch: '', bust: '', waist: '', hips: '', size: '', characteristics: '',
@@ -187,7 +190,17 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
           <p className="text-[10px] text-gray-400 tracking-[3px] uppercase">Zarządzanie talentami i kontraktami premium</p>
         </div>
         <div className="flex gap-4">
-           <button onClick={() => setShowModal(true)} className="flex items-center gap-3 px-6 py-2.5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-[#c9a84c]/10">
+           <button onClick={() => {
+             setEditingPartner(null);
+             setNewPartner({ 
+               name: '', handle: '', email: '', bio: '', height: '', weight: '', measurements: '', avatar: '',
+               heroPitch: '', bust: '', waist: '', hips: '', size: '', characteristics: '',
+               likes: ['', '', '', '', '', ''], boundaries: ['', '', '', '', '', ''],
+               bestInMe: ['', '', '', '', '', '', '', '', '', ''], whyWatchMe: ['', '', '', '', '', '', '', '', '', ''],
+               gallery: ['', '', '', '', '']
+             });
+             setShowModal(true);
+           }} className="flex items-center gap-3 px-6 py-2.5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-[#c9a84c]/10">
               <UserPlus className="w-4 h-4" /> Dodaj Partnerkę
            </button>
            <button className="flex items-center gap-3 px-6 py-2.5 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded transition-all hover:bg-white/10">
@@ -325,7 +338,30 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                   <td className="px-8 py-6">
                      <div className="flex items-center gap-4">
                         <a href={`/profile/${p.handle}`} target="_blank" rel="noreferrer" className="p-2 text-gray-600 hover:text-white transition-all"><Eye className="w-4 h-4" /></a>
-                        <button className="p-2 text-gray-600 hover:text-[#c9a84c] transition-all"><Edit className="w-4 h-4" /></button>
+                        <button onClick={() => {
+                          const pd = typeof p.profileData === 'string' ? JSON.parse(p.profileData) : (p.profileData || {});
+                          setNewPartner({
+                            ...newPartner,
+                            name: p.name || '',
+                            handle: p.handle || '',
+                            email: p.email || '',
+                            bio: p.bio || '',
+                            height: p.height?.toString() || '',
+                            weight: p.weight?.toString() || '',
+                            measurements: p.measurements || '',
+                            avatar: p.avatar || '',
+                            heroPitch: p.heroImage || '',
+                            bust: '', waist: '', hips: '', size: '', // Optional parsing if stored in measurements
+                            characteristics: pd.characteristics || '',
+                            likes: pd.likes?.length ? pd.likes.concat(Array(Math.max(0, 6 - pd.likes.length)).fill('')) : ['', '', '', '', '', ''],
+                            boundaries: pd.boundaries?.length ? pd.boundaries.concat(Array(Math.max(0, 6 - pd.boundaries.length)).fill('')) : ['', '', '', '', '', ''],
+                            bestInMe: pd.bestInMe?.length ? pd.bestInMe.concat(Array(Math.max(0, 10 - pd.bestInMe.length)).fill('')) : ['', '', '', '', '', '', '', '', '', ''],
+                            whyWatchMe: pd.whyWatchMe?.length ? pd.whyWatchMe.concat(Array(Math.max(0, 10 - pd.whyWatchMe.length)).fill('')) : ['', '', '', '', '', '', '', '', '', ''],
+                            gallery: pd.gallery?.length ? pd.gallery.concat(Array(Math.max(0, 5 - pd.gallery.length)).fill('')) : ['', '', '', '', '']
+                          });
+                          setEditingPartner(p);
+                          setShowModal(true);
+                        }} className="p-2 text-gray-600 hover:text-[#c9a84c] transition-all"><Edit className="w-4 h-4" /></button>
                         <button onClick={() => handleDelete(p.id)} className="p-2 text-gray-800 hover:text-red-500 transition-all"><Trash2 className="w-4 h-4" /></button>
                      </div>
                   </td>
@@ -362,7 +398,7 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
-                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Hero / Działło</h4>
+                    <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Hero Image / Opis</h4>
                   </div>
                   <div>
                     <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Pitch Wizerunkowy</label>

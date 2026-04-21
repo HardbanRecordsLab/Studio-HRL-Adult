@@ -1,62 +1,75 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { requireAdminSession } from "@/lib/adminSession";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  if (!requireAdminSession(req, res)) {
+    return;
   }
 
   const { mode, payload } = req.body;
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY; 
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   const HUGGING_FACE_TOKEN = process.env.HUGGING_FACE_TOKEN;
 
   try {
     switch (mode) {
-      case 'visual':
+      case "visual":
         // PRO HANDLING: Hugging Face (Model Flux.1 Schnell)
         const hfResponse = await fetch(
           "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
           {
-            headers: { 
+            headers: {
               Authorization: `Bearer ${HUGGING_FACE_TOKEN}`,
-              'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
             method: "POST",
             body: JSON.stringify({ inputs: payload.prompt }),
-          }
+          },
         );
 
         if (hfResponse.status === 503) {
-          return res.status(503).json({ 
-            status: 'loading', 
-            message: 'Model AI się wybudza (Cold Start). Spróbuj ponownie za ok. 30-60 sekund.' 
+          return res.status(503).json({
+            status: "loading",
+            message:
+              "Model AI się wybudza (Cold Start). Spróbuj ponownie za ok. 30-60 sekund.",
           });
         }
 
         if (hfResponse.status === 429) {
-          return res.status(429).json({ 
-            status: 'limit', 
-            message: 'Osiągnięto darmowy limit Hugging Face. Odczekaj chwilę lub użyj klucza PRO.' 
+          return res.status(429).json({
+            status: "limit",
+            message:
+              "Osiągnięto darmowy limit Hugging Face. Odczekaj chwilę lub użyj klucza PRO.",
           });
         }
 
         if (!hfResponse.ok) {
           const errData = await hfResponse.json();
-          throw new Error(errData.error || "Wystąpił błąd po stronie Hugging Face.");
+          throw new Error(
+            errData.error || "Wystąpił błąd po stronie Hugging Face.",
+          );
         }
-        
+
         const arrayBuffer = await hfResponse.arrayBuffer();
-        const base64Image = Buffer.from(arrayBuffer).toString('base64');
+        const base64Image = Buffer.from(arrayBuffer).toString("base64");
         const dataUrl = `data:image/jpeg;base64,${base64Image}`;
 
         return res.status(200).json({
-          status: 'success',
+          status: "success",
           resultUrl: dataUrl,
-          message: 'Obraz wygenerowany pomyślnie.'
+          message: "Obraz wygenerowany pomyślnie.",
         });
 
-      case 'script':
+      case "script":
         // PRO HANDLING: Gemini 1.5 Flash
-        if (!GEMINI_API_KEY) throw new Error("Brak klucza GEMINI_API_KEY w konfiguracji.");
+        if (!GEMINI_API_KEY)
+          throw new Error("Brak klucza GEMINI_API_KEY w konfiguracji.");
 
         const geminiResponse = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
@@ -64,28 +77,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              contents: [{
-                parts: [{ 
-                  text: `Jesteś ekspertem marketingu adult. Wygeneruj tekst typu ${payload.type} w tonie ${payload.tone}. Temat: ${payload.prompt}. Odpowiedź daj bezpośrednio, bez wstępów.` 
-                }]
-              }],
-              generationConfig: { temperature: 0.8, maxOutputTokens: 1024 }
-            })
-          }
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: `Jesteś ekspertem marketingu adult. Wygeneruj tekst typu ${payload.type} w tonie ${payload.tone}. Temat: ${payload.prompt}. Odpowiedź daj bezpośrednio, bez wstępów.`,
+                    },
+                  ],
+                },
+              ],
+              generationConfig: { temperature: 0.8, maxOutputTokens: 1024 },
+            }),
+          },
         );
 
         const geminiData = await geminiResponse.json();
-        const generatedText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
+        const generatedText =
+          geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
 
         return res.status(200).json({
-          status: 'success',
+          status: "success",
           text: generatedText?.trim(),
-          message: 'Skrypt wygenerowany pomyślnie.'
+          message: "Skrypt wygenerowany pomyślnie.",
         });
 
-      case 'bio':
+      case "bio":
         // PRO BIO ARCHITECT: Gemini 1.5 Flash
-        if (!GEMINI_API_KEY) throw new Error("Brak klucza GEMINI_API_KEY w konfiguracji.");
+        if (!GEMINI_API_KEY)
+          throw new Error("Brak klucza GEMINI_API_KEY w konfiguracji.");
 
         const bioPrompt = `
           Jesteś ekspertem od kreowania wizerunku modelek w branży adult premium. 
@@ -118,31 +137,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               contents: [{ parts: [{ text: bioPrompt }] }],
-              generationConfig: { responseMimeType: "application/json" }
-            })
-          }
+              generationConfig: { responseMimeType: "application/json" },
+            }),
+          },
         );
 
         const bioData = await bioResponse.json();
-        const bioResult = JSON.parse(bioData.candidates?.[0]?.content?.parts?.[0]?.text);
+        const bioResult = JSON.parse(
+          bioData.candidates?.[0]?.content?.parts?.[0]?.text,
+        );
 
         return res.status(200).json({
-          status: 'success',
+          status: "success",
           data: bioResult,
-          message: 'BIO stworzone zgodnie z nowym szablonem Premium HRL (bez cen).'
+          message:
+            "BIO stworzone zgodnie z nowym szablonem Premium HRL (bez cen).",
         });
 
       default:
-        return res.status(200).json({ 
-          status: 'info', 
-          message: 'System gotowy do pracy w trybie darmowym.',
+        return res.status(200).json({
+          status: "info",
+          message: "System gotowy do pracy w trybie darmowym.",
         });
     }
   } catch (error: any) {
-    console.error('PRO API Error:', error);
-    return res.status(500).json({ 
-      status: 'error',
-      message: 'Błąd krytyczny: ' + error.message 
+    console.error("PRO API Error:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Błąd krytyczny: " + error.message,
     });
   }
 }
