@@ -37,6 +37,7 @@ interface Partner {
   avatar?: string;
   heroImage?: string;
   bio?: string;
+  description?: string;
   height?: number | string;
   weight?: number | string;
   measurements?: string;
