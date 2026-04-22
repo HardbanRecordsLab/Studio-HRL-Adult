@@ -93,7 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const partner = await prisma.partner.findUnique({ where: { handle: handleStr } });
     
     if (partner) {
-      const safeJSON = (s: string | null | undefined, fallback: any = {}) => {
+      const safeJSON = (s: any, fallback: any = {}) => {
         try { return typeof s === 'string' ? JSON.parse(s) : (s || fallback); } catch { return fallback; }
       };
 
