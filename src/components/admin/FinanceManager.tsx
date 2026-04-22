@@ -71,6 +71,7 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
     recentTransactions: FinancialRecord[];
     payoutHistory: FinancialRecord[];
   } | null>(null);
+  const [partners, setPartners] = useState<{id: string, name: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -83,7 +84,20 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
 
   useEffect(() => {
     fetchFinancialData();
+    fetchPartners();
   }, [dateRange]);
+
+  const fetchPartners = async () => {
+    try {
+      const response = await fetch('/api/admin/partners', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setPartners(data.map((p: any) => ({ id: p.id, name: p.name })));
+      }
+    } catch (e) { console.error(e); }
+  };
 
   const fetchFinancialData = async () => {
     setLoading(true);
@@ -334,7 +348,9 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#c9a84c] selection:bg-[#c9a84c]"
                         >
                            <option value="" className="bg-black">Wybierz z listy...</option>
-                           {/* Dynamic options here */}
+                           {partners.map(p => (
+                              <option key={p.id} value={p.id} className="bg-black">{p.name}</option>
+                           ))}
                         </select>
                      </div>
 
