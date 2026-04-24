@@ -31,6 +31,7 @@
     "next-cloudinary": "^6.17.5",
     "nodemailer": "^8.0.5",
     "pg": "^8.20.0",
+    "playwright": "^1.59.1",
     "postcss": "^8.4.49",
     "prisma": "^4.16.2",
     "react": "^18.3.1",

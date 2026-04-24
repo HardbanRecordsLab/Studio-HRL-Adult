@@ -12,11 +12,6 @@ import {
   Tag, 
   Folder, 
   Clock, 
-  CheckCircle, 
-  XCircle, 
-  Play, 
-  Image as ImageIcon, 
-  FileText, 
   Video, 
   Music,
   Plus,
@@ -31,6 +26,8 @@ import {
   ChevronRight,
   MoreVertical,
   Clock4,
+  Check,
+  RefreshCw,
   X
 } from 'lucide-react';
 import { cn } from '@/utils/utils';
@@ -72,7 +69,9 @@ const ContentManagementSystem: React.FC<ContentManagementSystemProps> = ({ token
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showDistributeModal, setShowDistributeModal] = useState(false);
   const [selectedContent, setSelectedContent] = useState<ContentItem | null>(null);
+  const [distributingStatus, setDistributingStatus] = useState<Record<string, 'pending' | 'uploading' | 'success' | 'error'>>({});
 
   const categories = [
     'Tutorial', 'Interview', 'Behind the Scenes', 'Performance', 'Photoshoot', 
@@ -163,6 +162,34 @@ const ContentManagementSystem: React.FC<ContentManagementSystemProps> = ({ token
     { id: '3', title: 'Safety and Privacy Workshop', description: 'Essential security measures for digital creators', type: 'audio', category: 'Webinar', tags: ['Safety', 'Privacy'], url: '#', duration: '42:15', size: '89 MB', status: 'published', createdAt: '2024-01-05', updatedAt: '2024-01-05', views: 567, downloads: 78, author: 'Security', isPublic: true, level: 'intermediate' },
     { id: '4', title: 'Equipment Setup Guide', description: 'Essential kit for 4K streaming and high-fidelity production', type: 'document', category: 'Tutorial', tags: ['Equipment'], url: '#', size: '2.3 MB', status: 'draft', createdAt: '2024-01-08', updatedAt: '2024-01-08', views: 234, downloads: 156, author: 'Admin', isPublic: true, level: 'beginner' }
   ];
+
+  const handleStartDistribution = async (platforms: string[]) => {
+    if (!selectedContent) return;
+    setDistributingStatus({});
+    
+    try {
+      const response = await fetch('/api/admin/content/distribute', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ contentId: selectedContent.id, platforms })
+      });
+      
+      if (response.ok) {
+        // UI Feedback simulation
+        platforms.forEach((p, i) => {
+          setTimeout(() => {
+            setDistributingStatus(prev => ({ ...prev, [p]: 'uploading' }));
+            setTimeout(() => {
+              setDistributingStatus(prev => ({ ...prev, [p]: 'success' }));
+            }, 2000 + (i * 1000));
+          }, i * 500);
+        });
+      }
+    } catch (e) { console.error(e); }
+  };
 
   return (
     <div className="space-y-10 animate-fadeIn pb-20">
@@ -266,6 +293,11 @@ const ContentManagementSystem: React.FC<ContentManagementSystemProps> = ({ token
                      <button onClick={() => handleStatusChange(item.id, 'archived')} className="flex-1 py-3 bg-white/5 text-[9px] font-black text-white/50 uppercase tracking-widest rounded-2xl hover:bg-white/10 hover:text-white transition-all border border-white/5">Archiwizuj</button>
                    )}
                    <button onClick={() => { setSelectedContent(item); setShowScheduleModal(true); }} className="flex-1 py-3 bg-[#c9a84c]/10 text-[9px] font-black text-[#c9a84c] uppercase tracking-widest rounded-2xl hover:bg-[#c9a84c] hover:text-black transition-all border border-[#c9a84c]/20">Zaplanuj</button>
+                   {item.type === 'video' && (
+                     <button onClick={() => { setSelectedContent(item); setShowDistributeModal(true); }} className="p-3 bg-[#c9a84c] text-black rounded-2xl hover:scale-105 transition-all shadow-lg shadow-[#c9a84c]/20">
+                        <Zap className="w-4 h-4 fill-black" />
+                     </button>
+                   )}
                 </div>
              </motion.div>
            ))}
@@ -317,6 +349,70 @@ const ContentManagementSystem: React.FC<ContentManagementSystemProps> = ({ token
            </div>
          )}
       </AnimatePresence>
+
+       {/* Distribution Modal (HRL SYNDICATOR UI) */}
+       <AnimatePresence>
+          {showDistributeModal && selectedContent && (
+             <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/98 backdrop-blur-2xl">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-[50px] overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+                   <div className="p-10 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                      <div className="flex items-center gap-4">
+                         <div className="w-12 h-12 bg-[#c9a84c]/20 rounded-2xl flex items-center justify-center text-[#c9a84c]"><Zap className="w-6 h-6 fill-[#c9a84c]" /></div>
+                         <div>
+                            <h3 className="text-2xl font-bold font-georgia italic text-white">HRL <span className="text-[#c9a84c]">Syndicator</span></h3>
+                            <p className="text-[9px] text-gray-500 uppercase tracking-widest font-black">Automatyczna Dystrybucja Contentu: {selectedContent.title}</p>
+                         </div>
+                      </div>
+                      <button onClick={() => { setShowDistributeModal(false); setDistributingStatus({}); }} className="p-3 hover:bg-white/5 rounded-full transition-all text-gray-500"><X className="w-6 h-6" /></button>
+                   </div>
+
+                   <div className="p-10 overflow-y-auto space-y-8 flex-1">
+                      <div className="grid grid-cols-2 gap-4">
+                         {['Pornhub', 'ManyVids', 'Fansly', 'ModelCenter', 'OnlyFans', 'SpankBang'].map((plat) => (
+                            <div key={plat} className="p-6 bg-white/5 border border-white/5 rounded-3xl flex items-center justify-between group hover:border-[#c9a84c]/40 transition-all">
+                               <div className="flex items-center gap-4">
+                                  <div className={cn("w-2 h-2 rounded-full", distributingStatus[plat] === 'success' ? 'bg-green-500' : distributingStatus[plat] === 'uploading' ? 'bg-[#c9a84c] animate-pulse' : 'bg-gray-700')} />
+                                  <span className="text-xs font-bold text-white uppercase tracking-tighter">{plat}</span>
+                               </div>
+                               {distributingStatus[plat] === 'success' ? (
+                                  <CheckCircle className="w-4 h-4 text-green-500" />
+                               ) : distributingStatus[plat] === 'uploading' ? (
+                                  <RefreshCw className="w-4 h-4 text-[#c9a84c] animate-spin" />
+                               ) : (
+                                  <div className="w-4 h-4 rounded-full border border-white/10" />
+                               )}
+                            </div>
+                         ))}
+                      </div>
+
+                      <div className="p-8 bg-[#c9a84c]/5 border border-[#c9a84c]/10 rounded-[32px] space-y-4">
+                         <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-[#c9a84c]">
+                            <span>Postęp Operacji</span>
+                            <span>{Object.values(distributingStatus).filter(s => s === 'success').length} / 6 Platform</span>
+                         </div>
+                         <div className="h-1.5 bg-black rounded-full overflow-hidden">
+                            <motion.div 
+                               initial={{ width: 0 }} 
+                               animate={{ width: `${(Object.values(distributingStatus).filter(s => s === 'success').length / 6) * 100}%` }}
+                               className="h-full bg-[#c9a84c] shadow-[0_0_15px_#c9a84c]" 
+                            />
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="p-10 bg-white/5 border-t border-white/5">
+                      <button 
+                        onClick={() => handleStartDistribution(['Pornhub', 'ManyVids', 'Fansly', 'ModelCenter', 'OnlyFans', 'SpankBang'])}
+                        disabled={Object.values(distributingStatus).some(s => s === 'uploading' || s === 'success')}
+                        className="w-full py-5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-[5px] rounded-3xl hover:scale-[1.02] transition-all shadow-2xl shadow-[#c9a84c]/20 disabled:opacity-50"
+                      >
+                         Uruchom Proces Syndykacji (All Platforms)
+                      </button>
+                   </div>
+                </motion.div>
+             </div>
+          )}
+       </AnimatePresence>
 
       <style jsx global>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

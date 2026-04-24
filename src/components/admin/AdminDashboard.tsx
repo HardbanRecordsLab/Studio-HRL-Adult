@@ -27,6 +27,7 @@ import AcademyManager from './AcademyManager';
 import SystemSettings from './SystemSettings';
 import ContactsManager from './ContactsManager';
 import LogsManager from './LogsManager';
+import BroadcasterManager from './BroadcasterManager';
 import AICreatorWorkshop from '@/pages/admin/workshop/ai-creator';
 
 interface AdminDashboardProps {
@@ -67,6 +68,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, description: 'Statystyki i przegląd' },
     { id: 'partners', label: 'Partnerzy', icon: Users, description: 'Baza modelek i umów' },
     { id: 'casting', label: 'Casting', icon: UserCheck, description: 'Weryfikacja zgłoszeń' },
+    { id: 'broadcaster', label: 'Broadcaster', icon: Zap, description: 'Multi-streaming Live' },
     { id: 'platforms', label: 'Platformy', icon: Wifi, description: 'Dystrybucja i sieci' },
     { id: 'workshop', label: 'AI Workshop', icon: Sparkles, description: 'Produkcja Contentu AI' },
     { id: 'finance', label: 'Finanse', icon: DollarSign, description: 'Rozliczenia i zyski' },
@@ -215,6 +217,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
 
              {activeTab === 'partners' && <motion.div key="pt" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><PartnersManager token={token} /></motion.div>}
              {activeTab === 'casting' && <motion.div key="ca" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><CastingManager token={token} /></motion.div>}
+             {activeTab === 'broadcaster' && <motion.div key="br" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><BroadcasterManager token={token} /></motion.div>}
              {activeTab === 'platforms' && <motion.div key="pl" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><PlatformsManager token={token} /></motion.div>}
              {activeTab === 'finance' && <motion.div key="fn" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><FinanceManager token={token} /></motion.div>}
              {activeTab === 'content' && <motion.div key="cn" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><ContentManagementSystem token={token} /></motion.div>}
