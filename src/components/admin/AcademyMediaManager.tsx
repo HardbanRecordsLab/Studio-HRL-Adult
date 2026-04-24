@@ -57,10 +57,10 @@ const AcademyMediaManager: React.FC<AcademyMediaManagerProps> = ({ isEmbedded = 
   });
 
   const tabs = [
-    { id: 'videos' as ContentType, name: 'Video Library', icon: Film, color: '#c9a84c' },
-    { id: 'podcasts' as ContentType, name: 'Audio Podcast', icon: Music, color: '#ffffff' },
-    { id: 'documents' as ContentType, name: 'Whitepapers', icon: FileText, color: '#ffffff' },
-    { id: 'articles' as ContentType, name: 'Curated Articles', icon: BookOpen, color: '#ffffff' },
+    { id: 'videos' as ContentType, name: 'Video Masterclass', icon: Film, color: '#c9a84c' },
+    { id: 'podcasts' as ContentType, name: 'Listenables', icon: Music, color: '#ffffff' },
+    { id: 'documents' as ContentType, name: 'PDF Guides', icon: FileText, color: '#ffffff' },
+    { id: 'articles' as ContentType, name: 'Elite Blog', icon: BookOpen, color: '#ffffff' },
   ];
 
   const filteredData = (Array.isArray(data) ? data : []).filter((item: any) => 
@@ -108,7 +108,6 @@ const AcademyMediaManager: React.FC<AcademyMediaManagerProps> = ({ isEmbedded = 
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter">HRL <span className="text-white">Academy</span> ARCHIVE</h2>
-          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase font-bold">Zarządzanie zasobami edukacyjnymi klasy Premium</p>
         </div>
         <button
           onClick={handleAdd}

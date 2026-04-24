@@ -124,14 +124,12 @@ const AcademyManager: React.FC<AcademyManagerProps> = ({ token }) => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-light italic text-[#c9a84c] mb-2 uppercase tracking-tighter text-glow">Academy <span className="text-white">ECOSYSTEM</span></h2>
-          <p className="text-[10px] text-gray-500 tracking-[3px] uppercase font-bold">Infrastruktura Edukacyjna HRL // Unified Control Panel</p>
         </div>
         <div className="flex gap-4">
            <div className="flex p-1 bg-white/5 rounded-2xl border border-white/10">
               {[
-                { id: 'courses', label: 'Struktura Kursów', icon: Layout },
+                { id: 'courses', label: 'Biblioteka Zasobów', icon: Layout },
                 { id: 'media', label: 'Archiwum Mediów', icon: Database },
-                { id: 'analytics', label: 'Edukacja KPI', icon: TrendingUp }
               ].map(mode => (
                 <button
                   key={mode.id}
@@ -172,10 +170,10 @@ const AcademyManager: React.FC<AcademyManagerProps> = ({ token }) => {
              <div className="flex flex-col md:flex-row gap-6 items-center justify-between bg-[#0d0d0d] border border-white/5 p-4 rounded-[40px] shadow-2xl">
                 <div className="flex gap-1.5 p-1 bg-white/5 rounded-full overflow-x-auto no-scrollbar">
                    {[
-                     { id: 'videos', label: 'Video Lessons' },
+                     { id: 'articles', label: 'Elite Blog' },
                      { id: 'podcasts', label: 'Listenables' },
-                     { id: 'documents', label: 'PDF Guides' },
-                     { id: 'articles', label: 'Elite Blog' }
+                     { id: 'videos', label: 'Video Masterclass' },
+                     { id: 'documents', label: 'PDF Guides' }
                    ].map(cat => (
                      <button
                        key={cat.id}
