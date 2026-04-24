@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const DEMO_PROFILES = [
@@ -97,30 +97,16 @@ const DEMO_PROFILES = [
 ];
 
 async function main() {
-  console.log('Rozpoczynam migrację profili demo (Metoda Manualna)...');
+  console.log('Rozpoczynam migrację profili demo...');
   for (const profile of DEMO_PROFILES) {
-    try {
-      const existing = await prisma.partner.findFirst({
-        where: { handle: profile.handle }
-      });
-
-      if (existing) {
-        await prisma.partner.update({
-          where: { id: existing.id },
-          data: profile
-        });
-        console.log(`Zaktualizowano: ${profile.name} (@${profile.handle})`);
-      } else {
-        await prisma.partner.create({
-          data: profile
-        });
-        console.log(`Utworzono: ${profile.name} (@${profile.handle})`);
-      }
-    } catch (err) {
-      console.error(`Błąd przy ${profile.name}:`, err.message);
-    }
+    const p = await prisma.partner.upsert({
+      where: { handle: profile.handle },
+      update: profile,
+      create: profile,
+    });
+    console.log(`Zmigrowano: ${p.name} (@${p.handle})`);
   }
-  console.log('Migracja zakończona!');
+  console.log('Migracja zakończona sukcesem!');
 }
 
 main()

@@ -26,6 +26,7 @@ import ContentManagementSystem from './ContentManagementSystem';
 import AcademyManager from './AcademyManager';
 import SystemSettings from './SystemSettings';
 import ContactsManager from './ContactsManager';
+import LogsManager from './LogsManager';
 import AICreatorWorkshop from '@/pages/admin/workshop/ai-creator';
 
 interface AdminDashboardProps {
@@ -72,6 +73,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
     { id: 'content', label: 'Content', icon: Video, description: 'Zarządzanie mediami' },
     { id: 'academy', label: 'Akademia', icon: BookOpen, description: 'Kursy i progres' },
     { id: 'settings', label: 'System', icon: Settings, description: 'Konfiguracja serwerów' },
+    { id: 'logs', label: 'Logi', icon: History, description: 'Audyt i bezpieczeństwo' },
     { id: 'contact', label: 'Kontakt', icon: Search, description: 'Wiadomości i zgłoszenia' },
   ];
 
@@ -218,6 +220,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout }) => {
              {activeTab === 'content' && <motion.div key="cn" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><ContentManagementSystem token={token} /></motion.div>}
              {activeTab === 'academy' && <motion.div key="ac" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><AcademyManager token={token} /></motion.div>}
              {activeTab === 'settings' && <motion.div key="st" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><SystemSettings token={token} /></motion.div>}
+             {activeTab === 'logs' && <motion.div key="lg" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><LogsManager token={token} /></motion.div>}
              {activeTab === 'contact' && <motion.div key="ct" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><ContactsManager token={token} /></motion.div>}
              
              {activeTab === 'workshop' && (
