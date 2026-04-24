@@ -21,6 +21,7 @@ import {
   Activity,
   UserPlus
 } from 'lucide-react';
+import AdminImageUpload from './AdminImageUpload';
 
 interface Partner {
   id: string;
@@ -441,10 +442,11 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                     <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Opis Główny (Lead Bio)</label>
                     <textarea required value={newPartner.bio} onChange={e => setNewPartner({...newPartner, bio: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 min-h-[80px]" placeholder="Opis wstępny widoczny od razu na samej górze profilu..." />
                   </div>
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Hero Image (URL avataru)</label>
-                    <input type="text" value={newPartner.avatar} onChange={e => setNewPartner({...newPartner, avatar: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700" placeholder="/images/default-profile.jpg" />
-                  </div>
+                  <AdminImageUpload 
+                    label="Hero Image / Avatar" 
+                    currentValue={newPartner.avatar} 
+                    onUpload={(url) => setNewPartner({...newPartner, avatar: url})} 
+                  />
                 </div>
 
                 {/* SECTION 3: WYMIARY */}
@@ -562,14 +564,17 @@ const PartnersManager: React.FC<PartnersManagerProps> = ({ token, onPartnersUpda
                     <div className="w-1 h-6 bg-gradient-to-b from-[#c9a84c] to-purple-600"></div>
                     <h4 className="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">Galeria Portfolio</h4>
                   </div>
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">URL Zdjęć (5 pozycji)</label>
+                  <div className="grid grid-cols-5 gap-4">
                     {newPartner.gallery.map((url, i) => (
-                      <input key={i} type="text" value={url} onChange={e => {
-                        const newGallery = [...newPartner.gallery];
-                        newGallery[i] = e.target.value;
-                        setNewPartner({...newPartner, gallery: newGallery});
-                      }} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 text-[10px] mb-2" placeholder={`/image/photo${i + 1}.jpg`} />
+                      <AdminImageUpload 
+                        key={i}
+                        currentValue={url} 
+                        onUpload={(newUrl) => {
+                          const newGallery = [...newPartner.gallery];
+                          newGallery[i] = newUrl;
+                          setNewPartner({...newPartner, gallery: newGallery});
+                        }} 
+                      />
                     ))}
                   </div>
                 </div>

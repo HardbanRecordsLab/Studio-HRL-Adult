@@ -54,6 +54,8 @@ interface CastingApplication {
   photo3?: string;
   video?: string;
   status: 'pending' | 'approved' | 'rejected';
+  contractStatus: 'not_sent' | 'sent' | 'signed' | 'rejected';
+  convertedAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -104,14 +106,24 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
     } catch (e) { console.error(e); }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Czy na pewno chcesz trwale usunąć to zgłoszenie?')) return;
+  const handleConvert = async (id: string) => {
+    if (!confirm('Czy na pewno chcesz utworzyć profil partnera na podstawie tego zgłoszenia?')) return;
     try {
-      const response = await fetch(`/api/admin/casting/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+      const response = await fetch('/api/admin/casting/convert', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ applicationId: id })
       });
-      if (response.ok) fetchApplications();
+      if (response.ok) {
+        alert('Profil partnera został utworzony pomyślnie!');
+        fetchApplications();
+      } else {
+        const err = await response.json();
+        alert(`Błąd: ${err.error || 'Nie udało się utworzyć profilu'}`);
+      }
     } catch (e) { console.error(e); }
   };
 
@@ -200,6 +212,7 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
               <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Wiek / Detale</th>
               <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Doświadczenie</th>
               <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Status</th>
+              <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Kontrakt</th>
               <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[3px]">Akcje</th>
             </tr>
           </thead>
@@ -247,6 +260,14 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                       </span>
                    </td>
                    <td className="px-8 py-6">
+                      <span className={`inline-flex items-center gap-2 px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest ${
+                        a.contractStatus === 'signed' ? 'bg-green-500/10 text-green-500' : 
+                        a.contractStatus === 'sent' ? 'bg-blue-500/10 text-blue-500' : 'bg-white/5 text-gray-500'
+                      }`}>
+                         {a.contractStatus === 'signed' ? 'Podpisany' : a.contractStatus === 'sent' ? 'Wysłany' : 'Brak'}
+                      </span>
+                   </td>
+                   <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
                          <button onClick={() => { setSelectedApp(a); setShowModal(true); }} className="p-2 text-gray-600 hover:text-white transition-all"><Eye className="w-4 h-4" /></button>
                          {a.status === 'pending' && (
@@ -278,7 +299,13 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                   <div className="p-8 border-b border-white/5 bg-white/5 flex justify-between items-center">
                      <div>
                         <h3 className="text-2xl font-bold font-georgia text-[#c9a84c] italic">Karta Aplikanta <span className="text-white">#{selectedApp.id.slice(-6)}</span></h3>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Status zgłoszenia: {selectedApp.status}</p>
+                        <div className="flex gap-3 mt-1">
+                           <p className="text-[10px] text-gray-400 uppercase tracking-widest">Status: {selectedApp.status}</p>
+                           <span className="text-gray-600">|</span>
+                           <p className={`text-[10px] uppercase tracking-widest font-bold ${selectedApp.contractStatus === 'signed' ? 'text-green-500' : 'text-blue-400'}`}>
+                              Kontrakt: {selectedApp.contractStatus === 'signed' ? 'PODPISANY' : selectedApp.contractStatus === 'sent' ? 'OCZEKUJE NA PODPIS' : 'NIE WYSŁANY'}
+                           </p>
+                        </div>
                      </div>
                      <button onClick={() => setShowModal(false)} className="p-2 text-gray-400 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-6 h-6" /></button>
                   </div>
@@ -344,7 +371,7 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                               <div className="grid grid-cols-2 gap-x-12 gap-y-6">
                                  <div>
                                     <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Typy Contentu</p>
-                                    <p className="text-[10px] text-white font-bold">{selectedApp.contentTypes}</p>
+                                    <p className="text-[10px] text-white font-bold">{Array.isArray(selectedApp.contentTypes) ? selectedApp.contentTypes.join(', ') : selectedApp.contentTypes || 'Nie określono'}</p>
                                  </div>
                                  <div>
                                     <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Limity (Boundaries)</p>
@@ -352,11 +379,11 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                                  </div>
                                  <div>
                                     <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Dostępność</p>
-                                    <p className="text-[10px] text-white font-bold">{selectedApp.sessionsPerWeek} sesji / {selectedApp.workingTimes}</p>
+                                    <p className="text-[10px] text-white font-bold">{selectedApp.sessionsPerWeek} sesji / {selectedApp.workingTimes ? (Array.isArray(selectedApp.workingTimes) ? `${selectedApp.workingTimes.length} slotów` : 'Zdefiniowano') : 'Brak'}</p>
                                  </div>
                                  <div>
                                     <p className="text-[8px] text-gray-400 uppercase tracking-widest mb-1">Platformy</p>
-                                    <p className="text-[10px] text-white font-bold">{selectedApp.platforms}</p>
+                                    <p className="text-[10px] text-white font-bold">{Array.isArray(selectedApp.platforms) ? selectedApp.platforms.join(', ') : selectedApp.platforms || 'Brak'}</p>
                                  </div>
                               </div>
                            </div>
@@ -386,9 +413,14 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
                   <div className="p-8 bg-white/5 border-t border-white/5 flex gap-4">
                      {selectedApp.status === 'pending' ? (
                         <>
-                           <button onClick={() => { handleStatusChange(selectedApp.id, 'approved'); setShowModal(false); }} className="flex-1 py-4 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-[3px] rounded-xl hover:scale-[1.02] transition-all shadow-xl shadow-[#c9a84c]/20">Zatwierdź & Wyślij Kontrakt</button>
+                           <button onClick={() => { handleConvert(selectedApp.id); setShowModal(false); }} className="flex-1 py-4 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-[3px] rounded-xl hover:scale-[1.02] transition-all shadow-xl shadow-[#c9a84c]/20">Zatwierdź & Utwórz Profil</button>
                            <button onClick={() => { handleStatusChange(selectedApp.id, 'rejected'); setShowModal(false); }} className="flex-1 py-4 bg-white/5 text-red-500 text-[10px] font-black uppercase tracking-[3px] border border-red-500/30 rounded-xl hover:bg-red-500/10 transition-all">Odrzuć Aplikację</button>
                         </>
+                     ) : selectedApp.status === 'approved' ? (
+                        <div className="flex w-full gap-4">
+                           <button onClick={() => handleConvert(selectedApp.id)} className="flex-1 py-4 bg-green-600 text-white text-[10px] font-black uppercase tracking-[3px] rounded-xl">Utwórz/Aktualizuj Profil</button>
+                           <button onClick={() => setShowModal(false)} className="px-8 py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-[3px] rounded-xl">Zamknij</button>
+                        </div>
                      ) : (
                         <button onClick={() => setShowModal(false)} className="w-full py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-[3px] rounded-xl">Zamknij Kartę</button>
                      )}

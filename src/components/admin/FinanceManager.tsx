@@ -78,8 +78,11 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateRange, setDateRange] = useState('30');
   const [showPayoutModal, setShowPayoutModal] = useState(false);
+  const [showRevenueModal, setShowRevenueModal] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState<string>('');
   const [payoutAmount, setPayoutAmount] = useState('');
+  const [revenueType, setRevenueType] = useState<'subscription' | 'tip' | 'ppv' | 'referral'>('subscription');
+  const [revenuePlatform, setRevenuePlatform] = useState('OnlyFans');
   const [processingPayout, setProcessingPayout] = useState(false);
 
   useEffect(() => {
@@ -143,6 +146,36 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
     setProcessingPayout(false);
   };
 
+  const handleAddRevenue = async () => {
+    if (!selectedPartner || !payoutAmount) return;
+    setProcessingPayout(true);
+    try {
+      const response = await fetch('/api/admin/finance', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'add_revenue',
+          partnerId: selectedPartner,
+          amount: parseFloat(payoutAmount),
+          type: revenueType,
+          platform: revenuePlatform
+        })
+      });
+      if (response.ok) {
+        await fetchFinancialData();
+        setShowRevenueModal(false);
+        setSelectedPartner('');
+        setPayoutAmount('');
+      }
+    } catch (error) {
+      console.error('Error adding revenue:', error);
+    }
+    setProcessingPayout(false);
+  };
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-EU', {
       style: 'currency',
@@ -193,6 +226,9 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
               <option value="30">Ostatnie 30 dni</option>
               <option value="90">Ostatni Kwartał</option>
            </select>
+           <button onClick={() => setShowRevenueModal(true)} className="flex items-center gap-3 px-6 py-2.5 bg-[#22c55e] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-green-500/10">
+              <Plus className="w-4 h-4" /> Dodaj Przychód
+           </button>
            <button onClick={() => setShowPayoutModal(true)} className="flex items-center gap-3 px-6 py-2.5 bg-[#c9a84c] text-black text-[10px] font-black uppercase tracking-widest rounded transition-all hover:scale-105 shadow-xl shadow-[#c9a84c]/10">
               <CreditCard className="w-4 h-4" /> Zaplanuj Wypłatę
            </button>
@@ -205,7 +241,7 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
            { label: 'Revenue Total', val: formatCurrency(financialData?.overview.totalRevenue || 0), growth: '+12.4%', icon: DollarSign, color: '#c9a84c' },
            { label: 'Pending Payouts', val: formatCurrency(financialData?.overview.pendingPayouts || 0), growth: 'Oczekujące', icon: Clock, color: '#f59e0b' },
            { label: 'Avg Monthly', val: formatCurrency(financialData?.overview.monthlyRevenue || 0), growth: '+5.2%', icon: TrendingUp, color: '#22c55e' },
-           { label: 'Active Creators', val: '24', growth: '+2 w tym m-cu', icon: Users, color: '#ffffff' }
+           { label: 'Active Creators', val: partners.length.toString(), growth: 'Wszyscy Partnerzy', icon: Users, color: '#ffffff' }
          ].map((s, i) => (
            <div key={i} className="bg-[#0d0d0d] border border-white/5 p-6 rounded-2xl flex items-center justify-between group hover:border-[#c9a84c]/20 transition-all cursor-default">
               <div>
@@ -227,14 +263,29 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
          <div className="col-span-2 space-y-6">
             <div className="flex items-center justify-between border-b border-white/5 pb-4">
                <h4 className="text-[10px] font-black text-white uppercase tracking-[4px]">Ostatnie Transakcje</h4>
-               <div className="relative w-64">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
-                  <input 
-                    type="text" 
-                    placeholder="Szukaj..." 
-                    className="w-full bg-[#111] border border-white/10 rounded-full py-2 pl-10 pr-4 text-[9px] text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 uppercase tracking-[2px]" 
-                  />
-               </div>
+                <div className="flex gap-4">
+                   <select 
+                      className="bg-white/5 border border-white/10 text-white text-[9px] uppercase font-black px-4 py-2 rounded outline-none focus:border-[#c9a84c] transition-all"
+                      value={typeFilter}
+                      onChange={(e) => setTypeFilter(e.target.value)}
+                   >
+                      <option value="all">Wszystkie Typy</option>
+                      <option value="subscription">Subskrypcje</option>
+                      <option value="tip">Napiwki</option>
+                      <option value="ppv">PPV</option>
+                      <option value="payout">Wypłaty</option>
+                   </select>
+                   <div className="relative w-64">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
+                      <input 
+                        type="text" 
+                        placeholder="Szukaj..." 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full bg-[#111] border border-white/10 rounded-full py-2 pl-10 pr-4 text-[9px] text-white focus:border-[#c9a84c] outline-none transition-all placeholder:text-gray-700 uppercase tracking-[2px]" 
+                      />
+                   </div>
+                </div>
             </div>
 
             <div className="bg-[#0b0b0b] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
@@ -249,7 +300,14 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5 text-[10px]">
-                     {financialData?.recentTransactions.slice(0, 10).map((t) => (
+                     {financialData?.recentTransactions
+                        .filter(t => {
+                           const matchesSearch = t.partner.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                              t.type.toLowerCase().includes(searchTerm.toLowerCase());
+                           const matchesType = typeFilter === 'all' || t.type === typeFilter;
+                           return matchesSearch && matchesType;
+                        })
+                        .slice(0, 15).map((t) => (
                        <tr key={t.id} className="group hover:bg-white/[0.02] transition-colors">
                           <td className="px-6 py-4 text-gray-500">{new Date(t.date).toLocaleDateString()}</td>
                           <td className="px-6 py-4">
@@ -319,6 +377,75 @@ const FinanceManager: React.FC<FinanceManagerProps> = ({ token }) => {
             </div>
          </div>
       </div>
+
+      {/* Revenue Modal */}
+      <AnimatePresence>
+          {showRevenueModal && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-8">
+               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowRevenueModal(false)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                 animate={{ opacity: 1, scale: 1, y: 0 }} 
+                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                 className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+               >
+                  <div className="p-8 border-b border-white/5 bg-green-500/5 flex justify-between items-center">
+                     <div>
+                        <h3 className="text-2xl font-bold font-georgia text-green-500 italic">Capture <span className="text-white">Revenue</span></h3>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Ręczne księgowanie wpływów z platform</p>
+                     </div>
+                     <button onClick={() => setShowRevenueModal(false)} className="p-2 text-gray-500 hover:text-white transition-all bg-white/5 rounded-full"><X className="w-5 h-5" /></button>
+                  </div>
+
+                  <div className="p-8 space-y-6">
+                     <div className="grid grid-cols-2 gap-4">
+                        <div>
+                           <label className="text-[9px] font-black text-gray-500 uppercase tracking-[3px] block mb-3">Platforma</label>
+                           <select value={revenuePlatform} onChange={(e) => setRevenuePlatform(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-green-500 transition-all">
+                              <option value="OnlyFans" className="bg-black">OnlyFans</option>
+                              <option value="Fansly" className="bg-black">Fansly</option>
+                              <option value="Chaturbate" className="bg-black">Chaturbate</option>
+                              <option value="MyFreeCams" className="bg-black">MyFreeCams</option>
+                              <option value="Other" className="bg-black">Inne</option>
+                           </select>
+                        </div>
+                        <div>
+                           <label className="text-[9px] font-black text-gray-500 uppercase tracking-[3px] block mb-3">Typ</label>
+                           <select value={revenueType} onChange={(e) => setRevenueType(e.target.value as any)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-green-500 transition-all">
+                              <option value="subscription" className="bg-black">Subskrypcja</option>
+                              <option value="tip" className="bg-black">Napiwek</option>
+                              <option value="ppv" className="bg-black">PPV</option>
+                              <option value="referral" className="bg-black">Referral</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div>
+                        <label className="text-[9px] font-black text-gray-500 uppercase tracking-[3px] block mb-3">Wybierz Partnerkę</label>
+                        <select value={selectedPartner} onChange={(e) => setSelectedPartner(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-green-500">
+                           <option value="" className="bg-black">Wybierz z listy...</option>
+                           {partners.map(p => <option key={p.id} value={p.id} className="bg-black">{p.name}</option>)}
+                        </select>
+                     </div>
+
+                     <div>
+                        <label className="text-[9px] font-black text-gray-500 uppercase tracking-[3px] block mb-3">Kwota Brutto (EUR)</label>
+                        <div className="relative">
+                           <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+                           <input type="number" value={payoutAmount} onChange={(e) => setPayoutAmount(e.target.value)} placeholder="0.00" className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-2xl font-bold text-white outline-none focus:border-green-500" />
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="p-8 bg-white/5 flex gap-4">
+                     <button onClick={handleAddRevenue} disabled={processingPayout || !selectedPartner || !payoutAmount} className="flex-1 py-4 bg-green-500 text-black text-[10px] font-black uppercase tracking-[3px] rounded-xl hover:scale-[1.02] transition-all disabled:opacity-50">
+                        {processingPayout ? 'Księgowanie...' : 'Zaksięguj Przychód'}
+                     </button>
+                  </div>
+               </motion.div>
+            </div>
+          )}
+      </AnimatePresence>
 
       {/* Payout Modal */}
       <AnimatePresence>

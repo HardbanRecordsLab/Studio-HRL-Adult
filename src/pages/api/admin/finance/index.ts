@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         });
 
-        // Calculate overview stats from DB
+        // 1. Calculate totals
         const totalRevenue = await prisma.financialRecord.aggregate({
           where: { type: { not: 'payout' } },
           _sum: { amount: true }
@@ -35,30 +35,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           _sum: { amount: true }
         });
 
-        // Mocking growth and periodic data for now as it requires complex grouping
-        // but pointing to real aggregate values
+        const totalAmt = totalRevenue._sum.amount || 0;
+
+        // 2. Group by platform
+        const platformGroups = await prisma.financialRecord.groupBy({
+          by: ['platform'],
+          where: { type: { not: 'payout' } },
+          _sum: { amount: true }
+        });
+
+        const revenueByPlatform = platformGroups.map(group => ({
+          platform: group.platform || 'General',
+          amount: group._sum.amount || 0,
+          percentage: totalAmt > 0 ? Math.round(((group._sum.amount || 0) / totalAmt) * 100) : 0,
+          change: 0
+        }));
+
+        // If no data, add default platforms
+        if (revenueByPlatform.length === 0) {
+          ['OnlyFans', 'Fansly', 'Chaturbate'].forEach(p => {
+             revenueByPlatform.push({ platform: p, amount: 0, percentage: 0, change: 0 });
+          });
+        }
+
         return res.status(200).json({
           overview: {
-            totalRevenue: totalRevenue._sum.amount || 0,
+            totalRevenue: totalAmt,
             pendingPayouts: pendingPayouts._sum.amount || 0,
-            growth: 12.5, // Logic for growth comparison would go here
-            monthlyRevenue: (totalRevenue._sum.amount || 0) / 12, // Simple average for now
-            quarterlyRevenue: (totalRevenue._sum.amount || 0) / 4,
-            yearlyRevenue: totalRevenue._sum.amount || 0
+            growth: 0, 
+            monthlyRevenue: totalAmt / (parseInt(range) > 30 ? (parseInt(range) / 30) : 1),
+            quarterlyRevenue: totalAmt / (parseInt(range) > 90 ? (parseInt(range) / 90) : 1),
+            yearlyRevenue: totalAmt
           },
-          revenueByPlatform: [
-            { platform: 'OnlyFans', amount: (totalRevenue._sum.amount || 0) * 0.45, percentage: 45, change: 12 },
-            { platform: 'Fansly', amount: (totalRevenue._sum.amount || 0) * 0.25, percentage: 25, change: 8 },
-            { platform: 'Chaturbate', amount: (totalRevenue._sum.amount || 0) * 0.20, percentage: 20, change: -2 },
-            { platform: 'Other', amount: (totalRevenue._sum.amount || 0) * 0.10, percentage: 10, change: 5 }
-          ],
+          revenueByPlatform,
           recentTransactions,
           payoutHistory: recentTransactions.filter(t => t.type === 'payout')
         });
       }
 
       case 'POST': {
-        const { action, partnerId, amount } = req.body;
+        const session = requireAdminSession(req, res);
+        if (!session) return;
+
+        const { action, partnerId, amount, type, platform } = req.body;
+        
         if (action === 'schedule_payout') {
           const payout = await prisma.financialRecord.create({
             data: {
@@ -69,8 +89,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               date: new Date()
             }
           });
+
+          // AUDIT LOG
+          await prisma.adminLog.create({
+            data: {
+              adminEmail: session.email,
+              action: 'SCHEDULE_PAYOUT',
+              resource: 'finance',
+              resourceId: payout.id,
+              details: JSON.stringify({ partnerId, amount })
+            }
+          });
+
           return res.status(201).json(payout);
         }
+
+        if (action === 'add_revenue') {
+          const record = await prisma.financialRecord.create({
+            data: {
+              partnerId,
+              amount: Math.abs(amount),
+              type: type || 'subscription',
+              platform: platform || 'Other',
+              status: 'processed',
+              date: new Date()
+            }
+          });
+
+          // AUDIT LOG
+          await prisma.adminLog.create({
+            data: {
+              adminEmail: session.email,
+              action: 'ADD_REVENUE',
+              resource: 'finance',
+              resourceId: record.id,
+              details: JSON.stringify({ partnerId, amount, type, platform })
+            }
+          });
+
+          return res.status(201).json(record);
+        }
+
         return res.status(400).json({ error: 'Unknown action' });
       }
 

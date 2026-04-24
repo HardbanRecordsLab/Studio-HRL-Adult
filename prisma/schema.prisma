@@ -43,6 +43,8 @@ model CastingApplication {
   photo3          String?  // URL to file
   video           String?  // URL to file
   status          String   @default("pending") // pending, approved, rejected
+  contractStatus  String   @default("not_sent") // not_sent, sent, signed, rejected
+  convertedAt     DateTime?
 }
 
 model Partner {
@@ -96,6 +98,7 @@ model FinancialRecord {
   type      String   // subscription, tip, ppv, referral
   status    String   @default("processed") // pending, processed, failed
   date      DateTime @default(now())
+  platform  String?  // OnlyFans, Fansly, Chaturbate, etc.
 }
 
 model Content {

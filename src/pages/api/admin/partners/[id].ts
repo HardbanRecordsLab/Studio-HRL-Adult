@@ -60,6 +60,20 @@ export default async function handler(
         data,
       });
 
+      // AUDIT LOG
+      const session = requireAdminSession(req, res);
+      if (session) {
+        await prisma.adminLog.create({
+          data: {
+            adminEmail: session.email,
+            action: 'UPDATE_PARTNER',
+            resource: 'partners',
+            resourceId: id,
+            details: JSON.stringify({ changes: Object.keys(data) })
+          }
+        });
+      }
+
       return res.status(200).json(partner);
     } catch (error: any) {
       console.error("Update Partner Error:", error);
@@ -72,6 +86,20 @@ export default async function handler(
       await prisma.partner.delete({
         where: { id },
       });
+
+      // AUDIT LOG
+      const session = requireAdminSession(req, res);
+      if (session) {
+        await prisma.adminLog.create({
+          data: {
+            adminEmail: session.email,
+            action: 'DELETE_PARTNER',
+            resource: 'partners',
+            resourceId: id
+          }
+        });
+      }
+
       return res.status(200).json({ message: "Partner deleted successfully" });
     } catch (error: any) {
       console.error(error);

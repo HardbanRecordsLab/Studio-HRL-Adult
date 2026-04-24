@@ -79,18 +79,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       });
 
-      const template = emailTemplates.castingApplication(data.firstName, 'pending');
-      await sendEmail({
-        to: data.email,
-        subject: template.subject,
-        html: template.html,
-        text: template.text,
-      });
+      console.log('Casting application saved to DB:', newApplication.id);
 
-      return res.status(201).json({ message: 'Application submitted successfully', data: newApplication });
+      // Attempt to send email but don't fail the whole request if it fails
+      try {
+        const template = emailTemplates.castingApplication(data.firstName, 'pending');
+        await sendEmail({
+          to: data.email,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+        });
+        console.log('Confirmation email sent to:', data.email);
+      } catch (emailError) {
+        console.error('Email sending failed but application is saved:', emailError);
+      }
+
+      return res.status(201).json({ 
+        success: true,
+        message: 'Application submitted successfully', 
+        id: newApplication.id 
+      });
     } catch (error: any) {
-      console.error('Submission error:', error);
-      return res.status(500).json({ message: 'Error saving application', error: error.message });
+      console.error('CRITICAL ERROR during casting submission:', error);
+      return res.status(500).json({ 
+        success: false,
+        message: 'Error saving application', 
+        error: error.message 
+      });
     }
   }
 

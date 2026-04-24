@@ -42,6 +42,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id },
         data: { status }
       });
+
+      // AUDIT LOG
+      const session = requireAdminSession(req, res);
+      if (session) {
+        await prisma.adminLog.create({
+          data: {
+            adminEmail: session.email,
+            action: 'UPDATE_CASTING_STATUS',
+            resource: 'casting',
+            resourceId: id,
+            details: JSON.stringify({ oldStatus: currentApp.status, newStatus: status })
+          }
+        });
+      }
       
       return res.status(200).json(updatedApp);
     } catch (error: any) {
@@ -53,6 +67,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await prisma.castingApplication.delete({
         where: { id }
       });
+
+      // AUDIT LOG
+      const session = requireAdminSession(req, res);
+      if (session) {
+        await prisma.adminLog.create({
+          data: {
+            adminEmail: session.email,
+            action: 'DELETE_CASTING_APP',
+            resource: 'casting',
+            resourceId: id
+          }
+        });
+      }
+
       return res.status(200).json({ message: 'Deleted successfully' });
     } catch (error: any) {
       console.error(error);

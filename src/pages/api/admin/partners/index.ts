@@ -55,6 +55,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       });
 
+      // AUDIT LOG
+      const session = requireAdminSession(req, res);
+      if (session) {
+        await prisma.adminLog.create({
+          data: {
+            adminEmail: session.email,
+            action: 'CREATE_PARTNER',
+            resource: 'partners',
+            resourceId: partner.id,
+            details: JSON.stringify({ name, handle, email })
+          }
+        });
+      }
+
       return res.status(201).json(partner);
     } catch (error: any) {
       console.error('Error creating partner:', error);
