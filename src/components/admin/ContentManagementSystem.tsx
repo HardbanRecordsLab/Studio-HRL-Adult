@@ -14,6 +14,8 @@ import {
   Clock, 
   Video, 
   Music,
+  CheckCircle,
+  Play,
   Plus,
   BarChart3,
   Globe,

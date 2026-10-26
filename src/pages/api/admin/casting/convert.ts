@@ -46,7 +46,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: `${app.firstName} ${app.lastName}`,
         handle: finalHandle,
         email: app.email,
-        phone: app.phone,
         description: app.motivation || 'New Partner from Casting',
         avatar: app.photo1 || '/images/profile-placeholder.jpg',
         status: 'active',
@@ -55,6 +54,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         profileData: {
           gallery,
           video: app.video,
+          // Partner has no phone column; keep the number with the profile data (never exposed by the public API).
+          contactPhone: app.phone,
           sourceApplicationId: applicationId
         }
       }

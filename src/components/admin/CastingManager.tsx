@@ -106,6 +106,17 @@ const CastingManager: React.FC<CastingManagerProps> = ({ token }) => {
     } catch (e) { console.error(e); }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('Czy na pewno chcesz trwale usunąć to zgłoszenie?')) return;
+    try {
+      const response = await fetch(`/api/admin/casting/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) fetchApplications();
+    } catch (e) { console.error(e); }
+  };
+
   const handleConvert = async (id: string) => {
     if (!confirm('Czy na pewno chcesz utworzyć profil partnera na podstawie tego zgłoszenia?')) return;
     try {
