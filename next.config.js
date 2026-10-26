@@ -6,6 +6,13 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  // English is the default; Polish lives under /pl. Detection is off so the
+  // site always opens in English until the visitor picks PL with the switcher.
+  i18n: {
+    locales: ['en', 'pl'],
+    defaultLocale: 'en',
+    localeDetection: false,
+  },
   images: {
     domains: [
       "localhost",

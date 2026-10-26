@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { cn } from '@/utils/utils';
+import { useMessages } from '@/i18n';
+import { common } from '@/i18n/common';
 
 interface ImageUploadProps {
   onUpload: (files: File[]) => void;
@@ -10,6 +12,7 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, maxFiles = 1, accept = 'image/*', className, preview = true }) => {
+  const { imageUpload: t } = useMessages(common);
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -40,16 +43,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, maxFiles = 1, accep
 
     Array.from(fileList).forEach((file) => {
       if (!file.type.startsWith('image/')) {
-        invalidFiles.push(`${file.name} (niepoprawny format)`);
+        invalidFiles.push(`${file.name} (${t.invalidFormat})`);
       } else if (file.size > 10 * 1024 * 1024) {
-        invalidFiles.push(`${file.name} (powyżej 10MB)`);
+        invalidFiles.push(`${file.name} (${t.tooLarge})`);
       } else {
         validFiles.push(file);
       }
     });
 
     if (invalidFiles.length > 0) {
-      alert(`Niektóre pliki zostały odrzucone:\n${invalidFiles.join('\\n')}`);
+      alert(`${t.rejected}\n${invalidFiles.join('\n')}`);
     }
 
     if (validFiles.length > 0) {
@@ -96,16 +99,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, maxFiles = 1, accep
                 </div>
               ))}
             </div>
-            {files.length < maxFiles && <button onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="font-montserrat text-gold hover:text-yellow-400">+ Dodaj więcej zdjęć</button>}
+            {files.length < maxFiles && <button onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="font-montserrat text-gold hover:text-yellow-400">{t.addMore}</button>}
           </div>
         ) : (
           <div className="space-y-4">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold/20"><svg className="h-6 w-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg></div>
             <div>
-              <p className="font-montserrat font-semibold text-gold">Przeciągnij i upuść zdjęcia tutaj</p>
-              <p className="mt-1 text-sm text-dim">lub kliknij, aby wybrać pliki</p>
+              <p className="font-montserrat font-semibold text-gold">{t.dropHere}</p>
+              <p className="mt-1 text-sm text-dim">{t.orClick}</p>
             </div>
-            <div className="text-xs text-dim2"><p>Formaty: JPG, PNG, GIF, WebP</p><p>Maksymalny rozmiar: 10MB</p><p>Maksymalna liczba plików: {maxFiles}</p></div>
+            <div className="text-xs text-dim2"><p>{t.formats}</p><p>{t.maxSize}</p><p>{t.maxFiles} {maxFiles}</p></div>
           </div>
         )}
       </div>

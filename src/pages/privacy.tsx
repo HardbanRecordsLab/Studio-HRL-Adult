@@ -2,8 +2,11 @@ import React from 'react';
 import Head from 'next/head';
 import Navigation from '@/components/common/Navigation';
 import Footer from '@/components/common/Footer';
+import { useLocale } from '@/i18n';
+import LegalDocument from '@/components/legal/LegalDocument';
+import { privacyEn } from '@/i18n/legal';
 
-const PrivacyPage: React.FC = () => {
+const PrivacyPl: React.FC = () => {
   const lastUpdated = "4 kwietnia 2026 r.";
 
   return (
@@ -404,5 +407,7 @@ const PrivacyPage: React.FC = () => {
     </>
   );
 };
+
+const PrivacyPage: React.FC = () => (useLocale() === 'pl' ? <PrivacyPl /> : <LegalDocument doc={privacyEn} />);
 
 export default PrivacyPage;

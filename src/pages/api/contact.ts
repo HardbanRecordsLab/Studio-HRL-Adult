@@ -1,6 +1,19 @@
 ﻿import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import { toLocale, Messages } from '@/i18n';
+
+const en = {
+  required: 'Required fields: name, email, topic, message',
+  failed: 'An error occurred while sending the message',
+};
+
+const pl: typeof en = {
+  required: 'Wymagane pola: name, email, topic, message',
+  failed: 'Wystąpił błąd podczas wysyłania wiadomości',
+};
+
+const messages: Messages<typeof en> = { en, pl };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -8,11 +21,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).end('Method Not Allowed');
   }
 
+  const locale = toLocale(req.body?.locale);
+  const t = messages[locale];
+
   try {
     const { name, email, phone, topic, message } = req.body;
 
     if (!name || !email || !topic || !message) {
-      return res.status(400).json({ error: 'Wymagane pola: name, email, topic, message' });
+      return res.status(400).json({ error: t.required });
     }
 
     const contactMsg = await prisma.contactMessage.create({
@@ -35,23 +51,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
+    const confirmation = emailTemplates.contactConfirmation(name, topic, locale);
     emailResults.senderConfirmationSent = await sendEmail({
       to: email,
-      subject: 'Studio HRL Adult - Otrzymaliśmy Twoją wiadomość',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #c9a84c;">Dziękujemy za kontakt, ${name}!</h2>
-          <p>Otrzymaliśmy Twoją wiadomość i odpowiemy w ciągu 24-48 godzin.</p>
-          <p>Temat: <strong>${topic}</strong></p>
-          <p>Z poważaniem,<br/>Zespół Studio HRL Adult</p>
-        </div>
-      `,
-      text: `Dziękujemy za kontakt, ${name}! Otrzymaliśmy Twoją wiadomość i odpowiemy w ciągu 24-48 godzin. Z poważaniem, Zespół Studio HRL Adult`,
+      subject: confirmation.subject,
+      html: confirmation.html,
+      text: confirmation.text,
     });
 
     return res.status(200).json({ success: true, id: contactMsg.id, emailResults });
   } catch (error: any) {
     console.error('Contact form error:', error);
-    return res.status(500).json({ error: 'Wystąpił błąd podczas wysyłania wiadomości' });
+    return res.status(500).json({ error: t.failed });
   }
 }

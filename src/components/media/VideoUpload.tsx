@@ -1,5 +1,7 @@
 ﻿import React, { useState, useRef } from 'react';
 import { cn } from '@/utils/utils';
+import { useMessages } from '@/i18n';
+import { common } from '@/i18n/common';
 
 interface VideoUploadProps {
   onUpload: (file: File | null) => void;
@@ -10,6 +12,7 @@ interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = ({ onUpload, maxSize = 50, accept = 'video/*', className, preview = true }) => {
+  const { videoUpload: t } = useMessages(common);
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -38,12 +41,12 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUpload, maxSize = 50, accep
 
   const handleFile = (selectedFile: File) => {
     if (!selectedFile.type.startsWith('video/')) {
-      alert('Proszę wybrać plik wideo');
+      alert(t.notVideo);
       return;
     }
     const sizeInMB = selectedFile.size / (1024 * 1024);
     if (sizeInMB > maxSize) {
-      alert(`Maksymalny rozmiar pliku to ${maxSize}MB`);
+      alert(t.maxSizeAlert(maxSize));
       return;
     }
     if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -95,15 +98,15 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUpload, maxSize = 50, accep
         {file ? (
           <div className="space-y-4">
             {preview && previewUrl && <div className="relative"><video src={previewUrl} controls className="mx-auto w-full max-w-md rounded-lg" />{!isUploading && <button onClick={(e) => { e.stopPropagation(); removeFile(); }} className="absolute top-2 right-2 rounded-full bg-red-600 p-1 text-white"><svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>}</div>}
-            <div className="space-y-2"><p className="font-montserrat font-semibold text-gold">{file.name}</p><div className="text-sm text-dim"><p>Rozmiar: {formatFileSize(file.size)}</p><p>Czas trwania: 0:30</p><p>Format: {file.type}</p></div></div>
-            {isUploading && <div className="space-y-2"><div className="h-2 w-full rounded-full bg-dark3"><div className="h-2 rounded-full bg-gold transition-all duration-300" style={{ width: `${uploadProgress}%` }} /></div><p className="text-sm text-gold">Przesyłanie... {uploadProgress}%</p></div>}
-            {!isUploading && <button onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="font-montserrat text-gold hover:text-yellow-400">Wybierz inny film</button>}
+            <div className="space-y-2"><p className="font-montserrat font-semibold text-gold">{file.name}</p><div className="text-sm text-dim"><p>{t.size} {formatFileSize(file.size)}</p><p>{t.duration} 0:30</p><p>{t.format} {file.type}</p></div></div>
+            {isUploading && <div className="space-y-2"><div className="h-2 w-full rounded-full bg-dark3"><div className="h-2 rounded-full bg-gold transition-all duration-300" style={{ width: `${uploadProgress}%` }} /></div><p className="text-sm text-gold">{t.uploading} {uploadProgress}%</p></div>}
+            {!isUploading && <button onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="font-montserrat text-gold hover:text-yellow-400">{t.chooseAnother}</button>}
           </div>
         ) : (
           <div className="space-y-4">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold/20"><svg className="h-6 w-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg></div>
-            <div><p className="font-montserrat font-semibold text-gold">Przeciągnij i upuść film tutaj</p><p className="mt-1 text-sm text-dim">lub kliknij, aby wybrać plik</p></div>
-            <div className="text-xs text-dim2"><p>Formaty: MP4, WebM, MOV, AVI</p><p>Maksymalny rozmiar: {maxSize}MB</p><p>Maksymalny czas: 30 sekund</p></div>
+            <div><p className="font-montserrat font-semibold text-gold">{t.dropHere}</p><p className="mt-1 text-sm text-dim">{t.orClick}</p></div>
+            <div className="text-xs text-dim2"><p>{t.formats}</p><p>{t.maxSize(maxSize)}</p><p>{t.maxDuration}</p></div>
           </div>
         )}
       </div>

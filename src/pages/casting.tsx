@@ -6,12 +6,8 @@ import Footer from '@/components/common/Footer';
 import ImageUpload from '@/components/media/ImageUpload';
 import VideoUpload from '@/components/media/VideoUpload';
 import { cn } from '@/utils/utils';
-
-const steps = [
-  { id: 1, name: 'Twoje Podstawy i Wymiary' },
-  { id: 2, name: 'Doświadczenie i Preferencje' },
-  { id: 3, name: 'Media i Formalności' }
-];
+import { useLocale, useMessages } from '@/i18n';
+import { casting } from '@/i18n/casting';
 
 const readFileAsDataUrl = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -41,7 +37,17 @@ const uploadMediaFile = async (file: File, resourceType: 'image' | 'video') => {
   return payload.url as string;
 };
 
+const Required: React.FC = () => <span className="text-crimson">*</span>;
+
+const FieldLabel: React.FC<{ children: React.ReactNode; required?: boolean }> = ({ children, required }) => (
+  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">
+    {children}{required && <> <Required /></>}
+  </label>
+);
+
 const CastingPage: React.FC = () => {
+  const locale = useLocale();
+  const t = useMessages(casting);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,6 +82,7 @@ const CastingPage: React.FC = () => {
     video: null as File | null,
   });
 
+  const steps = t.form.steps;
   const handleNext = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length));
   const handleBack = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
@@ -120,6 +127,7 @@ const CastingPage: React.FC = () => {
           photo2,
           photo3,
           video,
+          locale,
         }),
       });
 
@@ -127,11 +135,11 @@ const CastingPage: React.FC = () => {
         setIsSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        alert('Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie.');
+        alert(t.form.submitError);
       }
     } catch (error) {
       console.error('Submission error:', error);
-      alert('Błąd połączenia z serwerem.');
+      alert(t.form.connectionError);
     } finally {
       setIsSubmitting(false);
     }
@@ -140,8 +148,8 @@ const CastingPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Casting Studio HRL Adult +18 | Dołącz do Ekskluzywnej Społeczności</title>
-        <meta name="description" content="Dołącz do Studio HRL Adult. Realistyczne zarobki 1.5k-30k+ PLN, profesjonalne studio 4K, model 60/30/10. Aplikuj na casting i zacznij karierę w branży treści dla dorosłych." />
+        <title>{t.meta.title}</title>
+        <meta name="description" content={t.meta.description} />
       </Head>
 
       <div className="min-h-screen bg-dark text-text relative">
@@ -152,7 +160,7 @@ const CastingPage: React.FC = () => {
           <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden px-[7%] py-20">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,rgba(155,31,53,0.15),rgba(90,15,30,0.08)_50%,transparent_70%)] z-0" />
             <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 className="hero-casting-pre flex items-center justify-center gap-4 text-gold/60 text-[8.5px] tracking-[0.5em] uppercase"
@@ -161,38 +169,38 @@ const CastingPage: React.FC = () => {
                 ELEVATE YOUR EXPERIENCE
                 <div className="w-8 h-px bg-gold/30" />
               </motion.div>
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 className="h1-premium text-white"
               >
-                Dołącz do <br /><span className="italic bg-gold-gradient bg-clip-text text-transparent">ekskluzywnej</span> społeczności
+                {t.hero.titleA} <br /><span className="italic bg-gold-gradient bg-clip-text text-transparent">{t.hero.titleB}</span> {t.hero.titleC}
               </motion.h1>
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 className="font-cormorant text-xl italic text-dim"
               >
-                Odkryj swój potencjał w branży treści dla dorosłych z profesjonalnym wsparciem
+                {t.hero.tagline}
               </motion.p>
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 className="text-dim text-sm leading-loose font-light max-w-2xl mx-auto"
               >
-                Studio HRL Adult to więcej niż miejsce pracy - to partnerstwo, w którym Twoja kreatywność spotyka się z profesjonalizmem i sukcesem finansowym. Oferujemy kompletne wsparcie na każdym etapie Twojej kariery.
+                {t.hero.text}
               </motion.p>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="flex flex-wrap justify-center gap-6"
               >
-                <a href="#form" className="btn-crimson">Aplikuj na Casting</a>
-                <a href="#earnings" className="btn-outline">Zobacz Zarobki</a>
+                <a href="#form" className="btn-crimson">{t.hero.apply}</a>
+                <a href="#earnings" className="btn-outline">{t.hero.earnings}</a>
               </motion.div>
             </div>
           </section>
@@ -200,30 +208,20 @@ const CastingPage: React.FC = () => {
           {/* PROCESS SECTION */}
           <section id="process" className="py-24 bg-dark-2 px-[7%]">
             <div className="max-w-7xl mx-auto">
-              <div className="section-tag">Jak to działa</div>
-              <h2 className="h1-premium">Proste kroki do <span className="italic bg-gold-gradient bg-clip-text text-transparent">sukcesu</span></h2>
+              <div className="section-tag">{t.process.tag}</div>
+              <h2 className="h1-premium">{t.process.titleA} <span className="italic bg-gold-gradient bg-clip-text text-transparent">{t.process.titleB}</span></h2>
               <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
                 <div className="hidden md:block absolute top-10 left-[10%] right-[10%] h-px bg-gradient-to-r from-crimson via-gold/20 to-gold/5 z-0" />
-                
-                <div className="relative z-10 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">1</div>
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Aplikuj</h3>
-                  <p className="text-xs text-dim leading-relaxed">Wypełnij usprawniony formularz castingowy i prześlij podstawowe informacje</p>
-                </div>
-                
-                <div className="relative z-10 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">2</div>
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Sesja</h3>
-                  <p className="text-xs text-dim leading-relaxed">Przyjdź na profesjonalną sesję testową w naszym studiu 4K</p>
-                </div>
-                
-                <div className="relative z-10 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">3</div>
-                  <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">Zarabiaj</h3>
-                  <p className="text-xs text-dim leading-relaxed">Rozpocznij tworzenie treści i zarabiaj w hybrydowym modelu ze wsparciem</p>
-                </div>
+
+                {t.process.steps.map((step, i) => (
+                  <div key={step.title} className="relative z-10 text-center space-y-6">
+                    <div className="w-16 h-16 rounded-full border border-crimson flex items-center justify-center mx-auto bg-dark text-gold font-cormorant text-2xl hover:bg-crimson/20 transition-all duration-500">{i + 1}</div>
+                    <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">{step.title}</h3>
+                    <p className="text-xs text-dim leading-relaxed">{step.text}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -232,45 +230,48 @@ const CastingPage: React.FC = () => {
           <section id="form" className="py-24 px-[7%] bg-dark-3">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16 space-y-4">
-                <div className="section-tag justify-center">Krótki Formularz</div>
-                <h2 className="h1-premium">Twoja <span className="italic bg-gold-gradient bg-clip-text text-transparent">aplikacja</span></h2>
+                <div className="section-tag justify-center">{t.form.tag}</div>
+                <h2 className="h1-premium">{t.form.titleA} <span className="italic bg-gold-gradient bg-clip-text text-transparent">{t.form.titleB}</span></h2>
                 <p className="text-dim text-sm font-light italic">
-                  Zredukowaliśmy ilość pytań - wypełnienie całości zajmie Ci jedyne 3 minuty!
+                  {t.form.sub}
                 </p>
               </div>
 
               {isSubmitted ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="bg-gold/5 border border-gold/20 p-16 text-center space-y-6"
                 >
                   <div className="text-6xl">✨</div>
-                  <h3 className="font-cormorant text-4xl text-gold italic">Dziękujemy za aplikację!</h3>
+                  <h3 className="font-cormorant text-4xl text-gold italic">{t.form.successTitle}</h3>
                   <p className="text-dim max-w-md mx-auto leading-loose">
-                    Twoje zgłoszenie zostało pomyślnie przesłane. Nasz zespół przeanalizuje materiały i skontaktuje się w ciągu 24 godz.
+                    {t.form.successText}
                   </p>
-                  <button onClick={() => setIsSubmitted(false)} className="btn-outline">Wyślij kolejne zgłoszenie</button>
+                  <button onClick={() => setIsSubmitted(false)} className="btn-outline">{t.form.again}</button>
                 </motion.div>
               ) : (
                 <>
                   {/* Progress Steps */}
                   <div className="flex justify-between mb-20 relative overflow-x-auto pb-4 px-4 scrollbar-hide">
                     <div className="absolute top-5 left-0 right-0 h-px bg-gold/10 -translate-y-1/2 z-0" />
-                    {steps.map((step) => (
-                      <div key={step.id} className="relative z-10 flex flex-col items-center gap-3 min-w-[80px]">
-                        <div className={`w-10 h-10 rounded-full border flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                          currentStep >= step.id ? 'bg-gold border-gold text-dark' : 'bg-dark border-gold/20 text-gold/40'
-                        }`}>
-                          {step.id}
+                    {steps.map((name, index) => {
+                      const id = index + 1;
+                      return (
+                        <div key={id} className="relative z-10 flex flex-col items-center gap-3 min-w-[80px]">
+                          <div className={`w-10 h-10 rounded-full border flex items-center justify-center text-xs font-bold transition-all duration-500 ${
+                            currentStep >= id ? 'bg-gold border-gold text-dark' : 'bg-dark border-gold/20 text-gold/40'
+                          }`}>
+                            {id}
+                          </div>
+                          <span className={`text-[7px] tracking-[0.15em] uppercase text-center transition-colors duration-500 ${
+                            currentStep >= id ? 'text-gold' : 'text-dim/40'
+                          }`}>
+                            {name}
+                          </span>
                         </div>
-                        <span className={`text-[7px] tracking-[0.15em] uppercase text-center transition-colors duration-500 ${
-                          currentStep >= step.id ? 'text-gold' : 'text-dim/40'
-                        }`}>
-                          {step.name}
-                        </span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {/* Form Content */}
@@ -285,46 +286,46 @@ const CastingPage: React.FC = () => {
                         className="bg-dark-2/50 border border-gold/10 p-8 md:p-12 relative overflow-hidden"
                       >
                         <div className="absolute inset-0 bg-grain opacity-[0.02] pointer-events-none" />
-                        
+
                         <div className="relative z-10 space-y-8">
                           <div className="flex items-center gap-4 mb-8">
                             <div className="w-10 h-10 rounded-full border border-crimson flex items-center justify-center text-crimson font-cormorant text-xl">{currentStep}</div>
-                            <h3 className="font-cormorant text-3xl text-gold italic">{steps[currentStep - 1].name}</h3>
+                            <h3 className="font-cormorant text-3xl text-gold italic">{steps[currentStep - 1]}</h3>
                           </div>
 
                           {currentStep === 1 && (
                             <div className="space-y-8">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Imię <span className="text-crimson">*</span></label>
-                                  <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-input" placeholder="Wprowadź imię..." />
+                                  <FieldLabel required>{t.form.firstName}</FieldLabel>
+                                  <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-input" placeholder={t.form.firstNamePh} />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Nazwisko <span className="text-crimson">*</span></label>
-                                  <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="form-input" placeholder="Wprowadź nazwisko..." />
+                                  <FieldLabel required>{t.form.lastName}</FieldLabel>
+                                  <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="form-input" placeholder={t.form.lastNamePh} />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Email <span className="text-crimson">*</span></label>
-                                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="form-input" placeholder="Wprowadź email..." />
+                                  <FieldLabel required>{t.form.email}</FieldLabel>
+                                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="form-input" placeholder={t.form.emailPh} />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Telefon <span className="text-crimson">*</span></label>
-                                  <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-input" placeholder="Wprowadź num..." />
+                                  <FieldLabel required>{t.form.phone}</FieldLabel>
+                                  <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-input" placeholder={t.form.phonePh} />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Data urodzenia <span className="text-crimson">*</span></label>
+                                  <FieldLabel required>{t.form.birthDate}</FieldLabel>
                                   <input required type="date" name="birthDate" value={formData.birthDate} onChange={handleChange} className="form-input" />
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Wzrost (cm) i Waga (kg) <span className="text-crimson">*</span></label>
+                                  <FieldLabel required>{t.form.body}</FieldLabel>
                                   <div className="flex gap-2">
-                                    <input required type="number" name="height" value={formData.height} onChange={handleChange} className="form-input" placeholder="Wzrost" />
-                                    <input required type="number" name="weight" value={formData.weight} onChange={handleChange} className="form-input" placeholder="Waga" />
+                                    <input required type="number" name="height" value={formData.height} onChange={handleChange} className="form-input" placeholder={t.form.height} />
+                                    <input required type="number" name="weight" value={formData.weight} onChange={handleChange} className="form-input" placeholder={t.form.weight} />
                                   </div>
                                 </div>
                                 <div className="space-y-2 md:col-span-2">
-                                  <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Cechy szczególne (opcjonalnie)</label>
-                                  <textarea name="bodyModifications" value={formData.bodyModifications} onChange={handleChange} className="form-input h-[80px]" placeholder="Rozmiar biustu, kolor włosów, tatuaże, dodatkowe atuty..."></textarea>
+                                  <FieldLabel>{t.form.features}</FieldLabel>
+                                  <textarea name="bodyModifications" value={formData.bodyModifications} onChange={handleChange} className="form-input h-[80px]" placeholder={t.form.featuresPh}></textarea>
                                 </div>
                               </div>
                             </div>
@@ -333,32 +334,32 @@ const CastingPage: React.FC = () => {
                           {currentStep === 2 && (
                             <div className="space-y-8">
                                <div className="space-y-4">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Doświadczenie w branży (+18)</label>
+                                <FieldLabel>{t.form.experience}</FieldLabel>
                                 <div className="flex flex-wrap gap-4">
                                   <label className="flex items-center gap-3 p-4 bg-dark-4 border border-gold/10 cursor-pointer hover:border-gold/30 transition-colors">
                                     <input type="radio" name="experience" value="no" checked={formData.experience === 'no'} onChange={handleChange} className="accent-crimson" />
-                                    <span className="text-xs text-dim">Brak (Nowa)</span>
+                                    <span className="text-xs text-dim">{t.form.experienceNo}</span>
                                   </label>
                                   <label className="flex items-center gap-3 p-4 bg-dark-4 border border-gold/10 cursor-pointer hover:border-gold/30 transition-colors">
                                     <input type="radio" name="experience" value="yes" checked={formData.experience === 'yes'} onChange={handleChange} className="accent-crimson" />
-                                    <span className="text-xs text-dim">Mam doświadczenie</span>
+                                    <span className="text-xs text-dim">{t.form.experienceYes}</span>
                                   </label>
                                 </div>
                               </div>
                               <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Typ preferowanych treści</label>
+                                <FieldLabel>{t.form.contentTypes}</FieldLabel>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                  {['Zdjęcia Solo', 'Wideo Solo', 'Live stream', 'BGM (Pary)', 'Zabawki', 'Wszystko'].map(t => (
-                                    <label key={t} className="flex items-center gap-3 p-3 bg-dark-4 border border-gold/5 cursor-pointer hover:border-gold/20 transition-colors">
-                                      <input type="checkbox" name="contentTypes" value={t.toLowerCase()} checked={formData.contentTypes.includes(t.toLowerCase())} onChange={handleChange} className="accent-gold" />
-                                      <span className="text-[10px] text-dim">{t}</span>
+                                  {t.form.contentTypeOptions.map(option => (
+                                    <label key={option.value} className="flex items-center gap-3 p-3 bg-dark-4 border border-gold/5 cursor-pointer hover:border-gold/20 transition-colors">
+                                      <input type="checkbox" name="contentTypes" value={option.value} checked={formData.contentTypes.includes(option.value)} onChange={handleChange} className="accent-gold" />
+                                      <span className="text-[10px] text-dim">{option.label}</span>
                                     </label>
                                   ))}
                                 </div>
                               </div>
                               <div className="space-y-2">
-                                <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Twoja główna motywacja dołączenia <span className="text-crimson">*</span></label>
-                                <textarea required name="motivation" value={formData.motivation} onChange={handleChange} className="form-input min-h-[80px]" placeholder="Dlaczego chcesz z nami stworzyć imperium biznesowe?"></textarea>
+                                <FieldLabel required>{t.form.motivation}</FieldLabel>
+                                <textarea required name="motivation" value={formData.motivation} onChange={handleChange} className="form-input min-h-[80px]" placeholder={t.form.motivationPh}></textarea>
                               </div>
                             </div>
                           )}
@@ -366,33 +367,33 @@ const CastingPage: React.FC = () => {
                           {currentStep === 3 && (
                             <div className="space-y-8">
                               <div className="p-6 bg-gold/5 border border-gold/10">
-                                <p className="text-[11px] text-dim leading-relaxed mb-4">Wymagane minimum 2 zdjęcia (W tym 1 sylwetki nago/bielizna) oraz max 30s filmik próbny <span className="text-crimson">*</span></p>
+                                <p className="text-[11px] text-dim leading-relaxed mb-4">{t.form.mediaNote} <Required /></p>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                   <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie Sylwetki <span className="text-crimson">*</span></label>
+                                    <FieldLabel required>{t.form.photoBody}</FieldLabel>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo1: files[0] ?? null }))} />
                                   </div>
                                   <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Zdjęcie Twarzy <span className="text-crimson">*</span></label>
+                                    <FieldLabel required>{t.form.photoFace}</FieldLabel>
                                     <ImageUpload onUpload={(files) => setFormData(prev => ({ ...prev, photo2: files[0] ?? null }))} />
                                   </div>
                                   <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-widest text-gold font-bold">Wideo Prezentacji <span className="text-crimson">*</span></label>
+                                    <FieldLabel required>{t.form.video}</FieldLabel>
                                     <VideoUpload onUpload={(file) => setFormData(prev => ({ ...prev, video: file }))} maxSize={50} />
                                   </div>
                                 </div>
                               </div>
-                              
+
                               <div className="bg-dark-4/50 border border-crimson/20 p-8 space-y-4">
-                                <h4 className="font-cormorant text-xl text-gold italic">Wymagane Oświadczenia:</h4>
+                                <h4 className="font-cormorant text-xl text-gold italic">{t.form.statementsTitle}</h4>
                                 <div className="space-y-4">
                                   <label className="flex items-start gap-4 cursor-pointer group">
                                     <input required type="checkbox" name="consentAge" checked={formData.consentAge} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Jestem osobą pełnoletnią (+18). <span className="text-crimson">*</span></span>
+                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">{t.form.consentAge} <Required /></span>
                                   </label>
                                   <label className="flex items-start gap-4 cursor-pointer group">
                                     <input required type="checkbox" name="consentTerms" checked={formData.consentTerms} onChange={handleChange} className="mt-1 accent-crimson w-4 h-4" />
-                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">Akceptuję Regulamin, RODO i wykorzystanie plików dla oceny zespołu HRL. <span className="text-crimson">*</span></span>
+                                    <span className="text-[11px] text-dim group-hover:text-white transition-colors">{t.form.consentTerms} <Required /></span>
                                   </label>
                                 </div>
                               </div>
@@ -404,24 +405,24 @@ const CastingPage: React.FC = () => {
 
                     {/* Navigation Buttons */}
                     <div className="flex justify-between items-center pt-8 border-t border-gold/10">
-                      <button 
+                      <button
                         type="button"
-                        onClick={handleBack} 
+                        onClick={handleBack}
                         className={cn(
                           "text-[10px] uppercase tracking-widest font-bold transition-all",
                           currentStep === 1 ? 'opacity-0 pointer-events-none' : 'text-dim hover:text-gold'
                         )}
                       >
-                        â† Wstecz
+                        {t.form.back}
                       </button>
-                      
+
                       {currentStep < steps.length ? (
                         <button type="button" onClick={handleNext} className="btn-gold">
-                          Dalej â†’
+                          {t.form.next}
                         </button>
                       ) : (
                         <button type="submit" className="btn-crimson" disabled={isSubmitting}>
-                          {isSubmitting ? 'Wysyłanie...' : 'Wyślij Aplikację'}
+                          {isSubmitting ? t.form.sending : t.form.submit}
                         </button>
                       )}
                     </div>
@@ -433,20 +434,13 @@ const CastingPage: React.FC = () => {
 
           {/* FAQ SECTION */}
           <section id="faq" className="py-24 px-[7%] max-w-5xl mx-auto">
-            <div className="section-tag">Najczęstsze Pytania</div>
-            <h2 className="h1-premium">Pytania i <span className="italic bg-gold-gradient bg-clip-text text-transparent">odpowiedzi</span></h2>
+            <div className="section-tag">{t.faq.tag}</div>
+            <h2 className="h1-premium">{t.faq.titleA} <span className="italic bg-gold-gradient bg-clip-text text-transparent">{t.faq.titleB}</span></h2>
             <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/20 to-transparent my-12" />
-            
+
             <div className="space-y-4">
-              {[
-                { q: "Czy muszę mieć doświadczenie?", a: "Nie, nie wymagamy doświadczenia. Zapewniamy pełne szkolenie i wsparcie na każdym etapie. Wiele naszych najlepszych partnerek zaczynało bez żadnego doświadczenia w branży." },
-                { q: "Czy muszę mieć własny sprzęt?", a: "Nie, zapewniamy cały profesjonalny sprzęt 4K, oświetlenie, studia i wszystko, czego potrzebujesz do tworzenia treści w najwyższej jakości." },
-                { q: "Jak szybko mogę zacząć zarabiać?", a: "Po zatwierdzeniu aplikacji i odbyciu sesji testowej, możesz zacząć zarabiać już w pierwszym tygodniu. Wszystko zależy od Twojej dostępności i zaangażowania." },
-                { q: "Czy moje dane są bezpieczne?", a: "Tak, stosujemy najwyższe standardy bezpieczeństwa danych i pełną anonimowość. Twoje dane osobowe są chronione zgodnie z RODO i nigdy nie są udostępniane osobom trzecim." },
-                { q: "Czy mogę pracować anonimowo?", a: "Tak, oferujemy pełną anonimowość. Możesz używać pseudonimu, maskować twarz lub pracować w sposób, który zapewni Ci pełną prywatność." },
-                { q: "Jak wygląda proces wypłat?", a: "Wypłaty realizujemy co tydzień lub co dwa tygodnie, zgodnie z Twoimi preferencjami. Otrzymujesz szczegółowe raporty przy każdej wypłacie z pełnym wglądem w swoje zarobki." }
-              ].map((item, i) => (
-                <FAQItem key={i} question={item.q} answer={item.a} />
+              {t.faq.items.map((item) => (
+                <FAQItem key={item.q} question={item.q} answer={item.a} />
               ))}
             </div>
           </section>
@@ -454,16 +448,14 @@ const CastingPage: React.FC = () => {
           {/* PRIVACY ASSURANCE */}
           <section className="py-24 px-[7%] max-w-7xl mx-auto">
             <div className="bg-dark-3/40 border-l-4 border-gold p-12 space-y-6">
-              <h3 className="font-cormorant text-2xl text-gold italic">🔒 Twoja Prywatność Jest Naszym Priorytetem</h3>
-              <p className="text-dim text-sm leading-relaxed">W Studio HRL Adult rozumiemy, jak ważna jest prywatność w branży treści dla dorosłych. Dlatego gwarantujemy:</p>
+              <h3 className="font-cormorant text-2xl text-gold italic">{t.privacy.title}</h3>
+              <p className="text-dim text-sm leading-relaxed">{t.privacy.text}</p>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-dim italic">
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Pełną zgodność z RODO i przepisami o ochronie danych</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Zgodność z amerykańską ustawą 18 U.S.C. Â§ 2257</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Anonimowość i ochronę tożsamości</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Bezpieczne przechowywanie dokumentów</li>
-                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> Transparentność w zarządzaniu danymi</li>
+                {t.privacy.items.map((item) => (
+                  <li key={item} className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-gold rotate-45" /> {item}</li>
+                ))}
               </ul>
-              <p className="text-gold/60 text-[10px] font-bold tracking-widest uppercase">Twoje dane są bezpieczne u nas. Zawsze.</p>
+              <p className="text-gold/60 text-[10px] font-bold tracking-widest uppercase">{t.privacy.footer}</p>
             </div>
           </section>
         </main>

@@ -12,13 +12,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       success: true,
       stats: {
         models: partnerCount || 5, // Fallback to 5 if empty for aesthetics
-        modelsLabel: 'Aktywnych Twórców',
         content: (articleCount + videoCount) + 200 || '2K+',
-        contentLabel: 'Premium Treści',
         experience: '4K',
-        experienceLabel: 'PRODUCTION',
-        support: '24/7',
-        supportLabel: 'SUPPORT'
+        support: '24/7'
       }
     });
   } catch (error) {
@@ -27,13 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       success: true,
       stats: {
         models: 5,
-        modelsLabel: 'Aktywnych Twórców',
         content: '2K+',
-        contentLabel: 'Premium Treści',
         experience: '4K',
-        experienceLabel: 'PRODUCTION',
-        support: '24/7',
-        supportLabel: 'SUPPORT'
+        support: '24/7'
       }
     });
   }

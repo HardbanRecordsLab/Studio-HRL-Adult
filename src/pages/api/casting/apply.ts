@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import { toLocale } from '@/i18n';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -83,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Attempt to send email but don't fail the whole request if it fails
       try {
-        const template = emailTemplates.castingApplication(data.firstName, 'pending');
+        const template = emailTemplates.castingApplication(data.firstName, 'pending', toLocale(data.locale));
         await sendEmail({
           to: data.email,
           subject: template.subject,

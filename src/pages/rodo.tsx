@@ -2,8 +2,10 @@ import React from 'react';
 import Head from 'next/head';
 import Navigation from '@/components/common/Navigation';
 import Footer from '@/components/common/Footer';
+import { useLocale } from '@/i18n';
+import RodoEn from '@/components/legal/RodoEn';
 
-const RodoPage: React.FC = () => {
+const RodoPl: React.FC = () => {
   return (
     <>
       <Head>
@@ -96,5 +98,7 @@ const RodoPage: React.FC = () => {
     </>
   );
 };
+
+const RodoPage: React.FC = () => (useLocale() === 'pl' ? <RodoPl /> : <RodoEn />);
 
 export default RodoPage;

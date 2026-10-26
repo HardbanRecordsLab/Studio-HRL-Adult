@@ -1,32 +1,34 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ROUTES } from '@/utils/constants';
+import { useMessages } from '@/i18n';
+import { common } from '@/i18n/common';
 
 const CTA: React.FC = () => {
+  const { cta } = useMessages(common);
+
   return (
     <section className="py-32 px-[7%] bg-dark overflow-hidden relative" id="cta">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 gap-8">
           {/* Partner With Us Card */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             className="bg-dark-3 border border-gold/15 p-12 md:p-16 relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-crimson/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
-            
+
             <div className="relative z-10 space-y-8">
               <h2 className="font-cormorant text-3xl md:text-5xl text-white font-light leading-tight uppercase">
-                Partner With Us <br />
-                <span className="italic text-crimson">Distribution Platform</span>
+                {cta.titleLine1} <br />
+                <span className="italic text-crimson">{cta.titleLine2}</span>
               </h2>
               <p className="text-dim text-xs md:text-sm leading-relaxed font-light max-w-md italic">
-                Our advanced infrastructure ensures your content reaches the right audience 
-                across 10+ premium platforms simultaneously.
+                {cta.text}
               </p>
               <Link href="https://t.me/HRL_Adult" className="btn-crimson">
-                Explore Partnerships
+                {cta.button}
               </Link>
             </div>
 
@@ -41,19 +43,19 @@ const CTA: React.FC = () => {
         <div className="mt-20 pt-12 border-t border-gold/5 flex flex-wrap justify-center gap-12 md:gap-24 opacity-40">
           <div className="text-center">
             <span className="block font-cormorant text-3xl text-gold italic">18+</span>
-            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Adult Content</span>
+            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">{cta.stats.adult}</span>
           </div>
           <div className="text-center">
             <span className="block font-cormorant text-3xl text-gold italic">4K</span>
-            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Production</span>
+            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">{cta.stats.production}</span>
           </div>
           <div className="text-center">
-            <span className="block font-cormorant text-3xl text-gold italic">Premium</span>
-            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Partnership</span>
+            <span className="block font-cormorant text-3xl text-gold italic">60/30/10</span>
+            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">{cta.stats.revenue}</span>
           </div>
           <div className="text-center">
             <span className="block font-cormorant text-3xl text-gold italic">24/7</span>
-            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">Support</span>
+            <span className="text-[7px] tracking-[0.3em] uppercase text-dim">{cta.stats.support}</span>
           </div>
         </div>
       </div>

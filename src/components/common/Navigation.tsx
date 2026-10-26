@@ -2,10 +2,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/utils/constants';
+import { useMessages } from '@/i18n';
+import { common } from '@/i18n/common';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 
 const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+  const { nav } = useMessages(common);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -14,12 +18,12 @@ const Navigation: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Start', href: ROUTES.HOME },
-    { name: 'O Studiu', href: '/#philosophy' },
-    { name: 'Kontakt', href: '/contact' },
-    { name: 'Casting', href: ROUTES.CASTING },
-    { name: 'Akademia', href: ROUTES.ACADEMY },
-    { name: 'Portfolio', href: ROUTES.PORTFOLIO },
+    { name: nav.home, href: ROUTES.HOME },
+    { name: nav.about, href: '/#philosophy' },
+    { name: nav.contact, href: '/contact' },
+    { name: nav.casting, href: ROUTES.CASTING },
+    { name: nav.academy, href: ROUTES.ACADEMY },
+    { name: nav.portfolio, href: ROUTES.PORTFOLIO },
   ];
 
   return (
@@ -33,7 +37,7 @@ const Navigation: React.FC = () => {
 
       <ul className="hidden xl:flex items-center gap-1">
         {navLinks.map((link) => (
-          <li key={link.name}>
+          <li key={link.href}>
             <Link href={link.href} className={`relative px-3 py-2 text-[9px] font-medium tracking-[0.2em] uppercase transition-colors group ${router.pathname === link.href ? 'text-gold' : 'text-dim hover:text-gold'}`}>
               {link.name}
               <span className={`absolute bottom-0 left-3 right-3 h-px bg-gold transition-transform duration-300 origin-center ${router.pathname === link.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
@@ -43,8 +47,9 @@ const Navigation: React.FC = () => {
       </ul>
 
       <div className="flex items-center gap-4">
-        <Link href="/admin" className="hidden lg:block px-4 py-2 border border-gold/20 text-gold/60 text-[8px] font-bold tracking-[0.2em] uppercase transition-all hover:bg-gold/5 hover:text-gold">Admin</Link>
-        <Link href={ROUTES.CASTING} className="px-6 py-2.5 bg-crimson-gradient text-white text-[9px] font-bold tracking-[0.2em] uppercase transition-all hover:opacity-90 shadow-lg shadow-crimson/20">Dołącz Teraz</Link>
+        <LanguageSwitcher />
+        <Link href="/admin" className="hidden lg:block px-4 py-2 border border-gold/20 text-gold/60 text-[8px] font-bold tracking-[0.2em] uppercase transition-all hover:bg-gold/5 hover:text-gold">{nav.admin}</Link>
+        <Link href={ROUTES.CASTING} className="px-6 py-2.5 bg-crimson-gradient text-white text-[9px] font-bold tracking-[0.2em] uppercase transition-all hover:opacity-90 shadow-lg shadow-crimson/20">{nav.joinNow}</Link>
       </div>
     </nav>
   );

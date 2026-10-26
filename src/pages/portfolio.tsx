@@ -6,8 +6,11 @@ import { ROUTES } from "@/utils/constants";
 import Navigation from "@/components/common/Navigation";
 import Footer from "@/components/common/Footer";
 import CTA from "@/components/sections/CTA";
+import { useMessages } from "@/i18n";
+import { profileCopy } from "@/i18n/profiles";
 
 const PortfolioPage: React.FC = () => {
+  const { portfolio: t } = useMessages(profileCopy);
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -100,7 +103,7 @@ const PortfolioPage: React.FC = () => {
               <div>
                 <h4 className="font-playfair text-xl text-gold italic border-b border-gold/20 pb-2 mb-4 flex items-center">
                   <span className="w-2 h-2 bg-gold rounded-full mr-3 animate-pulse" />
-                  O Mnie
+                  {t.aboutMe}
                 </h4>
                 <p className="text-dim text-[11px] leading-relaxed font-light italic bg-dark-2/50 p-4 rounded-lg border border-gold/10">
                   {profile.bio}
@@ -114,7 +117,7 @@ const PortfolioPage: React.FC = () => {
                 className="text-[9px] text-gold uppercase tracking-[0.3em] font-bold border border-gold/20 px-6 py-2 hover:bg-gold hover:text-dark transition-all shadow-[0_0_20px_rgba(255,215,0,0.2)] pointer-events-auto relative z-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                Pełny Profil
+                {t.fullProfile}
               </Link>
             </div>
           </div>
@@ -123,39 +126,11 @@ const PortfolioPage: React.FC = () => {
     );
   };
 
-  const contentItems = [
-    {
-      title: "Exclusive Content",
-      description: "Dostęp do premium materiałów od naszych topowych twórców",
-      icon: "🔒",
-      features: [
-        "Wysoka jakość 4K",
-        "Codzienne aktualizacje",
-        "Personalizowane treści",
-      ],
-    },
-    {
-      title: "Direct Interaction",
-      description: "Bezpośredni kontakt z twórcami i custom zamówienia",
-      icon: "💬",
-      features: ["Prywatne wiadomości", "Custom videos", "Live sesje"],
-    },
-    {
-      title: "Premium Experience",
-      description: "Profesjonalne podejście i ekskluzywne materiały",
-      icon: "⭐",
-      features: ["Profesjonalizm", "Bezpieczeństwo", "Wsparcie 24/7"],
-    },
-  ];
-
   return (
     <>
       <Head>
-        <title>Portfolio - Studio HRL Adult</title>
-        <meta
-          name="description"
-          content="Poznaj naszych topowych twórców tre adult. Premium content, profesjonalizm i ekskluzywne materiały."
-        />
+        <title>{t.meta.title}</title>
+        <meta name="description" content={t.meta.description} />
       </Head>
 
       <div className="min-h-screen bg-dark text-text relative font-cormorant">
@@ -174,11 +149,10 @@ const PortfolioPage: React.FC = () => {
                 className="mb-16"
               >
                 <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl text-white font-black leading-[0.9] mb-6">
-                  Nasze <span className="text-gold">Portfolio</span>
+                  {t.heroA} <span className="text-gold">{t.heroB}</span>
                 </h1>
                 <p className="text-xl md:text-2xl text-dim font-light italic max-w-4xl mx-auto leading-relaxed">
-                  Poznaj naszych topowych twórców. Każdy profil to gwarancja
-                  jakości, profesjonalizmu i unikalnych treści.
+                  {t.heroText}
                 </p>
               </motion.div>
 
@@ -189,30 +163,16 @@ const PortfolioPage: React.FC = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="grid md:grid-cols-3 gap-8 mb-16"
               >
-                <div className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
-                  <div className="text-4xl font-playfair text-gold font-bold mb-2">
-                    5+
+                {t.stats.map((stat) => (
+                  <div key={stat.label} className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
+                    <div className="text-4xl font-playfair text-gold font-bold mb-2">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-dim uppercase tracking-widest">
+                      {stat.label}
+                    </div>
                   </div>
-                  <div className="text-sm text-dim uppercase tracking-widest">
-                    Aktywnych Twórców
-                  </div>
-                </div>
-                <div className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
-                  <div className="text-4xl font-playfair text-gold font-bold mb-2">
-                    10K+
-                  </div>
-                  <div className="text-sm text-dim uppercase tracking-widest">
-                    Zadowolonych Fanów
-                  </div>
-                </div>
-                <div className="bg-dark-2/50 backdrop-blur-sm border border-gold/10 p-8 text-center">
-                  <div className="text-4xl font-playfair text-gold font-bold mb-2">
-                    2K+
-                  </div>
-                  <div className="text-sm text-dim uppercase tracking-widest">
-                    Premium Treści
-                  </div>
-                </div>
+                ))}
               </motion.div>
             </div>
           </section>
@@ -226,11 +186,10 @@ const PortfolioPage: React.FC = () => {
               className="text-center mb-16"
             >
               <h2 className="font-playfair text-5xl md:text-6xl text-white mb-4">
-                Nasi <span className="text-gold">Twórcy</span>
+                {t.creatorsA} <span className="text-gold">{t.creatorsB}</span>
               </h2>
               <p className="text-dim text-lg font-light italic max-w-3xl mx-auto">
-                Każdy z naszych twórców to profesjonalista z unikalnym stylem i
-                podejściem do tworzenia treści.
+                {t.creatorsText}
               </p>
             </motion.div>
 
@@ -243,10 +202,10 @@ const PortfolioPage: React.FC = () => {
                 !loading && (
                   <div className="col-span-full text-center py-20 bg-dark-2/30 border border-gold/10 rounded-2xl">
                     <p className="text-gold text-lg font-playfair italic mb-2">
-                      Chwilowa przerwa w dostawie luksusu
+                      {t.emptyTitle}
                     </p>
                     <p className="text-dim text-sm uppercase tracking-widest">
-                      Wróć za chwilę, nasze modelki właśnie się przygotowują.
+                      {t.emptyText}
                     </p>
                   </div>
                 )}
@@ -262,16 +221,15 @@ const PortfolioPage: React.FC = () => {
               className="text-center mb-16"
             >
               <h2 className="font-playfair text-5xl md:text-6xl text-white mb-4">
-                Co <span className="text-gold">Oferujemy</span>
+                {t.offerA} <span className="text-gold">{t.offerB}</span>
               </h2>
               <p className="text-dim text-lg font-light italic max-w-3xl mx-auto">
-                Premium doświadczenie z dostępem do ekskluzywnych treści od
-                najlepszych twórców.
+                {t.offerText}
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-              {contentItems.map((item, index) => (
+              {t.offers.map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
