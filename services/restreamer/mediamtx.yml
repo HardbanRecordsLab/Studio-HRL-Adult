@@ -1,0 +1,54 @@
+# MediaMTX config for the HRL live stack.
+#
+#   camera --WebRTC/WHIP (browser)--> live/<ingestKey>      \  one feed, only registered keys may publish
+#   OBS    --RTMP---------------------> live/<ingestKey>      /  (optional alternative)
+#   restreamer pulls live/<ingestKey> over RTSP and pushes it to every platform,
+#   plus to public/<handle>, which our /live/<handle> page plays over HLS.
+
+logLevel: info
+
+srt: no
+api: no
+metrics: no
+pprof: no
+playback: no
+
+# RTSP is only used by the restreamer inside the compose network (port 8554 is NOT published).
+rtsp: yes
+rtspAddress: :8554
+rtspTransports: [tcp]
+
+# RTMP ingest, for OBS.
+rtmp: yes
+rtmpAddress: :1935
+
+# WebRTC: the browser publishes here (WHIP). Behind Caddy the endpoint is  /live/<key>/whip.
+webrtc: yes
+webrtcAddress: :8889
+webrtcAllowOrigin: '*'
+webrtcLocalUDPAddress: :8189
+webrtcLocalTCPAddress: :8189
+# Set MTX_WEBRTCADDITIONALHOSTS=<public IP> in the environment when the server is behind NAT.
+webrtcIPsFromInterfaces: yes
+
+hls: yes
+hlsAddress: :8888
+# mpegts is the most compatible variant; use lowLatency for ~3s latency (needs a modern player).
+hlsVariant: mpegts
+hlsSegmentCount: 6
+hlsSegmentDuration: 2s
+hlsAllowOrigin: '*'
+
+# Publishing is authorised by the restreamer (see /mediamtx/auth in server.js).
+authMethod: http
+authHTTPAddress: http://restreamer:8080/mediamtx/auth
+# Reading must not trigger an auth call per request (RTSP read by the restreamer, HLS by viewers).
+authHTTPExclude:
+  - action: read
+  - action: playback
+  - action: api
+  - action: metrics
+  - action: pprof
+
+paths:
+  all_others:

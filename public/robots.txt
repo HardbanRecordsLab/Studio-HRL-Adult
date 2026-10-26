@@ -6,6 +6,7 @@ Sitemap: https://studio-adult.hardbanrecordslab.online/sitemap.xml
 
 # Block crawlers from admin areas
 Disallow: /admin/
+Disallow: /studio/
 Disallow: /api/
 Disallow: /_next/
 Disallow: /static/

@@ -559,6 +559,32 @@ export async function logAdminAction(
 }
 ```
 
+## Internationalization (EN / PL)
+
+The public site is English by default; Polish lives under `/pl` (Next.js i18n routing, configured in
+`next.config.js`, detection off). The EN/PL switcher is `components/common/LanguageSwitcher.tsx`.
+
+- Copy lives in `src/i18n/*.ts`. Each file exports `Messages<T>` = `{ en, pl }`, and `pl` is typed
+  `typeof en`, so a missing or extra key in either language fails `npm run type-check`.
+- Use it in a component with `const t = useMessages(home)` (see `src/i18n/index.ts`).
+- Legal pages: the Polish text stays in the page file (it is the binding version); the English rendering
+  is data in `src/i18n/legal.ts`, shown by `components/legal/LegalDocument.tsx`.
+- API routes read `locale` from the request body (`toLocale`) for error messages and emails.
+- Not translated yet: the admin panel (`/admin`, `components/admin`), and content stored in the database
+  (profile bios, academy videos/podcasts/documents/articles).
+
+## Live multistream and the profile model
+
+- **One camera, many platforms:** the admin tab *Broadcaster* (Live Studio) captures a camera in the browser
+  (laptop or phone, WebRTC/WHIP), and `services/restreamer` fans it out to every platform plus our own
+  `/live/<handle>` page. Phones can also be the camera via a QR link (`/studio/camera#<key>`). Setup and
+  deployment: `services/restreamer/README.md`; env vars in `.env.example`; tables via `npx prisma db push`.
+- **Profile model:** `src/lib/profileModel.ts` defines the one model every `/profile/<handle>` page uses;
+  `ProfileTemplate` renders only the sections a profile has data for. `/profile/demo` (`src/i18n/demoProfile.ts`)
+  fills all of them and is the reference.
+- **Tests:** `npm test` (Jest: crypto, live helpers, schedule logic, session API) and
+  `cd services/restreamer && npm test` (control API).
+
 ## Testing
 
 ### Unit Tests

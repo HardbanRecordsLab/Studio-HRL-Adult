@@ -1,0 +1,14 @@
+{
+  "name": "hrl-restreamer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Control API that fans one RTMP ingest out to several platforms plus our own HLS page.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test server.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

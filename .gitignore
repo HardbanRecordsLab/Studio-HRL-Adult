@@ -23,3 +23,7 @@ Thumbs.db
 # Local build files
 dist/
 build/
+
+# Live restreamer
+services/restreamer/.env
+services/restreamer/data/

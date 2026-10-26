@@ -1,0 +1,20 @@
+{$LIVE_DOMAIN} {
+	# Control API, called by the Next.js app with the bearer token.
+	handle /v1/* {
+		reverse_proxy restreamer:8080
+	}
+
+	# Browser camera ingest (WHIP): POST /live/<key>/whip
+	handle /live/* {
+		reverse_proxy mediamtx:8889
+	}
+
+	# Public HLS playback of our own live pages.
+	handle /public/* {
+		reverse_proxy mediamtx:8888
+	}
+
+	handle {
+		respond "HRL live" 200
+	}
+}

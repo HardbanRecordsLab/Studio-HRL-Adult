@@ -2,34 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { ProfileTemplate } from "@/components/profile/ProfileTemplate";
+import { useMessages } from "@/i18n";
+import { profileCopy } from "@/i18n/profiles";
+import type { ProfileModel } from "@/lib/profileModel";
 
-interface ProfileData {
-  id: string;
-  name: string;
-  handle: string;
-  bio: string;
-  height?: string | number;
-  weight?: string | number;
-  measurements?: string;
-  avatar?: string;
-  heroImage?: string;
-  characteristics?: string;
-  type?: string;
-  profileData?: {
-    likes?: string[];
-    boundaries?: string[];
-    bestInMe?: string[];
-    whyWatchMe?: string[];
-    gallery?: string[];
-    size?: string;
-  };
-}
+type ProfileData = ProfileModel;
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
+  const { profilePage: t } = useMessages(profileCopy);
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [error, setError] = useState("");
+  const [errorKind, setErrorKind] = useState<"notFound" | "loadError" | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -37,9 +21,9 @@ const ProfilePage: React.FC = () => {
         const { handle } = router.query;
         if (!handle) return;
 
-        const response = await fetch(`/api/profile/${handle}`);
+        const response = await fetch(`/api/profile/${handle}?locale=${router.locale ?? "en"}`);
         if (!response.ok) {
-          setError("Profil nie został znaleziony");
+          setErrorKind("notFound");
           setLoading(false);
           return;
         }
@@ -47,36 +31,36 @@ const ProfilePage: React.FC = () => {
         const data = await response.json();
         setProfileData(data);
       } catch {
-        setError("Błąd podczas ładowania profilu");
+        setErrorKind("loadError");
       } finally {
         setLoading(false);
       }
     };
 
     if (router.isReady) fetchProfile();
-  }, [router.isReady, router.query]);
+  }, [router.isReady, router.query, router.locale]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">⏳</div>
-          <p className="text-white text-lg">Ładowanie profilu...</p>
+          <p className="text-white text-lg">{t.loading}</p>
         </div>
       </div>
     );
   }
 
-  if (error || !profileData) {
+  if (errorKind || !profileData) {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center">
         <Head>
-          <title>Profil nie znaleziony | Studio HRL Adult</title>
+          <title>{t.notFoundTitle}</title>
         </Head>
         <div className="text-center">
           <div className="text-4xl mb-4">❌</div>
           <p className="text-white text-lg">
-            {error || "Profil nie został znaleziony"}
+            {t[errorKind ?? "notFound"]}
           </p>
         </div>
       </div>

@@ -85,8 +85,54 @@ model Partner {
   measurements String?
   profileData Json?
   
-  financeRecords FinancialRecord[]
-  documents      PartnerDocument[]
+  // Live multistream (see lib/live.ts). Kept in separate tables so deploying them never touches Partner queries.
+  financeRecords   FinancialRecord[]
+  documents        PartnerDocument[]
+  liveChannel      LiveChannel?
+  liveDestinations LiveDestination[]
+  liveSessions     LiveSession[]
+}
+
+// The secret a profile's camera / OBS publishes to (live/<ingestKey>). Treat it like a stream key.
+model LiveChannel {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  partnerId String   @unique
+  partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  ingestKey String   @unique
+}
+
+// One platform a profile can broadcast to (its RTMP URL + stream key from the platform's broadcast settings).
+model LiveDestination {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  partnerId    String
+  partner      Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  platform     String   // preset id from lib/live.ts, or "custom"
+  label        String
+  rtmpUrl      String
+  streamKeyEnc String   // AES-256-GCM, see lib/secretBox.ts - never returned by the API
+  keyHint      String?  // last characters of the key, for the admin UI
+  profileUrl   String?  // the creator's public page on that platform (shown on /live/<handle>)
+  enabled      Boolean  @default(true)
+
+  @@index([partnerId])
+}
+
+// A broadcast: armed when the operator presses "Go live", ended on stop.
+model LiveSession {
+  id             String    @id @default(cuid())
+  partnerId      String
+  partner        Partner   @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  status         String    @default("live") // live | ended
+  title          String?
+  startedAt      DateTime  @default(now())
+  endedAt        DateTime?
+  startedBy      String?
+  destinationIds Json?     // ids of the LiveDestination rows used in this broadcast
+
+  @@index([partnerId, status])
 }
 
 model FinancialRecord {

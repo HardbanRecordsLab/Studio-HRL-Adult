@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
+import { toLocale } from '@/i18n';
+import { getDemoProfile } from '@/i18n/demoProfile';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -8,6 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { handle } = req.query;
   const handleStr = Array.isArray(handle) ? handle[0] : (handle ?? '');
+  // /profile/demo is the showcase profile; it works even without a database.
+  const demo = handleStr === 'demo' ? getDemoProfile(toLocale(req.query.locale)) : null;
 
   try {
     const partner = await prisma.partner.findUnique({ 
@@ -45,16 +49,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           bestInMe: parsedProfileData.bestInMe || [],
           whyWatchMe: parsedProfileData.whyWatchMe || [],
           gallery: parsedProfileData.gallery || [],
-          tags: parsedProfileData.tags || ['Studio HRL']
+          tags: parsedProfileData.tags || ['Studio HRL'],
+          videos: parsedProfileData.videos || [],
+          experience: parsedProfileData.experience || '',
+          milestones: parsedProfileData.milestones || [],
+          age: parsedProfileData.age || '',
+          nationality: parsedProfileData.nationality || '',
+          faq: parsedProfileData.faq || [],
+          badges: parsedProfileData.badges || [],
+          languages: parsedProfileData.languages || [],
+          location: parsedProfileData.location || '',
+          timezone: parsedProfileData.timezone || '',
+          size: parsedProfileData.size || ''
         },
         ico: '⭐',
         status: partner.status || 'active'
       });
     }
 
-    return res.status(404).json({ error: 'Nie odnaleziono takiego profilu w bazie Studio HRL.' });
+    if (demo) return res.status(200).json(demo);
+    return res.status(404).json({ error: 'Profile not found.' });
   } catch (error: any) {
     console.error('Profile API error:', error);
-    return res.status(500).json({ error: 'Błąd serwera podczas pobierania profilu.' });
+    if (demo) return res.status(200).json(demo);
+    return res.status(500).json({ error: 'Server error while fetching the profile.' });
   }
 }

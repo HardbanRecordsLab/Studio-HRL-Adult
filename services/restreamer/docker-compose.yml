@@ -1,0 +1,52 @@
+# Live stack: MediaMTX (WebRTC/RTMP ingest + HLS) + restreamer (fan-out control API) + Caddy (HTTPS).
+#
+#   cp .env.example .env   # set RESTREAMER_TOKEN, LIVE_DOMAIN and LIVE_PUBLIC_IP
+#   docker compose up -d --build
+#
+# Public ports: 80/443 (HTTPS: control API /v1, WHIP /live, HLS /public),
+#               8189 tcp+udp (WebRTC media), 1935 (RTMP ingest, only needed for OBS).
+
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:1
+    restart: unless-stopped
+    environment:
+      MTX_WEBRTCADDITIONALHOSTS: ${LIVE_PUBLIC_IP:?set LIVE_PUBLIC_IP in .env}
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    ports:
+      - "1935:1935"
+      - "8189:8189/udp"
+      - "8189:8189/tcp"
+    depends_on:
+      - restreamer
+
+  restreamer:
+    build: .
+    restart: unless-stopped
+    environment:
+      RESTREAMER_TOKEN: ${RESTREAMER_TOKEN:?set RESTREAMER_TOKEN in .env}
+      MEDIAMTX_RTMP: rtmp://mediamtx:1935
+      MEDIAMTX_RTSP: rtsp://mediamtx:8554
+      VIDEO_MODE: ${VIDEO_MODE:-copy}
+    volumes:
+      - restreamer-data:/data
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      LIVE_DOMAIN: ${LIVE_DOMAIN:?set LIVE_DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - restreamer
+      - mediamtx
+
+volumes:
+  restreamer-data:
+  caddy-data:
